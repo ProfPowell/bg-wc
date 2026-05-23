@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Supergraphics &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #faf3e3;
+      --color-foreground: #1a1a1a;
+      --color-primary: #e63946;
+      --color-accent: #f4d03f;
+      --color-info: #1e3a8a;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); -webkit-font-smoothing: antialiased; }
+    body { font-family: Inter, -apple-system, system-ui, sans-serif; min-height: 100vh; overflow: hidden; }
+
+    .stage { position: relative; width: 100vw; height: 100vh; display: grid; grid-template-columns: 1.1fr 1fr; }
+    @media (max-width: 760px) { .stage { grid-template-columns: 1fr; grid-template-rows: auto 1fr; } }
+
+    .text {
+      padding: clamp(40px, 7vw, 96px) clamp(28px, 6vw, 80px);
+      display: flex; flex-direction: column; justify-content: space-between; gap: 32px;
+      z-index: 2;
+    }
+    .meta { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.55; }
+    .text h1 {
+      font-family: 'Archivo Black', 'Helvetica Neue', Helvetica, sans-serif;
+      font-size: clamp(48px, 8.5vw, 140px);
+      line-height: 0.9;
+      letter-spacing: -0.025em;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .text h1 .accent { color: var(--color-primary); }
+    .text .lede {
+      max-width: 460px;
+      font-size: clamp(15px, 1.2vw, 18px);
+      line-height: 1.6;
+      margin: 24px 0 0;
+    }
+    .text .lede code { background: rgba(26,26,26,0.08); padding: 2px 7px; border-radius: 4px; font-size: 0.95em; }
+
+    .panel { position: relative; border-left: 2px solid var(--color-foreground); }
+    @media (max-width: 760px) { .panel { border-left: none; border-top: 2px solid var(--color-foreground); min-height: 50vh; } }
+    .panel gl-wc { display: block; width: 100%; height: 100%; }
+
+    /* A tiny stripe of the secondary color along the bottom — supergraphic accent */
+    .stripe {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 18px;
+      background: var(--color-accent);
+      border-top: 2px solid var(--color-foreground);
+      z-index: 3;
+    }
+    /* Cornermark — circle in the top right of the panel */
+    .mark {
+      position: absolute; top: 24px; right: 24px;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--color-info); color: #faf3e3;
+      display: grid; place-items: center;
+      font-family: 'Archivo Black', sans-serif; font-size: 22px;
+      z-index: 3;
+    }
+
+    .nav { position: absolute; top: 22px; left: 28px; z-index: 10; }
+    .nav a { color: var(--color-foreground); text-decoration: none; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.55; }
+    .nav a:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./">&larr; demos</a></nav>
+  <main class="stage">
+    <section class="text">
+      <div class="meta"><span>01 &mdash; Supergraphics</span><span>gl-wc &times; dither</span></div>
+      <div>
+        <h1>Motion<br>for every<br><span class="accent">surface.</span></h1>
+        <p class="lede">
+          Loud color, big shapes, printed-poster grit. The <code>dither</code> preset turns two
+          theme tokens into a slowly-shifting halftone &mdash; paint it as the right half of a
+          hero, anywhere.
+        </p>
+      </div>
+      <div class="meta"><span>vanilla breeze &middot; integration</span><span>2026</span></div>
+    </section>
+    <section class="panel">
+      <gl-wc preset="dither" intensity="0.8" density="0.18" speed="0.5"></gl-wc>
+      <div class="mark">01</div>
+    </section>
+    <div class="stripe"></div>
+  </main>
+  <script type="module" src="../../src/gl-wc.js"></script>
+</body>
+</html>

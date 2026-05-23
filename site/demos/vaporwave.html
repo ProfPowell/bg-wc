@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vaporwave &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #1a0530;
+      --color-foreground: #fffb96;
+      --color-primary: #ff71ce;
+      --color-accent: #01cdfe;
+      --color-info: #b967ff;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Cinzel', Georgia, serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    .stage { position: relative; width: 100vw; height: 100vh; }
+
+    /* Layer 1: animated network */
+    gl-wc.bg { position: absolute; inset: 0; z-index: 1; }
+
+    /* Layer 2: sun — radial gradient over the horizon */
+    .sun {
+      position: absolute; left: 50%; top: 32%;
+      width: 60vmin; height: 60vmin; transform: translateX(-50%);
+      z-index: 2;
+      background: radial-gradient(circle at 50% 50%,
+        #fffb96 0%, #ff71ce 32%, #b967ff 55%, transparent 70%);
+      filter: blur(2px); opacity: 0.85;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    /* Sun is cut at the horizon by a series of horizontal bands */
+    .sun::after {
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 8%,
+        rgba(26,5,48,0.85) 8%,
+        rgba(26,5,48,0.85) 9.5%
+      );
+      mix-blend-mode: multiply;
+    }
+
+    /* Layer 3: perspective grid */
+    .grid {
+      position: absolute; left: -10vw; right: -10vw; bottom: 0; height: 55vh;
+      z-index: 3; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,113,206,0.85) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,113,206,0.85) 1px, transparent 1px);
+      background-size: 60px 60px;
+      transform: perspective(420px) rotateX(60deg);
+      transform-origin: top;
+      mask-image: linear-gradient(to top, black 30%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to top, black 30%, transparent 100%);
+    }
+
+    /* Layer 4: horizon line */
+    .horizon {
+      position: absolute; left: 0; right: 0; top: 55%; height: 2px; z-index: 4;
+      background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+      opacity: 0.7; pointer-events: none;
+      box-shadow: 0 0 18px var(--color-accent);
+    }
+
+    /* Layer 5: content */
+    .content {
+      position: absolute; inset: 0; z-index: 5;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 6vh 4vw 0;
+      text-align: center;
+    }
+    .aesthetic {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: clamp(36px, 7vw, 112px);
+      font-weight: 700;
+      letter-spacing: clamp(0.2em, 1vw, 0.42em);
+      color: var(--color-foreground);
+      text-shadow:
+        3px 0 var(--color-primary),
+        -3px 0 var(--color-accent),
+        0 0 28px rgba(255,113,206,0.5),
+        0 0 60px rgba(1,205,254,0.3);
+      margin: 0;
+    }
+    .tag {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.32em; font-size: clamp(11px, 1vw, 14px);
+      color: var(--color-info); opacity: 0.85;
+      margin-top: 28px;
+    }
+    .jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(14px, 1.4vw, 18px);
+      color: var(--color-accent);
+      letter-spacing: 0.4em;
+      writing-mode: vertical-rl;
+      position: absolute; right: 36px; top: 80px;
+      opacity: 0.85; z-index: 6;
+      text-shadow: 0 0 10px rgba(1,205,254,0.5);
+    }
+    .jp.left {
+      right: auto; left: 36px; top: 80px;
+      writing-mode: vertical-rl;
+      color: var(--color-primary);
+      text-shadow: 0 0 10px rgba(255,113,206,0.5);
+    }
+
+    /* VHS scanline whisper */
+    .vhs {
+      position: absolute; inset: 0; z-index: 7; pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 3px,
+        rgba(0,0,0,0.05) 4px
+      );
+    }
+
+    .nav { position: absolute; top: 22px; left: 32px; z-index: 12; }
+    .nav a { color: var(--color-foreground); text-decoration: none; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./">&larr; demos</a></nav>
+  <main class="stage">
+    <gl-wc class="bg" preset="network" intensity="0.55" density="0.6" speed="0.6"></gl-wc>
+    <div class="sun"></div>
+    <div class="grid"></div>
+    <div class="horizon"></div>
+    <div class="jp left">蒸気波</div>
+    <div class="jp">美的</div>
+    <div class="content">
+      <h1 class="aesthetic">A E S T H E T I C</h1>
+      <div class="tag">&mdash; RENDER &middot; STREAM &middot; DREAM &mdash;</div>
+    </div>
+    <div class="vhs"></div>
+  </main>
+  <script type="module" src="../../src/gl-wc.js"></script>
+</body>
+</html>
