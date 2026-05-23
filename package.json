@@ -1,0 +1,37 @@
+{
+  "name": "@profpowell/gl-wc",
+  "version": "0.1.0",
+  "description": "Theme-aware graphics-layer web component: animated WebGL & Canvas2D backgrounds behind any HTML content.",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/gl-wc.js",
+  "module": "src/gl-wc.js",
+  "exports": {
+    ".": "./src/gl-wc.js",
+    "./presets/*": "./src/presets/*.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProfPowell/gl-wc.git"
+  },
+  "homepage": "https://profpowell.github.io/gl-wc/",
+  "keywords": [
+    "web-component",
+    "custom-element",
+    "webgl",
+    "canvas",
+    "shader",
+    "particles",
+    "background",
+    "vanilla-breeze"
+  ],
+  "author": "ProfPowell",
+  "sideEffects": [
+    "src/gl-wc.js"
+  ]
+}
