@@ -50,10 +50,14 @@
     .meta .desc { font-size: 13px; opacity: 0.6; font-family: ui-monospace, monospace; }
 
     /* Each preview gets its own scoped tokens so the gl-wc instance sees the demo's palette. */
-    .demo[data-theme="supergraphics"] { --color-background: #faf3e3; --color-foreground: #1a1a1a; --color-primary: #e63946; --color-accent: #f4d03f; --color-info: #1e3a8a; }
+    .demo[data-theme="supergraphics"] { --color-background: #f3eddf; --color-foreground: #1a1a1a; --color-primary: #ffffff; --color-accent: #000000; --color-info: #1e3a8a; }
     .demo[data-theme="retro-8bit"]    { --color-background: #0a0a18; --color-foreground: #00ff88; --color-primary: #ff00aa; --color-accent: #00ddff; --color-info: #ffee00; }
     .demo[data-theme="stripe-wave"]   { --color-background: #0a2540; --color-foreground: #ffffff; --color-primary: #635bff; --color-accent: #00d4ff; --color-info: #ff5996; }
     .demo[data-theme="vaporwave"]     { --color-background: #1a0530; --color-foreground: #fffb96; --color-primary: #ff71ce; --color-accent: #01cdfe; --color-info: #b967ff; }
+    .demo[data-theme="brutalist"]     { --color-background: #d7d4cb; --color-foreground: #0a0a0a; --color-primary: #d23527; --color-accent: #f5d04f; --color-info: #0a0a0a; }
+    .demo[data-theme="frutiger"]      { --color-background: #4cb0e0; --color-foreground: #ffffff; --color-primary: #b6efff; --color-accent: #6fdbff; --color-info: #0a6cab; }
+    .demo[data-theme="terminal"]      { --color-background: #000000; --color-foreground: #00ff88; --color-primary: #00ff88; --color-accent: #00cc66; --color-info: #88ffaa; }
+    .demo[data-theme="editorial"]     { --color-background: #f6f3eb; --color-foreground: #1a1a1a; --color-primary: #f6f3eb; --color-accent: #1a1a1a; --color-info: #b3261e; }
 
     footer { text-align: center; padding: 32px; opacity: 0.5; font-size: 13px; border-top: 1px solid var(--border); margin-top: 64px; }
     footer a { color: var(--accent); }
@@ -65,18 +69,19 @@
     <a href="../">&larr; Gallery</a>
   </header>
   <main>
-    <h2>Four aesthetics, one web component</h2>
+    <h2>One web component, many aesthetics</h2>
     <p class="lede">
       Each demo scopes a small palette of <code>--color-*</code> tokens to the page and points one or two
-      <code>&lt;gl-wc&gt;</code> instances at the right preset. Click through to see them full-bleed.
+      <code>&lt;gl-wc&gt;</code> instances at the right preset &mdash; then the design language around the
+      animation is what makes the look. Click through to see them full-bleed.
     </p>
     <div class="demos">
       <a class="demo" data-theme="supergraphics" href="./supergraphics.html">
         <div class="preview">
-          <gl-wc preset="dither" intensity="0.78" density="0.18" speed="0.5"></gl-wc>
-          <span class="label">dither</span>
+          <gl-wc preset="dither" intensity="0.92" density="0.22" speed="0.45"></gl-wc>
+          <span class="label">dither + svg</span>
         </div>
-        <div class="meta"><span class="name">Supergraphics</span><span class="desc">poster, halftone</span></div>
+        <div class="meta"><span class="name">Supergraphics</span><span class="desc">shapes, halftone</span></div>
       </a>
       <a class="demo" data-theme="retro-8bit" href="./retro-8bit.html">
         <div class="preview">
@@ -99,6 +104,34 @@
           <span class="label">network</span>
         </div>
         <div class="meta"><span class="name">Vaporwave</span><span class="desc">neon, perspective</span></div>
+      </a>
+      <a class="demo" data-theme="brutalist" href="./brutalist.html">
+        <div class="preview">
+          <gl-wc preset="noise" intensity="0.85" density="0.55" speed="0.4"></gl-wc>
+          <span class="label">noise</span>
+        </div>
+        <div class="meta"><span class="name">Brutalist</span><span class="desc">monospace, grid</span></div>
+      </a>
+      <a class="demo" data-theme="frutiger" href="./frutiger.html">
+        <div class="preview">
+          <gl-wc preset="mesh-gradient" intensity="0.8" speed="0.42"></gl-wc>
+          <span class="label">mesh-gradient</span>
+        </div>
+        <div class="meta"><span class="name">Frutiger Aero</span><span class="desc">glass, sky</span></div>
+      </a>
+      <a class="demo" data-theme="terminal" href="./terminal.html">
+        <div class="preview">
+          <gl-wc preset="particles" intensity="0.55" density="0.9" speed="2.4"></gl-wc>
+          <span class="label">particles</span>
+        </div>
+        <div class="meta"><span class="name">Terminal</span><span class="desc">CRT, phosphor</span></div>
+      </a>
+      <a class="demo" data-theme="editorial" href="./editorial.html">
+        <div class="preview">
+          <gl-wc preset="dither" intensity="0.92" density="0.05" speed="0.35"></gl-wc>
+          <span class="label">dither</span>
+        </div>
+        <div class="meta"><span class="name">Editorial</span><span class="desc">newsprint, halftone</span></div>
       </a>
     </div>
   </main>

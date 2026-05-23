@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editorial &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f3eb;
+      --ink: #1a1a1a;
+      --rule: #1a1a1a;
+      --red: #b3261e;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+    body { font-family: 'Playfair Display', Georgia, serif; min-height: 100vh; }
+
+    .paper {
+      max-width: 1100px; margin: 0 auto;
+      padding: 36px clamp(20px, 4vw, 56px) 64px;
+    }
+
+    .masthead {
+      border-top: 4px solid var(--rule);
+      border-bottom: 6px double var(--rule);
+      padding: 14px 0 14px;
+      margin-bottom: 32px;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: baseline; gap: 16px;
+    }
+    .masthead .l, .masthead .r {
+      font-family: Inter, sans-serif;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+      line-height: 1.6; opacity: 0.7;
+    }
+    .masthead .r { text-align: right; }
+    .masthead h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(40px, 7vw, 100px);
+      letter-spacing: -0.03em; line-height: 0.9;
+      margin: 0; white-space: nowrap;
+      text-align: center;
+    }
+
+    .byline {
+      font-family: Inter, sans-serif;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+      margin-bottom: 14px; opacity: 0.75;
+    }
+    .byline .red { color: var(--red); font-weight: 600; }
+
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(34px, 5.2vw, 68px);
+      font-weight: 900;
+      line-height: 1.04; letter-spacing: -0.02em;
+      margin: 0 0 16px;
+      max-width: 22ch;
+    }
+    .dek {
+      font-family: Inter, sans-serif;
+      font-size: 17px; line-height: 1.55;
+      max-width: 720px;
+      color: rgba(26,26,26,0.78);
+      margin: 0 0 28px;
+    }
+    .dek code { background: rgba(26,26,26,0.08); padding: 1px 6px; font-family: ui-monospace, monospace; font-size: 0.92em; }
+
+    .feature {
+      display: grid; grid-template-columns: 1.35fr 1fr; gap: 32px;
+      border-top: 2px solid var(--rule);
+      padding-top: 22px;
+    }
+    @media (max-width: 800px) { .feature { grid-template-columns: 1fr; } }
+
+    .photo {
+      position: relative; aspect-ratio: 4 / 3;
+      background: var(--ink);
+      overflow: hidden;
+    }
+    .photo gl-wc { display: block; width: 100%; height: 100%; }
+    .photo + .caption {
+      font-family: Inter, sans-serif;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+      margin-top: 8px; opacity: 0.7;
+    }
+
+    .columns {
+      column-count: 2; column-gap: 28px;
+      column-rule: 1px solid rgba(26,26,26,0.18);
+      font-family: 'Playfair Display', serif;
+      font-size: 15.5px; line-height: 1.66;
+      text-align: justify;
+      hyphens: auto;
+    }
+    @media (max-width: 600px) { .columns { column-count: 1; } }
+    .columns p { margin: 0 0 14px; text-indent: 1.6em; }
+    .columns p:first-child { text-indent: 0; }
+    .columns p:first-child::first-letter {
+      font-weight: 900; font-size: 3.6em; float: left;
+      line-height: 0.9; padding: 4px 10px 0 0;
+      color: var(--red);
+    }
+    .columns code { font-family: ui-monospace, monospace; background: rgba(26,26,26,0.08); padding: 1px 5px; font-size: 0.88em; }
+
+    .pull {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: clamp(22px, 2.4vw, 30px);
+      line-height: 1.25;
+      border-left: 4px solid var(--red);
+      padding: 6px 0 6px 18px;
+      margin: 24px 0;
+      max-width: 32ch;
+    }
+
+    .nav {
+      position: absolute; top: 18px; left: 22px;
+      font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .nav a { color: var(--ink); text-decoration: none; opacity: 0.6; }
+    .nav a:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./">&larr; demos</a></nav>
+  <article class="paper">
+    <header class="masthead">
+      <div class="l">Vol. I &middot; No. 09</div>
+      <h1>The Surface</h1>
+      <div class="r">Saturday<br>May 23, 2026</div>
+    </header>
+
+    <p class="byline">FEATURE <span class="red">&bull;</span> WEB COMPONENTS &nbsp;&middot;&nbsp; By the editors</p>
+    <h2 class="hero-headline">A single primitive replaces a catalog of one-off integrations.</h2>
+    <p class="dek">
+      The <code>&lt;gl-wc&gt;</code> custom element ships a small kernel with each visual preset
+      loaded only on first use. Pages that don't ask for animation pay nothing; pages that do
+      get a familiar attribute surface and one canvas, no matter how many presets are in play.
+    </p>
+
+    <div class="feature">
+      <div>
+        <div class="photo">
+          <gl-wc preset="dither" intensity="0.92" density="0.05" speed="0.35"
+                 style="--gl-wc-color-1:#f6f3eb; --gl-wc-color-2:#1a1a1a;"></gl-wc>
+        </div>
+        <p class="caption">Fig. 1. &mdash; <code>preset="dither"</code> rendered in two inks: page cream and process black.</p>
+        <p class="pull">"Twenty years of animation engines, replaced by one canvas and a handful of CSS variables."</p>
+      </div>
+      <div class="columns">
+        <p>Animation arrived on the web in waves &mdash; first as GIF, then Flash, then CSS keyframes, then libraries the size of small games. Each wave promised more motion at lower friction, and each one shipped its own runtime alongside the page. The result, two decades on, is a stack of competing engines and a load budget that has nowhere left to go.</p>
+        <p>The component described in this issue takes the opposite stance. It ships a small kernel &mdash; the custom element, a renderer wrapper, a token resolver, an idle-aware request-animation-frame loop &mdash; and treats each visual preset as an isolated module loaded on first use. A page that does not use motion pays nothing.</p>
+        <p>What that looks like in practice is the figure printed at left: a halftone in two ink colors, animated by a slowly-shifting threshold. The page reads two custom properties; the component fills in the rest. No build pipeline, no framework, no images.</p>
+        <p>Whether the form catches on will depend less on the kernel and more on how readily the preset catalog grows. The current set covers WebGL shaders and Canvas2D particle systems; the natural next step is custom shaders supplied by the page itself.</p>
+      </div>
+    </div>
+  </article>
+  <script type="module" src="../../src/gl-wc.js"></script>
+</body>
+</html>
