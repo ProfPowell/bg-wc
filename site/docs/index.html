@@ -31,7 +31,7 @@
         no build coupling.
       </p>
       <div class="meta-row">
-        <span class="chip">17 presets</span>
+        <span class="chip">21 presets</span>
         <span class="chip">WebGL + Canvas2D</span>
         <span class="chip">MIT</span>
         <span class="chip">Zero deps</span>
@@ -47,18 +47,18 @@
       <div class="grid-2">
         <div>
           <h3>npm</h3>
-          <pre class="code-block" data-lang="bash"><code>npm install @profpowell/gl-wc</code></pre>
+          <code-block theme="dark" language="bash">npm install @profpowell/gl-wc</code-block>
           <p class="muted">
             Then import the element. The component self-registers as
             <code>&lt;gl-wc&gt;</code> on import.
           </p>
-          <pre class="code-block" data-lang="js"><code>import '@profpowell/gl-wc';</code></pre>
+          <code-block theme="dark" language="javascript">import '@profpowell/gl-wc';</code-block>
         </div>
         <div>
           <h3>From source / CDN</h3>
-          <pre class="code-block" data-lang="html"><code>&lt;script type="module"
+          <code-block theme="dark" language="html">&lt;script type="module"
         src="https://unpkg.com/@profpowell/gl-wc"&gt;
-&lt;/script&gt;</code></pre>
+&lt;/script&gt;</code-block>
           <p class="muted">
             Or vendor the <code>src/</code> directory and reference it directly &mdash;
             it ships as plain ES modules with no build step.
@@ -75,11 +75,11 @@
         (<code>--color-primary</code>, <code>--color-accent</code>, &hellip;).
         The component reads them at frame time.
       </p>
-      <pre class="code-block" data-lang="html"><code>&lt;gl-wc preset="mesh-gradient" intensity="0.65"&gt;
+      <code-block theme="dark" language="html">&lt;gl-wc preset="mesh-gradient" intensity="0.65"&gt;
   &lt;h1&gt;Hero headline&lt;/h1&gt;
   &lt;p&gt;Content sits above the rendered layer in the light DOM.&lt;/p&gt;
   &lt;img slot="fallback" src="hero.webp" alt=""&gt;
-&lt;/gl-wc&gt;</code></pre>
+&lt;/gl-wc&gt;</code-block>
       <p class="muted">
         Nothing required beyond the <code>preset</code> attribute. The
         <code>fallback</code> slot shows when <code>prefers-reduced-motion: reduce</code>
@@ -100,15 +100,15 @@
           The namespace is distinct from VB's <code>data-effect</code>, so
           the two can coexist on the same element.
         </p>
-        <pre class="code-block" data-lang="js"><code>import '@profpowell/gl-wc/data-bg';</code></pre>
-        <pre class="code-block" data-lang="html"><code>&lt;section
+        <code-block theme="dark" language="javascript">import '@profpowell/gl-wc/data-bg';</code-block>
+        <code-block theme="dark" language="html">&lt;section
   data-bg="aurora"
   data-bg-intensity="0.7"
   data-bg-speed="0.3"
   data-bg-color-1="#4dffa1"&gt;
   &lt;h1&gt;Northern lights, behind anything.&lt;/h1&gt;
   &lt;p&gt;Existing children stay put; gl-wc slides in behind.&lt;/p&gt;
-&lt;/section&gt;</code></pre>
+&lt;/section&gt;</code-block>
         <h3>Attribute mapping</h3>
         <p>
           <code>data-bg</code> is the preset name. Any other key starting with
@@ -193,11 +193,11 @@
           </tbody>
         </table>
       </div>
-      <pre class="code-block" data-lang="js"><code>const el = document.querySelector('gl-wc');
+      <code-block theme="dark" language="javascript">const el = document.querySelector('gl-wc');
 await el.ready;
 const blob = await el.snapshot();
 const url = URL.createObjectURL(blob);
-console.log('PNG ready:', url);</code></pre>
+console.log('PNG ready:', url);</code-block>
     </section>
 
     <!-- 6. Events --------------------------------------------- -->
@@ -214,9 +214,9 @@ console.log('PNG ready:', url);</code></pre>
           </tbody>
         </table>
       </div>
-      <pre class="code-block" data-lang="js"><code>el.addEventListener('gl-wc:ready', (e) =&gt; {
+      <code-block theme="dark" language="javascript">el.addEventListener('gl-wc:ready', (e) =&gt; {
   console.log('preset:', e.detail.preset, 'renderer:', e.detail.renderer);
-});</code></pre>
+});</code-block>
     </section>
 
     <!-- 7. CSS custom properties ------------------------------ -->
@@ -269,10 +269,10 @@ console.log('PNG ready:', url);</code></pre>
       <p>
         The internal <code>&lt;canvas&gt;</code> is exposed as <code>part="canvas"</code>:
       </p>
-      <pre class="code-block" data-lang="css"><code>gl-wc::part(canvas) {
+      <code-block theme="dark" language="css">gl-wc::part(canvas) {
   image-rendering: pixelated;       /* useful for the retro look */
   filter: hue-rotate(20deg);
-}</code></pre>
+}</code-block>
     </section>
 
     <!-- 8. Preset catalog ------------------------------------- -->
@@ -298,6 +298,10 @@ console.log('PNG ready:', url);</code></pre>
             <tr><td><code>aurora</code></td><td>Vertical curtain noise + baseline ribbon</td><td>primary, accent, info, background</td></tr>
             <tr><td><code>tunnel</code></td><td>Infinite polar zoom with ring banding</td><td>primary, accent, background</td></tr>
             <tr><td><code>caustics</code></td><td>Warped sin/cos fields for bright veins</td><td>primary, accent, background</td></tr>
+            <tr><td><code>glitch</code></td><td>RGB-shift datamosh with per-row displacement</td><td>primary, accent, background</td></tr>
+            <tr><td><code>rainbow</code></td><td>Flowing spectral hue sweep (owns its palette)</td><td>&mdash; (not theme-tinted)</td></tr>
+            <tr><td><code>halftone</code></td><td>Rotated dot-grid halftone over an animated tone</td><td>primary, background</td></tr>
+            <tr><td><code>kaleidoscope</code></td><td>Mirrored angular folds with a rotating pattern</td><td>primary, accent, info</td></tr>
           </tbody>
         </table>
       </div>
@@ -350,46 +354,46 @@ console.log('PNG ready:', url);</code></pre>
       <h2>Recipes</h2>
 
       <h3>Halftone overlay on flat shapes</h3>
-      <pre class="code-block" data-lang="html"><code>&lt;div class="poster"&gt;
+      <code-block theme="dark" language="html">&lt;div class="poster"&gt;
   &lt;svg class="shapes"&gt;...&lt;/svg&gt;
   &lt;gl-wc preset="noise" intensity="0.7"
          style="position:absolute; inset:0;
                 mix-blend-mode:multiply; opacity:0.18;
                 --gl-wc-color-fg:#000; --gl-wc-color-bg:#fff;"&gt;
   &lt;/gl-wc&gt;
-&lt;/div&gt;</code></pre>
+&lt;/div&gt;</code-block>
 
       <h3>Two layered presets (aurora behind stars)</h3>
-      <pre class="code-block" data-lang="html"><code>&lt;div class="sky"&gt;
+      <code-block theme="dark" language="html">&lt;div class="sky"&gt;
   &lt;gl-wc preset="aurora"&gt;&lt;/gl-wc&gt;
   &lt;gl-wc preset="stars"
          style="--gl-wc-color-bg: transparent;"&gt;&lt;/gl-wc&gt;
-&lt;/div&gt;</code></pre>
+&lt;/div&gt;</code-block>
       <p class="muted">
         The top layer must declare a transparent background or its
         Canvas2D <code>clearRect</code> + bg-fill will mask the layer below.
       </p>
 
       <h3>Section background via data-bg</h3>
-      <pre class="code-block" data-lang="html"><code>&lt;section
+      <code-block theme="dark" language="html">&lt;section
   data-bg="caustics"
   data-bg-intensity="0.8"
   data-bg-density="0.45"
   data-bg-speed="0.55"&gt;
   &lt;h1&gt;Six metres down.&lt;/h1&gt;
-&lt;/section&gt;</code></pre>
+&lt;/section&gt;</code-block>
 
       <h3>Hot-swap presets at runtime</h3>
-      <pre class="code-block" data-lang="js"><code>el.setAttribute('preset', 'plasma');
+      <code-block theme="dark" language="javascript">el.setAttribute('preset', 'plasma');
 await el.ready;          // resolves once the new preset's first frame renders
-console.log(el.preset);  // 'plasma'</code></pre>
+console.log(el.preset);  // 'plasma'</code-block>
 
       <h3>Snapshot to file</h3>
-      <pre class="code-block" data-lang="js"><code>const blob = await el.snapshot();
+      <code-block theme="dark" language="javascript">const blob = await el.snapshot();
 const a = document.createElement('a');
 a.href = URL.createObjectURL(blob);
 a.download = `${el.preset}.png`;
-a.click();</code></pre>
+a.click();</code-block>
     </section>
 
     <!-- 12. Browser support ----------------------------------- -->
@@ -420,6 +424,12 @@ a.click();</code></pre>
   <footer>
     <p>MIT &middot; <a href="https://github.com/ProfPowell/gl-wc">ProfPowell/gl-wc</a> &middot; <a href="../">Gallery</a> &middot; <a href="../demos/">Demos</a></p>
   </footer>
+
+  <!-- ProfPowell code-block component renders the snippets above with
+       syntax highlighting. highlight.js is bundled into its dist, so this
+       single module loads standalone. Until it registers (or if the CDN
+       is blocked) the code-block:not(:defined) CSS keeps snippets legible. -->
+  <script type="module" src="https://unpkg.com/@profpowell/code-block@2.9.0/dist/code-block.js"></script>
 
   <!-- data-bg auto-binds on import; that gives the hero its mesh-gradient
        and the data-bg section its aurora layer above. -->
