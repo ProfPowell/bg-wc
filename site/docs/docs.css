@@ -1,0 +1,242 @@
+:root,
+[data-theme="dark"] {
+  --color-background: #0b0d12;
+  --color-foreground: #e8eaf2;
+  --color-primary: #5b8eff;
+  --color-accent: #ff5fa2;
+  --color-info: #25d0a6;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-surface: #131722;
+  --color-surface-elevated: #1a1f2c;
+  --color-border: #232a3a;
+  --color-muted: #8c95a7;
+  --code-bg: #0a0d15;
+  --code-border: #1d2533;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font: 15.5px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--color-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+
+/* Topbar ---------------------------------------------------- */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 28px;
+  background: rgba(11, 13, 18, 0.78);
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.crumb {
+  font-family: ui-monospace, monospace;
+  font-size: 14px;
+}
+.crumb a { color: var(--color-foreground); opacity: 0.7; }
+.crumb a:hover { opacity: 1; }
+.crumb .sep { padding: 0 8px; opacity: 0.35; }
+.repo { font-weight: 600; font-size: 14px; }
+
+/* Hero ------------------------------------------------------- */
+.hero {
+  position: relative;
+  min-height: 56vh;
+  display: flex; align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
+}
+.hero-inner {
+  position: relative; z-index: 2;
+  padding: 48px clamp(24px, 6vw, 80px);
+  max-width: 920px;
+}
+.eyebrow {
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  margin: 0 0 18px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.lede {
+  font-size: clamp(16px, 1.3vw, 19px);
+  line-height: 1.55;
+  max-width: 640px;
+  opacity: 0.85;
+  margin: 0 0 28px;
+}
+.meta-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.chip {
+  font-size: 12px;
+  font-family: ui-monospace, monospace;
+  padding: 4px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  color: var(--color-foreground);
+  opacity: 0.85;
+}
+
+/* Content sections ------------------------------------------ */
+main.content {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 56px clamp(20px, 4vw, 32px) 96px;
+  display: flex; flex-direction: column;
+  gap: 56px;
+}
+section { scroll-margin-top: 80px; }
+
+h2 {
+  font-size: clamp(24px, 2.6vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 18px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 10px;
+}
+h3 {
+  font-size: 18px;
+  margin: 24px 0 12px;
+  font-weight: 600;
+}
+p { margin: 0 0 14px; }
+p code, li code, td code, dl code {
+  font-size: 0.9em;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--color-accent);
+}
+
+.muted { opacity: 0.65; font-size: 14px; }
+
+/* Code blocks (simulating <code-block>) --------------------- */
+.code-block {
+  position: relative;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.55;
+  margin: 0 0 16px;
+  color: #d6dae8;
+}
+.code-block::before {
+  content: attr(data-lang);
+  position: absolute; top: 8px; right: 12px;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--color-muted);
+  opacity: 0.6;
+}
+.code-block code { font-family: inherit; color: inherit; background: none; border: 0; padding: 0; }
+
+/* Grid layouts --------------------------------------------- */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+@media (max-width: 720px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Tables --------------------------------------------------- */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+thead {
+  background: var(--color-surface-elevated);
+}
+th, td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+th {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(91,142,255,0.05); }
+
+/* Lists ---------------------------------------------------- */
+.ordered, .checks {
+  padding-left: 22px;
+  margin: 0 0 14px;
+}
+.ordered li, .checks li {
+  margin: 6px 0;
+}
+.checks { list-style: none; padding-left: 0; }
+.checks li {
+  position: relative; padding-left: 24px;
+}
+.checks li::before {
+  content: "✓";
+  position: absolute; left: 0; top: 0;
+  color: var(--color-info);
+  font-weight: 700;
+}
+
+/* Boxed "callout" — used to wrap data-bg section so the
+   aurora behind it shows through a card frame. */
+.boxed {
+  background: rgba(11, 13, 18, 0.82);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 28px clamp(20px, 4vw, 36px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* The data-bg-on section needs vertical breathing room so the
+   aurora reads beneath it. */
+#data-bg { padding: 56px 0; border-radius: 16px; overflow: hidden; }
+
+footer {
+  border-top: 1px solid var(--color-border);
+  padding: 28px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--color-muted);
+}
+footer a { color: var(--color-primary); }
