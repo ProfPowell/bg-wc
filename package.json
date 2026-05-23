@@ -8,6 +8,7 @@
   "module": "src/gl-wc.js",
   "exports": {
     ".": "./src/gl-wc.js",
+    "./data-bg": "./src/data-bg.js",
     "./presets/*": "./src/presets/*.js"
   },
   "files": [
