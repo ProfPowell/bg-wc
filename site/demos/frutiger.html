@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frutiger Aero &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #4cb0e0;
+      --color-foreground: #ffffff;
+      --color-primary: #b6efff;
+      --color-accent: #6fdbff;
+      --color-info: #0a6cab;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: Inter, -apple-system, system-ui, sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    .stage { position: relative; width: 100vw; height: 100vh; }
+
+    /* Background mesh-gradient — drifting sky/water tints */
+    gl-wc.bg { position: absolute; inset: 0; }
+
+    /* Light shaft from upper-left */
+    .shaft {
+      position: absolute; top: -40vh; left: -10vw;
+      width: 60vw; height: 140vh;
+      background: linear-gradient(135deg, rgba(255,255,255,0.55), transparent 60%);
+      transform: rotate(18deg);
+      filter: blur(20px);
+      z-index: 2; pointer-events: none;
+    }
+
+    /* Bottom water haze */
+    .haze {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 38vh;
+      background: linear-gradient(to bottom, transparent, rgba(10,108,171,0.45) 65%, rgba(10,108,171,0.78));
+      z-index: 3; pointer-events: none;
+    }
+
+    /* Floating bubbles */
+    .bubble {
+      position: absolute; border-radius: 50%;
+      background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.72), rgba(255,255,255,0.06) 62%);
+      box-shadow: 0 6px 18px rgba(0,40,80,0.22), inset 0 1px 0 rgba(255,255,255,0.6);
+      pointer-events: none; z-index: 4;
+    }
+    .b1 { width: 160px; height: 160px; top: 10%; right: 8%; }
+    .b2 { width: 80px; height: 80px; bottom: 22%; left: 12%; }
+    .b3 { width: 220px; height: 220px; bottom: 4%; right: 14%; opacity: 0.7; }
+    .b4 { width: 44px; height: 44px; top: 60%; left: 50%; opacity: 0.85; }
+    .b5 { width: 28px; height: 28px; top: 18%; left: 28%; opacity: 0.9; }
+
+    /* Glassy card stack */
+    .glass-stack {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      display: flex; flex-direction: column; gap: 18px;
+      z-index: 6;
+      width: min(460px, 92vw);
+    }
+    .card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.34), rgba(255,255,255,0.10));
+      border: 1px solid rgba(255,255,255,0.55);
+      border-radius: 24px;
+      padding: 26px 30px;
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      box-shadow: 0 14px 44px -10px rgba(0,40,80,0.4), inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+    .card h1 { margin: 0 0 8px; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+    .card p { margin: 0; font-size: 14px; line-height: 1.6; opacity: 0.92; }
+
+    .card.action {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 24px;
+    }
+    .card.action .icon {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffffff, var(--color-accent) 75%);
+      box-shadow: 0 4px 14px rgba(0,40,80,0.3), inset 0 1px 0 rgba(255,255,255,0.7);
+      flex: none;
+    }
+    .card.action .text { flex: 1; }
+    .card.action h2 { margin: 0; font-size: 16px; font-weight: 600; }
+    .card.action small { display: block; opacity: 0.78; font-size: 12px; margin-top: 2px; }
+    .card.action .arrow { opacity: 0.7; font-size: 24px; padding-left: 8px; }
+
+    .nav { position: absolute; top: 22px; left: 28px; z-index: 12; }
+    .nav a { color: var(--color-foreground); text-decoration: none; font-size: 13px; opacity: 0.9; text-shadow: 0 1px 4px rgba(0,40,80,0.5); }
+    .nav a:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./">&larr; demos</a></nav>
+  <main class="stage">
+    <gl-wc class="bg" preset="mesh-gradient" intensity="0.8" speed="0.42"></gl-wc>
+    <div class="shaft"></div>
+    <div class="bubble b1"></div>
+    <div class="bubble b3"></div>
+    <div class="bubble b5"></div>
+    <div class="haze"></div>
+    <div class="bubble b2"></div>
+    <div class="bubble b4"></div>
+
+    <div class="glass-stack">
+      <div class="card">
+        <h1>Hello, surface.</h1>
+        <p>
+          A glassy 2007-vintage shell over a slow mesh-gradient.
+          Light, blue, and certain that everything ahead is going to be great.
+        </p>
+      </div>
+      <div class="card action">
+        <div class="icon"></div>
+        <div class="text">
+          <h2>preset="mesh-gradient"</h2>
+          <small>3 theme tokens &middot; WebGL &middot; low-power</small>
+        </div>
+        <div class="arrow">&rsaquo;</div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="../../src/gl-wc.js"></script>
+</body>
+</html>
