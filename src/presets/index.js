@@ -5,11 +5,15 @@ const REGISTRY = {
   'noise':         { renderer: 'webgl',    loader: () => import('./noise.js') },
   'mesh-gradient': { renderer: 'webgl',    loader: () => import('./mesh-gradient.js') },
   'warp':          { renderer: 'webgl',    loader: () => import('./warp.js') },
+  'waves':         { renderer: 'webgl',    loader: () => import('./waves.js') },
+  'lava':          { renderer: 'webgl',    loader: () => import('./lava.js') },
   'stars':         { renderer: 'canvas2d', loader: () => import('./stars.js') },
   'snow':          { renderer: 'canvas2d', loader: () => import('./snow.js') },
   'confetti':      { renderer: 'canvas2d', loader: () => import('./confetti.js') },
   'network':       { renderer: 'canvas2d', loader: () => import('./network.js') },
   'particles':     { renderer: 'canvas2d', loader: () => import('./particles.js') },
+  'pulse':         { renderer: 'canvas2d', loader: () => import('./pulse.js') },
+  'tetris':        { renderer: 'canvas2d', loader: () => import('./tetris.js') },
 };
 
 export function listPresets() {
