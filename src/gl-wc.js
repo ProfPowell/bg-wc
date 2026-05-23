@@ -123,6 +123,9 @@ class GlWc extends HTMLElement {
     const c = document.createElement('canvas');
     c.setAttribute('aria-hidden', 'true');
     c.setAttribute('role', 'presentation');
+    // Exposed so authors can style the canvas from outside the shadow root,
+    // e.g. `gl-wc::part(canvas) { image-rendering: pixelated }`.
+    c.setAttribute('part', 'canvas');
     return c;
   }
 
