@@ -58,6 +58,11 @@
     .demo[data-theme="frutiger"]      { --color-background: #4cb0e0; --color-foreground: #ffffff; --color-primary: #b6efff; --color-accent: #6fdbff; --color-info: #0a6cab; }
     .demo[data-theme="terminal"]      { --color-background: #000000; --color-foreground: #00ff88; --color-primary: #00ff88; --color-accent: #00cc66; --color-info: #88ffaa; }
     .demo[data-theme="editorial"]     { --color-background: #f6f3eb; --color-foreground: #1a1a1a; --color-primary: #f6f3eb; --color-accent: #1a1a1a; --color-info: #b3261e; }
+    .demo[data-theme="organic"]       { --color-background: #f4ecd8; --color-foreground: #2a2620; --color-primary: #6b8a4a; --color-accent: #c79a3e; --color-info: #a44432; }
+    .demo[data-theme="kawaii"]        { --color-background: #ffe5f1; --color-foreground: #6b3e64; --color-primary: #ffb3d6; --color-accent: #b3d4ff; --color-info: #b3ffd6; }
+    .demo[data-theme="manga"]         { --color-background: #faf8f4; --color-foreground: #0a0a0a; --color-primary: #ffffff; --color-accent: #0a0a0a; --color-info: #0a0a0a; }
+    .demo[data-theme="cyberpunk"]     { --color-background: #050511; --color-foreground: #f0f0f8; --color-primary: #ff0080; --color-accent: #00ffe1; --color-info: #ffea00; }
+    .demo[data-theme="coastal"]       { --color-background: #fde4cc; --color-foreground: #2a1d3f; --color-primary: #ff8a5c; --color-accent: #ff5e8e; --color-info: #6a52ff; }
 
     footer { text-align: center; padding: 32px; opacity: 0.5; font-size: 13px; border-top: 1px solid var(--border); margin-top: 64px; }
     footer a { color: var(--accent); }
@@ -132,6 +137,43 @@
           <span class="label">dither</span>
         </div>
         <div class="meta"><span class="name">Editorial</span><span class="desc">newsprint, halftone</span></div>
+      </a>
+      <a class="demo" data-theme="organic" href="./organic.html">
+        <div class="preview">
+          <gl-wc preset="mesh-gradient" intensity="0.55" speed="0.22"></gl-wc>
+          <span class="label">mesh-gradient</span>
+        </div>
+        <div class="meta"><span class="name">Organic</span><span class="desc">botanical, earth</span></div>
+      </a>
+      <a class="demo" data-theme="kawaii" href="./kawaii.html">
+        <div class="preview">
+          <gl-wc preset="particles" palette="rainbow" intensity="0.4" density="0.35" speed="1.6"></gl-wc>
+          <span class="label">particles + rainbow</span>
+        </div>
+        <div class="meta"><span class="name">Kawaii</span><span class="desc">pastel, sparkle</span></div>
+      </a>
+      <a class="demo" data-theme="manga" href="./manga.html">
+        <div class="preview">
+          <gl-wc preset="dither" intensity="0.95" density="0.45" speed="0.4"
+                 style="--gl-wc-color-1:#ffffff; --gl-wc-color-2:#0a0a0a;"></gl-wc>
+          <span class="label">dither (B&amp;W)</span>
+        </div>
+        <div class="meta"><span class="name">Manga</span><span class="desc">panels, screentone</span></div>
+      </a>
+      <a class="demo" data-theme="cyberpunk" href="./cyberpunk.html">
+        <div class="preview">
+          <gl-wc preset="warp" intensity="0.85" density="0.55" speed="0.7"></gl-wc>
+          <span class="label">warp</span>
+        </div>
+        <div class="meta"><span class="name">Cyberpunk</span><span class="desc">neon, glitch</span></div>
+      </a>
+      <a class="demo" data-theme="coastal" href="./coastal.html">
+        <div class="preview">
+          <gl-wc preset="mesh-gradient" intensity="0.85" speed="0.35"
+                 style="--gl-wc-color-1:#ff8a5c; --gl-wc-color-2:#ff5e8e; --gl-wc-color-3:#6a52ff;"></gl-wc>
+          <span class="label">mesh-gradient</span>
+        </div>
+        <div class="meta"><span class="name">Coastal</span><span class="desc">sunset, palm</span></div>
       </a>
     </div>
   </main>
