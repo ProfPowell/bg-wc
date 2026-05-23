@@ -61,17 +61,44 @@
     .label-tl a { color: inherit; text-decoration: none; opacity: 0.7; }
     .label-tl a:hover { opacity: 1; }
 
-    /* Vertical "WORM" rotated up the yellow column */
-    .vertical-mark {
+    /* The WORM — set in a vertical column, each letter wriggles with phase offset,
+       the whole word slithers slowly up and down. */
+    .worm {
       position: absolute;
-      top: 50%; left: 51.5%; transform: translate(-50%, -50%) rotate(-90deg);
+      top: 50%; left: 52%;
+      transform: translate(-50%, -50%);
+      display: flex; flex-direction: column;
+      align-items: center;
       font-family: 'Archivo Black', sans-serif;
-      font-size: clamp(80px, 13vw, 220px);
+      font-size: clamp(70px, 11.5vw, 200px);
+      line-height: 0.84;
       letter-spacing: -0.04em;
-      color: var(--ink);
-      z-index: 5;
+      color: #1a1a1a;
       mix-blend-mode: multiply;
-      white-space: nowrap;
+      z-index: 5;
+      animation: slither 7s ease-in-out infinite;
+    }
+    .worm > span {
+      display: block;
+      animation: wriggle 2.6s ease-in-out infinite;
+      transform-origin: center;
+      will-change: transform;
+    }
+    .worm > span:nth-child(1) { animation-delay: 0s; }
+    .worm > span:nth-child(2) { animation-delay: 0.22s; }
+    .worm > span:nth-child(3) { animation-delay: 0.44s; }
+    .worm > span:nth-child(4) { animation-delay: 0.66s; }
+    @keyframes wriggle {
+      0%, 100% { transform: translateX(0) rotate(0); }
+      25%      { transform: translateX(-26px) rotate(-4deg); }
+      75%      { transform: translateX(26px)  rotate(4deg); }
+    }
+    @keyframes slither {
+      0%, 100% { transform: translate(-50%, -52%); }
+      50%      { transform: translate(-50%, -48%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .worm, .worm > span { animation: none; }
     }
   </style>
 </head>
@@ -102,7 +129,12 @@
       <circle cx="420" cy="700" r="14" fill="#1a1a1a"/>
     </svg>
 
-    <div class="vertical-mark">WORM</div>
+    <div class="worm" aria-label="WORM">
+      <span aria-hidden="true">W</span>
+      <span aria-hidden="true">O</span>
+      <span aria-hidden="true">R</span>
+      <span aria-hidden="true">M</span>
+    </div>
 
     <gl-wc class="halftone" preset="noise" intensity="0.7" density="0.85" speed="0.25"
            style="--gl-wc-color-fg:#000000; --gl-wc-color-bg:#ffffff;"></gl-wc>

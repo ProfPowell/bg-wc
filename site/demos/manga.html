@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manga &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Anton&family=Noto+Sans+JP:wght@500;700;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #faf8f4;
+      --ink: #0a0a0a;
+      --tone: rgba(10,10,10,0.55);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #2a2825; color: var(--ink); }
+    body { font-family: Anton, Arial, sans-serif; min-height: 100vh; padding: 24px clamp(12px, 2vw, 32px); }
+
+    .page {
+      max-width: 1200px; margin: 0 auto;
+      background: var(--paper);
+      border: 4px solid var(--ink);
+      padding: clamp(12px, 1.5vw, 20px);
+      box-shadow: 8px 8px 0 var(--ink);
+    }
+
+    .panels {
+      display: grid;
+      grid-template-columns: 2fr 1.1fr;
+      grid-template-rows: 1.1fr 0.9fr 0.7fr;
+      gap: 6px;
+      min-height: calc(100vh - 80px);
+    }
+    @media (max-width: 720px) { .panels { grid-template-columns: 1fr; grid-template-rows: repeat(4, minmax(180px, auto)); } }
+
+    .panel {
+      position: relative; overflow: hidden;
+      background: var(--paper);
+      border: 4px solid var(--ink);
+    }
+    .panel.p1 { grid-row: 1; grid-column: 1; }
+    .panel.p2 { grid-row: 1; grid-column: 2; }
+    .panel.p3 { grid-row: 2; grid-column: 1 / span 2; transform: skew(-2deg); }
+    .panel.p3 > * { transform: skew(2deg); }
+    .panel.p4 { grid-row: 3; grid-column: 1; }
+    .panel.p5 { grid-row: 3; grid-column: 2; }
+
+    /* Halftone screentone via dither, multiplied onto the panel */
+    .panel gl-wc.tone {
+      position: absolute; inset: 0;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    /* Speed lines — radial repeating stripes */
+    .speed-lines {
+      position: absolute; inset: -10%;
+      background:
+        repeating-conic-gradient(from 0deg at 30% 50%,
+          transparent 0deg 4deg, rgba(10,10,10,0.85) 4deg 5deg);
+      mask-image: radial-gradient(ellipse at 30% 50%, black 0%, black 8%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at 30% 50%, black 0%, black 8%, transparent 70%);
+      pointer-events: none;
+    }
+    .speed-lines.right { background: repeating-conic-gradient(from 0deg at 80% 50%, transparent 0deg 5deg, rgba(10,10,10,0.7) 5deg 6deg); mask-image: radial-gradient(ellipse at 80% 50%, black 0%, black 8%, transparent 65%); }
+
+    /* SFX text — onomatopoeia */
+    .sfx {
+      position: absolute;
+      font-family: 'Bangers', 'Anton', sans-serif;
+      color: var(--paper);
+      -webkit-text-stroke: 4px var(--ink);
+      paint-order: stroke fill;
+      text-shadow: 6px 6px 0 var(--ink);
+      letter-spacing: 0.02em;
+      line-height: 0.9;
+      z-index: 4;
+    }
+    .sfx.bwoom { top: 18%; left: 8%; font-size: clamp(54px, 8vw, 130px); transform: rotate(-10deg); }
+    .sfx.shhk  { top: 42%; right: 6%; font-size: clamp(40px, 5.5vw, 80px); transform: rotate(8deg); }
+    .sfx.dash  { top: 28%; left: 35%; font-size: clamp(38px, 5vw, 76px); transform: rotate(-6deg); color: var(--ink); -webkit-text-stroke: 0; text-shadow: 3px 3px 0 #faf8f4; }
+
+    .bubble {
+      position: absolute;
+      background: var(--paper);
+      border: 4px solid var(--ink);
+      padding: 10px 16px;
+      font-family: 'Patrick Hand', cursive;
+      font-weight: 700;
+      font-size: clamp(13px, 1.1vw, 16px);
+      line-height: 1.25;
+      max-width: 240px;
+      box-shadow: 4px 4px 0 var(--ink);
+      z-index: 5;
+      border-radius: 24px;
+    }
+    .bubble::after {
+      content: ""; position: absolute;
+      width: 20px; height: 20px;
+      background: var(--paper);
+      border-right: 4px solid var(--ink);
+      border-bottom: 4px solid var(--ink);
+      transform: rotate(45deg);
+    }
+    .bubble.tl { top: 14px; left: 14px; }
+    .bubble.tl::after { bottom: -14px; left: 24px; }
+    .bubble.br { bottom: 14px; right: 14px; }
+    .bubble.br::after { top: -14px; right: 24px; transform: rotate(-135deg); }
+
+    .panel .corner {
+      position: absolute; bottom: 8px; right: 12px;
+      font-family: 'Noto Sans JP', sans-serif; font-weight: 700;
+      font-size: 11px; letter-spacing: 0.12em;
+      color: var(--ink);
+      z-index: 3;
+      background: var(--paper);
+      padding: 2px 6px;
+      border: 2px solid var(--ink);
+    }
+
+    .kanji {
+      position: absolute;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 900;
+      font-size: clamp(48px, 8vw, 130px);
+      color: var(--ink);
+      line-height: 1;
+      writing-mode: vertical-rl;
+      z-index: 3;
+    }
+    .kanji.k4 { top: 14px; right: 14px; }
+
+    /* p5 — title panel */
+    .panel.p5 { background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; padding: 14px; }
+    .panel.p5 h1 {
+      font-family: 'Bangers', sans-serif;
+      font-size: clamp(36px, 5.5vw, 72px);
+      letter-spacing: 0.02em;
+      line-height: 1;
+      margin: 0;
+      text-align: center;
+      color: var(--paper);
+    }
+    .panel.p5 .sub {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 700; font-size: 13px;
+      letter-spacing: 0.25em; margin-top: 6px;
+      color: var(--paper); opacity: 0.85;
+      text-align: center;
+    }
+
+    .nav { position: absolute; top: 30px; left: 32px; z-index: 20; font-family: Anton, sans-serif; font-size: 12px; letter-spacing: 0.15em; }
+    .nav a { color: var(--paper); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./">&larr; DEMOS</a></nav>
+  <main class="page">
+    <div class="panels">
+      <!-- Panel 1: big impact, speed lines + BWOOM -->
+      <div class="panel p1">
+        <gl-wc class="tone" preset="dither" intensity="0.95" density="0.45" speed="0.4"
+               style="--gl-wc-color-1:#ffffff; --gl-wc-color-2:#0a0a0a;"></gl-wc>
+        <div class="speed-lines"></div>
+        <div class="bubble tl">A custom element. Tiny. <em>Loud.</em></div>
+        <div class="sfx bwoom">BWOOM</div>
+        <div class="corner">P. 01</div>
+      </div>
+
+      <!-- Panel 2: portrait / vertical kanji -->
+      <div class="panel p2">
+        <gl-wc class="tone" preset="dither" intensity="0.92" density="0.7" speed="0.3"
+               style="--gl-wc-color-1:#faf8f4; --gl-wc-color-2:#0a0a0a;"></gl-wc>
+        <div class="kanji k4">迫力</div>
+        <div class="bubble br">&laquo;...one canvas. one custom element.&raquo;</div>
+        <div class="corner">P. 02</div>
+      </div>
+
+      <!-- Panel 3: action panel, dash -->
+      <div class="panel p3">
+        <gl-wc class="tone" preset="dither" intensity="0.95" density="0.2" speed="0.55"
+               style="--gl-wc-color-1:#ffffff; --gl-wc-color-2:#0a0a0a;"></gl-wc>
+        <div class="speed-lines right"></div>
+        <div class="sfx dash">&mdash; DASH! &mdash;</div>
+        <div class="corner">P. 03</div>
+      </div>
+
+      <!-- Panel 4: small, sound effect SHHK -->
+      <div class="panel p4">
+        <gl-wc class="tone" preset="dither" intensity="0.95" density="0.8" speed="0.25"
+               style="--gl-wc-color-1:#faf8f4; --gl-wc-color-2:#0a0a0a;"></gl-wc>
+        <div class="sfx shhk">SHHK&hellip;</div>
+        <div class="corner">P. 04</div>
+      </div>
+
+      <!-- Panel 5: title card -->
+      <div class="panel p5">
+        <div>
+          <h1>&lt;GL-WC&gt;<br>HALFTONE EDITION</h1>
+          <div class="sub">第 06 巻 &middot; MMXXVI</div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="../../src/gl-wc.js"></script>
+</body>
+</html>
