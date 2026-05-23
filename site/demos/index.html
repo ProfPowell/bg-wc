@@ -66,6 +66,12 @@
     .demo[data-theme="memphis"]       { --color-background: #f4f0e8; --color-foreground: #1a1a1a; --color-primary: #ff3d6e; --color-accent: #ffd23f; --color-info: #2cc6e0; }
     .demo[data-theme="alpha"]         { --color-background: #06060e; --color-foreground: #f3e8c0; --color-primary: #ff6f3c; --color-accent: #f3c969; --color-info: #7a4dff; }
     .demo[data-theme="dot-matrix"]    { --color-background: #f0eed8; --color-foreground: #1a3320; --color-primary: #f0eed8; --color-accent: #1a3320; --color-info: #1a3320; }
+    .demo[data-theme="poster-wall"]   { --color-background: #08080f; --color-foreground: #ffffff; --color-primary: #5b8eff; --color-accent: #ff5fa2; --color-info: #25d0a6; }
+    .demo[data-theme="pricing"]       { --color-background: #0a2540; --color-foreground: #ffffff; --color-primary: #635bff; --color-accent: #00d4ff; --color-info: #ff5996; }
+    .demo[data-theme="aurora"]        { --color-background: #04060e; --color-foreground: #f5fbff; --color-primary: #4dffa1; --color-accent: #5ec8ff; --color-info: #ff5fc8; }
+    .demo[data-theme="demoscene"]     { --color-background: #050208; --color-foreground: #ffe66d; --color-primary: #ff2bd6; --color-accent: #2bd4ff; --color-info: #ffe66d; }
+    .demo[data-theme="caustics-pool"] { --color-background: #07556e; --color-foreground: #f3fcff; --color-primary: #b3f0ff; --color-accent: #5ee2ff; --color-info: #ffffff; }
+    .demo[data-theme="tunnel"]        { --color-background: #06010e; --color-foreground: #f0e6ff; --color-primary: #b76cff; --color-accent: #34e6ff; --color-info: #ffe2a8; }
 
     footer { text-align: center; padding: 32px; opacity: 0.5; font-size: 13px; border-top: 1px solid var(--border); margin-top: 64px; }
     footer a { color: var(--accent); }
@@ -199,6 +205,48 @@
           <span class="label">dither + scroll</span>
         </div>
         <div class="meta"><span class="name">Dot matrix</span><span class="desc">paper, print</span></div>
+      </a>
+      <a class="demo" data-theme="poster-wall" href="./poster-wall.html">
+        <div class="preview">
+          <gl-wc preset="plasma" intensity="0.6" density="0.45" speed="0.7"></gl-wc>
+          <span class="label">17 presets &times; 3 rows</span>
+        </div>
+        <div class="meta"><span class="name">Poster wall</span><span class="desc">infinite scroll</span></div>
+      </a>
+      <a class="demo" data-theme="pricing" href="./stripe-pricing.html">
+        <div class="preview">
+          <gl-wc preset="mesh-gradient" intensity="0.78" speed="0.32"></gl-wc>
+          <span class="label">mesh-gradient</span>
+        </div>
+        <div class="meta"><span class="name">Pricing</span><span class="desc">SaaS tiers</span></div>
+      </a>
+      <a class="demo" data-theme="aurora" href="./aurora-hero.html">
+        <div class="preview">
+          <gl-wc preset="aurora" intensity="0.85" density="0.45" speed="0.32"></gl-wc>
+          <span class="label">aurora + stars</span>
+        </div>
+        <div class="meta"><span class="name">Aurora</span><span class="desc">night sky</span></div>
+      </a>
+      <a class="demo" data-theme="demoscene" href="./demoscene.html">
+        <div class="preview">
+          <gl-wc preset="plasma" intensity="0.85" density="0.55" speed="1.4"></gl-wc>
+          <span class="label">plasma + crt</span>
+        </div>
+        <div class="meta"><span class="name">Demoscene</span><span class="desc">marquee, scanlines</span></div>
+      </a>
+      <a class="demo" data-theme="caustics-pool" href="./caustics-pool.html">
+        <div class="preview">
+          <gl-wc preset="caustics" intensity="0.85" density="0.45" speed="0.55"></gl-wc>
+          <span class="label">caustics</span>
+        </div>
+        <div class="meta"><span class="name">Caustics pool</span><span class="desc">underwater glass</span></div>
+      </a>
+      <a class="demo" data-theme="tunnel" href="./tunnel-zoom.html">
+        <div class="preview">
+          <gl-wc preset="tunnel" intensity="0.85" density="0.4" speed="0.6"></gl-wc>
+          <span class="label">tunnel</span>
+        </div>
+        <div class="meta"><span class="name">Tunnel</span><span class="desc">infinite zoom</span></div>
       </a>
     </div>
   </main>
