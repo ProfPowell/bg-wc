@@ -29,6 +29,12 @@ const REGISTRY = {
   'aurora':        { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./aurora.js') },
   'caustics':      { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./caustics.js') },
   'tunnel':        { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./tunnel.js') },
+  'marble':        { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./marble.js') },
+
+  // Pop art / deco
+  'benday':        { renderer: 'webgl',    group: 'pop',         loader: () => import('./benday.js') },
+  'comic':         { renderer: 'webgl',    group: 'pop',         loader: () => import('./comic.js') },
+  'deco':          { renderer: 'webgl',    group: 'pop',         loader: () => import('./deco.js') },
 
   // 80s / 90s — distortion, displays, demoscene
   'glitch':        { renderer: 'webgl',    group: 'retro',       loader: () => import('./glitch.js') },
@@ -38,6 +44,8 @@ const REGISTRY = {
   'gameboy':       { renderer: 'webgl',    group: 'retro',       loader: () => import('./gameboy.js') },
   'copperbars':    { renderer: 'webgl',    group: 'retro',       loader: () => import('./copperbars.js') },
   'matrix':        { renderer: 'canvas2d', group: 'retro',       loader: () => import('./matrix.js') },
+  'bliss':         { renderer: 'webgl',    group: 'retro',       loader: () => import('./bliss.js') },
+  'mystify':       { renderer: 'canvas2d', group: 'retro',       loader: () => import('./mystify.js') },
 
   // Arcade / Vectrex vector graphics
   'asteroids':     { renderer: 'canvas2d', group: 'vector',      loader: () => import('./asteroids.js') },
@@ -72,6 +80,7 @@ const GROUP_LABELS = {
   retro:       'Retro',
   vector:      'Vector',
   text:        'Text',
+  pop:         'Pop art',
   particles:   'Particles',
 };
 
