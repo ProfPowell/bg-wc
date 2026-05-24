@@ -56,7 +56,11 @@
       </gl-wc>
     </section>
 
-    <h3 class="section-title">Preset gallery</h3>
+    <div class="gallery-head">
+      <h3 class="section-title">Preset gallery</h3>
+      <div class="group-tabs" id="groupTabs" role="tablist" aria-label="Preset groups"></div>
+    </div>
+    <p class="gallery-note">Showing one group at a time keeps the page under the browser's WebGL context limit &mdash; switch groups to load the rest.</p>
     <div class="grid" id="grid"></div>
 
     <section class="snippet">

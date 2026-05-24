@@ -1,35 +1,68 @@
-// Preset registry. Names → dynamic loaders. Adding a preset is one entry here + one file.
+// Preset registry. Names → { renderer, group, loader }.
+// Adding a preset is one entry here + one file.
+//
+// `group` categorizes presets for catalog UIs. It also lets a page show
+// one group at a time so it never instantiates more simultaneous WebGL
+// contexts than the browser allows (~16) — see /site gallery.
 
 const REGISTRY = {
-  'dither':        { renderer: 'webgl',    loader: () => import('./dither.js') },
-  'noise':         { renderer: 'webgl',    loader: () => import('./noise.js') },
-  'mesh-gradient': { renderer: 'webgl',    loader: () => import('./mesh-gradient.js') },
-  'warp':          { renderer: 'webgl',    loader: () => import('./warp.js') },
-  'waves':         { renderer: 'webgl',    loader: () => import('./waves.js') },
-  'lava':          { renderer: 'webgl',    loader: () => import('./lava.js') },
-  'plasma':        { renderer: 'webgl',    loader: () => import('./plasma.js') },
-  'aurora':        { renderer: 'webgl',    loader: () => import('./aurora.js') },
-  'tunnel':        { renderer: 'webgl',    loader: () => import('./tunnel.js') },
-  'caustics':      { renderer: 'webgl',    loader: () => import('./caustics.js') },
-  'glitch':        { renderer: 'webgl',    loader: () => import('./glitch.js') },
-  'rainbow':       { renderer: 'webgl',    loader: () => import('./rainbow.js') },
-  'halftone':      { renderer: 'webgl',    loader: () => import('./halftone.js') },
-  'kaleidoscope':  { renderer: 'webgl',    loader: () => import('./kaleidoscope.js') },
-  'vhs':           { renderer: 'webgl',    loader: () => import('./vhs.js') },
-  'topology':      { renderer: 'webgl',    loader: () => import('./topology.js') },
-  'cells':         { renderer: 'webgl',    loader: () => import('./cells.js') },
-  'shine':         { renderer: 'webgl',    loader: () => import('./shine.js') },
-  'stars':         { renderer: 'canvas2d', loader: () => import('./stars.js') },
-  'snow':          { renderer: 'canvas2d', loader: () => import('./snow.js') },
-  'confetti':      { renderer: 'canvas2d', loader: () => import('./confetti.js') },
-  'network':       { renderer: 'canvas2d', loader: () => import('./network.js') },
-  'particles':     { renderer: 'canvas2d', loader: () => import('./particles.js') },
-  'pulse':         { renderer: 'canvas2d', loader: () => import('./pulse.js') },
-  'tetris':        { renderer: 'canvas2d', loader: () => import('./tetris.js') },
+  // Smooth color fields
+  'mesh-gradient': { renderer: 'webgl',    group: 'gradient',    loader: () => import('./mesh-gradient.js') },
+  'waves':         { renderer: 'webgl',    group: 'gradient',    loader: () => import('./waves.js') },
+  'plasma':        { renderer: 'webgl',    group: 'gradient',    loader: () => import('./plasma.js') },
+  'rainbow':       { renderer: 'webgl',    group: 'gradient',    loader: () => import('./rainbow.js') },
+  'shine':         { renderer: 'webgl',    group: 'gradient',    loader: () => import('./shine.js') },
+
+  // Structured / geometric patterns
+  'dither':        { renderer: 'webgl',    group: 'pattern',     loader: () => import('./dither.js') },
+  'halftone':      { renderer: 'webgl',    group: 'pattern',     loader: () => import('./halftone.js') },
+  'warp':          { renderer: 'webgl',    group: 'pattern',     loader: () => import('./warp.js') },
+  'topology':      { renderer: 'webgl',    group: 'pattern',     loader: () => import('./topology.js') },
+  'cells':         { renderer: 'webgl',    group: 'pattern',     loader: () => import('./cells.js') },
+  'kaleidoscope':  { renderer: 'webgl',    group: 'pattern',     loader: () => import('./kaleidoscope.js') },
+
+  // Organic ambient motion
+  'noise':         { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./noise.js') },
+  'lava':          { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./lava.js') },
+  'aurora':        { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./aurora.js') },
+  'caustics':      { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./caustics.js') },
+  'tunnel':        { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./tunnel.js') },
+
+  // Analog / digital distortion
+  'glitch':        { renderer: 'webgl',    group: 'retro',       loader: () => import('./glitch.js') },
+  'vhs':           { renderer: 'webgl',    group: 'retro',       loader: () => import('./vhs.js') },
+
+  // Canvas2D particle systems
+  'stars':         { renderer: 'canvas2d', group: 'particles',   loader: () => import('./stars.js') },
+  'snow':          { renderer: 'canvas2d', group: 'particles',   loader: () => import('./snow.js') },
+  'confetti':      { renderer: 'canvas2d', group: 'particles',   loader: () => import('./confetti.js') },
+  'network':       { renderer: 'canvas2d', group: 'particles',   loader: () => import('./network.js') },
+  'particles':     { renderer: 'canvas2d', group: 'particles',   loader: () => import('./particles.js') },
+  'pulse':         { renderer: 'canvas2d', group: 'particles',   loader: () => import('./pulse.js') },
+  'tetris':        { renderer: 'canvas2d', group: 'particles',   loader: () => import('./tetris.js') },
+};
+
+// Human-readable group labels, in display order.
+const GROUP_LABELS = {
+  gradient:    'Gradients',
+  pattern:     'Patterns',
+  atmospheric: 'Atmospheric',
+  retro:       'Retro',
+  particles:   'Particles',
 };
 
 export function listPresets() {
-  return Object.entries(REGISTRY).map(([name, { renderer }]) => ({ name, renderer }));
+  return Object.entries(REGISTRY).map(([name, { renderer, group }]) => ({ name, renderer, group }));
+}
+
+// [{ id, label, presets: [{name, renderer, group}] }] in display order.
+export function listGroups() {
+  const all = listPresets();
+  return Object.keys(GROUP_LABELS).map((id) => ({
+    id,
+    label: GROUP_LABELS[id],
+    presets: all.filter((p) => p.group === id),
+  }));
 }
 
 export function getPresetMeta(name) {

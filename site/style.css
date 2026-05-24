@@ -111,6 +111,40 @@ main { padding: 24px; max-width: 1200px; margin: 0 auto; }
 
 .section-title { margin: 24px 0 16px; font-size: 18px; opacity: 0.85; }
 
+.gallery-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  margin-top: 24px;
+}
+.gallery-head .section-title { margin: 0; }
+.group-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.group-tab {
+  font: inherit;
+  font-size: 13px;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-foreground);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.group-tab:hover { border-color: var(--color-primary); }
+.group-tab.active {
+  border-color: var(--color-primary);
+  background: color-mix(in oklab, var(--color-primary) 18%, var(--color-surface));
+}
+.group-tab .count {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  opacity: 0.6;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+.gallery-note { margin: 6px 0 18px; font-size: 13px; opacity: 0.55; max-width: 640px; }
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
