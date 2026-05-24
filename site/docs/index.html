@@ -349,8 +349,29 @@ console.log('PNG ready:', url);</code-block>
         <li>Frame budget target: under 4&thinsp;ms / frame on an M1-class device at 1080p for any v1 preset.</li>
         <li>Particle counts: preset-specific caps of ~500 (med), ~1500 (high), ~150 (low).</li>
         <li>Each element runs its own RAF loop &mdash; auto-paused when off-screen, when the tab is hidden, when battery is below 20% and unplugged, and on <code>prefers-reduced-motion</code>.</li>
-        <li>Each preset is dynamically imported on first use, so a page that uses one preset doesn't ship the other sixteen.</li>
+        <li>Each preset is dynamically imported on first use, so a page that uses one preset doesn't ship the others.</li>
       </ul>
+
+      <h3>Many instances on one page</h3>
+      <p>
+        Browsers cap simultaneous <strong>WebGL</strong> contexts (commonly ~16). Each
+        shader-preset <code>&lt;gl-wc&gt;</code> holds one context, so a page that mounts
+        more than that at once (a full catalog grid, a poster wall) will see the
+        browser drop the oldest contexts. Canvas2D presets are not affected.
+      </p>
+      <p>Two ways to stay under the cap:</p>
+      <ul class="checks">
+        <li><strong>Unmount what's not shown.</strong> Removing a <code>&lt;gl-wc&gt;</code> from the DOM frees its context immediately &mdash; <code>disconnectedCallback</code> calls <code>WEBGL_lose_context</code>. Group presets behind tabs and mount only the active group (see the <a href="../">gallery</a>); switching tabs releases the old contexts before the new ones allocate.</li>
+        <li><strong>Group the catalog.</strong> The registry tags each preset with a <code>group</code>; <code>listGroups()</code> returns them as <code>{ id, label, presets }</code> so tooling can build a grouped UI without loading any preset modules.</li>
+      </ul>
+      <code-block theme="dark" language="javascript">import { listGroups } from '@profpowell/gl-wc/presets/index.js';
+
+for (const { id, label, presets } of listGroups()) {
+  console.log(label, presets.map(p =&gt; p.name));
+}
+// Gradients   ['mesh-gradient','waves','plasma','rainbow','shine']
+// Patterns    ['dither','halftone','warp','topology','cells','kaleidoscope']
+// …</code-block>
     </section>
 
     <!-- 11. Recipes ------------------------------------------ -->

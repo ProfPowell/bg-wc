@@ -318,6 +318,19 @@ class GlWc extends HTMLElement {
 
   #disposeInstance() {
     try { this.#instance?.dispose?.(); } catch {}
+    if (this.#rendererKind === 'webgl') {
+      // Stop listening for loss before we intentionally drop the context,
+      // so our own teardown doesn't fire a spurious gl-wc:error.
+      this.#canvas.removeEventListener('webglcontextlost', this.#onCtxLost);
+      this.#canvas.removeEventListener('webglcontextrestored', this.#onCtxRestored);
+      // Explicitly free the context so a removed element releases its slot
+      // immediately, instead of lingering until GC. Browsers cap simultaneous
+      // WebGL contexts (~16); pages that mount/unmount many <gl-wc>
+      // (galleries, tab groups) rely on this to stay under the limit.
+      if (this.#ctx) {
+        try { this.#ctx.getExtension('WEBGL_lose_context')?.loseContext(); } catch {}
+      }
+    }
     this.#instance = null;
     this.#ctx = null;
     this.#rendererKind = null;
