@@ -28,9 +28,14 @@ const REGISTRY = {
   'caustics':      { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./caustics.js') },
   'tunnel':        { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./tunnel.js') },
 
-  // Analog / digital distortion
+  // 80s / 90s — distortion, displays, demoscene
   'glitch':        { renderer: 'webgl',    group: 'retro',       loader: () => import('./glitch.js') },
   'vhs':           { renderer: 'webgl',    group: 'retro',       loader: () => import('./vhs.js') },
+  'synthwave':     { renderer: 'webgl',    group: 'retro',       loader: () => import('./synthwave.js') },
+  'crt':           { renderer: 'webgl',    group: 'retro',       loader: () => import('./crt.js') },
+  'gameboy':       { renderer: 'webgl',    group: 'retro',       loader: () => import('./gameboy.js') },
+  'copperbars':    { renderer: 'webgl',    group: 'retro',       loader: () => import('./copperbars.js') },
+  'matrix':        { renderer: 'canvas2d', group: 'retro',       loader: () => import('./matrix.js') },
 
   // Canvas2D particle systems
   'stars':         { renderer: 'canvas2d', group: 'particles',   loader: () => import('./stars.js') },
