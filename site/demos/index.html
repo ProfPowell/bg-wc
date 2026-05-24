@@ -72,6 +72,7 @@
     .demo[data-theme="demoscene"]     { --color-background: #050208; --color-foreground: #ffe66d; --color-primary: #ff2bd6; --color-accent: #2bd4ff; --color-info: #ffe66d; }
     .demo[data-theme="caustics-pool"] { --color-background: #07556e; --color-foreground: #f3fcff; --color-primary: #b3f0ff; --color-accent: #5ee2ff; --color-info: #ffffff; }
     .demo[data-theme="tunnel"]        { --color-background: #06010e; --color-foreground: #f0e6ff; --color-primary: #b76cff; --color-accent: #34e6ff; --color-info: #ffe2a8; }
+    .demo[data-theme="vhs"]           { --color-background: #0b0f1a; --color-foreground: #e8f0ff; --color-primary: #2e6bd6; --color-accent: #d64f8a; --color-info: #36c9c9; }
 
     footer { text-align: center; padding: 32px; opacity: 0.5; font-size: 13px; border-top: 1px solid var(--border); margin-top: 64px; }
     footer a { color: var(--accent); }
@@ -250,6 +251,13 @@
           <span class="label">tunnel</span>
         </div>
         <div class="meta"><span class="name">Tunnel</span><span class="desc">infinite zoom</span></div>
+      </a>
+      <a class="demo" data-theme="vhs" href="./vhs.html">
+        <div class="preview">
+          <gl-wc preset="vhs" intensity="0.6" density="0.5" speed="1"></gl-wc>
+          <span class="label">vhs</span>
+        </div>
+        <div class="meta"><span class="name">VHS</span><span class="desc">80s camcorder</span></div>
       </a>
     </div>
   </main>
