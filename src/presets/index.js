@@ -45,6 +45,8 @@ const REGISTRY = {
   'spirograph':    { renderer: 'canvas2d', group: 'vector',      loader: () => import('./spirograph.js') },
   'incoming':      { renderer: 'canvas2d', group: 'vector',      loader: () => import('./incoming.js') },
   'trench':        { renderer: 'webgl',    group: 'vector',      loader: () => import('./trench.js') },
+  'tempest':       { renderer: 'webgl',    group: 'vector',      loader: () => import('./tempest.js') },
+  'fireworks':     { renderer: 'canvas2d', group: 'vector',      loader: () => import('./fireworks.js') },
 
   // Canvas2D particle systems
   'stars':         { renderer: 'canvas2d', group: 'particles',   loader: () => import('./stars.js') },
