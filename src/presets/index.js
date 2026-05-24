@@ -70,6 +70,14 @@ const REGISTRY = {
   'particles':     { renderer: 'canvas2d', group: 'particles',   loader: () => import('./particles.js') },
   'pulse':         { renderer: 'canvas2d', group: 'particles',   loader: () => import('./pulse.js') },
   'tetris':        { renderer: 'canvas2d', group: 'particles',   loader: () => import('./tetris.js') },
+
+  // Animated charts — busy data backgrounds
+  'trades':        { renderer: 'canvas2d', group: 'dataviz',     loader: () => import('./trades.js') },
+  'dashboard':     { renderer: 'canvas2d', group: 'dataviz',     loader: () => import('./dashboard.js') },
+  'vectormap':     { renderer: 'canvas2d', group: 'dataviz',     loader: () => import('./vectormap.js') },
+  'scatter':       { renderer: 'canvas2d', group: 'dataviz',     loader: () => import('./scatter.js') },
+  'waveform':      { renderer: 'canvas2d', group: 'dataviz',     loader: () => import('./waveform.js') },
+  'wordcloud':     { renderer: 'canvas2d', group: 'dataviz',     loader: () => import('./wordcloud.js') },
 };
 
 // Human-readable group labels, in display order.
@@ -81,6 +89,7 @@ const GROUP_LABELS = {
   vector:      'Vector',
   text:        'Text',
   pop:         'Pop art',
+  dataviz:     'Dataviz',
   particles:   'Particles',
 };
 
