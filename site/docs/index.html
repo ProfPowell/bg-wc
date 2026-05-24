@@ -31,7 +31,7 @@
         no build coupling.
       </p>
       <div class="meta-row">
-        <span class="chip">30 presets</span>
+        <span class="chip">37 presets</span>
         <span class="chip">WebGL + Canvas2D</span>
         <span class="chip">MIT</span>
         <span class="chip">Zero deps</span>
@@ -310,6 +310,22 @@ console.log('PNG ready:', url);</code-block>
             <tr><td><code>topology</code></td><td>Animated topographic contour lines</td><td>primary, accent, background</td></tr>
             <tr><td><code>cells</code></td><td>Animated Voronoi cells with darkened borders</td><td>primary, accent, background</td></tr>
             <tr><td><code>shine</code></td><td>Diagonal sheen sweep over a quiet gradient</td><td>primary, accent, background</td></tr>
+            <tr><td><code>conic</code></td><td>Rotating angular gradient (spotlight border / loader)</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>grain</code></td><td>Film-grain overlay; transparent, blend over content</td><td>&mdash; (monochrome speckle)</td></tr>
+            <tr><td><code>trench</code></td><td>Death Star trench run: square perspective corridor</td><td>primary, accent, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Vector / arcade presets (Canvas2D)</h3>
+      <p>Glowing phosphor lines on a dark field &mdash; the Vectrex / arcade-vector look.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>asteroids</code></td><td>Drifting, rotating wireframe rocks</td><td>primary, background</td></tr>
+            <tr><td><code>wireframe</code></td><td>Rotating wireframe globe + equatorial trench</td><td>primary, accent, background</td></tr>
+            <tr><td><code>spirograph</code></td><td>Animated hypotrochoid rosettes</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>incoming</code></td><td>Wireframe ships warping toward a turret crosshair</td><td>primary, accent, background</td></tr>
           </tbody>
         </table>
       </div>
@@ -424,6 +440,34 @@ const a = document.createElement('a');
 a.href = URL.createObjectURL(blob);
 a.download = `${el.preset}.png`;
 a.click();</code-block>
+
+      <h3>Conic spotlight border</h3>
+      <p>Put a <code>conic</code> behind a panel inset by a hair; only the rim shows, so the border sweeps with light. No <code>@property</code> shim required.</p>
+      <code-block theme="dark" language="html">&lt;div class="glow-card"&gt;
+  &lt;gl-wc preset="conic" speed="1.6"&gt;&lt;/gl-wc&gt;
+  &lt;div class="inner"&gt;Card content&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+.glow-card { position: relative; border-radius: 18px; padding: 1.5px; overflow: hidden; isolation: isolate; }
+.glow-card &gt; gl-wc { position: absolute; inset: -60%; z-index: 0; } /* oversize so corners stay covered */
+.glow-card .inner { position: relative; z-index: 1; background: var(--surface); border-radius: 16.5px; padding: 28px; }
+&lt;/style&gt;</code-block>
+
+      <h3>Scroll-linked background</h3>
+      <p>The component re-reads <code>--gl-wc-intensity</code> / <code>--gl-wc-speed</code> (and color tokens) every frame, so driving them from a scroll handler is all it takes.</p>
+      <code-block theme="dark" language="javascript">const hero = document.querySelector('gl-wc');
+addEventListener('scroll', () =&gt; {
+  const p = Math.min(1, scrollY / innerHeight);
+  hero.style.setProperty('--gl-wc-intensity', (0.45 + p * 0.5).toFixed(3));
+  hero.style.filter = `hue-rotate(${Math.round(p * 80)}deg)`;
+}, { passive: true });</code-block>
+
+      <h3>Whole-page film grain</h3>
+      <code-block theme="dark" language="html">&lt;gl-wc preset="grain" intensity="0.5"
+       style="position:fixed; inset:0; z-index:100;
+              pointer-events:none; mix-blend-mode:soft-light; opacity:0.6;"&gt;
+&lt;/gl-wc&gt;</code-block>
     </section>
 
     <!-- 12. Browser support ----------------------------------- -->

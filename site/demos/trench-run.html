@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trench Run &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* targeting-computer green/amber vector palette */
+      --color-background: #00060a;
+      --color-foreground: #b8ffd0;
+      --color-primary: #36e26b;
+      --color-accent: #ffcf3a;
+      --color-info: #46d0ff;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #000; color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Share Tech Mono', ui-monospace, monospace; min-height: 100vh; }
+
+    .cockpit { position: relative; width: 100vw; height: 100vh; }
+    gl-wc.trench { position: absolute; inset: 0; }
+
+    /* subtle phosphor vignette */
+    .vig { position: absolute; inset: 0; z-index: 3; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,6,10,0.7) 100%); }
+
+    /* HUD frame */
+    .hud { position: absolute; inset: 0; z-index: 5; pointer-events: none;
+      text-shadow: 0 0 6px currentColor; }
+    .hud .corner {
+      position: absolute; width: 64px; height: 64px;
+      border: 2px solid var(--color-primary); opacity: 0.8;
+    }
+    .hud .tl { top: 22px; left: 22px; border-right: 0; border-bottom: 0; }
+    .hud .tr { top: 22px; right: 22px; border-left: 0; border-bottom: 0; }
+    .hud .bl { bottom: 22px; left: 22px; border-right: 0; border-top: 0; }
+    .hud .br { bottom: 22px; right: 22px; border-left: 0; border-top: 0; }
+
+    .readout { position: absolute; font-size: clamp(12px, 1.4vw, 16px); letter-spacing: 0.12em; line-height: 1.7; color: var(--color-primary); }
+    .readout.left  { top: 40px; left: 40px; }
+    .readout.right { top: 40px; right: 40px; text-align: right; }
+    .readout .v { color: var(--color-accent); }
+
+    .stay {
+      position: absolute; top: 14%; left: 50%; transform: translateX(-50%);
+      z-index: 6; text-align: center;
+      font-family: 'Orbitron', sans-serif; font-weight: 800;
+      font-size: clamp(20px, 3.4vw, 44px);
+      letter-spacing: 0.18em;
+      color: var(--color-accent);
+      text-shadow: 0 0 12px var(--color-accent);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { opacity: 0.35; } }
+    @media (prefers-reduced-motion: reduce) { .stay { animation: none; } }
+    .stay small { display: block; font-family: 'Share Tech Mono', monospace; font-weight: 400; font-size: 0.4em; letter-spacing: 0.3em; color: var(--color-primary); margin-top: 8px; }
+
+    /* targeting computer — a live wireframe schematic, bottom-center */
+    .target-computer {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 6; width: min(220px, 40vw); aspect-ratio: 1;
+      border: 2px solid var(--color-primary);
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 0 24px rgba(54,226,107,0.4), inset 0 0 24px rgba(54,226,107,0.15);
+      background: #00080c;
+    }
+    .target-computer gl-wc { display: block; width: 100%; height: 100%; }
+    .target-computer .label {
+      position: absolute; top: 4px; left: 8px; z-index: 2;
+      font-size: 10px; letter-spacing: 0.18em; color: var(--color-primary);
+    }
+    .target-computer .target-x {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 3;
+      color: var(--color-accent); font-size: 22px; opacity: 0.7;
+    }
+
+    .nav { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); z-index: 8; pointer-events: auto; }
+    .nav a { color: var(--color-primary); text-decoration: none; font-size: 12px; letter-spacing: 0.18em; opacity: 0.7; }
+    .nav a:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <main class="cockpit">
+    <gl-wc class="trench" preset="trench" intensity="0.7" density="0.5" speed="1.2"></gl-wc>
+
+    <nav class="nav"><a href="./">&larr; DEMOS</a></nav>
+
+    <div class="hud">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <div class="readout left">
+        SPD <span class="v">1.06c</span><br>
+        ALT <span class="v">00.4</span><br>
+        SHLD <span class="v">DOWN</span>
+      </div>
+      <div class="readout right">
+        TGT <span class="v">2.1m</span><br>
+        PORT <span class="v">LOCKED</span><br>
+        PROTON <span class="v">x2</span>
+      </div>
+    </div>
+
+    <div class="stay">STAY ON TARGET<small>USE THE FORCE</small></div>
+
+    <div class="target-computer">
+      <span class="label">TARGET</span>
+      <gl-wc preset="wireframe" intensity="0.8" speed="0.8"
+             style="--gl-wc-color-1:#36e26b; --gl-wc-color-2:#ffcf3a; --gl-wc-color-bg:#00080c;"></gl-wc>
+      <span class="target-x">&#10010;</span>
+    </div>
+
+    <div class="vig"></div>
+  </main>
+  <script type="module" src="../../src/gl-wc.js"></script>
+</body>
+</html>

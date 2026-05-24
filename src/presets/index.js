@@ -12,6 +12,7 @@ const REGISTRY = {
   'plasma':        { renderer: 'webgl',    group: 'gradient',    loader: () => import('./plasma.js') },
   'rainbow':       { renderer: 'webgl',    group: 'gradient',    loader: () => import('./rainbow.js') },
   'shine':         { renderer: 'webgl',    group: 'gradient',    loader: () => import('./shine.js') },
+  'conic':         { renderer: 'webgl',    group: 'gradient',    loader: () => import('./conic.js') },
 
   // Structured / geometric patterns
   'dither':        { renderer: 'webgl',    group: 'pattern',     loader: () => import('./dither.js') },
@@ -20,6 +21,7 @@ const REGISTRY = {
   'topology':      { renderer: 'webgl',    group: 'pattern',     loader: () => import('./topology.js') },
   'cells':         { renderer: 'webgl',    group: 'pattern',     loader: () => import('./cells.js') },
   'kaleidoscope':  { renderer: 'webgl',    group: 'pattern',     loader: () => import('./kaleidoscope.js') },
+  'grain':         { renderer: 'webgl',    group: 'pattern',     loader: () => import('./grain.js') },
 
   // Organic ambient motion
   'noise':         { renderer: 'webgl',    group: 'atmospheric', loader: () => import('./noise.js') },
@@ -37,6 +39,13 @@ const REGISTRY = {
   'copperbars':    { renderer: 'webgl',    group: 'retro',       loader: () => import('./copperbars.js') },
   'matrix':        { renderer: 'canvas2d', group: 'retro',       loader: () => import('./matrix.js') },
 
+  // Arcade / Vectrex vector graphics
+  'asteroids':     { renderer: 'canvas2d', group: 'vector',      loader: () => import('./asteroids.js') },
+  'wireframe':     { renderer: 'canvas2d', group: 'vector',      loader: () => import('./wireframe.js') },
+  'spirograph':    { renderer: 'canvas2d', group: 'vector',      loader: () => import('./spirograph.js') },
+  'incoming':      { renderer: 'canvas2d', group: 'vector',      loader: () => import('./incoming.js') },
+  'trench':        { renderer: 'webgl',    group: 'vector',      loader: () => import('./trench.js') },
+
   // Canvas2D particle systems
   'stars':         { renderer: 'canvas2d', group: 'particles',   loader: () => import('./stars.js') },
   'snow':          { renderer: 'canvas2d', group: 'particles',   loader: () => import('./snow.js') },
@@ -53,6 +62,7 @@ const GROUP_LABELS = {
   pattern:     'Patterns',
   atmospheric: 'Atmospheric',
   retro:       'Retro',
+  vector:      'Vector',
   particles:   'Particles',
 };
 
