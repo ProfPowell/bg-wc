@@ -1,6 +1,11 @@
 // wireframe — a slowly rotating wireframe globe (latitude / longitude grid)
-// with an equatorial trench and a surface dish, evoking the rotating "plans"
-// schematic. Back-facing lines dim by depth. Vector group.
+// with an accent equatorial trench and a surface dish: the rotating "plans"
+// schematic. Back-facing segments dim.
+//
+// Perf: all front-facing segments are batched into one path and all
+// back-facing into another, so the whole globe is ~4 stroke() calls per
+// frame (plus the equator and dish), not one per segment. No shadowBlur —
+// a wider translucent pass fakes the phosphor glow far more cheaply.
 
 import { clearAndFill } from '../renderer/canvas2d.js';
 
@@ -19,11 +24,11 @@ export function create({ c2d, getColors }) {
     const cax = Math.cos(ax), sax = Math.sin(ax);
 
     const pr = (c.primary[0] * 255) | 0, pg = (c.primary[1] * 255) | 0, pb = (c.primary[2] * 255) | 0;
+    const ar = (c.accent[0] * 255) | 0, ag = (c.accent[1] * 255) | 0, ab = (c.accent[2] * 255) | 0;
 
-    // theta = polar (0..PI), phi = azimuth (0..2PI) → screen + depth z
     function proj(theta, phi) {
       const st = Math.sin(theta), ct = Math.cos(theta);
-      let x = st * Math.cos(phi), y = ct, z = st * Math.sin(phi);
+      const x = st * Math.cos(phi), y = ct, z = st * Math.sin(phi);
       const x1 = x * cay + z * say;
       const z1 = -x * say + z * cay;
       const y2 = y * cax - z1 * sax;
@@ -31,74 +36,70 @@ export function create({ c2d, getColors }) {
       return [cx + x1 * R, cy + y2 * R, z2];
     }
 
-    function strokePath(pts) {
-      // Split into front (z>=0) and back (z<0) for depth fade.
-      c2d.lineWidth = 1.4;
-      let prev = null;
-      for (let i = 0; i < pts.length; i++) {
-        const p = pts[i];
-        if (prev) {
-          const zAvg = (prev[2] + p[2]) * 0.5;
-          const a = zAvg > 0 ? 0.95 : 0.28;        // back faces dim
-          c2d.strokeStyle = `rgba(${pr},${pg},${pb},${a})`;
-          c2d.beginPath();
-          c2d.moveTo(prev[0], prev[1]);
-          c2d.lineTo(p[0], p[1]);
-          c2d.stroke();
-        }
-        prev = p;
+    // Accumulate segments split by depth, then stroke each batch once.
+    const front = [];  // flat [x0,y0,x1,y1, …]
+    const back = [];
+    function addLine(pts) {
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1], b = pts[i];
+        const arr = (a[2] + b[2]) * 0.5 > 0 ? front : back;
+        arr.push(a[0], a[1], b[0], b[1]);
       }
     }
+    function strokeSegs(arr, style, lw) {
+      if (!arr.length) return;
+      c2d.strokeStyle = style;
+      c2d.lineWidth = lw;
+      c2d.beginPath();
+      for (let i = 0; i < arr.length; i += 4) {
+        c2d.moveTo(arr[i], arr[i + 1]);
+        c2d.lineTo(arr[i + 2], arr[i + 3]);
+      }
+      c2d.stroke();
+    }
 
-    const latN = 8, lonN = 14, seg = 48;
-    c2d.shadowColor = `rgb(${pr},${pg},${pb})`;
-    c2d.shadowBlur = 5 * params.intensity;
-
-    // Latitude circles
+    const latN = 8, lonN = 14, seg = 40;
     for (let i = 1; i < latN; i++) {
       const theta = (Math.PI * i) / latN;
       const pts = [];
       for (let s = 0; s <= seg; s++) pts.push(proj(theta, (s / seg) * Math.PI * 2));
-      strokePath(pts);
+      addLine(pts);
     }
-    // Longitude half-circles
     for (let j = 0; j < lonN; j++) {
       const phi = (Math.PI * 2 * j) / lonN;
       const pts = [];
       for (let s = 0; s <= seg; s++) pts.push(proj((s / seg) * Math.PI, phi));
-      strokePath(pts);
+      addLine(pts);
     }
 
-    // Equatorial trench (a bold ring at theta = PI/2)
+    const glow = params.intensity;
+    // back (behind), then front glow, then crisp front.
+    strokeSegs(back, `rgba(${pr},${pg},${pb},0.22)`, 1.2);
+    if (glow > 0.05) strokeSegs(front, `rgba(${pr},${pg},${pb},${(0.18 * glow).toFixed(3)})`, 4.0);
+    strokeSegs(front, `rgba(${pr},${pg},${pb},0.95)`, 1.4);
+
+    // Equatorial trench — a bold accent ring, batched front/back too.
     {
       const pts = [];
       for (let s = 0; s <= seg; s++) pts.push(proj(Math.PI / 2 + 0.04, (s / seg) * Math.PI * 2));
-      c2d.lineWidth = 2.4;
-      let prev = null;
-      const ar = (c.accent[0] * 255) | 0, ag = (c.accent[1] * 255) | 0, ab = (c.accent[2] * 255) | 0;
-      for (let i = 0; i < pts.length; i++) {
-        const p = pts[i];
-        if (prev) {
-          const zAvg = (prev[2] + p[2]) * 0.5;
-          c2d.strokeStyle = `rgba(${ar},${ag},${ab},${zAvg > 0 ? 1 : 0.3})`;
-          c2d.beginPath(); c2d.moveTo(prev[0], prev[1]); c2d.lineTo(p[0], p[1]); c2d.stroke();
-        }
-        prev = p;
+      const ef = [], eb = [];
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1], b = pts[i];
+        ((a[2] + b[2]) * 0.5 > 0 ? ef : eb).push(a[0], a[1], b[0], b[1]);
       }
+      strokeSegs(eb, `rgba(${ar},${ag},${ab},0.3)`, 1.8);
+      strokeSegs(ef, `rgba(${ar},${ag},${ab},1)`, 2.4);
     }
 
-    // Surface dish (small circle near the upper-front)
-    {
-      const center = proj(0.7, 0.6 - ay);   // rides with rotation
-      if (center[2] > 0) {
-        c2d.strokeStyle = `rgb(${pr},${pg},${pb})`;
-        c2d.lineWidth = 1.6;
-        c2d.beginPath();
-        c2d.arc(center[0], center[1], R * 0.12, 0, Math.PI * 2);
-        c2d.stroke();
-      }
+    // Surface dish (front only).
+    const center = proj(0.7, 0.6 - ay);
+    if (center[2] > 0) {
+      c2d.strokeStyle = `rgb(${pr},${pg},${pb})`;
+      c2d.lineWidth = 1.6;
+      c2d.beginPath();
+      c2d.arc(center[0], center[1], R * 0.12, 0, Math.PI * 2);
+      c2d.stroke();
     }
-    c2d.shadowBlur = 0;
   }
 
   return {
