@@ -31,7 +31,7 @@
         no build coupling.
       </p>
       <div class="meta-row">
-        <span class="chip">39 presets</span>
+        <span class="chip">43 presets</span>
         <span class="chip">WebGL + Canvas2D</span>
         <span class="chip">MIT</span>
         <span class="chip">Zero deps</span>
@@ -172,6 +172,7 @@
             <tr><td><code>quality</code></td><td><code>"low"</code> | <code>"med"</code> | <code>"high"</code></td><td><code>"med"</code></td><td>Renderer-level hint.</td></tr>
             <tr><td><code>fit</code></td><td><code>"cover"</code> | <code>"contain"</code> | <code>"stretch"</code></td><td><code>"cover"</code></td><td>How the surface sizes inside the host.</td></tr>
             <tr><td><code>motion</code></td><td><code>"auto"</code> | <code>"reduce"</code> | <code>"force"</code></td><td><code>"auto"</code></td><td><code>auto</code> honors <code>prefers-reduced-motion</code>.</td></tr>
+            <tr><td><code>text</code></td><td>string</td><td>&mdash;</td><td>Payload for text presets (crawl / marquee / sinescroll / cascade). Lines split on <code>|</code>. Read fresh each frame.</td></tr>
           </tbody>
         </table>
       </div>
@@ -328,6 +329,19 @@ console.log('PNG ready:', url);</code-block>
             <tr><td><code>incoming</code></td><td>Wireframe ships warping toward a turret crosshair</td><td>primary, accent, background</td></tr>
             <tr><td><code>tempest</code></td><td>Tempest polygonal tube: spokes + receding rings</td><td>primary, accent, info, background</td></tr>
             <tr><td><code>fireworks</code></td><td>Vector fireball bursts (Star Wars arcade)</td><td>primary, accent, info, semantic palette</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Text presets (Canvas2D)</h3>
+      <p>Type as the background. Set the copy with the <code>text</code> attribute; all honor <code>palette="rainbow|theme|mono"</code>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>crawl</code></td><td>Star Wars-style perspective text crawl</td><td>primary, foreground, background</td></tr>
+            <tr><td><code>marquee</code></td><td>Scrolling vector ticker (outline type)</td><td>primary, accent, info, foreground</td></tr>
+            <tr><td><code>sinescroll</code></td><td>Demoscene sine-wave scroller</td><td>primary, accent, info, foreground</td></tr>
+            <tr><td><code>cascade</code></td><td>Letters drop &amp; bounce in, hold, loop</td><td>primary, accent, info, foreground</td></tr>
           </tbody>
         </table>
       </div>
