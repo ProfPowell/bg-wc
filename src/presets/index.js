@@ -48,6 +48,12 @@ const REGISTRY = {
   'tempest':       { renderer: 'webgl',    group: 'vector',      loader: () => import('./tempest.js') },
   'fireworks':     { renderer: 'canvas2d', group: 'vector',      loader: () => import('./fireworks.js') },
 
+  // Type as the background — set the string with the `text` attribute
+  'crawl':         { renderer: 'canvas2d', group: 'text',        loader: () => import('./crawl.js') },
+  'marquee':       { renderer: 'canvas2d', group: 'text',        loader: () => import('./marquee.js') },
+  'sinescroll':    { renderer: 'canvas2d', group: 'text',        loader: () => import('./sinescroll.js') },
+  'cascade':       { renderer: 'canvas2d', group: 'text',        loader: () => import('./cascade.js') },
+
   // Canvas2D particle systems
   'stars':         { renderer: 'canvas2d', group: 'particles',   loader: () => import('./stars.js') },
   'snow':          { renderer: 'canvas2d', group: 'particles',   loader: () => import('./snow.js') },
@@ -65,6 +71,7 @@ const GROUP_LABELS = {
   atmospheric: 'Atmospheric',
   retro:       'Retro',
   vector:      'Vector',
+  text:        'Text',
   particles:   'Particles',
 };
 

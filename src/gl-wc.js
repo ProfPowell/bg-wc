@@ -354,6 +354,9 @@ class GlWc extends HTMLElement {
       seed:      num('seed', 0, -1e9, 1e9) | 0,
       quality:   this.getAttribute('quality') || 'med',
       fit:       this.getAttribute('fit') || 'cover',
+      // Free-text payload for text presets (crawl / marquee / …). Read fresh
+      // each frame, so changing it needs no re-init. Lines split on "|".
+      text:      this.getAttribute('text') || '',
     };
   }
 

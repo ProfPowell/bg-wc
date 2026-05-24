@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Opening Crawl &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #000000;
+      --color-foreground: #cfe8ff;
+      --color-primary: #ffd23a;   /* crawl gold */
+      --color-accent: #ffb000;
+      --color-info: #8bd0ff;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #000; color: #ffd23a; overflow: hidden; }
+    body { font-family: 'Orbitron', sans-serif; min-height: 100vh; }
+
+    .space { position: relative; width: 100vw; height: 100vh; }
+    gl-wc.stars { position: absolute; inset: 0; z-index: 0; }
+    gl-wc.crawl { position: absolute; inset: 0; z-index: 1; }   /* transparent bg, over stars */
+
+    /* Intro line that fades before the crawl, optional flavor */
+    .intro {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .intro span {
+      color: var(--color-info);
+      font-size: clamp(16px, 2.4vw, 30px);
+      letter-spacing: 0.3em;
+      opacity: 0;
+      animation: introFade 7s ease-in-out 0.5s 1;
+    }
+    @keyframes introFade { 0%,100% { opacity: 0; } 18%,40% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .intro span { animation: none; opacity: 0; } }
+
+    .nav { position: absolute; top: 22px; left: 28px; z-index: 6; }
+    .nav a { color: var(--color-info); text-decoration: none; font-size: 12px; letter-spacing: 0.18em; opacity: 0.7; }
+    .nav a:hover { opacity: 1; }
+    .tag { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 6;
+      color: var(--color-info); opacity: 0.55; font-size: 11px; letter-spacing: 0.22em; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./">&larr; demos</a></nav>
+  <main class="space">
+    <gl-wc class="stars" preset="stars" intensity="0.5" density="0.55" speed="0.25"></gl-wc>
+    <gl-wc class="crawl" preset="crawl" speed="0.9" intensity="0.9"
+           style="--gl-wc-color-bg: transparent;"
+           text="Episode IX|THE WEB COMPONENT|||It is a period of static sites.|Designers, striking from a|hidden CSS file, have won|their first victory against|the heavy framework Empire.|||During the battle, rebels|managed to ship a single|custom element whose only|dependency is the DOM:|gl-wc — a graphics layer|that reads your theme|tokens and renders motion|behind any HTML…"></gl-wc>
+    <div class="intro"><span>In a codebase far, far away&hellip;</span></div>
+    <div class="tag">preset="crawl" &middot; text="…" &middot; over a stars layer</div>
+  </main>
+  <script type="module" src="../../src/gl-wc.js"></script>
+</body>
+</html>
