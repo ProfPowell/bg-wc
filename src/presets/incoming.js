@@ -33,24 +33,18 @@ export function create({ c2d, getColors }) {
 
   function rgb(c, a) { return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`; }
 
-  // Draw a TIE-style wireframe at unit scale; caller sets transform.
+  // Draw a TIE-style wireframe at unit scale in a single path / stroke.
   function ship(s, stroke) {
     c2d.strokeStyle = stroke;
-    // central pod
     c2d.beginPath();
-    c2d.arc(0, 0, 0.18, 0, Math.PI * 2);
-    c2d.stroke();
-    c2d.beginPath();
-    c2d.arc(0, 0, 0.08, 0, Math.PI * 2);
-    c2d.stroke();
+    // central pod (two rings)
+    c2d.moveTo(0.18, 0); c2d.arc(0, 0, 0.18, 0, Math.PI * 2);
+    c2d.moveTo(0.08, 0); c2d.arc(0, 0, 0.08, 0, Math.PI * 2);
     // wing struts
-    c2d.beginPath();
     c2d.moveTo(-0.18, 0); c2d.lineTo(-0.42, 0);
     c2d.moveTo(0.18, 0);  c2d.lineTo(0.42, 0);
-    c2d.stroke();
     // hex side panels
     for (const sx of [-1, 1]) {
-      c2d.beginPath();
       const px = sx * 0.62;
       c2d.moveTo(px, -0.5);
       c2d.lineTo(px - sx * 0.2, -0.28);
@@ -58,9 +52,9 @@ export function create({ c2d, getColors }) {
       c2d.lineTo(px, 0.5);
       c2d.lineTo(px + sx * 0.12, 0.28);
       c2d.lineTo(px + sx * 0.12, -0.28);
-      c2d.closePath();
-      c2d.stroke();
+      c2d.lineTo(px, -0.5);
     }
+    c2d.stroke();
   }
 
   function frame(t, params) {
@@ -77,7 +71,6 @@ export function create({ c2d, getColors }) {
     const primary = c.primary;
     c2d.lineWidth = 1.5;
     c2d.lineJoin = 'round';
-    c2d.shadowColor = rgb(primary, 1);
 
     // Painter's order: far ships first.
     ships.sort((a, b) => a.z - b.z);
@@ -92,7 +85,6 @@ export function create({ c2d, getColors }) {
         Object.assign(s, spawn());
         continue;
       }
-      c2d.shadowBlur = 5 * params.intensity * s.z;
       c2d.save();
       c2d.translate(x, y);
       c2d.rotate(s.roll);
@@ -102,7 +94,6 @@ export function create({ c2d, getColors }) {
     }
 
     // Turret crosshair, locked to center.
-    c2d.shadowBlur = 0;
     c2d.strokeStyle = rgb(c.accent, 0.85);
     c2d.lineWidth = 1.5;
     const ch = minDim * 0.06;

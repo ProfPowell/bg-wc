@@ -46,14 +46,14 @@ export function create({ c2d, getColors }) {
     clearAndFill(c2d, w, h, c.bg);
 
     const minDim = Math.min(w, h);
-    const stroke = rgb(c.primary);
-    c2d.strokeStyle = stroke;
-    c2d.lineWidth = 1.6;
+    const c1 = c.primary;
+    const glow = params.intensity;
     c2d.lineJoin = 'round';
-    c2d.shadowColor = stroke;
-    c2d.shadowBlur = 6 * params.intensity;
 
+    // Advance + build all rock outlines into a single path (device space),
+    // then stroke once for the glow pass and once crisp — no shadowBlur.
     const sp = params.speed * 0.4;
+    c2d.beginPath();
     for (const rk of rocks) {
       rk.x = (rk.x + rk.vx * sp + 1) % 1;
       rk.y = (rk.y + rk.vy * sp + 1) % 1;
@@ -62,16 +62,21 @@ export function create({ c2d, getColors }) {
       c2d.translate(rk.x * w, rk.y * h);
       c2d.rotate(rk.rot);
       c2d.scale(minDim, minDim);
-      c2d.beginPath();
       for (let i = 0; i < rk.shape.length; i++) {
         const [x, y] = rk.shape[i];
         if (i) c2d.lineTo(x, y); else c2d.moveTo(x, y);
       }
       c2d.closePath();
       c2d.restore();          // restore before stroke so lineWidth isn't scaled
+    }
+    if (glow > 0.05) {
+      c2d.strokeStyle = `rgba(${(c1[0] * 255) | 0},${(c1[1] * 255) | 0},${(c1[2] * 255) | 0},${(0.18 * glow).toFixed(3)})`;
+      c2d.lineWidth = 4;
       c2d.stroke();
     }
-    c2d.shadowBlur = 0;
+    c2d.strokeStyle = rgb(c1);
+    c2d.lineWidth = 1.6;
+    c2d.stroke();
   }
 
   return {
