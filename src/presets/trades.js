@@ -13,7 +13,6 @@ export function create({ c2d, getColors }) {
   let rows = [];
   let candles = [];
   let lastSeed = null;
-  let lastT = 0;
 
   function build(params) {
     rand = mulberry32(params.seed || 1);
@@ -37,7 +36,6 @@ export function create({ c2d, getColors }) {
     if (!rows.length || params.seed !== lastSeed) build(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
-    lastT = t;
 
     const up = `rgb(${(c.success ? c.success : c.primary).map((v) => (v * 255) | 0).join(',')})`;
     const down = `rgb(${(c.error ? c.error : c.accent).map((v) => (v * 255) | 0).join(',')})`;

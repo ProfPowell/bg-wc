@@ -5,7 +5,7 @@ import { clearAndFill } from '../renderer/canvas2d.js';
 
 const CAPS = { low: 80, med: 220, high: 500 };
 
-export function create({ c2d, getColors, getParams }) {
+export function create({ c2d, getColors, getParams: _getParams }) {
   let w = 1, h = 1;
   let stars = [];
   let lastSeed = null;

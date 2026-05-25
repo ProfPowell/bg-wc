@@ -4,15 +4,15 @@
   "description": "Theme-aware graphics-layer web component: animated WebGL & Canvas2D backgrounds behind any HTML content.",
   "license": "MIT",
   "type": "module",
-  "main": "src/gl-wc.js",
-  "module": "src/gl-wc.js",
+  "main": "dist/gl-wc.js",
+  "module": "dist/gl-wc.js",
   "exports": {
-    ".": "./src/gl-wc.js",
-    "./data-bg": "./src/data-bg.js",
-    "./presets/*": "./src/presets/*.js"
+    ".": "./dist/gl-wc.js",
+    "./data-bg": "./dist/data-bg.js",
+    "./presets/*": "./dist/presets/*.js"
   },
   "files": [
-    "src",
+    "dist",
     "README.md",
     "LICENSE"
   ],
@@ -33,6 +33,32 @@
   ],
   "author": "ProfPowell",
   "sideEffects": [
-    "src/gl-wc.js"
-  ]
+    "dist/gl-wc.js"
+  ],
+  "scripts": {
+    "dev": "vite --config vite.site.config.js",
+    "build": "vite build",
+    "build:site": "vite build --config vite.site.config.js",
+    "preview": "vite preview --config vite.site.config.js",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.js\"",
+    "format:check": "prettier --check \"src/**/*.js\"",
+    "analyze": "cem analyze",
+    "prepublishOnly": "npm run build && npm run analyze"
+  },
+  "dependencies": {
+    "@profpowell/code-block": "^2.9.0",
+    "vanilla-breeze": "^0.1.3"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.11.0",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.60.0",
+    "eslint": "^10.4.0",
+    "prettier": "^3.8.3",
+    "vite": "^7.3.3"
+  }
 }

@@ -34,7 +34,7 @@ void main() {
 }
 `;
 
-export function create({ gl, canvas }) {
+export function create({ gl, canvas: _canvas }) {
   const program = createProgram(gl, QUAD_VS, FS);
   const buf = fullscreenQuad(gl);
   const aPos = gl.getAttribLocation(program, 'a_pos');
