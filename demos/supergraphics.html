@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Supergraphics &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f3eddf;
+      --ink: #1a1a1a;
+      --red: #e63946;
+      --yel: #f4d03f;
+      --blu: #1e3a8a;
+      --grn: #2a7c5b;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); overflow: hidden; }
+    body { font-family: 'Space Mono', ui-monospace, monospace; min-height: 100vh; }
+
+    .stage { position: relative; width: 100vw; height: 100vh; }
+
+    /* The supergraphic itself — giant flat shapes wrapping the surface. */
+    svg.shapes {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: block;
+    }
+
+    /* Halftone screen, painted on top via multiply blend so it grits up the flats. */
+    gl-wc.halftone {
+      position: absolute; inset: 0;
+      mix-blend-mode: multiply;
+      opacity: 0.10;
+      pointer-events: none;
+    }
+
+    /* Tiny typographic labels — supergraphics are shape-led, not type-led. */
+    .label-tl, .label-tr, .label-bl, .label-br {
+      position: absolute; z-index: 6;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+    .label-tl { top: 28px; left: 36px; }
+    .label-tr { top: 28px; right: 36px; text-align: right; }
+    .label-bl { bottom: 28px; left: 36px; }
+    .label-br { bottom: 28px; right: 36px; text-align: right; }
+    .label-tr .big {
+      display: block;
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 32px;
+      letter-spacing: -0.01em;
+      text-transform: none;
+      margin-bottom: 4px;
+    }
+    .label-tl a { color: inherit; text-decoration: none; opacity: 0.7; }
+    .label-tl a:hover { opacity: 1; }
+
+    /* The WORM — set in a vertical column, each letter wriggles with phase offset,
+       the whole word slithers slowly up and down. */
+    .worm {
+      position: absolute;
+      top: 50%; left: 52%;
+      transform: translate(-50%, -50%);
+      display: flex; flex-direction: column;
+      align-items: center;
+      font-family: 'Archivo Black', sans-serif;
+      font-size: clamp(70px, 11.5vw, 200px);
+      line-height: 0.84;
+      letter-spacing: -0.04em;
+      color: #1a1a1a;
+      mix-blend-mode: multiply;
+      z-index: 5;
+      animation: slither 7s ease-in-out infinite;
+    }
+    .worm > span {
+      display: block;
+      animation: wriggle 2.6s ease-in-out infinite;
+      transform-origin: center;
+      will-change: transform;
+    }
+    .worm > span:nth-child(1) { animation-delay: 0s; }
+    .worm > span:nth-child(2) { animation-delay: 0.22s; }
+    .worm > span:nth-child(3) { animation-delay: 0.44s; }
+    .worm > span:nth-child(4) { animation-delay: 0.66s; }
+    @keyframes wriggle {
+      0%, 100% { transform: translateX(0) rotate(0); }
+      25%      { transform: translateX(-26px) rotate(-4deg); }
+      75%      { transform: translateX(26px)  rotate(4deg); }
+    }
+    @keyframes slither {
+      0%, 100% { transform: translate(-50%, -52%); }
+      50%      { transform: translate(-50%, -48%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .worm, .worm > span { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <svg class="shapes" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <!-- BG -->
+      <rect width="1600" height="900" fill="#f3eddf"/>
+      <!-- HUGE red half-disc, bottom-left -->
+      <circle cx="240" cy="1080" r="820" fill="#e63946"/>
+      <!-- Yellow vertical column (carries the WORM text via overlay) -->
+      <rect x="800" y="0" width="240" height="900" fill="#f4d03f"/>
+      <!-- Cobalt chevron-stripe -->
+      <polygon points="1080,0 1340,0 1200,450 1340,900 1080,900 1220,450" fill="#1e3a8a"/>
+      <!-- Green far-right band -->
+      <rect x="1440" y="0" width="160" height="900" fill="#2a7c5b"/>
+      <!-- Yellow half-disc on the green column -->
+      <circle cx="1520" cy="180" r="64" fill="#f4d03f"/>
+      <!-- Cream "moon" cut into the red -->
+      <circle cx="160" cy="200" r="56" fill="#f3eddf"/>
+      <!-- Black baseline + tick marks -->
+      <rect y="784" width="1600" height="4" fill="#1a1a1a"/>
+      <rect y="788" width="1600" height="16" fill="rgba(26,26,26,0.06)"/>
+      <rect x="120" y="776" width="3" height="16" fill="#1a1a1a"/>
+      <rect x="380" y="776" width="3" height="16" fill="#1a1a1a"/>
+      <rect x="640" y="776" width="3" height="16" fill="#1a1a1a"/>
+      <!-- Small black accent dot in lower-left -->
+      <circle cx="420" cy="700" r="14" fill="#1a1a1a"/>
+    </svg>
+
+    <div class="worm" aria-label="WORM">
+      <span aria-hidden="true">W</span>
+      <span aria-hidden="true">O</span>
+      <span aria-hidden="true">R</span>
+      <span aria-hidden="true">M</span>
+    </div>
+
+    <gl-wc class="halftone" preset="noise" intensity="0.7" density="0.85" speed="0.25"
+           style="--gl-wc-color-fg:#000000; --gl-wc-color-bg:#ffffff;"></gl-wc>
+
+    <div class="label-tl">
+      <a href="./">&larr; Demos</a>
+    </div>
+    <div class="label-tr">
+      <span class="big">01 / Supergraphics</span>
+      Environmental graphics<br>
+      VB &times; integration layer
+    </div>
+    <div class="label-bl">
+      gl-wc &times; dither &middot; halftone overlay<br>
+      mix-blend-mode: multiply
+    </div>
+    <div class="label-br">
+      Vol. 01 &middot; Issue 09<br>
+      MMXXVI
+    </div>
+  </main>
+  <script type="module" src="../src/gl-wc.js"></script>
+</body>
+</html>

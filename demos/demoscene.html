@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demoscene &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #050208;
+      --color-foreground: #ffe66d;
+      --color-primary: #ff2bd6;
+      --color-accent: #2bd4ff;
+      --color-info: #ffe66d;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'VT323', monospace; min-height: 100vh; }
+
+    .stage { position: relative; width: 100vw; height: 100vh; }
+
+    gl-wc.bg { position: absolute; inset: 0; }
+
+    /* CRT scanlines + vignette */
+    .scan {
+      position: absolute; inset: 0; z-index: 7; pointer-events: none;
+      background: repeating-linear-gradient(to bottom,
+        transparent 0, transparent 2px,
+        rgba(0,0,0,0.3) 3px, rgba(0,0,0,0.3) 3px);
+      mix-blend-mode: multiply;
+    }
+    .vig {
+      position: absolute; inset: 0; z-index: 6; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.6) 95%);
+    }
+
+    /* Big title — Press Start 2P with stacked drop shadows */
+    .title-area {
+      position: absolute; top: 16%; left: 0; right: 0;
+      text-align: center; z-index: 8;
+    }
+    .title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(36px, 8vw, 92px);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      color: var(--color-info);
+      text-shadow:
+        4px 4px 0 var(--color-primary),
+        8px 8px 0 var(--color-accent),
+        12px 12px 0 rgba(0,0,0,0.6);
+      margin: 0;
+      animation: shift 6s ease-in-out infinite;
+    }
+    @keyframes shift {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+    .subtitle {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(11px, 1.4vw, 16px);
+      color: var(--color-accent);
+      margin-top: 28px;
+      letter-spacing: 0.2em;
+    }
+    .subtitle .blink { animation: blink 1.2s steps(2) infinite; }
+    @keyframes blink { 50% { opacity: 0.25; } }
+
+    /* Scrolling marquee greet */
+    .marquee-wrap {
+      position: absolute; left: 0; right: 0; bottom: 22vh;
+      z-index: 9;
+      background: rgba(0,0,0,0.6);
+      border-top: 2px solid var(--color-primary);
+      border-bottom: 2px solid var(--color-accent);
+      overflow: hidden;
+      padding: 16px 0;
+      box-shadow: 0 0 32px rgba(255,43,214,0.4);
+    }
+    .marquee {
+      font-family: 'VT323', monospace;
+      font-size: clamp(28px, 3.5vw, 48px);
+      color: var(--color-foreground);
+      white-space: nowrap;
+      animation: scroll-text 60s linear infinite;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 12px rgba(255,230,109,0.5);
+    }
+    @keyframes scroll-text {
+      from { transform: translateX(100vw); }
+      to   { transform: translateX(-100%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .marquee, .title { animation: none; }
+    }
+    .marquee .pink { color: var(--color-primary); }
+    .marquee .cyan { color: var(--color-accent); }
+    .marquee .yel  { color: var(--color-info); }
+    .marquee .sep { opacity: 0.5; padding: 0 14px; }
+
+    /* Crew table at bottom */
+    .crew {
+      position: absolute; left: 0; right: 0; bottom: 20px;
+      z-index: 10; text-align: center;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--color-accent);
+      opacity: 0.85;
+      line-height: 2;
+    }
+    .crew .row { display: inline-flex; gap: 18px; }
+    .crew .label { color: var(--color-foreground); opacity: 0.55; }
+
+    /* Counter top-right */
+    .counter {
+      position: absolute; top: 22px; right: 28px; z-index: 12;
+      font-family: 'Press Start 2P', monospace; font-size: 11px;
+      color: var(--color-accent);
+      text-shadow: 0 0 6px var(--color-accent);
+    }
+
+    .nav { position: absolute; top: 22px; left: 28px; z-index: 12; font-family: 'Press Start 2P', monospace; font-size: 10px; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.75; }
+    .nav a:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./">&lt; DEMOS</a></nav>
+  <div class="counter">FX 12 / 17</div>
+
+  <main class="stage">
+    <gl-wc class="bg" preset="plasma" intensity="0.85" density="0.55" speed="1.4"></gl-wc>
+
+    <div class="title-area">
+      <h1 class="title">GL-WC<br>DEMO</h1>
+      <div class="subtitle">PRESS ANY KEY <span class="blink">_</span></div>
+    </div>
+
+    <div class="marquee-wrap">
+      <div class="marquee">
+        <span>GREETINGS FROM THE COMPONENT DEPT.</span>
+        <span class="sep">&diamond;</span>
+        <span class="pink">17 PRESETS ONLINE</span>
+        <span class="sep">&diamond;</span>
+        <span class="cyan">PLASMA RUNNING SMOOTH</span>
+        <span class="sep">&diamond;</span>
+        <span class="yel">SHOUTOUTS TO ALL FRONTEND OPERATORS</span>
+        <span class="sep">&diamond;</span>
+        <span>HAPPY 2026!</span>
+        <span class="sep">&diamond;</span>
+        <span class="pink">MIT LICENSED &amp; PROUD</span>
+        <span class="sep">&diamond;</span>
+        <span class="cyan">NO FRAMEWORKS REQUIRED</span>
+        <span class="sep">&diamond;</span>
+        <span class="yel">DOWNLOAD FROM PROFPOWELL/GL-WC</span>
+        <span class="sep">&diamond;</span>
+      </div>
+    </div>
+
+    <div class="crew">
+      <div class="row"><span class="label">CODE</span> CLAUDE</div>
+      &nbsp;&middot;&nbsp;
+      <div class="row"><span class="label">GFX</span> WEBGL</div>
+      &nbsp;&middot;&nbsp;
+      <div class="row"><span class="label">MUSIC</span> MUTE</div>
+      &nbsp;&middot;&nbsp;
+      <div class="row"><span class="label">YEAR</span> 2026</div>
+    </div>
+
+    <div class="vig"></div>
+    <div class="scan"></div>
+  </main>
+  <script type="module" src="../src/gl-wc.js"></script>
+</body>
+</html>

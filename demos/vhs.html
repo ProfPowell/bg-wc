@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VHS &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #0b0f1a;
+      --color-foreground: #e8f0ff;
+      --color-primary: #2e6bd6;
+      --color-accent: #d64f8a;
+      --color-info: #36c9c9;
+      --osd: #f5f5d0;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #000; color: var(--osd); overflow: hidden; }
+    body { font-family: 'VT323', ui-monospace, monospace; min-height: 100vh; }
+
+    .tv {
+      position: relative; width: 100vw; height: 100vh; overflow: hidden;
+    }
+    gl-wc.bg { position: absolute; inset: 0; }
+
+    /* Rounded CRT bezel darkening at the edges */
+    .bezel {
+      position: absolute; inset: 0; z-index: 4; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+      box-shadow: inset 0 0 120px rgba(0,0,0,0.6);
+    }
+
+    /* On-screen-display — camcorder overlay */
+    .osd {
+      position: absolute; inset: 0; z-index: 6;
+      font-family: 'VT323', monospace;
+      color: var(--osd);
+      text-shadow: 0 0 4px rgba(0,0,0,0.8), 2px 2px 0 rgba(0,0,0,0.5);
+      pointer-events: none;
+    }
+    .osd .rec {
+      position: absolute; top: 26px; left: 34px;
+      font-size: clamp(20px, 2.4vw, 30px);
+      letter-spacing: 0.08em;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .osd .rec .dot {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #ff3b30; box-shadow: 0 0 10px #ff3b30;
+      animation: blink 1s steps(2) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0.2; } }
+    .osd .mode {
+      position: absolute; top: 26px; right: 34px;
+      font-size: clamp(20px, 2.4vw, 30px);
+      letter-spacing: 0.12em;
+      text-align: right;
+    }
+    .osd .battery {
+      position: absolute; top: 64px; right: 34px;
+      font-size: clamp(14px, 1.6vw, 20px);
+    }
+    .osd .play {
+      position: absolute; bottom: 96px; left: 34px;
+      font-size: clamp(28px, 4vw, 56px);
+      letter-spacing: 0.1em;
+    }
+    .osd .stamp {
+      position: absolute; bottom: 30px; left: 34px;
+      font-size: clamp(20px, 2.6vw, 34px);
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+    }
+    .osd .counter {
+      position: absolute; bottom: 30px; right: 34px;
+      font-size: clamp(20px, 2.6vw, 34px);
+      letter-spacing: 0.08em;
+      text-align: right;
+    }
+
+    /* Big channel-ident title, center */
+    .title {
+      position: absolute; inset: 0; z-index: 5;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .title h1 {
+      font-family: 'VT323', monospace;
+      font-size: clamp(54px, 12vw, 180px);
+      line-height: 0.9; margin: 0;
+      letter-spacing: 0.04em;
+      color: var(--osd);
+      text-shadow:
+        3px 0 var(--color-accent),
+        -3px 0 var(--color-info),
+        0 0 24px rgba(0,0,0,0.6);
+    }
+    .title p {
+      margin: 12px 0 0; font-size: clamp(16px, 2vw, 26px);
+      letter-spacing: 0.25em; opacity: 0.85;
+    }
+
+    .nav { position: absolute; top: 64px; left: 34px; z-index: 8; font-size: clamp(14px, 1.6vw, 20px); }
+    .nav a { color: var(--osd); text-decoration: none; opacity: 0.7; letter-spacing: 0.08em; }
+    .nav a:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <main class="tv">
+    <gl-wc class="bg" preset="vhs" intensity="0.6" density="0.5" speed="1"></gl-wc>
+
+    <div class="title">
+      <h1>PLAY &#9654;</h1>
+      <p>BE KIND &middot; REWIND</p>
+    </div>
+
+    <div class="osd">
+      <div class="rec"><span class="dot"></span> REC</div>
+      <div class="mode">SP &middot; HQ</div>
+      <div class="battery">&#9632;&#9632;&#9632;&#9633; BATT</div>
+      <div class="play">&#9654;&#9654; gl-wc</div>
+      <div class="stamp">JAN&nbsp;01&nbsp;1986<br>PM&nbsp;12:00:00</div>
+      <div class="counter">0:09:17<br>SP&nbsp;T-120</div>
+    </div>
+
+    <nav class="nav"><a href="./">&larr; demos</a></nav>
+    <div class="bezel"></div>
+  </main>
+  <script type="module" src="../src/gl-wc.js"></script>
+</body>
+</html>
