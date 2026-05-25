@@ -1,10 +1,17 @@
 import { defineConfig } from 'vite';
-import { globSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 
 // Product-site + demos multi-page build. Bare imports (vanilla-breeze,
 // @profpowell/code-block) resolve from node_modules — no CDN.
+// List demo pages with readdirSync (works on every Node version) rather than
+// fs.globSync, which only exists on Node 22+ and broke the CI build on Node 20.
+const demoPages = existsSync('demos')
+  ? readdirSync('demos')
+      .filter((f) => f.endsWith('.html'))
+      .map((f) => `demos/${f}`)
+  : [];
 const input = Object.fromEntries(
-  ['index.html', 'docs/index.html', 'docs/api.html', ...globSync('demos/*.html')].map((f) => [
+  ['index.html', 'docs/index.html', 'docs/api.html', ...demoPages].map((f) => [
     f.replace(/[/.]/g, '_'),
     f,
   ])
