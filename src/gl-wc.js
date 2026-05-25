@@ -188,6 +188,17 @@ class GlWc extends HTMLElement {
         .then((d) => this.#cleanups.push(d));
     }
 
+    // Back/forward-cache restore: while the page was frozen the browser may have
+    // dropped our WebGL context, and `webglcontextrestored` is not reliably
+    // fired on restore — leaving the canvas blank (hidden behind data-fallback).
+    // Rebuild the preset on a persisted pageshow so the background comes back
+    // without a full reload. (disconnectedCallback removes this listener.)
+    const onPageShow = (e) => {
+      if (e.persisted && this.preset) this.#loadCurrentPreset();
+    };
+    window.addEventListener('pageshow', onPageShow);
+    this.#cleanups.push(() => window.removeEventListener('pageshow', onPageShow));
+
     this.#resizeObs = new ResizeObserver(() => this.#resize());
     this.#resizeObs.observe(this);
 
