@@ -5,3 +5,5 @@ dist/
 .cache/
 dist-site/
 .idea/
+playwright-report/
+test-results/
