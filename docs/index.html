@@ -5,10 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>gl-wc — preset gallery</title>
   <meta name="description" content="Theme-aware graphics-layer web component: animated WebGL and Canvas2D backgrounds for any HTML.">
-  <!-- Where vanilla-breeze's <theme-picker> loads brand-theme CSS (served by
-       vite.site.config.js). Must run before vanilla-breeze initializes. -->
+  <!-- Point vanilla-breeze at the site-root vb/ dir for its theme CSS and icon
+       SVGs (served by vite.site.config.js). Must run before VB initializes. -->
   <script>
-    window.__VB_THEME_BASE = new URL('../vb', document.baseURI).href.replace(/\/$/, '');
+    (() => {
+      const vb = new URL('../vb', document.baseURI).href.replace(/\/$/, '');
+      window.__VB_THEME_BASE = vb;
+      document.documentElement.dataset.iconPath = vb + '/icons';
+    })();
   </script>
   <link rel="stylesheet" href="./site.css">
 </head>

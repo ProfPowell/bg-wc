@@ -38,31 +38,57 @@ const pagefindStub = {
   },
 };
 
-// vanilla-breeze's <theme-picker> Theme dropdown lazy-loads brand themes from
-// `${window.__VB_THEME_BASE}/themes/<name>.css` (set in each page's <head> to
-// resolve to the site-root `vb/` dir). Serve vanilla-breeze's real theme CSS at
-// `/vb/themes/*.css` — dev via middleware, build via emitted assets — so every
-// theme the picker offers loads natively with no CDN dependency or 404.
-const VB_THEMES_DIR = 'node_modules/vanilla-breeze/dist/cdn/themes';
-const vbThemes = {
-  name: 'gl-wc:vb-themes',
+// vanilla-breeze locates two kinds of assets relative to its own (bundled-away)
+// script and otherwise falls back to absolute `/cdn/...`, which 404s under the
+// `/gl-wc/` Pages path. We pin both to a site-root `vb/` dir (the page <head>
+// sets window.__VB_THEME_BASE + documentElement.dataset.iconPath there) and
+// serve the real files from node_modules — dev via middleware, build via
+// emitted assets — so there's no CDN dependency and no 404:
+//   • <theme-picker> Theme dropdown → `${base}/themes/<name>.css` (all 53)
+//   • <icon-wc> (incl. theme-picker's mode icons) → `${base}/icons/lucide/<name>.svg`
+const VB_DIR = 'node_modules/vanilla-breeze/dist/cdn';
+// The lucide pack is 1900+ files (~7.5MB); emit only the icons the UI uses.
+const VB_BUILD_ICONS = [
+  'palette', 'sun', 'moon', 'monitor', 'contrast', 'sliders',
+  'type', 'check', 'chevron-down', 'chevron-up', 'x', 'circle',
+];
+const vbAssets = {
+  name: 'gl-wc:vb-assets',
   configureServer(server) {
     server.middlewares.use((req, res, next) => {
-      const m = req.url && req.url.match(/^\/vb\/themes\/([\w-]+\.css)(?:\?.*)?$/);
-      if (!m) return next();
+      const t = req.url && req.url.match(/^\/vb\/themes\/([\w-]+\.css)(?:\?.*)?$/);
+      const i = req.url && req.url.match(/^\/vb\/icons\/([\w-]+)\/([\w-]+\.svg)(?:\?.*)?$/);
       try {
-        res.setHeader('Content-Type', 'text/css');
-        res.end(readFileSync(join(VB_THEMES_DIR, m[1])));
+        if (t) {
+          res.setHeader('Content-Type', 'text/css');
+          return res.end(readFileSync(join(VB_DIR, 'themes', t[1])));
+        }
+        if (i) {
+          res.setHeader('Content-Type', 'image/svg+xml');
+          return res.end(readFileSync(join(VB_DIR, 'icons', i[1], i[2])));
+        }
       } catch {
-        next();
+        /* fall through to 404 */
       }
+      next();
     });
   },
   generateBundle() {
-    if (!existsSync(VB_THEMES_DIR)) return;
-    for (const f of readdirSync(VB_THEMES_DIR)) {
-      if (f.endsWith('.css')) {
-        this.emitFile({ type: 'asset', fileName: `vb/themes/${f}`, source: readFileSync(join(VB_THEMES_DIR, f)) });
+    const themes = join(VB_DIR, 'themes');
+    if (existsSync(themes)) {
+      for (const f of readdirSync(themes)) {
+        if (f.endsWith('.css')) {
+          this.emitFile({ type: 'asset', fileName: `vb/themes/${f}`, source: readFileSync(join(themes, f)) });
+        }
+      }
+    }
+    const lucide = join(VB_DIR, 'icons', 'lucide');
+    if (existsSync(lucide)) {
+      for (const name of VB_BUILD_ICONS) {
+        const file = join(lucide, `${name}.svg`);
+        if (existsSync(file)) {
+          this.emitFile({ type: 'asset', fileName: `vb/icons/lucide/${name}.svg`, source: readFileSync(file) });
+        }
       }
     }
   },
@@ -71,7 +97,7 @@ const vbThemes = {
 export default defineConfig({
   root: '.',
   base: './',
-  plugins: [pagefindStub, vbThemes],
+  plugins: [pagefindStub, vbAssets],
   build: {
     outDir: 'dist-site',
     emptyOutDir: true,
