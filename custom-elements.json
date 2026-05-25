@@ -194,6 +194,292 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/renderer/canvas2d.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "createC2DContext",
+          "parameters": [
+            {
+              "name": "canvas"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "resizeCanvas",
+          "parameters": [
+            {
+              "name": "canvas"
+            },
+            {
+              "name": "w"
+            },
+            {
+              "name": "h"
+            },
+            {
+              "name": "dpr"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "clearAndFill",
+          "parameters": [
+            {
+              "name": "c2d"
+            },
+            {
+              "name": "w"
+            },
+            {
+              "name": "h"
+            },
+            {
+              "name": "bg"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "createC2DContext",
+          "declaration": {
+            "name": "createC2DContext",
+            "module": "src/renderer/canvas2d.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "resizeCanvas",
+          "declaration": {
+            "name": "resizeCanvas",
+            "module": "src/renderer/canvas2d.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "clearAndFill",
+          "declaration": {
+            "name": "clearAndFill",
+            "module": "src/renderer/canvas2d.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/renderer/tokens.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "parseColor",
+          "parameters": [
+            {
+              "name": "str"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "readTokenString",
+          "parameters": [
+            {
+              "name": "host"
+            },
+            {
+              "name": "token"
+            },
+            {
+              "name": "override"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "resolveTokens",
+          "parameters": [
+            {
+              "name": "host"
+            },
+            {
+              "name": "mapping"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "cssToRgba",
+          "parameters": [
+            {
+              "name": "str"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "parseColor",
+          "declaration": {
+            "name": "parseColor",
+            "module": "src/renderer/tokens.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "readTokenString",
+          "declaration": {
+            "name": "readTokenString",
+            "module": "src/renderer/tokens.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "resolveTokens",
+          "declaration": {
+            "name": "resolveTokens",
+            "module": "src/renderer/tokens.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "cssToRgba",
+          "declaration": {
+            "name": "cssToRgba",
+            "module": "src/renderer/tokens.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/renderer/webgl.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "createGLContext",
+          "parameters": [
+            {
+              "name": "canvas"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "compileShader",
+          "parameters": [
+            {
+              "name": "gl"
+            },
+            {
+              "name": "type"
+            },
+            {
+              "name": "src"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "createProgram",
+          "parameters": [
+            {
+              "name": "gl"
+            },
+            {
+              "name": "vsSrc"
+            },
+            {
+              "name": "fsSrc"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "fullscreenQuad",
+          "parameters": [
+            {
+              "name": "gl"
+            }
+          ]
+        },
+        {
+          "kind": "variable",
+          "name": "QUAD_VS",
+          "default": "` attribute vec2 a_pos; varying vec2 v_uv; void main() { v_uv = a_pos * 0.5 + 0.5; gl_Position = vec4(a_pos, 0.0, 1.0); }`"
+        },
+        {
+          "kind": "function",
+          "name": "bindQuad",
+          "parameters": [
+            {
+              "name": "gl"
+            },
+            {
+              "name": "buf"
+            },
+            {
+              "name": "loc"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "createGLContext",
+          "declaration": {
+            "name": "createGLContext",
+            "module": "src/renderer/webgl.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "compileShader",
+          "declaration": {
+            "name": "compileShader",
+            "module": "src/renderer/webgl.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "createProgram",
+          "declaration": {
+            "name": "createProgram",
+            "module": "src/renderer/webgl.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "fullscreenQuad",
+          "declaration": {
+            "name": "fullscreenQuad",
+            "module": "src/renderer/webgl.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "QUAD_VS",
+          "declaration": {
+            "name": "QUAD_VS",
+            "module": "src/renderer/webgl.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "bindQuad",
+          "declaration": {
+            "name": "bindQuad",
+            "module": "src/renderer/webgl.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/util/observe.js",
       "declarations": [
         {
@@ -1733,292 +2019,6 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/wordcloud.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/renderer/canvas2d.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "createC2DContext",
-          "parameters": [
-            {
-              "name": "canvas"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "resizeCanvas",
-          "parameters": [
-            {
-              "name": "canvas"
-            },
-            {
-              "name": "w"
-            },
-            {
-              "name": "h"
-            },
-            {
-              "name": "dpr"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "clearAndFill",
-          "parameters": [
-            {
-              "name": "c2d"
-            },
-            {
-              "name": "w"
-            },
-            {
-              "name": "h"
-            },
-            {
-              "name": "bg"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "createC2DContext",
-          "declaration": {
-            "name": "createC2DContext",
-            "module": "src/renderer/canvas2d.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "resizeCanvas",
-          "declaration": {
-            "name": "resizeCanvas",
-            "module": "src/renderer/canvas2d.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "clearAndFill",
-          "declaration": {
-            "name": "clearAndFill",
-            "module": "src/renderer/canvas2d.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/renderer/tokens.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "parseColor",
-          "parameters": [
-            {
-              "name": "str"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "readTokenString",
-          "parameters": [
-            {
-              "name": "host"
-            },
-            {
-              "name": "token"
-            },
-            {
-              "name": "override"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "resolveTokens",
-          "parameters": [
-            {
-              "name": "host"
-            },
-            {
-              "name": "mapping"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "cssToRgba",
-          "parameters": [
-            {
-              "name": "str"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "parseColor",
-          "declaration": {
-            "name": "parseColor",
-            "module": "src/renderer/tokens.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "readTokenString",
-          "declaration": {
-            "name": "readTokenString",
-            "module": "src/renderer/tokens.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "resolveTokens",
-          "declaration": {
-            "name": "resolveTokens",
-            "module": "src/renderer/tokens.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "cssToRgba",
-          "declaration": {
-            "name": "cssToRgba",
-            "module": "src/renderer/tokens.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/renderer/webgl.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "createGLContext",
-          "parameters": [
-            {
-              "name": "canvas"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "compileShader",
-          "parameters": [
-            {
-              "name": "gl"
-            },
-            {
-              "name": "type"
-            },
-            {
-              "name": "src"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "createProgram",
-          "parameters": [
-            {
-              "name": "gl"
-            },
-            {
-              "name": "vsSrc"
-            },
-            {
-              "name": "fsSrc"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "fullscreenQuad",
-          "parameters": [
-            {
-              "name": "gl"
-            }
-          ]
-        },
-        {
-          "kind": "variable",
-          "name": "QUAD_VS",
-          "default": "` attribute vec2 a_pos; varying vec2 v_uv; void main() { v_uv = a_pos * 0.5 + 0.5; gl_Position = vec4(a_pos, 0.0, 1.0); }`"
-        },
-        {
-          "kind": "function",
-          "name": "bindQuad",
-          "parameters": [
-            {
-              "name": "gl"
-            },
-            {
-              "name": "buf"
-            },
-            {
-              "name": "loc"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "createGLContext",
-          "declaration": {
-            "name": "createGLContext",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "compileShader",
-          "declaration": {
-            "name": "compileShader",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "createProgram",
-          "declaration": {
-            "name": "createProgram",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "fullscreenQuad",
-          "declaration": {
-            "name": "fullscreenQuad",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "QUAD_VS",
-          "declaration": {
-            "name": "QUAD_VS",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "bindQuad",
-          "declaration": {
-            "name": "bindQuad",
-            "module": "src/renderer/webgl.js"
           }
         }
       ]
