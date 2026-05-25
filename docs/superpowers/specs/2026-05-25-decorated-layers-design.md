@@ -30,7 +30,7 @@ Three rules make this precise:
 | --- | --- | --- | --- |
 | **Motion / content** | `data-effect` — 40+ CSS effects, slots, triggers (exists today) | *future* extreme-effects package (WebGL/Canvas text & content FX) | `data-effect` (+ `data-trigger`, `data-stagger`) |
 | **Background / field** | base background tokens / simple CSS gradients (light) | **`bg-wc`** (today `gl-wc`) — 55 WebGL/Canvas presets | `data-background` (binder) |
-| **Border / frame** | border tokens: spin, pulse, march, hue-cycle, breathe, corner-trace (CSS `@property`/conic-gradient/box-shadow) | **`border-wc`** — squiggle (SVG), draw (SVG), sparks (Canvas), liquid (WebGL) | `data-border` (binder) |
+| **Border / frame** | border tokens: spin, pulse, march, hue-cycle, breathe, corner-trace (CSS `@property`/conic-gradient/box-shadow) | **`border-wc`** — squiggle (SVG), draw (SVG), sparks (Canvas), liquid (WebGL) | `data-border-effect` (binder; sibling to VB's existing `data-border-style`/`-shape`) |
 | **Scrollbar** | `--scrollbar-thumb/track/width` (Baseline `scrollbar-color`/`scrollbar-width`) | *(none anticipated — CSS suffices)* | tokens only |
 | **Cursor** | `--cursor-custom-*`, `--cursor-text`; opt-in JS spotlight (`--spotlight-*`) | *(maybe later)* | tokens only |
 
@@ -98,7 +98,7 @@ The border spec already calls gl-wc "`<bg-wc>` (formerly `<gl-wc>`)"; the rename
 
 ## 8. Resolved decisions (2026-05-25)
 
-1. **Author hook = the `data-border` attribute** (family-consistent with `data-effect`/`data-background`). Base values render via VB CSS (`[data-border~="…"]`); extreme values are handled by the `data-border` binder injecting `<border-wc>` — a binder, not a VB-registry effect.
+1. **Author hook = the `data-border-effect` attribute** (family-consistent with `data-effect`; sits beside VB's existing `data-border-style`/`data-border-shape`). Base values render via VB CSS (`[data-border-effect~="…"]`); extreme values are handled by the binder injecting `<border-wc>` — a binder, not a VB-registry effect.
 2. **Geometry: authored in VB, embedded in packages for standalone.** (Confirmed; not a separate micro-package.)
 3. **`data-background` is canonical; `data-bg` (and `--gl-wc-*`) kept as deprecated aliases.**
 4. **Background gets a light CSS base tier in VB** (token-driven gradients/patterns); `bg-wc` is the extreme. Background is symmetric with the other surfaces.

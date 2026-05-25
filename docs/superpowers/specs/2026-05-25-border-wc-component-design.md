@@ -57,9 +57,9 @@ Per source §5/§7. One dispatcher; each effect is a pure function `(host) => cl
 
 border-wc **embeds the VB border base tier** so a page using only `<border-wc>` (no vanilla-breeze) still gets the CSS-tier border effects + tokens. With VB present, declarations coincide; VB's theme values win via the cascade (umbrella §1, rule 3).
 
-## 6. data-border binder (relationship to #5)
+## 6. data-border-effect binder (relationship to #5)
 
-This spec defines the **component**. Sub-project #5 adds the `data-border` binder mirroring `data-bg.js`: `data-border="squiggle"` on any element scans + injects a `<border-wc effect="squiggle">` wrapper (or annotates — source §11.1 open question). Base values (`spin`, etc.) need no injection — pure VB CSS handles them. So `data-border` routes: base value → CSS (no JS); extreme value → inject border-wc.
+This spec defines the **component**. Sub-project #5 adds the `data-border-effect` binder mirroring `data-bg.js`: `data-border-effect="squiggle"` on any element scans + injects a `<border-wc effect="squiggle">` wrapper (or annotates — source §11.1 open question). Base values (`spin`, etc.) need no injection — pure VB CSS handles them. So `data-border-effect` routes: base value → CSS (no JS); extreme value → inject border-wc. (Sibling to VB's existing `data-border-style`/`data-border-shape`.)
 
 ## 7. Degradation
 

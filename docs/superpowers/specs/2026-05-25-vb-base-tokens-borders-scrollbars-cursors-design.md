@@ -18,32 +18,42 @@ Add three **base-tier** extension-token categories to vanilla-breeze, CSS-first 
 
 Per the umbrella, **VB ships the complete token vocabulary for these surfaces — including the tokens the extreme `border-wc` package will consume** — even though VB only implements the CSS tier. Extreme border values (`squiggle`, `draw`, `sparks`, `liquid`) are *recognized names* here but rendered by `border-wc` (#4).
 
-**Out of scope:** the `border-wc` component (#4), the `data-border` binder's extreme routing (#5), background/effect surfaces.
+**Out of scope:** the `border-wc` component (#4), the `data-border-effect` binder's extreme routing (#5), background/effect surfaces.
+
+## 1a. Reconciliation with existing VB (2026-05-25 audit)
+
+VB already ships parts of this — so ak6.1 is **audit + complete + add**, not greenfield:
+
+- `src/tokens/extensions/animated-borders.css` ships **`spin` + `pulse` only**, as tokens + `@keyframes` (`vb-border-spin`, `vb-border-pulse`, `@property --vb-border-angle`), **applied by themes** (e.g. `:root[data-theme~="cyber"] .card { animation: vb-border-spin … }`) — there is **no per-element attribute API today**.
+- `src/tokens/extensions/cursors.css` ships `--cursor-custom-*` tokens only (**no spotlight JS**, no `data-cursor`).
+- **`data-border-style`** (clean/sketch/neon/kawaii/pixel…) and **`data-border-shape`** (hexagon/diamond/arch) are **already-established attribute conventions** — so the animated/effect surface gets its own sub-attribute, **not** bare `data-border`.
+- **No scrollbar extension exists** (genuine gap).
+- Extensions are wired via `src/tokens/extensions/index.css`; `@property` lives top-level in `src/main.css`; bundles build via `scripts/build-cdn.js` (esbuild follows `@import`).
+
+**Gap to close:** add `march`/`hue-cycle`/`breathe`/`corner-trace` (only spin+pulse exist); add the **`data-border-effect`** attribute API over the existing token machinery; add the **scrollbar** extension; add the opt-in cursor **spotlight** JS; complete the border token vocabulary (squiggle/draw/sparks names); specimen demo; verify reduced-motion across all.
 
 ## 2. Author surface
 
-**Decision (flagged for review): use the family attribute `data-border`, not utility classes**, so the base tier is consistent with `data-effect`/`data-background` and so the *same attribute* spans base (CSS, here) and extreme (component, #4/#5) values.
+**Resolved: use `data-border-effect`** (parallels `data-effect`; fits the `data-border-*` family alongside the existing `-style`/`-shape`). The same attribute spans base (CSS here) and extreme (component, #4/#5) values. The existing token + theme-applied path keeps working unchanged.
 
 ```html
-<article data-border="spin">…</article>            <!-- base: pure CSS in VB -->
-<article data-border="pulse" class="danger">…</article>
-<article data-border="squiggle">…</article>          <!-- extreme: needs border-wc (#4); no-op until loaded -->
+<article data-border-effect="spin">…</article>            <!-- base: pure CSS in VB -->
+<article data-border-effect="pulse" class="danger">…</article>
+<article data-border-effect="squiggle">…</article>         <!-- extreme: needs border-wc (#4); no-op until loaded -->
 ```
 
 VB ships CSS rules keyed on the base values:
 
 ```css
-[data-border~="spin"]   { /* conic-gradient + @property --ba */ }
-[data-border~="pulse"]  { /* box-shadow keyframes */ }
-[data-border~="march"]  { /* ::before repeating-linear-gradient + position */ }
-[data-border~="hue-cycle"] { /* filter: hue-rotate */ }
-[data-border~="breathe"]   { /* ::before scale/opacity */ }
-[data-border~="trace"]     { /* staggered side transitions on hover */ }
+[data-border-effect~="spin"]     { /* conic-gradient + @property --vb-border-angle */ }
+[data-border-effect~="pulse"]    { /* box-shadow keyframes */ }
+[data-border-effect~="march"]    { /* ::before repeating-linear-gradient + position */ }
+[data-border-effect~="hue-cycle"]{ /* filter: hue-rotate */ }
+[data-border-effect~="breathe"]  { /* ::before scale/opacity */ }
+[data-border-effect~="trace"]    { /* staggered side transitions on hover */ }
 ```
 
 Per-instance tuning via the tokens below (CSS var → default). Scrollbars and cursors are **theme-level** (tokens on `:root`/`[data-theme]`), with a small per-element opt-in (`data-scrollbar="…"`, `data-cursor="…"`) for variants.
-
-> Open question O1: attribute (`data-border`) vs utility classes (`.border-spin`, as the POC used) vs both. Recommendation: attribute primary; reconsider classes only if authors ask.
 
 ## 3. Token vocabulary
 
@@ -108,7 +118,7 @@ Themes set the tokens (the POC's `neon-preview`/`kawaii-preview` show the patter
 ## 8. Resolved + remaining
 
 **Resolved (2026-05-25):**
-- O1 author surface → **`data-border` attribute** (primary; utility classes only if authors later ask).
+- O1 author surface → **`data-border-effect` attribute** (primary; fits VB's `data-border-*` family; existing token+theme path preserved; utility classes only if authors later ask).
 - O2 spotlight home → **VB base, opt-in** (`--spotlight-enabled`).
 
 **Remaining (settle during implementation):**
