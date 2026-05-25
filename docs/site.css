@@ -1,11 +1,13 @@
 /* Layout-only styles for the gl-wc gallery. Design tokens come from
-   vanilla-breeze (imported in gallery.js); this file never redefines them. */
+   vanilla-breeze (imported in gallery.js); this file never redefines them.
+   References use vanilla-breeze token names (e.g. --color-text, --color-surface)
+   with fallbacks for robustness. */
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
   background: var(--color-background);
-  color: var(--color-foreground);
+  color: var(--color-text, var(--color-foreground, #1a1a1a));
   font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
   min-height: 100vh;
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -28,7 +30,7 @@ body {
 .controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .controls label { font-size: 13px; opacity: 0.85; display: flex; gap: 6px; align-items: center; }
 .controls select {
-  background: var(--color-background); color: var(--color-foreground);
+  background: var(--color-background); color: var(--color-text, var(--color-foreground, #1a1a1a));
   border: 1px solid var(--color-border); border-radius: 4px; padding: 4px 8px;
   font: inherit;
 }
@@ -75,7 +77,7 @@ main { padding: 24px; max-width: 1200px; margin: 0 auto; }
   border-radius: 999px;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
-  color: var(--color-foreground);
+  color: var(--color-text, var(--color-foreground, #1a1a1a));
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
@@ -176,7 +178,7 @@ code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
   font-family: ui-monospace, monospace;
   font-size: 14px;
 }
-.crumb a { color: var(--color-foreground); opacity: 0.7; }
+.crumb a { color: var(--color-text, var(--color-foreground, #1a1a1a)); opacity: 0.7; }
 .crumb a:hover { opacity: 1; }
 .crumb .sep { padding: 0 8px; opacity: 0.35; }
 .repo { font-weight: 600; font-size: 14px; }
@@ -231,7 +233,7 @@ section[id] { scroll-margin-top: 80px; }
   border: 1px solid var(--color-border);
   border-radius: 999px;
   background: rgba(255,255,255,0.04);
-  color: var(--color-foreground);
+  color: var(--color-text, var(--color-foreground, #1a1a1a));
   opacity: 0.85;
 }
 
@@ -260,8 +262,8 @@ main.content h3 {
 main.content p { margin: 0 0 14px; }
 p code, li code, td code, dl code {
   font-size: 0.9em;
-  background: var(--code-bg);
-  border: 1px solid var(--code-border);
+  background: var(--color-surface, var(--code-bg, #131722));
+  border: 1px solid var(--color-border, var(--code-border, #232a3a));
   padding: 1px 6px;
   border-radius: 4px;
   color: var(--color-accent);
@@ -276,8 +278,8 @@ code-block { display: block; margin: 0 0 16px; }
 code-block:not(:defined) {
   white-space: pre;
   overflow-x: auto;
-  background: var(--code-bg);
-  border: 1px solid var(--code-border);
+  background: var(--color-surface, var(--code-bg, #131722));
+  border: 1px solid var(--color-border, var(--code-border, #232a3a));
   border-radius: 10px;
   padding: 14px 16px;
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -290,8 +292,8 @@ code-block:not(:defined) {
 /* Legacy <pre> code blocks (still used elsewhere if any) */
 .code-block {
   position: relative;
-  background: var(--code-bg);
-  border: 1px solid var(--code-border);
+  background: var(--color-surface, var(--code-bg, #131722));
+  border: 1px solid var(--color-border, var(--code-border, #232a3a));
   border-radius: 10px;
   padding: 14px 16px;
   overflow-x: auto;
@@ -306,7 +308,7 @@ code-block:not(:defined) {
   font-family: ui-monospace, monospace;
   font-size: 10px;
   letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--color-text-muted, var(--color-muted, #6b7280));
   opacity: 0.6;
 }
 .code-block code { font-family: inherit; color: inherit; background: none; border: 0; padding: 0; }
@@ -334,7 +336,7 @@ table {
   font-size: 14px;
 }
 thead {
-  background: var(--color-surface-elevated);
+  background: var(--color-surface-raised, var(--color-surface, var(--color-surface-elevated, #1b1f2a)));
 }
 th, td {
   text-align: left;
@@ -347,7 +349,7 @@ th {
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--color-text-muted, var(--color-muted, #6b7280));
 }
 tr:last-child td { border-bottom: none; }
 tbody tr:hover { background: rgba(91,142,255,0.05); }
