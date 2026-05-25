@@ -38,11 +38,11 @@ const pagefindStub = {
   },
 };
 
-// vanilla-breeze's ThemeManager lazy-loads brand themes from
+// vanilla-breeze's <theme-picker> Theme dropdown lazy-loads brand themes from
 // `${window.__VB_THEME_BASE}/themes/<name>.css` (set in each page's <head> to
 // resolve to the site-root `vb/` dir). Serve vanilla-breeze's real theme CSS at
-// `/vb/themes/*.css` — in dev via middleware, in the build via emitted assets —
-// so the full theme catalog loads natively with no CDN dependency or 404.
+// `/vb/themes/*.css` — dev via middleware, build via emitted assets — so every
+// theme the picker offers loads natively with no CDN dependency or 404.
 const VB_THEMES_DIR = 'node_modules/vanilla-breeze/dist/cdn/themes';
 const vbThemes = {
   name: 'gl-wc:vb-themes',

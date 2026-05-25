@@ -9,17 +9,14 @@ import '@profpowell/code-block';
 import '../src/gl-wc.js';
 import { listGroups } from '../src/presets/index.js';
 
-// Theme + light/dark are driven entirely through vanilla-breeze's own model:
-// data-theme selects the brand palette, data-mode selects light/dark/auto.
-// vanilla-breeze observes those attributes and lazy-loads the matching theme
-// CSS from window.__VB_THEME_BASE (set in the page <head>; served by the
-// vb-themes plugin in vite.site.config.js). gl-wc then reads the resulting
-// --color-* tokens via shadow-DOM inheritance.
+// Theme + light/dark are owned by vanilla-breeze's <theme-picker> (accent color
+// + Auto/Light/Dark + density), which persists the visitor's choice. gl-wc just
+// reads the resulting --color-* tokens via shadow-DOM inheritance. We only nudge
+// the first-load default to dark (where the presets look most vivid) — see below.
+// `palette` and `motion` below are gl-wc-specific attributes, not VB theming.
 
 const grid = document.getElementById('grid');
 const tabsHost = document.getElementById('groupTabs');
-const themeSel = document.getElementById('themeSelect');
-const modeSel = document.getElementById('modeSelect');
 const paletteSel = document.getElementById('paletteSelect');
 const motionSel = document.getElementById('motionSelect');
 
@@ -94,24 +91,23 @@ for (const g of groups) {
 
 renderGroup(groups[0].id);
 
-// vanilla-breeze resets data-mode to the system default during its own init
-// (which can run after this module), so assert the gallery's chosen default
-// appearance from the controls, and re-assert once after load so dark wins.
-// Switching themes/modes afterward just updates the attributes; VB's observer
-// loads the theme CSS and applies the light/dark tokens.
-function applyAppearance() {
-  document.documentElement.dataset.theme = themeSel.value;
-  document.documentElement.dataset.mode = modeSel.value;
+// First-load default: prefer dark (presets pop on dark backgrounds). theme-picker
+// starts in "auto" until the visitor chooses, so only override that implicit
+// default — an explicit Light/Dark choice (persisted by theme-picker) is left
+// untouched. Runs after load so theme-picker has initialized its controls.
+function preferDarkByDefault() {
+  const picker = document.querySelector('theme-picker');
+  const checked = picker && picker.querySelector('input[type="radio"]:checked');
+  if (checked && checked.value === 'auto') {
+    const dark = picker.querySelector('input[type="radio"][value="dark"]');
+    if (dark) dark.click();
+    else document.documentElement.dataset.mode = 'dark';
+  } else if (!picker) {
+    document.documentElement.dataset.mode = 'dark';
+  }
 }
-applyAppearance();
-window.addEventListener('load', applyAppearance);
+window.addEventListener('load', preferDarkByDefault);
 
-themeSel.addEventListener('change', () => {
-  document.documentElement.dataset.theme = themeSel.value;
-});
-modeSel.addEventListener('change', () => {
-  document.documentElement.dataset.mode = modeSel.value;
-});
 paletteSel.addEventListener('change', () => {
   for (const el of document.querySelectorAll('gl-wc')) el.setAttribute('palette', paletteSel.value);
 });

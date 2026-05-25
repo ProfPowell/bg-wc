@@ -1,75 +1,39 @@
 <!doctype html>
-<html lang="en" data-theme="dracula" data-mode="dark">
+<html lang="en" data-mode="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>gl-wc — preset gallery</title>
   <meta name="description" content="Theme-aware graphics-layer web component: animated WebGL and Canvas2D backgrounds for any HTML.">
-  <!-- Tell vanilla-breeze where its theme CSS is served (see vite.site.config.js).
-       Must run before vanilla-breeze initializes, so it sits here, not in the module. -->
+  <!-- Where vanilla-breeze's <theme-picker> loads brand-theme CSS (served by
+       vite.site.config.js). Must run before vanilla-breeze initializes. -->
   <script>
     window.__VB_THEME_BASE = new URL('../vb', document.baseURI).href.replace(/\/$/, '');
   </script>
   <link rel="stylesheet" href="./site.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <h1>&lt;gl-wc&gt;</h1>
-      <p>Theme-aware graphics-layer web component</p>
-    </div>
-    <div class="controls">
-      <label>Theme
-        <select id="themeSelect">
-          <optgroup label="Core">
-            <option value="classic">Classic</option>
-            <option value="modern">Modern</option>
-          </optgroup>
-          <optgroup label="Showcase">
-            <option value="cyber">Cyber</option>
-            <option value="brutalist">Brutalist</option>
-            <option value="genai">GenAI</option>
-            <option value="editorial">Editorial</option>
-          </optgroup>
-          <optgroup label="Community">
-            <option value="dracula" selected>Dracula</option>
-            <option value="nord">Nord</option>
-            <option value="gruvbox">Gruvbox</option>
-            <option value="financial">Financial</option>
-          </optgroup>
-        </select>
-      </label>
-      <label>Mode
-        <select id="modeSelect">
-          <option value="auto">Auto</option>
-          <option value="light">Light</option>
-          <option value="dark" selected>Dark</option>
-        </select>
-      </label>
-      <label>Palette
-        <select id="paletteSelect">
-          <option value="theme">theme</option>
-          <option value="rainbow">rainbow</option>
-          <option value="mono">mono</option>
-        </select>
-      </label>
-      <label>Motion
-        <select id="motionSelect">
-          <option value="auto">auto</option>
-          <option value="reduce">reduce</option>
-          <option value="force">force</option>
-        </select>
-      </label>
-      <a class="repo" href="./api.html">Docs &rarr;</a>
-      <a class="repo" href="../demos/">Themed demos &rarr;</a>
-      <a class="repo" href="https://github.com/ProfPowell/gl-wc" target="_blank" rel="noopener">GitHub &rarr;</a>
-    </div>
+  <header class="site" data-sticky data-layout="cluster" data-layout-justify="between" data-layout-gap="m">
+    <a href="./" class="brand"><strong>&lt;gl-wc&gt;</strong></a>
+    <nav class="horizontal pills" aria-label="Site">
+      <ul>
+        <li><a href="./api.html">Docs</a></li>
+        <li><a href="../demos/">Demos</a></li>
+        <li><a href="https://github.com/ProfPowell/gl-wc" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+    <theme-picker compact>
+      <button type="button" data-trigger class="ghost">
+        <icon-wc name="palette" size="sm"></icon-wc>
+        Theme
+      </button>
+    </theme-picker>
   </header>
 
-  <main>
+  <main data-layout="stack" data-layout-gap="l">
     <section class="hero">
       <gl-wc preset="mesh-gradient" intensity="0.65" speed="1" density="0.5" id="heroBg">
-        <div class="hero-inner">
+        <div class="hero-inner" data-layout="stack" data-layout-gap="s">
           <h2>Animated backgrounds for any HTML</h2>
           <p>
             Dozens of presets across WebGL and Canvas2D. Reads your design tokens via
@@ -80,15 +44,33 @@
       </gl-wc>
     </section>
 
-    <div class="gallery-head">
-      <h3 class="section-title">Preset gallery</h3>
+    <section data-layout="stack" data-layout-gap="s">
+      <div class="gallery-head" data-layout="cluster" data-layout-justify="between" data-layout-gap="m">
+        <h2>Preset gallery</h2>
+        <div class="controls" data-layout="cluster" data-layout-gap="s">
+          <label>Palette
+            <select id="paletteSelect">
+              <option value="theme">theme</option>
+              <option value="rainbow">rainbow</option>
+              <option value="mono">mono</option>
+            </select>
+          </label>
+          <label>Motion
+            <select id="motionSelect">
+              <option value="auto">auto</option>
+              <option value="reduce">reduce</option>
+              <option value="force">force</option>
+            </select>
+          </label>
+        </div>
+      </div>
       <div class="group-tabs" id="groupTabs" role="tablist" aria-label="Preset groups"></div>
-    </div>
-    <p class="gallery-note">Showing one group at a time keeps the page under the browser's WebGL context limit &mdash; switch groups to load the rest.</p>
-    <div class="grid" id="grid"></div>
+      <p class="muted">Showing one group at a time keeps the page under the browser's WebGL context limit — switch groups to load the rest.</p>
+      <div class="grid" id="grid"></div>
+    </section>
 
-    <section class="snippet">
-      <h3 class="section-title">Quick start</h3>
+    <section class="snippet" data-layout="stack" data-layout-gap="s">
+      <h2>Quick start</h2>
       <code-block language="html">&lt;script type="module" src="https://unpkg.com/@profpowell/gl-wc"&gt;&lt;/script&gt;
 
 &lt;gl-wc preset="dither" intensity="0.7"&gt;
@@ -96,7 +78,7 @@
   &lt;img slot="fallback" src="hero.webp" alt=""&gt;
 &lt;/gl-wc&gt;</code-block>
       <p class="muted">
-        Tokens consumed: <code>--color-background</code>, <code>--color-foreground</code>,
+        Tokens consumed: <code>--color-background</code>, <code>--color-text</code>,
         <code>--color-primary</code>, <code>--color-accent</code>, <code>--color-info</code>,
         <code>--color-success</code>, <code>--color-warning</code>, <code>--color-error</code>.
         Override any with <code>--gl-wc-color-*</code>.
@@ -104,8 +86,8 @@
     </section>
   </main>
 
-  <footer>
-    <p>MIT &middot; <a href="https://github.com/ProfPowell/gl-wc">ProfPowell/gl-wc</a></p>
+  <footer data-layout="cluster" data-layout-justify="center" data-layout-gap="s">
+    <p>MIT · <a href="https://github.com/ProfPowell/gl-wc">ProfPowell/gl-wc</a></p>
   </footer>
 
   <script type="module" src="./gallery.js"></script>

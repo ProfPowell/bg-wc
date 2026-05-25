@@ -1,26 +1,34 @@
 <!doctype html>
-<html lang="en" data-theme="dracula" data-mode="dark">
+<html lang="en" data-mode="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>gl-wc &mdash; docs</title>
   <meta name="description" content="API reference for the gl-wc web component: attributes, properties, methods, events, custom properties, presets, and the data-bg behavior.">
-  <!-- Tell vanilla-breeze where its theme CSS is served (see vite.site.config.js). -->
+  <!-- Where vanilla-breeze's <theme-picker> loads brand-theme CSS (served by
+       vite.site.config.js). Must run before vanilla-breeze initializes. -->
   <script>
     window.__VB_THEME_BASE = new URL('../vb', document.baseURI).href.replace(/\/$/, '');
   </script>
   <link rel="stylesheet" href="./site.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="crumb">
-      <a href="./index.html">Gallery</a>
-      <span class="sep">/</span>
-      <a href="../demos/">Demos</a>
-      <span class="sep">/</span>
-      <span>Docs</span>
-    </div>
-    <a class="repo" href="https://github.com/ProfPowell/gl-wc" target="_blank" rel="noopener">GitHub &rarr;</a>
+  <header class="site" data-sticky data-layout="cluster" data-layout-justify="between" data-layout-gap="m">
+    <a href="./index.html" class="brand"><strong>&lt;gl-wc&gt;</strong></a>
+    <nav class="horizontal pills" aria-label="Site">
+      <ul>
+        <li><a href="./index.html">Gallery</a></li>
+        <li><a href="../demos/">Demos</a></li>
+        <li><a href="./api.html" aria-current="page">Docs</a></li>
+        <li><a href="https://github.com/ProfPowell/gl-wc" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+    <theme-picker compact>
+      <button type="button" data-trigger class="ghost">
+        <icon-wc name="palette" size="sm"></icon-wc>
+        Theme
+      </button>
+    </theme-picker>
   </header>
 
   <!-- Hero — uses data-bg to demo the binder it documents. -->
