@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Desktop &mdash; gl-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Bliss reads info=sky-blue, primary=hill-green, bg=light horizon */
+      --color-background: #cdeaff;
+      --color-foreground: #1a1a1a;
+      --color-primary: #6ab04c;
+      --color-accent: #ffffff;
+      --color-info: #2a6dd6;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; overflow: hidden; }
+    body { font-family: 'Inter', "Segoe UI", Tahoma, sans-serif; min-height: 100vh; background: #2a6dd6; }
+
+    .screen { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+    gl-wc.wallpaper { position: absolute; inset: 0; z-index: 0; }
+
+    /* desktop icons */
+    .icons { position: absolute; top: 18px; left: 16px; z-index: 2; display: flex; flex-direction: column; gap: 22px; }
+    .icon { width: 76px; text-align: center; color: #fff; font-size: 12px; text-shadow: 0 1px 3px rgba(0,0,0,0.7); cursor: default; }
+    .icon .glyph { width: 42px; height: 42px; margin: 0 auto 6px; border-radius: 8px;
+      background: linear-gradient(135deg, #fff, #cfe3ff); border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3); display: grid; place-items: center; font-size: 22px; }
+
+    /* a classic window */
+    .window {
+      position: absolute; z-index: 3; left: 50%; top: 46%; transform: translate(-50%, -50%);
+      width: min(560px, 84vw); border-radius: 8px 8px 6px 6px; overflow: hidden;
+      box-shadow: 0 18px 50px -10px rgba(0,0,0,0.5);
+      border: 1px solid #0a3b8c;
+    }
+    .titlebar {
+      background: linear-gradient(180deg, #3a8bf0, #1a5fd0 8%, #1856c4);
+      color: #fff; font-weight: 700; font-size: 14px;
+      padding: 7px 10px; display: flex; align-items: center; gap: 8px;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+    }
+    .titlebar .ico { width: 16px; height: 16px; border-radius: 3px; background: linear-gradient(135deg,#ffe07a,#ff9a3c); }
+    .titlebar .btns { margin-left: auto; display: flex; gap: 4px; }
+    .titlebar .btns b { width: 20px; height: 18px; border-radius: 3px; background: #2f6fd6; border: 1px solid #9cc3ff;
+      display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+    .titlebar .btns b.x { background: #e0573e; border-color: #ffb09c; }
+    .winbody { background: #ece9d8; padding: 18px 18px 22px; color: #1a1a1a; }
+    .winbody h2 { margin: 0 0 8px; font-size: 17px; }
+    .winbody p { margin: 0 0 12px; font-size: 13.5px; line-height: 1.55; }
+    .winbody code { font-family: ui-monospace, monospace; background: #fff; border: 1px solid #c9c4b0; padding: 1px 6px; border-radius: 3px; }
+    .winbody .row { display: flex; gap: 8px; justify-content: flex-end; }
+    .winbody button {
+      font: inherit; font-size: 13px; padding: 5px 16px; border-radius: 4px;
+      border: 1px solid #8a8a6a; background: linear-gradient(180deg,#fdfdf8,#dcd8c4); cursor: pointer;
+    }
+
+    /* taskbar */
+    .taskbar {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 38px; z-index: 5;
+      background: linear-gradient(180deg, #3f93f5, #1659c6 9%, #1f63cf);
+      display: flex; align-items: center; gap: 10px; padding-right: 10px;
+      box-shadow: 0 -1px 4px rgba(0,0,0,0.4);
+    }
+    .start {
+      height: 100%; display: flex; align-items: center; gap: 8px; padding: 0 22px 0 14px;
+      background: linear-gradient(180deg,#5db553,#3f9e36 10%,#2f8f2a);
+      color: #fff; font-style: italic; font-weight: 700; font-size: 16px;
+      border-radius: 0 14px 14px 0; text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+    }
+    .start .orb { width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff, #d9ffd0 40%, #4caf50); }
+    .clock { margin-left: auto; color: #fff; font-size: 13px; background: #1856c4; padding: 4px 12px; border-radius: 4px; }
+
+    .nav { position: absolute; top: 14px; right: 16px; z-index: 6; }
+    .nav a { color: #fff; text-decoration: none; font-size: 12px; letter-spacing: 0.16em; text-shadow: 0 1px 3px rgba(0,0,0,0.6); opacity: 0.85; }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <gl-wc class="wallpaper" preset="bliss" intensity="0.7" density="0.5" speed="0.5"></gl-wc>
+
+    <div class="icons">
+      <div class="icon"><div class="glyph">&#128193;</div>My Presets</div>
+      <div class="icon"><div class="glyph">&#127912;</div>gl-wc</div>
+      <div class="icon"><div class="glyph">&#128465;</div>Recycle</div>
+    </div>
+
+    <section class="window">
+      <div class="titlebar">
+        <span class="ico"></span> gl-wc.exe &mdash; Display Properties
+        <span class="btns"><b>_</b><b>&#9633;</b><b class="x">&times;</b></span>
+      </div>
+      <div class="winbody">
+        <h2>Background</h2>
+        <p>Your desktop is rendered by <code>&lt;gl-wc preset="bliss"&gt;</code> &mdash; rolling
+          hills, a gradient sky, and drifting clouds, all from the theme tokens. No wallpaper file.</p>
+        <p>Pick another preset any time. It even pauses when the screen saver kicks in.</p>
+        <div class="row">
+          <button>Apply</button><button>OK</button>
+        </div>
+      </div>
+    </section>
+
+    <nav class="nav"><a href="./">&larr; demos</a></nav>
+
+    <div class="taskbar">
+      <div class="start"><span class="orb"></span> start</div>
+      <div class="clock">2:06 PM</div>
+    </div>
+  </main>
+  <script type="module" src="../src/gl-wc.js"></script>
+</body>
+</html>

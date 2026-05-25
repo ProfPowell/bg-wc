@@ -3,3 +3,7 @@ node_modules/
 *.log
 dist/
 .cache/
+dist-site/
+.idea/
+playwright-report/
+test-results/

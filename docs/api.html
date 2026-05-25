@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en" data-theme="midnight">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>gl-wc &mdash; docs</title>
+  <meta name="description" content="API reference for the gl-wc web component: attributes, properties, methods, events, custom properties, presets, and the data-bg behavior.">
+  <link rel="stylesheet" href="./site.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="crumb">
+      <a href="./index.html">Gallery</a>
+      <span class="sep">/</span>
+      <a href="../demos/">Demos</a>
+      <span class="sep">/</span>
+      <span>Docs</span>
+    </div>
+    <a class="repo" href="https://github.com/ProfPowell/gl-wc" target="_blank" rel="noopener">GitHub &rarr;</a>
+  </header>
+
+  <!-- Hero — uses data-bg to demo the binder it documents. -->
+  <section class="hero" data-bg="mesh-gradient" data-bg-intensity="0.65" data-bg-speed="0.35">
+    <div class="hero-inner">
+      <div class="eyebrow">v0.2 &middot; integration-tier web component</div>
+      <h1>&lt;gl-wc&gt;</h1>
+      <p class="lede">
+        Theme-aware graphics-layer web component. Renders an animated WebGL or
+        Canvas2D background behind any HTML content, opting into the right
+        renderer per preset. Reads design tokens via shadow-DOM inheritance &mdash;
+        no build coupling.
+      </p>
+      <div class="meta-row">
+        <span class="chip">55 presets</span>
+        <span class="chip">WebGL + Canvas2D</span>
+        <span class="chip">MIT</span>
+        <span class="chip">Zero deps</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="content">
+
+    <!-- 1. Where to find it ----------------------------------- -->
+    <section id="install">
+      <h2>Install</h2>
+      <div class="grid-2">
+        <div>
+          <h3>npm</h3>
+          <code-block theme="dark" language="bash">npm install @profpowell/gl-wc</code-block>
+          <p class="muted">
+            Then import the element. The component self-registers as
+            <code>&lt;gl-wc&gt;</code> on import.
+          </p>
+          <code-block theme="dark" language="javascript">import '@profpowell/gl-wc';</code-block>
+        </div>
+        <div>
+          <h3>From source / CDN</h3>
+          <code-block theme="dark" language="html">&lt;script type="module"
+        src="https://unpkg.com/@profpowell/gl-wc"&gt;
+&lt;/script&gt;</code-block>
+          <p class="muted">
+            Or vendor the <code>src/</code> directory and reference it directly &mdash;
+            it ships as plain ES modules with no build step.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Quick start ---------------------------------------- -->
+    <section id="quick-start">
+      <h2>Quick start</h2>
+      <p>
+        Drop the element on any page that defines the usual VB color tokens
+        (<code>--color-primary</code>, <code>--color-accent</code>, &hellip;).
+        The component reads them at frame time.
+      </p>
+      <code-block theme="dark" language="html">&lt;gl-wc preset="mesh-gradient" intensity="0.65"&gt;
+  &lt;h1&gt;Hero headline&lt;/h1&gt;
+  &lt;p&gt;Content sits above the rendered layer in the light DOM.&lt;/p&gt;
+  &lt;img slot="fallback" src="hero.webp" alt=""&gt;
+&lt;/gl-wc&gt;</code-block>
+      <p class="muted">
+        Nothing required beyond the <code>preset</code> attribute. The
+        <code>fallback</code> slot shows when <code>prefers-reduced-motion: reduce</code>
+        is active and the chosen preset has no <code>staticFrame()</code>.
+      </p>
+    </section>
+
+    <!-- 3. data-bg behavior ----------------------------------- -->
+    <section id="data-bg" data-bg="aurora" data-bg-intensity="0.7" data-bg-speed="0.3">
+      <div class="boxed">
+        <h2>data-bg behavior</h2>
+        <p>
+          For pages that don't want to introduce a new custom element into
+          their markup, import the optional <code>data-bg</code> binder. It
+          scans for elements with a <code>data-bg</code> attribute and
+          injects a <code>&lt;gl-wc&gt;</code> behind that element's content
+          via <code>z-index: -1</code> inside an isolated stacking context.
+          The namespace is distinct from VB's <code>data-effect</code>, so
+          the two can coexist on the same element.
+        </p>
+        <code-block theme="dark" language="javascript">import '@profpowell/gl-wc/data-bg';</code-block>
+        <code-block theme="dark" language="html">&lt;section
+  data-bg="aurora"
+  data-bg-intensity="0.7"
+  data-bg-speed="0.3"
+  data-bg-color-1="#4dffa1"&gt;
+  &lt;h1&gt;Northern lights, behind anything.&lt;/h1&gt;
+  &lt;p&gt;Existing children stay put; gl-wc slides in behind.&lt;/p&gt;
+&lt;/section&gt;</code-block>
+        <h3>Attribute mapping</h3>
+        <p>
+          <code>data-bg</code> is the preset name. Any other key starting with
+          <code>data-bg-</code> maps to the corresponding gl-wc attribute &mdash; or, for
+          color overrides, the corresponding <code>--gl-wc-color-*</code> custom
+          property:
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>data-bg-*</th><th>Maps to</th></tr></thead>
+            <tbody>
+              <tr><td><code>data-bg</code></td><td>The <code>preset</code> attribute. Required.</td></tr>
+              <tr><td><code>data-bg-intensity</code></td><td><code>intensity</code> attribute</td></tr>
+              <tr><td><code>data-bg-speed</code></td><td><code>speed</code></td></tr>
+              <tr><td><code>data-bg-density</code></td><td><code>density</code></td></tr>
+              <tr><td><code>data-bg-seed</code></td><td><code>seed</code></td></tr>
+              <tr><td><code>data-bg-palette</code></td><td><code>palette</code></td></tr>
+              <tr><td><code>data-bg-quality</code></td><td><code>quality</code></td></tr>
+              <tr><td><code>data-bg-fit</code></td><td><code>fit</code></td></tr>
+              <tr><td><code>data-bg-motion</code></td><td><code>motion</code></td></tr>
+              <tr><td><code>data-bg-paused</code></td><td><code>paused</code></td></tr>
+              <tr><td><code>data-bg-pixel-ratio</code></td><td><code>pixel-ratio</code></td></tr>
+              <tr><td><code>data-bg-color-1</code></td><td><code>--gl-wc-color-1</code> CSS var</td></tr>
+              <tr><td><code>data-bg-color-2</code></td><td><code>--gl-wc-color-2</code></td></tr>
+              <tr><td><code>data-bg-color-3</code></td><td><code>--gl-wc-color-3</code></td></tr>
+              <tr><td><code>data-bg-color-bg</code></td><td><code>--gl-wc-color-bg</code></td></tr>
+              <tr><td><code>data-bg-color-fg</code></td><td><code>--gl-wc-color-fg</code></td></tr>
+              <tr><td><code>data-bg-skip</code></td><td>Presence skips binding (escape hatch).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted">
+          New elements added to the page after first paint are auto-bound via
+          a <code>MutationObserver</code>. To bind manually after disabling that
+          observer (or in an SSR context), call
+          <code>bindDataBackgrounds(root)</code> after import.
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. Attributes ---------------------------------------- -->
+    <section id="attributes">
+      <h2>Attributes</h2>
+      <p>
+        All attributes are observed; changes after first render are applied
+        without re-init for cheap params, and trigger a renderer swap for
+        <code>preset</code>.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Attribute</th><th>Type / values</th><th>Default</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><code>preset</code></td><td>preset name</td><td>&mdash;</td><td>Required. See the <a href="#presets">catalog</a>.</td></tr>
+            <tr><td><code>palette</code></td><td><code>"theme"</code> | <code>"rainbow"</code> | <code>"mono"</code></td><td><code>"theme"</code></td><td>Honored by <code>particles</code> most strongly.</td></tr>
+            <tr><td><code>intensity</code></td><td><code>0..1</code></td><td><code>0.5</code></td><td>Preset-specific "how dramatic" knob.</td></tr>
+            <tr><td><code>speed</code></td><td><code>0..5</code></td><td><code>1</code></td><td>Time multiplier. <code>0</code> freezes.</td></tr>
+            <tr><td><code>density</code></td><td><code>0..1</code></td><td><code>0.5</code></td><td>Particle count / shader detail.</td></tr>
+            <tr><td><code>seed</code></td><td>integer</td><td><code>0</code></td><td>Deterministic randomness. Useful for screenshots.</td></tr>
+            <tr><td><code>paused</code></td><td>boolean</td><td>unset</td><td>Pauses the RAF loop without unmounting.</td></tr>
+            <tr><td><code>pixel-ratio</code></td><td>number</td><td><code>min(devicePixelRatio, 2)</code></td><td>Lower it for cheaper rendering on big screens.</td></tr>
+            <tr><td><code>quality</code></td><td><code>"low"</code> | <code>"med"</code> | <code>"high"</code></td><td><code>"med"</code></td><td>Renderer-level hint.</td></tr>
+            <tr><td><code>fit</code></td><td><code>"cover"</code> | <code>"contain"</code> | <code>"stretch"</code></td><td><code>"cover"</code></td><td>How the surface sizes inside the host.</td></tr>
+            <tr><td><code>motion</code></td><td><code>"auto"</code> | <code>"reduce"</code> | <code>"force"</code></td><td><code>"auto"</code></td><td><code>auto</code> honors <code>prefers-reduced-motion</code>.</td></tr>
+            <tr><td><code>text</code></td><td>string</td><td>&mdash;</td><td>Payload for text presets (crawl / marquee / sinescroll / cascade). Lines split on <code>|</code>. Read fresh each frame.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. Properties & methods ------------------------------- -->
+    <section id="js-surface">
+      <h2>Properties &amp; methods</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Member</th><th>Type</th><th>Behavior</th></tr></thead>
+          <tbody>
+            <tr><td><code>.preset</code></td><td>string</td><td>Reflects the <code>preset</code> attribute.</td></tr>
+            <tr><td><code>.paused</code></td><td>boolean</td><td>Reflects the <code>paused</code> attribute.</td></tr>
+            <tr><td><code>.pause()</code></td><td><code>() =&gt; void</code></td><td>Pauses the render loop.</td></tr>
+            <tr><td><code>.resume()</code></td><td><code>() =&gt; void</code></td><td>Resumes the render loop.</td></tr>
+            <tr><td><code>.snapshot()</code></td><td><code>() =&gt; Promise&lt;Blob&gt;</code></td><td>Returns a PNG snapshot of the current frame.</td></tr>
+            <tr><td><code>.ready</code></td><td><code>Promise&lt;void&gt;</code></td><td>Resolves when the active preset's first frame has rendered.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <code-block theme="dark" language="javascript">const el = document.querySelector('gl-wc');
+await el.ready;
+const blob = await el.snapshot();
+const url = URL.createObjectURL(blob);
+console.log('PNG ready:', url);</code-block>
+    </section>
+
+    <!-- 6. Events --------------------------------------------- -->
+    <section id="events">
+      <h2>Events</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Event</th><th>Detail</th><th>When</th></tr></thead>
+          <tbody>
+            <tr><td><code>gl-wc:ready</code></td><td><code>{ preset, renderer }</code></td><td>First frame rendered.</td></tr>
+            <tr><td><code>gl-wc:preset-changed</code></td><td><code>{ from, to }</code></td><td>After a successful preset swap.</td></tr>
+            <tr><td><code>gl-wc:error</code></td><td><code>{ phase, error }</code></td><td>Compile, load, or runtime error. Element transitions to the fallback slot.</td></tr>
+            <tr><td><code>gl-wc:visibility</code></td><td><code>{ visible: boolean }</code></td><td>IntersectionObserver gate flipped.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <code-block theme="dark" language="javascript">el.addEventListener('gl-wc:ready', (e) =&gt; {
+  console.log('preset:', e.detail.preset, 'renderer:', e.detail.renderer);
+});</code-block>
+    </section>
+
+    <!-- 7. CSS custom properties ------------------------------ -->
+    <section id="custom-properties">
+      <h2>CSS custom properties</h2>
+      <p>
+        Tokens are read once per frame via <code>getComputedStyle()</code> &mdash;
+        theme switches reflect within one RAF tick without re-init.
+      </p>
+      <h3>Tokens the component reads</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Token</th><th>Used for</th><th>Fallback</th></tr></thead>
+          <tbody>
+            <tr><td><code>--color-background</code></td><td>Canvas backdrop / clear color</td><td><code>transparent</code></td></tr>
+            <tr><td><code>--color-foreground</code></td><td>Default particle / line color</td><td><code>#1a1a1a</code></td></tr>
+            <tr><td><code>--color-primary</code></td><td>Primary tint in shaders</td><td><code>#3b82f6</code></td></tr>
+            <tr><td><code>--color-accent</code></td><td>Accent tint</td><td><code>#ec4899</code></td></tr>
+            <tr><td><code>--color-info</code></td><td>Tertiary tint (<code>mesh-gradient</code>, <code>aurora</code>, &hellip;)</td><td><code>#10b981</code></td></tr>
+            <tr><td><code>--color-success</code></td><td>Confetti palette</td><td><code>#22c55e</code></td></tr>
+            <tr><td><code>--color-warning</code></td><td>Confetti palette</td><td><code>#f59e0b</code></td></tr>
+            <tr><td><code>--color-error</code></td><td>Confetti palette</td><td><code>#ef4444</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Component-namespaced overrides</h3>
+      <p>
+        For when you want to feed a specific value without changing the global
+        theme. Each one wins over the corresponding semantic token for that
+        instance:
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Override</th><th>Beats</th></tr></thead>
+          <tbody>
+            <tr><td><code>--gl-wc-color-1</code></td><td><code>--color-primary</code></td></tr>
+            <tr><td><code>--gl-wc-color-2</code></td><td><code>--color-accent</code></td></tr>
+            <tr><td><code>--gl-wc-color-3</code></td><td><code>--color-info</code></td></tr>
+            <tr><td><code>--gl-wc-color-bg</code></td><td><code>--color-background</code></td></tr>
+            <tr><td><code>--gl-wc-color-fg</code></td><td><code>--color-foreground</code></td></tr>
+            <tr><td><code>--gl-wc-speed</code></td><td><code>speed</code> attribute</td></tr>
+            <tr><td><code>--gl-wc-density</code></td><td><code>density</code></td></tr>
+            <tr><td><code>--gl-wc-intensity</code></td><td><code>intensity</code></td></tr>
+            <tr><td><code>--gl-wc-pixel-ratio</code></td><td><code>pixel-ratio</code></td></tr>
+            <tr><td><code>--gl-wc-z-index</code></td><td>Internal canvas stacking</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Shadow parts</h3>
+      <p>
+        The internal <code>&lt;canvas&gt;</code> is exposed as <code>part="canvas"</code>:
+      </p>
+      <code-block theme="dark" language="css">gl-wc::part(canvas) {
+  image-rendering: pixelated;       /* useful for the retro look */
+  filter: hue-rotate(20deg);
+}</code-block>
+    </section>
+
+    <!-- 8. Preset catalog ------------------------------------- -->
+    <section id="presets">
+      <h2>Preset catalog</h2>
+      <p>
+        Each preset is its own dynamic import &mdash; loaded once on first use and
+        cached. The kernel ships only the element class, the RAF loop, the
+        renderer wrappers, and the token resolver.
+      </p>
+      <h3>WebGL shader presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>dither</code></td><td>Animated halftone between two colors</td><td>primary, accent</td></tr>
+            <tr><td><code>noise</code></td><td>Drifting fractal noise, two-color tint</td><td>foreground, background</td></tr>
+            <tr><td><code>mesh-gradient</code></td><td>Stripe-style soft blob hero</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>warp</code></td><td>Displacement-warped grid</td><td>primary, background</td></tr>
+            <tr><td><code>waves</code></td><td>Four sine-displaced color bands</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>lava</code></td><td>Metaball lava lamp</td><td>primary, accent, background</td></tr>
+            <tr><td><code>plasma</code></td><td>Demoscene plasma, sum of sines</td><td>primary, accent, info</td></tr>
+            <tr><td><code>aurora</code></td><td>Vertical curtain noise + baseline ribbon</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>tunnel</code></td><td>Infinite polar zoom with ring banding</td><td>primary, accent, background</td></tr>
+            <tr><td><code>caustics</code></td><td>Warped sin/cos fields for bright veins</td><td>primary, accent, background</td></tr>
+            <tr><td><code>glitch</code></td><td>RGB-shift datamosh with per-row displacement</td><td>primary, accent, background</td></tr>
+            <tr><td><code>rainbow</code></td><td>Flowing spectral hue sweep (owns its palette)</td><td>&mdash; (not theme-tinted)</td></tr>
+            <tr><td><code>halftone</code></td><td>Rotated dot-grid halftone over an animated tone</td><td>primary, background</td></tr>
+            <tr><td><code>kaleidoscope</code></td><td>Mirrored angular folds with a rotating pattern</td><td>primary, accent, info</td></tr>
+            <tr><td><code>vhs</code></td><td>80s analog video: wobble, chroma bleed, tracking noise</td><td>primary, accent, background</td></tr>
+            <tr><td><code>synthwave</code></td><td>Outrun neon perspective grid + banded sun</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>crt</code></td><td>CRT tube: barrel curve, scanlines, RGB phosphor mask</td><td>primary, accent, background</td></tr>
+            <tr><td><code>gameboy</code></td><td>4-tone handheld with ordered dither + pixelation</td><td>primary, background</td></tr>
+            <tr><td><code>copperbars</code></td><td>Amiga demoscene metallic copper bars</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>topology</code></td><td>Animated topographic contour lines</td><td>primary, accent, background</td></tr>
+            <tr><td><code>cells</code></td><td>Animated Voronoi cells with darkened borders</td><td>primary, accent, background</td></tr>
+            <tr><td><code>shine</code></td><td>Diagonal sheen sweep over a quiet gradient</td><td>primary, accent, background</td></tr>
+            <tr><td><code>conic</code></td><td>Rotating angular gradient (spotlight border / loader)</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>grain</code></td><td>Film-grain overlay; transparent, blend over content</td><td>&mdash; (monochrome speckle)</td></tr>
+            <tr><td><code>trench</code></td><td>Death Star trench run: square perspective corridor</td><td>primary, accent, background</td></tr>
+            <tr><td><code>marble</code></td><td>Domain-warped marble veins (mallsoft / luxe)</td><td>primary, accent, background</td></tr>
+            <tr><td><code>benday</code></td><td>Pop-art Ben-Day dots over flat color blocks</td><td>primary, accent, info</td></tr>
+            <tr><td><code>comic</code></td><td>Pop-art radial action burst + shock rings</td><td>primary, accent, info</td></tr>
+            <tr><td><code>deco</code></td><td>Art-deco sunburst rays (Nagel / Gatsby)</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>bliss</code></td><td>Windows-XP hills, sky, drifting clouds</td><td>primary, info, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Vector / arcade presets (Canvas2D)</h3>
+      <p>Glowing phosphor lines on a dark field &mdash; the Vectrex / arcade-vector look.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>asteroids</code></td><td>Drifting, rotating wireframe rocks</td><td>primary, background</td></tr>
+            <tr><td><code>wireframe</code></td><td>Rotating wireframe globe + equatorial trench</td><td>primary, accent, background</td></tr>
+            <tr><td><code>spirograph</code></td><td>Animated hypotrochoid rosettes</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>incoming</code></td><td>Wireframe ships warping toward a turret crosshair</td><td>primary, accent, background</td></tr>
+            <tr><td><code>tempest</code></td><td>Tempest polygonal tube: spokes + receding rings</td><td>primary, accent, info, background</td></tr>
+            <tr><td><code>fireworks</code></td><td>Vector fireball bursts (Star Wars arcade)</td><td>primary, accent, info, semantic palette</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Text presets (Canvas2D)</h3>
+      <p>Type as the background. Set the copy with the <code>text</code> attribute; all honor <code>palette="rainbow|theme|mono"</code>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>crawl</code></td><td>Star Wars-style perspective text crawl</td><td>primary, foreground, background</td></tr>
+            <tr><td><code>marquee</code></td><td>Scrolling vector ticker (outline type)</td><td>primary, accent, info, foreground</td></tr>
+            <tr><td><code>sinescroll</code></td><td>Demoscene sine-wave scroller</td><td>primary, accent, info, foreground</td></tr>
+            <tr><td><code>cascade</code></td><td>Letters drop &amp; bounce in, hold, loop</td><td>primary, accent, info, foreground</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Dataviz presets (Canvas2D)</h3>
+      <p>Animated chart backgrounds — pair with an opaque content panel on top.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>trades</code></td><td>Trading terminal: scrolling ticker columns + candles</td><td>primary, success, error, foreground</td></tr>
+            <tr><td><code>dashboard</code></td><td>Streaming area-line, bouncing bars, sweep gauge</td><td>primary, accent, info, foreground</td></tr>
+            <tr><td><code>vectormap</code></td><td>Node map with arcs + traveling packets</td><td>primary, accent, info, foreground</td></tr>
+            <tr><td><code>scatter</code></td><td>Drifting clusters of varied vector glyphs</td><td>primary, accent, info, foreground</td></tr>
+            <tr><td><code>waveform</code></td><td>Stacked waveform ridgelines (Joy-Division plot)</td><td>primary, accent, background</td></tr>
+            <tr><td><code>wordcloud</code></td><td>Drifting, breathing word cloud (reads <code>text</code>)</td><td>primary, accent, info</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Canvas2D particle presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>stars</code></td><td>Slow-drifting starfield (parallax at intensity &gt; 0.5)</td><td>foreground, background</td></tr>
+            <tr><td><code>snow</code></td><td>Falling flakes with horizontal drift</td><td>foreground, background</td></tr>
+            <tr><td><code>confetti</code></td><td>Continuous drop in semantic palette</td><td>primary, accent, success, warning, error</td></tr>
+            <tr><td><code>network</code></td><td>Connected-dots mesh</td><td>primary, foreground</td></tr>
+            <tr><td><code>particles</code></td><td>Generic drift &mdash; honors <code>palette</code>.</td><td>per palette</td></tr>
+            <tr><td><code>pulse</code></td><td>Concentric rings from center</td><td>primary, accent, info</td></tr>
+            <tr><td><code>tetris</code></td><td>Ambient falling tetrominoes</td><td>primary, accent, info, success, warning, error</td></tr>
+            <tr><td><code>matrix</code></td><td>Falling digital rain with glyph trails</td><td>primary, foreground, background</td></tr>
+            <tr><td><code>mystify</code></td><td>Windows "Mystify" bouncing polyline screensaver</td><td>primary, accent, info, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 9. Reduced motion ------------------------------------- -->
+    <section id="reduced-motion">
+      <h2>Reduced motion</h2>
+      <p>
+        <code>prefers-reduced-motion: reduce</code> triggers the same code
+        path as <code>motion="reduce"</code> on the element:
+      </p>
+      <ol class="ordered">
+        <li>If the <code>fallback</code> slot has content &rarr; show the slot, hide the canvas.</li>
+        <li>Else if the preset declares a <code>staticFrame()</code> method &rarr; render one frame at <code>time=0, seed=seed</code>, then halt the RAF loop.</li>
+        <li>Else &rarr; hide the canvas and let the host's CSS background show through.</li>
+      </ol>
+      <p>All shipped presets implement <code>staticFrame()</code>.</p>
+    </section>
+
+    <!-- 10. Performance --------------------------------------- -->
+    <section id="performance">
+      <h2>Performance</h2>
+      <ul class="checks">
+        <li>Default <code>pixel-ratio</code> clamps to <code>min(devicePixelRatio, 2)</code>. 5K monitors don't pay the full GPU bill by default.</li>
+        <li>Frame budget target: under 4&thinsp;ms / frame on an M1-class device at 1080p for any v1 preset.</li>
+        <li>Particle counts: preset-specific caps of ~500 (med), ~1500 (high), ~150 (low).</li>
+        <li>Each element runs its own RAF loop &mdash; auto-paused when off-screen, when the tab is hidden, when battery is below 20% and unplugged, and on <code>prefers-reduced-motion</code>.</li>
+        <li>Each preset is dynamically imported on first use, so a page that uses one preset doesn't ship the others.</li>
+      </ul>
+
+      <h3>Many instances on one page</h3>
+      <p>
+        Browsers cap simultaneous <strong>WebGL</strong> contexts (commonly ~16). Each
+        shader-preset <code>&lt;gl-wc&gt;</code> holds one context, so a page that mounts
+        more than that at once (a full catalog grid, a poster wall) will see the
+        browser drop the oldest contexts. Canvas2D presets are not affected.
+      </p>
+      <p>Two ways to stay under the cap:</p>
+      <ul class="checks">
+        <li><strong>Unmount what's not shown.</strong> Removing a <code>&lt;gl-wc&gt;</code> from the DOM frees its context immediately &mdash; <code>disconnectedCallback</code> calls <code>WEBGL_lose_context</code>. Group presets behind tabs and mount only the active group (see the <a href="./index.html">gallery</a>); switching tabs releases the old contexts before the new ones allocate.</li>
+        <li><strong>Group the catalog.</strong> The registry tags each preset with a <code>group</code>; <code>listGroups()</code> returns them as <code>{ id, label, presets }</code> so tooling can build a grouped UI without loading any preset modules.</li>
+      </ul>
+      <code-block theme="dark" language="javascript">import { listGroups } from '@profpowell/gl-wc/presets/index.js';
+
+for (const { id, label, presets } of listGroups()) {
+  console.log(label, presets.map(p =&gt; p.name));
+}
+// Gradients   ['mesh-gradient','waves','plasma','rainbow','shine']
+// Patterns    ['dither','halftone','warp','topology','cells','kaleidoscope']
+// …</code-block>
+    </section>
+
+    <!-- 11. Recipes ------------------------------------------ -->
+    <section id="recipes">
+      <h2>Recipes</h2>
+
+      <h3>Halftone overlay on flat shapes</h3>
+      <code-block theme="dark" language="html">&lt;div class="poster"&gt;
+  &lt;svg class="shapes"&gt;...&lt;/svg&gt;
+  &lt;gl-wc preset="noise" intensity="0.7"
+         style="position:absolute; inset:0;
+                mix-blend-mode:multiply; opacity:0.18;
+                --gl-wc-color-fg:#000; --gl-wc-color-bg:#fff;"&gt;
+  &lt;/gl-wc&gt;
+&lt;/div&gt;</code-block>
+
+      <h3>Two layered presets (aurora behind stars)</h3>
+      <code-block theme="dark" language="html">&lt;div class="sky"&gt;
+  &lt;gl-wc preset="aurora"&gt;&lt;/gl-wc&gt;
+  &lt;gl-wc preset="stars"
+         style="--gl-wc-color-bg: transparent;"&gt;&lt;/gl-wc&gt;
+&lt;/div&gt;</code-block>
+      <p class="muted">
+        The top layer must declare a transparent background or its
+        Canvas2D <code>clearRect</code> + bg-fill will mask the layer below.
+      </p>
+
+      <h3>Section background via data-bg</h3>
+      <code-block theme="dark" language="html">&lt;section
+  data-bg="caustics"
+  data-bg-intensity="0.8"
+  data-bg-density="0.45"
+  data-bg-speed="0.55"&gt;
+  &lt;h1&gt;Six metres down.&lt;/h1&gt;
+&lt;/section&gt;</code-block>
+
+      <h3>Hot-swap presets at runtime</h3>
+      <code-block theme="dark" language="javascript">el.setAttribute('preset', 'plasma');
+await el.ready;          // resolves once the new preset's first frame renders
+console.log(el.preset);  // 'plasma'</code-block>
+
+      <h3>Snapshot to file</h3>
+      <code-block theme="dark" language="javascript">const blob = await el.snapshot();
+const a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = `${el.preset}.png`;
+a.click();</code-block>
+
+      <h3>Conic spotlight border</h3>
+      <p>Put a <code>conic</code> behind a panel inset by a hair; only the rim shows, so the border sweeps with light. No <code>@property</code> shim required.</p>
+      <code-block theme="dark" language="html">&lt;div class="glow-card"&gt;
+  &lt;gl-wc preset="conic" speed="1.6"&gt;&lt;/gl-wc&gt;
+  &lt;div class="inner"&gt;Card content&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+.glow-card { position: relative; border-radius: 18px; padding: 1.5px; overflow: hidden; isolation: isolate; }
+.glow-card &gt; gl-wc { position: absolute; inset: -60%; z-index: 0; } /* oversize so corners stay covered */
+.glow-card .inner { position: relative; z-index: 1; background: var(--surface); border-radius: 16.5px; padding: 28px; }
+&lt;/style&gt;</code-block>
+
+      <h3>Scroll-linked background</h3>
+      <p>The component re-reads <code>--gl-wc-intensity</code> / <code>--gl-wc-speed</code> (and color tokens) every frame, so driving them from a scroll handler is all it takes.</p>
+      <code-block theme="dark" language="javascript">const hero = document.querySelector('gl-wc');
+addEventListener('scroll', () =&gt; {
+  const p = Math.min(1, scrollY / innerHeight);
+  hero.style.setProperty('--gl-wc-intensity', (0.45 + p * 0.5).toFixed(3));
+  hero.style.filter = `hue-rotate(${Math.round(p * 80)}deg)`;
+}, { passive: true });</code-block>
+
+      <h3>Whole-page film grain</h3>
+      <code-block theme="dark" language="html">&lt;gl-wc preset="grain" intensity="0.5"
+       style="position:fixed; inset:0; z-index:100;
+              pointer-events:none; mix-blend-mode:soft-light; opacity:0.6;"&gt;
+&lt;/gl-wc&gt;</code-block>
+    </section>
+
+    <!-- 12. Browser support ----------------------------------- -->
+    <section id="support">
+      <h2>Browser support</h2>
+      <p>
+        Targets Chromium, Firefox, and Safari at current stable versions.
+        Requires WebGL1 (universally available) for shader presets;
+        Canvas2D presets work anywhere a custom element is registered.
+      </p>
+      <p>Optional features and their graceful degradations:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Feature</th><th>Fallback if unavailable</th></tr></thead>
+          <tbody>
+            <tr><td><code>WebGL2</code></td><td>WebGL1 context attempted automatically.</td></tr>
+            <tr><td><code>OffscreenCanvas</code></td><td>Main-thread rendering. No behavioral change.</td></tr>
+            <tr><td><code>navigator.getBattery()</code></td><td>Battery-aware pause is skipped.</td></tr>
+            <tr><td><code>backdrop-filter</code></td><td>Glass effects in some demos lose blur; layout intact.</td></tr>
+            <tr><td><code>ElementInternals.states</code></td><td><code>:focus-within</code> child-focus state is skipped.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>MIT &middot; <a href="https://github.com/ProfPowell/gl-wc">ProfPowell/gl-wc</a> &middot; <a href="./index.html">Gallery</a> &middot; <a href="../demos/">Demos</a></p>
+  </footer>
+
+  <!-- Single docs entry module: registers vanilla-breeze + the code-block
+       component (which renders the snippets above) and imports the data-bg
+       binder, which auto-binds the hero's mesh-gradient and the aurora
+       section above. The code-block:not(:defined) CSS keeps snippets legible
+       until the component registers. -->
+  <script type="module" src="./docs-entry.js"></script>
+</body>
+</html>

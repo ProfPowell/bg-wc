@@ -4,18 +4,26 @@ Theme-aware graphics-layer web component. Renders an animated WebGL or
 Canvas2D background behind any HTML content, picking the right renderer
 per preset.
 
-Vanilla JS. No build step. Reads design tokens (`--color-primary`,
-`--color-accent`, …) via shadow-DOM inheritance — no coupling to any
-particular CSS system.
+Vanilla JS — consumers get zero-config ESM from `dist/`; the repo builds
+with Vite. Reads design tokens (`--color-primary`, `--color-accent`, …)
+via shadow-DOM inheritance — no coupling to any particular CSS system.
 
 ```html
-<script type="module" src="./src/gl-wc.js"></script>
+<script type="module">
+  import '@profpowell/gl-wc';
+</script>
 
 <gl-wc preset="mesh-gradient" intensity="0.65">
   <h1>Hero headline</h1>
   <p>This content sits above the rendered layer.</p>
   <img slot="fallback" src="hero-static.webp" alt="">
 </gl-wc>
+```
+
+## Install
+
+```sh
+npm install @profpowell/gl-wc
 ```
 
 ## Live demo
@@ -47,20 +55,16 @@ See [`spec.md`](./spec.md) for the full design — public API, lifecycle
 events, accessibility posture, performance budgets, and the reduced-motion
 contract.
 
-## Run the test site locally
-
-The `/site` folder imports the component from `../src/gl-wc.js`. Serve the
-repo root with any static server and open `/site/`:
+## Run the site locally
 
 ```sh
-npx serve .
-# or
-python3 -m http.server
-# then visit http://localhost:8000/site/
+npm install
+npm run dev   # opens the gallery at /docs/index.html
 ```
 
-A GitHub Action (`.github/workflows/deploy-pages.yml`) assembles `dist/`
-on push to `main` and publishes it to GitHub Pages.
+Build the deployable site with `npm run build:site` (output in `dist-site/`).
+The GitHub Action (`.github/workflows/deploy-pages.yml`) runs this on push to
+`main` and publishes to GitHub Pages.
 
 ## License
 

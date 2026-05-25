@@ -56,7 +56,7 @@ const COLOR_MAPPING = {
   accent:  { token: '--color-accent',     override: '--gl-wc-color-2' },
   info:    { token: '--color-info',       override: '--gl-wc-color-3' },
   bg:      { token: '--color-background', override: '--gl-wc-color-bg' },
-  fg:      { token: '--color-foreground', override: '--gl-wc-color-fg' },
+  fg:      { token: ['--color-foreground', '--color-text'], override: '--gl-wc-color-fg' },
   success: { token: '--color-success',    override: null },
   warning: { token: '--color-warning',    override: null },
   error:   { token: '--color-error',      override: null },
