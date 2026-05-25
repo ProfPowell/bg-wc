@@ -9,20 +9,17 @@ import '@profpowell/code-block';
 import '../src/gl-wc.js';
 import { listGroups } from '../src/presets/index.js';
 
-const THEME_CSS = {
-  classic: () => import('vanilla-breeze/themes/classic'),
-  dawn: () => import('vanilla-breeze/themes/dawn'),
-  midnight: () => import('vanilla-breeze/themes/midnight'),
-  clinical: () => import('vanilla-breeze/themes/clinical'),
-};
-async function applyTheme(name) {
-  await THEME_CSS[name]?.();
-  document.documentElement.dataset.theme = name;
-}
+// Theme + light/dark are driven entirely through vanilla-breeze's own model:
+// data-theme selects the brand palette, data-mode selects light/dark/auto.
+// vanilla-breeze observes those attributes and lazy-loads the matching theme
+// CSS from window.__VB_THEME_BASE (set in the page <head>; served by the
+// vb-themes plugin in vite.site.config.js). gl-wc then reads the resulting
+// --color-* tokens via shadow-DOM inheritance.
 
 const grid = document.getElementById('grid');
 const tabsHost = document.getElementById('groupTabs');
 const themeSel = document.getElementById('themeSelect');
+const modeSel = document.getElementById('modeSelect');
 const paletteSel = document.getElementById('paletteSelect');
 const motionSel = document.getElementById('motionSelect');
 
@@ -96,9 +93,25 @@ for (const g of groups) {
 }
 
 renderGroup(groups[0].id);
-applyTheme(themeSel.value);
 
-themeSel.addEventListener('change', () => applyTheme(themeSel.value));
+// vanilla-breeze resets data-mode to the system default during its own init
+// (which can run after this module), so assert the gallery's chosen default
+// appearance from the controls, and re-assert once after load so dark wins.
+// Switching themes/modes afterward just updates the attributes; VB's observer
+// loads the theme CSS and applies the light/dark tokens.
+function applyAppearance() {
+  document.documentElement.dataset.theme = themeSel.value;
+  document.documentElement.dataset.mode = modeSel.value;
+}
+applyAppearance();
+window.addEventListener('load', applyAppearance);
+
+themeSel.addEventListener('change', () => {
+  document.documentElement.dataset.theme = themeSel.value;
+});
+modeSel.addEventListener('change', () => {
+  document.documentElement.dataset.mode = modeSel.value;
+});
 paletteSel.addEventListener('change', () => {
   for (const el of document.querySelectorAll('gl-wc')) el.setAttribute('palette', paletteSel.value);
 });

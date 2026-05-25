@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 // Product-site + demos multi-page build. Bare imports (vanilla-breeze,
 // @profpowell/code-block) resolve from node_modules — no CDN.
@@ -37,10 +38,40 @@ const pagefindStub = {
   },
 };
 
+// vanilla-breeze's ThemeManager lazy-loads brand themes from
+// `${window.__VB_THEME_BASE}/themes/<name>.css` (set in each page's <head> to
+// resolve to the site-root `vb/` dir). Serve vanilla-breeze's real theme CSS at
+// `/vb/themes/*.css` — in dev via middleware, in the build via emitted assets —
+// so the full theme catalog loads natively with no CDN dependency or 404.
+const VB_THEMES_DIR = 'node_modules/vanilla-breeze/dist/cdn/themes';
+const vbThemes = {
+  name: 'gl-wc:vb-themes',
+  configureServer(server) {
+    server.middlewares.use((req, res, next) => {
+      const m = req.url && req.url.match(/^\/vb\/themes\/([\w-]+\.css)(?:\?.*)?$/);
+      if (!m) return next();
+      try {
+        res.setHeader('Content-Type', 'text/css');
+        res.end(readFileSync(join(VB_THEMES_DIR, m[1])));
+      } catch {
+        next();
+      }
+    });
+  },
+  generateBundle() {
+    if (!existsSync(VB_THEMES_DIR)) return;
+    for (const f of readdirSync(VB_THEMES_DIR)) {
+      if (f.endsWith('.css')) {
+        this.emitFile({ type: 'asset', fileName: `vb/themes/${f}`, source: readFileSync(join(VB_THEMES_DIR, f)) });
+      }
+    }
+  },
+};
+
 export default defineConfig({
   root: '.',
   base: './',
-  plugins: [pagefindStub],
+  plugins: [pagefindStub, vbThemes],
   build: {
     outDir: 'dist-site',
     emptyOutDir: true,

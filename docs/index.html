@@ -1,10 +1,15 @@
 <!doctype html>
-<html lang="en" data-theme="midnight">
+<html lang="en" data-theme="dracula" data-mode="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>gl-wc — preset gallery</title>
-  <meta name="description" content="Theme-aware graphics-layer web component. Nine WebGL and Canvas2D presets.">
+  <meta name="description" content="Theme-aware graphics-layer web component: animated WebGL and Canvas2D backgrounds for any HTML.">
+  <!-- Tell vanilla-breeze where its theme CSS is served (see vite.site.config.js).
+       Must run before vanilla-breeze initializes, so it sits here, not in the module. -->
+  <script>
+    window.__VB_THEME_BASE = new URL('../vb', document.baseURI).href.replace(/\/$/, '');
+  </script>
   <link rel="stylesheet" href="./site.css">
 </head>
 <body>
@@ -16,10 +21,29 @@
     <div class="controls">
       <label>Theme
         <select id="themeSelect">
-          <option value="classic">Classic</option>
-          <option value="dawn">Dawn</option>
-          <option value="midnight" selected>Midnight</option>
-          <option value="clinical">High contrast</option>
+          <optgroup label="Core">
+            <option value="classic">Classic</option>
+            <option value="modern">Modern</option>
+          </optgroup>
+          <optgroup label="Showcase">
+            <option value="cyber">Cyber</option>
+            <option value="brutalist">Brutalist</option>
+            <option value="genai">GenAI</option>
+            <option value="editorial">Editorial</option>
+          </optgroup>
+          <optgroup label="Community">
+            <option value="dracula" selected>Dracula</option>
+            <option value="nord">Nord</option>
+            <option value="gruvbox">Gruvbox</option>
+            <option value="financial">Financial</option>
+          </optgroup>
+        </select>
+      </label>
+      <label>Mode
+        <select id="modeSelect">
+          <option value="auto">Auto</option>
+          <option value="light">Light</option>
+          <option value="dark" selected>Dark</option>
         </select>
       </label>
       <label>Palette
@@ -48,7 +72,7 @@
         <div class="hero-inner">
           <h2>Animated backgrounds for any HTML</h2>
           <p>
-            Nine presets across WebGL and Canvas2D. Reads your design tokens via
+            Dozens of presets across WebGL and Canvas2D. Reads your design tokens via
             shadow-DOM inheritance. Auto-pauses off-screen and on tab hide.
           </p>
           <code>&lt;gl-wc preset="mesh-gradient" intensity="0.65"&gt;…&lt;/gl-wc&gt;</code>

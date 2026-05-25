@@ -1,10 +1,14 @@
 <!doctype html>
-<html lang="en" data-theme="midnight">
+<html lang="en" data-theme="dracula" data-mode="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>gl-wc &mdash; docs</title>
   <meta name="description" content="API reference for the gl-wc web component: attributes, properties, methods, events, custom properties, presets, and the data-bg behavior.">
+  <!-- Tell vanilla-breeze where its theme CSS is served (see vite.site.config.js). -->
+  <script>
+    window.__VB_THEME_BASE = new URL('../vb', document.baseURI).href.replace(/\/$/, '');
+  </script>
   <link rel="stylesheet" href="./site.css">
 </head>
 <body>
