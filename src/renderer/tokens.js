@@ -21,28 +21,23 @@ export function parseColor(str) {
   if (!key || key === 'transparent') return [0, 0, 0, 0];
   const hit = cache.get(key);
   if (hit) return hit;
-  if (!probeCtx) probeCtx = document.createElement('canvas').getContext('2d');
-  // Two assignments: first ensures fallback if second is invalid (fillStyle keeps prior value on bad input).
+  if (!probeCtx) {
+    probeCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+  }
+  // Render the color to a 1×1 pixel and read it back. Going through actual
+  // pixels (instead of parsing the serialized fillStyle string) handles every
+  // CSS color the browser can render — oklch/lab/lch/color()/hsl/named/hex/rgb.
+  // Design systems like vanilla-breeze express tokens as oklch(), which the old
+  // string parser collapsed to black: fillStyle serializes it back as
+  // "oklch(...)", matching neither the #hex nor the rgb() branch. The two
+  // fillStyle assignments keep #000 when `key` is invalid (fillStyle retains its
+  // prior value on bad input), so unparseable colors stay black rather than throw.
+  probeCtx.clearRect(0, 0, 1, 1);
   probeCtx.fillStyle = '#000';
   probeCtx.fillStyle = key;
-  const norm = probeCtx.fillStyle;
-  let rgba;
-  if (norm.startsWith('#')) {
-    rgba = [
-      parseInt(norm.slice(1, 3), 16) / 255,
-      parseInt(norm.slice(3, 5), 16) / 255,
-      parseInt(norm.slice(5, 7), 16) / 255,
-      1,
-    ];
-  } else {
-    const m = norm.match(/rgba?\(([^)]+)\)/);
-    if (!m) {
-      rgba = [0, 0, 0, 1];
-    } else {
-      const p = m[1].split(',').map((s) => parseFloat(s));
-      rgba = [p[0] / 255, p[1] / 255, p[2] / 255, p[3] == null ? 1 : p[3]];
-    }
-  }
+  probeCtx.fillRect(0, 0, 1, 1);
+  const d = probeCtx.getImageData(0, 0, 1, 1).data;
+  const rgba = [d[0] / 255, d[1] / 255, d[2] / 255, d[3] / 255];
   cache.set(key, rgba);
   return rgba;
 }
