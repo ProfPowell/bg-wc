@@ -16,7 +16,13 @@ The organizing model has two strata, applied symmetrically to every surface:
 - **Base — shipped by vanilla-breeze.** CSS-first, token-driven, themeable, zero/minimal JS. The common 80%. Same pattern as VB's existing extension tokens (`--glass-blur`, `--motion-hover-lift`).
 - **Extreme — opt-in packages you bring in.** The ambitious/heavy effects that need SVG, Canvas, or WebGL, packaged as standalone vanilla-breeze-friendly web components.
 
-**vanilla-breeze provides the shape; extreme packages lean into it.** VB defines the contract — the token vocabulary, attribute conventions, trigger model, reduced-motion rules, and (optionally) the shared geometry primitive. Extreme packages conform to that contract and extend it for theme or purpose. A page that only loads VB gets tasteful, themed decoration; a page that wants more pulls in `bg-wc`/`border-wc`/etc.
+**vanilla-breeze provides the shape; extreme packages lean into it.** VB defines the contract — the **complete token vocabulary**, attribute conventions, trigger model, reduced-motion rules, and (optionally) the shared geometry primitive. Extreme packages conform to that contract and extend it for theme or purpose. A page that only loads VB gets tasteful, themed decoration; a page that wants more pulls in `bg-wc`/`border-wc`/etc.
+
+Three rules make this precise:
+
+1. **VB is the single source of truth for tokens, and ships the *complete* set — even tokens only an extreme package consumes.** A theme can set any decorated-layer token and have it recognized whether or not the extreme package is loaded. The accepted downside: VB always carries the full token set, a small CSS-weight cost for users who never load the extras. This is deliberate — a stable, total token vocabulary is worth more than shaving bytes.
+2. **The base tier lives in VB.** The CSS-tier implementations for every surface ship in vanilla-breeze.
+3. **Each extreme package embeds its own copy of the base so it works standalone (without VB).** When both VB and a package are loaded, their base declarations coincide (same token names/defaults) and must not conflict — idempotent declarations, VB's theme values winning via the cascade. Implementation implication: the base should have a single authored source built into both VB and each package (not hand-duplicated and drifting).
 
 ## 2. The surface matrix
 
@@ -62,7 +68,9 @@ Every surface, in both strata, agrees on:
 - **`bg-wc`** — `gl-wc` renamed/repositioned (see §7). Paints the field; `data-background` injects it behind content (`z-index:-1`). 55 presets. npm `@profpowell/bg-wc`.
 - **`border-wc`** — new sibling repo `~/src/border-wc`. Paints the frame, heavy effects only. npm `@profpowell/border-wc`.
 - **Shared geometry** — `perimeterPath()`/`perimeterSampler()`, consumed by both. Decision pending: ship inside vanilla-breeze (as "the shape"), publish as its own micro-package, or vendor a copy in each. (Leaning: VB-provided, since VB "provides the shape.")
-- **vanilla-breeze** — gains base token categories for borders, scrollbars, cursors (per `borders-cursors-scrollbars.html`); already owns `data-effect`. Documents the family + lists the extreme packages on its integrations page (like browser-window).
+- **vanilla-breeze** — gains base token categories for borders, scrollbars, cursors (per `borders-cursors-scrollbars.html`); already owns `data-effect`. Ships the **complete** decorated-layer token vocabulary (including extreme-only tokens) and the base CSS tier. Documents the family + lists the extreme packages on its integrations page (like browser-window).
+
+**Standalone base.** `bg-wc` and `border-wc` each embed the base tier so they render correctly with no VB on the page. The base is one authored source compiled into both VB and the packages, so the duplication never drifts. Loaded together, the package's base and VB's base declare the same tokens; VB's theme values win via the cascade, package defaults fill gaps — no conflict.
 
 ## 6. Decomposition & sequencing
 
@@ -91,7 +99,7 @@ The border spec already calls gl-wc "`<bg-wc>` (formerly `<gl-wc>`)"; the rename
 ## 8. Open questions
 
 1. `data-border`: standalone binder (like `data-bg`), a VB-registry effect that injects `<border-wc>`, or both?
-2. Shared geometry primitive home: in vanilla-breeze vs its own micro-package vs vendored.
+2. Shared geometry primitive: follows the base rule (authored once, lives in VB as part of "the shape," embedded in `bg-wc`/`border-wc` for standalone). Confirm this is the right call for a JS utility (vs a tiny shared package) given VB is primarily CSS+components.
 3. `data-bg` → `data-background` rename: do it, or alias both forever?
 4. Does VB base ship a `data-background` *light* (CSS gradient/pattern backgrounds) so the background surface has a real base tier, or is background base just "set `background:`"?
 5. Family/package naming under `@profpowell/*`; whether "Decorated Layers" is a public name or an internal organizing term.

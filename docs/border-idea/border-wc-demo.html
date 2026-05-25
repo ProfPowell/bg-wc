@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>&lt;border-wc&gt; — specimen sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+
+<style>
+  :root {
+    --ink:        #181612;
+    --paper:      #f3ece0;
+    --paper-2:    #ebe2d2;
+    --rule:       #2a2520;
+    --muted:      #6b6258;
+    --accent-1:   #c33149;  /* crimson      */
+    --accent-2:   #1d4e89;  /* deep blue    */
+    --accent-3:   #b87333;  /* burnt copper */
+    --accent-4:   #3b6b3a;  /* moss         */
+    --accent-5:   #6a4c93;  /* royal violet */
+    --accent-6:   #d68c0c;  /* amber        */
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); }
+
+  body {
+    font-family: "Fraunces", "Iowan Old Style", Georgia, serif;
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 14, "SOFT" 50;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(195,49,73,0.06), transparent 50%),
+      radial-gradient(ellipse at 100% 100%, rgba(29,78,137,0.06), transparent 50%),
+      var(--paper);
+    min-height: 100vh;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 64px 32px 96px; }
+
+  header.masthead {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    gap: 24px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 64px;
+  }
+
+  .mark {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  h1 {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 400, "SOFT" 30;
+    font-size: clamp(48px, 7vw, 96px);
+    font-style: italic;
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  h1 code {
+    font-family: "JetBrains Mono", monospace;
+    font-style: normal;
+    font-size: 0.7em;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--accent-1);
+  }
+
+  .deck {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 460px;
+    font-style: italic;
+  }
+
+  /* gallery -------------------------------------------------- */
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 56px 40px;
+  }
+
+  figure.specimen {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* the bordered box itself — neutral container that lets the effect dominate */
+  border-wc {
+    min-height: 220px;
+    padding: 28px;
+    background: var(--paper-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  border-wc .quote {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 36, "wght" 350;
+    font-size: 22px;
+    line-height: 1.25;
+    font-style: italic;
+    color: var(--ink);
+    max-width: 28ch;
+  }
+
+  figcaption {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 14px;
+    border-top: 1px solid var(--rule);
+    padding-top: 12px;
+  }
+
+  figcaption .num {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  figcaption .name {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 24, "wght" 500;
+    font-style: italic;
+    font-size: 22px;
+  }
+
+  figcaption .syntax {
+    grid-column: 1 / -1;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--ink);
+    background: rgba(0,0,0,0.04);
+    padding: 8px 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  figcaption .syntax .attr { color: var(--accent-2); }
+  figcaption .syntax .val  { color: var(--accent-1); }
+
+  /* playground ---------------------------------------------- */
+
+  section.playground {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    gap: 48px;
+    align-items: start;
+  }
+
+  section.playground h2 {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 60, "wght" 450;
+    font-style: italic;
+    font-size: 40px;
+    margin: 0 0 24px;
+    grid-column: 1 / -1;
+  }
+
+  #stage {
+    min-height: 340px;
+    padding: 48px;
+    background: var(--paper-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  #stage .stagetext {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 60, "wght" 350;
+    font-style: italic;
+    font-size: 32px;
+    line-height: 1.15;
+    max-width: 22ch;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+  }
+
+  .ctrl { display: flex; flex-direction: column; gap: 6px; }
+  .ctrl label {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .ctrl select,
+  .ctrl input[type="text"],
+  .ctrl input[type="number"] {
+    font: inherit;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 8px 10px;
+    color: var(--ink);
+    border-radius: 0;
+  }
+  .ctrl input[type="range"] { accent-color: var(--ink); }
+  .ctrl .pair { display: grid; grid-template-columns: 1fr 48px; gap: 8px; align-items: center; }
+
+  .echo {
+    margin-top: 8px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .echo .attr { color: #a5d0ff; }
+  .echo .val { color: #ffb088; }
+
+  footer.colophon {
+    margin-top: 96px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 20px 64px; }
+    header.masthead { grid-template-columns: 1fr; gap: 16px; }
+    section.playground { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="mark">SPEC&nbsp;·&nbsp;01</div>
+    <h1>The shape <br/>around the <em>thing</em>. <code>&lt;border-wc&gt;</code></h1>
+    <div class="deck">
+      A platform-first border&nbsp;effects component. Six effects, four rendering layers, one dispatcher. Nothing built that the platform can't already render.
+    </div>
+  </header>
+
+  <section class="gallery">
+
+    <figure class="specimen">
+      <border-wc effect="gradient" color="#c33149" thickness="2">
+        <div class="quote">Borders are the loudest quiet thing on a page.</div>
+      </border-wc>
+      <figcaption>
+        <span class="num">01 / CSS</span>
+        <span class="name">Gradient</span>
+        <span class="syntax">&lt;border-wc <span class="attr">effect</span>=<span class="val">"gradient"</span> <span class="attr">color</span>=<span class="val">"#c33149"</span> <span class="attr">thickness</span>=<span class="val">"2"</span>&gt;</span>
+      </figcaption>
+    </figure>
+
+    <figure class="specimen">
+      <border-wc effect="glow" color="#1d4e89" thickness="2" animate>
+        <div class="quote">Light leaks. Embrace it.</div>
+      </border-wc>
+      <figcaption>
+        <span class="num">02 / CSS</span>
+        <span class="name">Glow</span>
+        <span class="syntax">&lt;border-wc <span class="attr">effect</span>=<span class="val">"glow"</span> <span class="attr">color</span>=<span class="val">"#1d4e89"</span> <span class="attr">animate</span>&gt;</span>
+      </figcaption>
+    </figure>
+
+    <figure class="specimen">
+      <border-wc effect="dash" color="#b87333" thickness="2" animate>
+        <div class="quote">The dotted line said yes.</div>
+      </border-wc>
+      <figcaption>
+        <span class="num">03 / CSS</span>
+        <span class="name">Marching dash</span>
+        <span class="syntax">&lt;border-wc <span class="attr">effect</span>=<span class="val">"dash"</span> <span class="attr">color</span>=<span class="val">"#b87333"</span> <span class="attr">animate</span>&gt;</span>
+      </figcaption>
+    </figure>
+
+    <figure class="specimen">
+      <border-wc effect="squiggle" color="#3b6b3a" thickness="2" animate>
+        <div class="quote">Drawn by a slightly nervous hand.</div>
+      </border-wc>
+      <figcaption>
+        <span class="num">04 / SVG</span>
+        <span class="name">Squiggle</span>
+        <span class="syntax">&lt;border-wc <span class="attr">effect</span>=<span class="val">"squiggle"</span> <span class="attr">color</span>=<span class="val">"#3b6b3a"</span> <span class="attr">animate</span>&gt;</span>
+      </figcaption>
+    </figure>
+
+    <figure class="specimen">
+      <border-wc effect="draw" color="#6a4c93" thickness="2" speed="2000">
+        <div class="quote">First a line, then a frame.</div>
+      </border-wc>
+      <figcaption>
+        <span class="num">05 / SVG</span>
+        <span class="name">Draw</span>
+        <span class="syntax">&lt;border-wc <span class="attr">effect</span>=<span class="val">"draw"</span> <span class="attr">color</span>=<span class="val">"#6a4c93"</span> <span class="attr">speed</span>=<span class="val">"2000"</span>&gt;</span>
+      </figcaption>
+    </figure>
+
+    <figure class="specimen">
+      <border-wc effect="sparks" color="#d68c0c" thickness="2">
+        <div class="quote">A small fire goes around forever.</div>
+      </border-wc>
+      <figcaption>
+        <span class="num">06 / CANVAS</span>
+        <span class="name">Sparks</span>
+        <span class="syntax">&lt;border-wc <span class="attr">effect</span>=<span class="val">"sparks"</span> <span class="attr">color</span>=<span class="val">"#d68c0c"</span>&gt;</span>
+      </figcaption>
+    </figure>
+
+  </section>
+
+  <section class="playground">
+    <h2>Playground</h2>
+
+    <border-wc id="stage" effect="squiggle" color="#c33149" thickness="2" animate>
+      <div class="stagetext">Twist the knobs. Watch the edge.</div>
+    </border-wc>
+
+    <div class="controls">
+      <div class="ctrl">
+        <label for="c-effect">effect</label>
+        <select id="c-effect">
+          <option value="gradient">gradient</option>
+          <option value="glow">glow</option>
+          <option value="dash">dash</option>
+          <option value="squiggle" selected>squiggle</option>
+          <option value="draw">draw</option>
+          <option value="sparks">sparks</option>
+        </select>
+      </div>
+
+      <div class="ctrl">
+        <label for="c-color">color</label>
+        <input id="c-color" type="text" value="#c33149"/>
+      </div>
+
+      <div class="ctrl">
+        <label for="c-thick">thickness <span id="c-thick-v">2</span>px</label>
+        <input id="c-thick" type="range" min="1" max="8" step="1" value="2"/>
+      </div>
+
+      <div class="ctrl">
+        <label for="c-speed">speed <span id="c-speed-v">1000</span>ms</label>
+        <input id="c-speed" type="range" min="300" max="4000" step="100" value="1000"/>
+      </div>
+
+      <div class="ctrl">
+        <label><input id="c-animate" type="checkbox" checked/> animate</label>
+      </div>
+
+      <div class="echo" id="echo"></div>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <span>border-wc · proof-of-concept</span>
+    <span>vanilla · web platform · no build</span>
+  </footer>
+
+</div>
+
+<script>
+/* =====================================================================
+   <border-wc> — proof of concept
+   Architecture:
+     - Effect registry, each effect returns a cleanup function.
+     - CSS-only effects apply inline styles to the host.
+     - SVG/Canvas effects inject a pointer-events:none overlay.
+     - Resize is handled per-effect when geometry matters.
+   ===================================================================== */
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+// Properties we may write inline on the host; clear them between effects.
+const HOST_PROPS = [
+  "background", "background-clip", "-webkit-background-clip",
+  "background-origin", "background-image", "background-repeat",
+  "background-position", "background-size",
+  "box-shadow", "border", "animation", "border-radius"
+];
+
+const clearHost = (el) => {
+  HOST_PROPS.forEach((p) => el.style.removeProperty(p));
+  el.querySelectorAll(":scope > [data-border-wc]").forEach((n) => n.remove());
+};
+
+const overlay = (host) => {
+  // SVG overlay sized to the host
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("data-border-wc", "");
+  svg.setAttribute("width", "100%");
+  svg.setAttribute("height", "100%");
+  Object.assign(svg.style, {
+    position: "absolute",
+    inset: "0",
+    pointerEvents: "none",
+    overflow: "visible"
+  });
+  host.appendChild(svg);
+  return svg;
+};
+
+const canvasOverlay = (host) => {
+  const c = document.createElement("canvas");
+  c.setAttribute("data-border-wc", "");
+  Object.assign(c.style, {
+    position: "absolute",
+    inset: "0",
+    pointerEvents: "none",
+    width: "100%",
+    height: "100%"
+  });
+  host.appendChild(c);
+  return c;
+};
+
+const attrColor   = (el) => el.getAttribute("color")   || "#181612";
+const attrThick   = (el) => parseFloat(el.getAttribute("thickness")) || 2;
+const attrSpeed   = (el) => parseFloat(el.getAttribute("speed"))     || 1000;
+const attrRadius  = (el) => parseFloat(el.getAttribute("radius"))    || 0;
+const attrAnimate = (el) => el.hasAttribute("animate");
+
+/* ---------- effects ----------------------------------------------- */
+
+const EFFECTS = {
+
+  /* 01. Gradient — pure CSS, mask trick for any background */
+  gradient(host) {
+    const c   = attrColor(host);
+    const t   = attrThick(host);
+    // gradient runs across the border
+    host.style.setProperty("border", `${t}px solid transparent`);
+    host.style.setProperty("background-image",
+      `linear-gradient(var(--paper-2,#fff),var(--paper-2,#fff)),` +
+      `linear-gradient(135deg, ${c}, ${shift(c, 40)})`);
+    host.style.setProperty("background-origin", "border-box");
+    host.style.setProperty("background-clip", "padding-box, border-box");
+    return () => clearHost(host);
+  },
+
+  /* 02. Glow — stacked shadows + optional pulse */
+  glow(host) {
+    const c = attrColor(host);
+    const t = attrThick(host);
+    host.style.setProperty("box-shadow",
+      `0 0 0 ${t}px ${c},` +
+      `0 0 ${t * 6}px ${withAlpha(c, 0.6)},` +
+      `0 0 ${t * 18}px ${withAlpha(c, 0.35)}`);
+    if (attrAnimate(host)) {
+      const id = `glow-${uid()}`;
+      injectKeyframes(id, `
+        @keyframes ${id} {
+          0%,100% { box-shadow:
+            0 0 0 ${t}px ${c},
+            0 0 ${t*6}px ${withAlpha(c,0.6)},
+            0 0 ${t*18}px ${withAlpha(c,0.35)}; }
+          50%     { box-shadow:
+            0 0 0 ${t}px ${c},
+            0 0 ${t*12}px ${withAlpha(c,0.85)},
+            0 0 ${t*32}px ${withAlpha(c,0.55)}; }
+        }
+      `);
+      host.style.setProperty("animation", `${id} ${attrSpeed(host) * 2}ms ease-in-out infinite`);
+      return () => { clearHost(host); removeStyle(id); };
+    }
+    return () => clearHost(host);
+  },
+
+  /* 03. Dash — marching ants via four edge-gradients */
+  dash(host) {
+    const c = attrColor(host);
+    const t = attrThick(host);
+    const step = 16;
+    host.style.setProperty("background-image",
+      `linear-gradient(90deg, ${c} 50%, transparent 50%),` +
+      `linear-gradient(90deg, ${c} 50%, transparent 50%),` +
+      `linear-gradient(0deg,  ${c} 50%, transparent 50%),` +
+      `linear-gradient(0deg,  ${c} 50%, transparent 50%)`);
+    host.style.setProperty("background-repeat",
+      "repeat-x, repeat-x, repeat-y, repeat-y");
+    host.style.setProperty("background-size",
+      `${step}px ${t}px, ${step}px ${t}px, ${t}px ${step}px, ${t}px ${step}px`);
+    host.style.setProperty("background-position",
+      `0 0, 0 100%, 0 0, 100% 0`);
+    if (attrAnimate(host)) {
+      const id = `dash-${uid()}`;
+      injectKeyframes(id, `
+        @keyframes ${id} {
+          to { background-position:
+            ${step}px 0,
+            -${step}px 100%,
+            0 -${step}px,
+            100% ${step}px; }
+        }
+      `);
+      host.style.setProperty("animation", `${id} ${attrSpeed(host)}ms linear infinite`);
+      return () => { clearHost(host); removeStyle(id); };
+    }
+    return () => clearHost(host);
+  },
+
+  /* 04. Squiggle — SVG stroke + feTurbulence/feDisplacementMap */
+  squiggle(host) {
+    const c   = attrColor(host);
+    const t   = attrThick(host);
+    const r   = attrRadius(host) || 6;
+    const svg = overlay(host);
+    const id  = `sq-${uid()}`;
+
+    svg.innerHTML = `
+      <defs>
+        <filter id="${id}" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1" result="t"/>
+          <feDisplacementMap in="SourceGraphic" in2="t" scale="3"/>
+        </filter>
+      </defs>
+      <rect fill="none" stroke="${c}" stroke-width="${t}" rx="${r}" ry="${r}" filter="url(#${id})"/>
+    `;
+
+    const rect = svg.querySelector("rect");
+    const size = () => {
+      const w = host.clientWidth;
+      const h = host.clientHeight;
+      rect.setAttribute("x", t);
+      rect.setAttribute("y", t);
+      rect.setAttribute("width",  Math.max(0, w - t * 2));
+      rect.setAttribute("height", Math.max(0, h - t * 2));
+    };
+    size();
+    const ro = new ResizeObserver(size); ro.observe(host);
+
+    let raf = 0;
+    if (attrAnimate(host)) {
+      const turb = svg.querySelector("feTurbulence");
+      let seed = 1;
+      let last = 0;
+      const period = Math.max(60, attrSpeed(host) / 12);
+      const tick = (now) => {
+        if (now - last > period) {
+          turb.setAttribute("seed", String(seed = (seed + 1) % 1000));
+          last = now;
+        }
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }
+
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); svg.remove(); };
+  },
+
+  /* 05. Draw — SVG rect that strokes itself in via dashoffset */
+  draw(host) {
+    const c   = attrColor(host);
+    const t   = attrThick(host);
+    const r   = attrRadius(host) || 0;
+    const svg = overlay(host);
+    svg.innerHTML = `<rect fill="none" stroke="${c}" stroke-width="${t}" rx="${r}" ry="${r}"/>`;
+    const rect = svg.querySelector("rect");
+
+    let raf = 0;
+    const start = performance.now();
+    const dur   = attrSpeed(host);
+
+    const size = () => {
+      const w = host.clientWidth, h = host.clientHeight;
+      rect.setAttribute("x", t);
+      rect.setAttribute("y", t);
+      rect.setAttribute("width",  Math.max(0, w - t * 2));
+      rect.setAttribute("height", Math.max(0, h - t * 2));
+      const len = 2 * ((w - t * 2) + (h - t * 2));
+      rect.style.strokeDasharray  = `${len}`;
+      rect.style.strokeDashoffset = `${len}`;
+    };
+    size();
+    const ro = new ResizeObserver(size); ro.observe(host);
+
+    const tick = (now) => {
+      const w = host.clientWidth, h = host.clientHeight;
+      const len = 2 * ((w - t * 2) + (h - t * 2));
+      const k = Math.min(1, (now - start) / dur);
+      // ease-out cubic
+      const e = 1 - Math.pow(1 - k, 3);
+      rect.style.strokeDashoffset = `${len * (1 - e)}`;
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); svg.remove(); };
+  },
+
+  /* 06. Sparks — canvas particles orbiting the perimeter */
+  sparks(host) {
+    const c       = attrColor(host);
+    const radius  = 10;
+    const count   = 14;
+    const canvas  = canvasOverlay(host);
+    const ctx     = canvas.getContext("2d");
+
+    let W = 0, H = 0, dpr = 1;
+    const resize = () => {
+      dpr = devicePixelRatio || 1;
+      W = host.clientWidth;
+      H = host.clientHeight;
+      canvas.width  = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    const ro = new ResizeObserver(resize); ro.observe(host);
+
+    // particles spaced around the perimeter
+    const particles = Array.from({ length: count }, (_, i) => ({
+      t: i / count,
+      v: 0.00012 + Math.random() * 0.00008
+    }));
+
+    // sample a point at parametric position t [0,1] around a rounded rect
+    const point = (t, w, h, r) => {
+      const W2 = w - 2 * r, H2 = h - 2 * r;
+      const arc = (Math.PI * r) / 2;
+      const total = 2 * W2 + 2 * H2 + 4 * arc;
+      let d = t * total;
+      if (d < W2)               return [r + d, 0];                                          d -= W2;
+      if (d < arc)              { const a = -Math.PI/2 + d/r; return [w - r + r*Math.cos(a), r + r*Math.sin(a)]; } d -= arc;
+      if (d < H2)               return [w, r + d];                                          d -= H2;
+      if (d < arc)              { const a = 0 + d/r; return [w - r + r*Math.cos(a), h - r + r*Math.sin(a)]; }     d -= arc;
+      if (d < W2)               return [w - r - d, h];                                      d -= W2;
+      if (d < arc)              { const a = Math.PI/2 + d/r; return [r + r*Math.cos(a), h - r + r*Math.sin(a)]; } d -= arc;
+      if (d < H2)               return [0, h - r - d];                                      d -= H2;
+                                  { const a = Math.PI + d/r; return [r + r*Math.cos(a), r + r*Math.sin(a)]; }
+    };
+
+    let raf, prev = performance.now();
+    const tick = (now) => {
+      const dt = now - prev; prev = now;
+      ctx.clearRect(0, 0, W, H);
+      const r = Math.min(radius, W / 2, H / 2);
+
+      // glow first
+      ctx.save();
+      ctx.shadowColor = c;
+      ctx.shadowBlur  = 16;
+      ctx.fillStyle   = c;
+      for (const p of particles) {
+        p.t = (p.t + p.v * dt) % 1;
+        const [x, y] = point(p.t, W, H, r);
+        ctx.beginPath();
+        ctx.arc(x, y, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // trailing dot, no glow
+      ctx.fillStyle = c;
+      for (const p of particles) {
+        const [x, y] = point((p.t - 0.015 + 1) % 1, W, H, r);
+        ctx.globalAlpha = 0.35;
+        ctx.beginPath();
+        ctx.arc(x, y, 1.4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); canvas.remove(); };
+  }
+
+};
+
+/* ---------- helpers ----------------------------------------------- */
+
+const uid = () => Math.random().toString(36).slice(2, 8);
+
+function injectKeyframes(id, css) {
+  const s = document.createElement("style");
+  s.id = id;
+  s.textContent = css;
+  document.head.appendChild(s);
+}
+const removeStyle = (id) => document.getElementById(id)?.remove();
+
+// crude alpha override for any hex color
+function withAlpha(hex, a) {
+  const m = /^#?([\da-f]{6})$/i.exec(hex);
+  if (!m) return hex;
+  const v = parseInt(m[1], 16);
+  const r = (v >> 16) & 255, g = (v >> 8) & 255, b = v & 255;
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+// nudge hue for the gradient end stop
+function shift(hex, deg) {
+  const m = /^#?([\da-f]{6})$/i.exec(hex);
+  if (!m) return hex;
+  const v = parseInt(m[1], 16);
+  let r = (v >> 16) & 255, g = (v >> 8) & 255, b = v & 255;
+  // simple rgb→hsl→rgb hue shift
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0, l = (max + min) / 510;
+  const d = (max - min) / 255;
+  if (d) {
+    s = l > 0.5 ? d / (2 - max / 255 - min / 255) : d / (max / 255 + min / 255);
+    switch (max) {
+      case r: h = ((g - b) / 255) / d + (g < b ? 6 : 0); break;
+      case g: h = ((b - r) / 255) / d + 2; break;
+      case b: h = ((r - g) / 255) / d + 4; break;
+    }
+    h /= 6;
+  }
+  h = (h + deg / 360) % 1;
+  if (s === 0) { const c = Math.round(l * 255); return `rgb(${c},${c},${c})`; }
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const hue = (t) => {
+    if (t < 0) t += 1; if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  };
+  return `rgb(${Math.round(hue(h + 1/3) * 255)},${Math.round(hue(h) * 255)},${Math.round(hue(h - 1/3) * 255)})`;
+}
+
+/* ---------- element ----------------------------------------------- */
+
+class BorderWC extends HTMLElement {
+  static observedAttributes = ["effect", "color", "thickness", "speed", "radius", "animate"];
+
+  #cleanup = null;
+
+  connectedCallback() {
+    if (!this.style.position) this.style.position = "relative";
+    if (!this.style.display)  this.style.display  = "block";
+    this.#apply();
+  }
+  disconnectedCallback() { this.#teardown(); }
+  attributeChangedCallback() { if (this.isConnected) this.#apply(); }
+
+  #teardown() {
+    try { this.#cleanup?.(); } catch (e) { console.warn(e); }
+    this.#cleanup = null;
+    clearHost(this);
+  }
+  #apply() {
+    this.#teardown();
+    const fn = EFFECTS[this.getAttribute("effect") || "gradient"];
+    if (fn) this.#cleanup = fn(this);
+  }
+}
+customElements.define("border-wc", BorderWC);
+
+/* ---------- playground wiring ------------------------------------- */
+
+const stage    = document.getElementById("stage");
+const echo     = document.getElementById("echo");
+const cEffect  = document.getElementById("c-effect");
+const cColor   = document.getElementById("c-color");
+const cThick   = document.getElementById("c-thick");
+const cSpeed   = document.getElementById("c-speed");
+const cAnim    = document.getElementById("c-animate");
+const cThickV  = document.getElementById("c-thick-v");
+const cSpeedV  = document.getElementById("c-speed-v");
+
+function sync() {
+  stage.setAttribute("effect",    cEffect.value);
+  stage.setAttribute("color",     cColor.value);
+  stage.setAttribute("thickness", cThick.value);
+  stage.setAttribute("speed",     cSpeed.value);
+  cAnim.checked ? stage.setAttribute("animate", "") : stage.removeAttribute("animate");
+  cThickV.textContent = cThick.value;
+  cSpeedV.textContent = cSpeed.value;
+  renderEcho();
+}
+function renderEcho() {
+  const animPart = cAnim.checked ? ` <span class="attr">animate</span>` : "";
+  echo.innerHTML =
+    `&lt;border-wc <span class="attr">effect</span>=<span class="val">"${cEffect.value}"</span>
+            <span class="attr">color</span>=<span class="val">"${cColor.value}"</span>
+            <span class="attr">thickness</span>=<span class="val">"${cThick.value}"</span>
+            <span class="attr">speed</span>=<span class="val">"${cSpeed.value}"</span>${animPart}&gt;
+  &lt;!-- content --&gt;
+&lt;/border-wc&gt;`;
+}
+["change","input"].forEach((evt) => {
+  [cEffect, cColor, cThick, cSpeed, cAnim].forEach((el) => el.addEventListener(evt, sync));
+});
+sync();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>&lt;border-wc&gt; Effects Gallery</title>
+  <style>
+    @layer reset, tokens, base, components, effects, demo;
+
+    @layer reset {
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; }
+      button, input, select { font: inherit; }
+    }
+
+    @layer tokens {
+      :root {
+        color-scheme: dark;
+        --vb-font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --vb-bg: oklch(14% 0.035 265);
+        --vb-surface: oklch(22% 0.045 265 / 0.9);
+        --vb-surface-2: oklch(26% 0.055 265 / 0.82);
+        --vb-text: oklch(95% 0.025 260);
+        --vb-muted: oklch(76% 0.045 260);
+        --vb-line: oklch(100% 0 0 / 0.16);
+        --vb-accent-1: oklch(78% 0.18 200);
+        --vb-accent-2: oklch(76% 0.18 330);
+        --vb-accent-3: oklch(84% 0.18 96);
+        --vb-danger: oklch(68% 0.22 28);
+        --vb-good: oklch(78% 0.18 145);
+        --vb-radius: 1.35rem;
+        --vb-space: clamp(1rem, 2vw, 1.5rem);
+      }
+    }
+
+    @layer base {
+      body {
+        min-block-size: 100svh;
+        font-family: var(--vb-font-sans);
+        background:
+          radial-gradient(circle at 12% 8%, oklch(43% 0.2 295 / .24), transparent 28rem),
+          radial-gradient(circle at 88% 18%, oklch(54% 0.16 190 / .20), transparent 26rem),
+          radial-gradient(circle at 50% 100%, oklch(44% 0.18 130 / .16), transparent 30rem),
+          var(--vb-bg);
+        color: var(--vb-text);
+      }
+
+      main {
+        width: min(1220px, calc(100% - 2rem));
+        margin-inline: auto;
+        padding-block: clamp(2rem, 6vw, 5rem);
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      h1, h2, h3, p { margin-block: 0; }
+      h1 { font-size: clamp(2.4rem, 7vw, 6rem); line-height: .88; letter-spacing: -.075em; }
+      h2 { font-size: clamp(1.35rem, 3vw, 2rem); letter-spacing: -.035em; }
+      h3 { font-size: 1.05rem; letter-spacing: -.02em; }
+      p { color: var(--vb-muted); line-height: 1.65; max-inline-size: 72ch; }
+      code { color: var(--vb-accent-1); }
+    }
+
+    @layer components {
+      border-wc {
+        --border-size: .18rem;
+        --border-radius: var(--vb-radius);
+        --border-speed: 9s;
+        --border-blur: .45rem;
+        --border-alpha: .95;
+        --border-inner-bg: var(--vb-surface);
+        --border-c1: var(--vb-accent-1);
+        --border-c2: var(--vb-accent-2);
+        --border-c3: var(--vb-accent-3);
+        display: block;
+        position: relative;
+        border-radius: var(--border-radius);
+        padding: var(--border-size);
+        isolation: isolate;
+        overflow: clip;
+        transform: translateZ(0);
+      }
+
+      border-wc::before,
+      border-wc::after {
+        content: "";
+        position: absolute;
+        inset: -45%;
+        z-index: -2;
+        background: conic-gradient(from var(--border-angle, 0deg), var(--border-c1), var(--border-c2), var(--border-c3), var(--border-c1));
+        opacity: var(--border-alpha);
+        animation: border-spin var(--border-speed) linear infinite;
+      }
+
+      border-wc::after {
+        filter: blur(var(--border-blur));
+        opacity: calc(var(--border-alpha) * .62);
+      }
+
+      border-wc > .border-wc-inner {
+        min-block-size: 100%;
+        border-radius: calc(var(--border-radius) - var(--border-size));
+        background:
+          linear-gradient(180deg, oklch(100% 0 0 / .045), transparent 42%),
+          var(--border-inner-bg);
+        padding: var(--vb-space);
+        position: relative;
+        z-index: 1;
+      }
+
+      @property --border-angle {
+        syntax: "<angle>";
+        inherits: false;
+        initial-value: 0deg;
+      }
+
+      @keyframes border-spin { to { --border-angle: 360deg; } }
+      @keyframes border-pulse { 50% { filter: saturate(1.7) brightness(1.25); } }
+      @keyframes border-jitter {
+        0%, 100% { transform: translate(0, 0) skew(0deg); }
+        12% { transform: translate(.5rem, -.15rem) skew(1deg); }
+        14% { transform: translate(-.35rem, .1rem) skew(-1deg); }
+        18% { transform: translate(.15rem, .25rem); }
+        20% { transform: translate(0, 0); }
+      }
+      @keyframes border-fuzz {
+        from { transform: rotate(0deg) scale(1.04); filter: blur(.22rem) contrast(1.35); }
+        to { transform: rotate(360deg) scale(1.08); filter: blur(.42rem) contrast(1.9); }
+      }
+      @keyframes grass-sway {
+        0%, 100% { transform: translateY(.15rem) skewX(-3deg); }
+        50% { transform: translateY(-.25rem) skewX(3deg); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        border-wc::before,
+        border-wc::after,
+        border-wc [data-grass]::before,
+        border-wc [data-grass]::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; }
+      }
+    }
+
+    @layer effects {
+      border-wc[effect="aura"] {
+        --border-size: .24rem;
+        --border-speed: 6s;
+        --border-blur: .8rem;
+      }
+
+      border-wc[effect="quiet"] {
+        --border-alpha: .45;
+        --border-speed: 18s;
+        --border-blur: .18rem;
+      }
+
+      border-wc[effect="marching"]::before,
+      border-wc[effect="marching"]::after {
+        background: repeating-conic-gradient(from var(--border-angle, 0deg), var(--border-c1) 0deg 9deg, transparent 9deg 18deg, var(--border-c2) 18deg 27deg, transparent 27deg 40deg);
+      }
+
+      border-wc[effect="organic"]::before,
+      border-wc[effect="organic"]::after {
+        background:
+          radial-gradient(circle at var(--mx, 50%) var(--my, 50%), white, transparent 8rem),
+          conic-gradient(from var(--border-angle, 0deg), var(--border-c1), var(--border-c2), var(--border-c3), var(--border-c1));
+        transform: rotate(var(--tilt, 0deg)) scale(1.08);
+      }
+
+      border-wc[effect="glitch"] {
+        --border-size: .2rem;
+        --border-blur: .12rem;
+        --border-speed: 3s;
+        --border-c1: cyan;
+        --border-c2: magenta;
+        --border-c3: yellow;
+      }
+      border-wc[effect="glitch"]::before {
+        background:
+          linear-gradient(90deg, transparent 0 18%, var(--border-c1) 18% 22%, transparent 22% 48%, var(--border-c2) 48% 51%, transparent 51% 72%, var(--border-c3) 72% 77%, transparent 77%),
+          conic-gradient(from var(--border-angle), var(--border-c1), var(--border-c2), var(--border-c3), var(--border-c1));
+        animation: border-spin var(--border-speed) steps(12) infinite, border-jitter 1.4s steps(2, end) infinite;
+      }
+      border-wc[effect="glitch"]::after {
+        mix-blend-mode: screen;
+        animation: border-jitter .8s steps(2, end) infinite reverse;
+      }
+
+      border-wc[effect="fuzzy"] {
+        --border-size: .32rem;
+        --border-blur: .18rem;
+        --border-alpha: .72;
+        --border-c1: oklch(95% 0.02 70);
+        --border-c2: oklch(80% 0.12 55);
+        --border-c3: oklch(70% 0.08 90);
+      }
+      border-wc[effect="fuzzy"]::before,
+      border-wc[effect="fuzzy"]::after {
+        background:
+          repeating-conic-gradient(from var(--border-angle), var(--border-c1) 0deg 2deg, transparent 2deg 4deg, var(--border-c2) 4deg 7deg, transparent 7deg 10deg),
+          repeating-radial-gradient(circle, var(--border-c1) 0 .08rem, transparent .08rem .22rem);
+        animation: border-fuzz 7s linear infinite;
+      }
+
+      border-wc[effect="danger"] {
+        --border-size: .22rem;
+        --border-speed: 2.2s;
+        --border-blur: .6rem;
+        --border-c1: var(--vb-danger);
+        --border-c2: oklch(78% 0.2 70);
+        --border-c3: oklch(65% 0.25 350);
+      }
+      border-wc[effect="danger"]::before,
+      border-wc[effect="danger"]::after { animation: border-spin var(--border-speed) linear infinite, border-pulse 1.4s ease-in-out infinite; }
+
+      border-wc[effect="grass"] {
+        --border-size: .38rem;
+        --border-blur: .35rem;
+        --border-c1: oklch(68% 0.19 142);
+        --border-c2: oklch(78% 0.16 115);
+        --border-c3: oklch(55% 0.16 155);
+      }
+      border-wc[effect="grass"]::before,
+      border-wc[effect="grass"]::after {
+        background:
+          repeating-conic-gradient(from var(--border-angle), transparent 0deg 4deg, var(--border-c1) 4deg 5deg, transparent 5deg 9deg, var(--border-c2) 9deg 10deg),
+          conic-gradient(from var(--border-angle), var(--border-c1), var(--border-c2), var(--border-c3), var(--border-c1));
+      }
+      border-wc[effect="grass"] > .border-wc-inner::before,
+      border-wc[effect="grass"] > .border-wc-inner::after {
+        content: "";
+        position: absolute;
+        inset-inline: .75rem;
+        block-size: .7rem;
+        pointer-events: none;
+        background: repeating-linear-gradient(90deg, transparent 0 .34rem, oklch(78% 0.17 130) .34rem .4rem, transparent .4rem .72rem);
+        opacity: .9;
+        filter: drop-shadow(0 0 .35rem oklch(70% 0.18 130 / .55));
+        animation: grass-sway 2.4s ease-in-out infinite;
+      }
+      border-wc[effect="grass"] > .border-wc-inner::before { inset-block-start: -.08rem; }
+      border-wc[effect="grass"] > .border-wc-inner::after { inset-block-end: -.08rem; rotate: 180deg; }
+
+      border-wc[effect="scanner"] {
+        --border-size: .18rem;
+        --border-blur: .5rem;
+        --border-c1: oklch(78% 0.2 180);
+        --border-c2: transparent;
+        --border-c3: oklch(90% 0.12 190);
+      }
+      border-wc[effect="scanner"]::before,
+      border-wc[effect="scanner"]::after {
+        background:
+          conic-gradient(from var(--border-angle), transparent 0deg 245deg, var(--border-c1) 260deg, white 270deg, var(--border-c1) 280deg, transparent 300deg 360deg);
+      }
+
+      border-wc[effect="sketch"] {
+        --border-size: .16rem;
+        --border-alpha: .8;
+        --border-blur: 0rem;
+        --border-c1: oklch(92% 0.02 260);
+        --border-c2: oklch(72% 0.08 260);
+        --border-c3: transparent;
+      }
+      border-wc[effect="sketch"]::before,
+      border-wc[effect="sketch"]::after {
+        inset: -.2rem;
+        background:
+          repeating-linear-gradient(4deg, transparent 0 .5rem, var(--border-c1) .5rem .55rem, transparent .55rem .9rem),
+          repeating-linear-gradient(-5deg, transparent 0 .6rem, var(--border-c2) .6rem .64rem, transparent .64rem 1rem);
+        animation: border-jitter 5s steps(2, end) infinite;
+      }
+
+      border-wc[effect="beacon"] {
+        --border-size: .18rem;
+        --border-speed: 3.8s;
+        --border-blur: .75rem;
+        --border-c1: transparent;
+        --border-c2: var(--vb-good);
+        --border-c3: white;
+      }
+      border-wc[effect="beacon"]::before,
+      border-wc[effect="beacon"]::after {
+        background: conic-gradient(from var(--border-angle), transparent, transparent, var(--border-c2), var(--border-c3), transparent, transparent);
+      }
+    }
+
+    @layer demo {
+      .hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(18rem, .9fr); gap: 1rem; align-items: stretch; }
+      .stack { display: grid; gap: 1rem; }
+      .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+      .wide { grid-column: 1 / -1; }
+      .pill-row { display: flex; flex-wrap: wrap; gap: .5rem; }
+      .pill { border: 1px solid var(--vb-line); border-radius: 999px; padding: .45rem .7rem; color: var(--vb-muted); background: oklch(100% 0 0 / .035); }
+      .toolbar { display: flex; flex-wrap: wrap; gap: .65rem; align-items: center; }
+      button, select {
+        border: 1px solid var(--vb-line);
+        border-radius: 999px;
+        padding: .7rem 1rem;
+        background: oklch(100% 0 0 / .08);
+        color: var(--vb-text);
+        cursor: pointer;
+      }
+      button:hover, select:hover { background: oklch(100% 0 0 / .13); }
+      .effect-card { min-block-size: 13.5rem; display: grid; align-content: space-between; gap: 1rem; }
+      .effect-card p { font-size: .95rem; }
+      .meter { display: grid; gap: .45rem; }
+      .meter span { block-size: .5rem; inline-size: var(--value); border-radius: 999px; background: linear-gradient(90deg, var(--vb-accent-1), var(--vb-accent-2)); }
+      .note { border-inline-start: .25rem solid var(--vb-accent-1); padding-inline-start: 1rem; }
+      @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <border-wc effect="aura" reactive>
+        <article class="stack">
+          <p class="pill">Vanilla Breeze experiment</p>
+          <h1>Border effects as a high-touch UI skin.</h1>
+          <p>
+            This gallery treats borders as progressive enhancement: semantic content inside,
+            CSS tokens around it, and optional JavaScript for reactive behavior. Some effects
+            are practical. Some are intentionally weird to test the boundaries of <code>&lt;border-wc&gt;</code>.
+          </p>
+          <div class="pill-row">
+            <span class="pill">CSS gradients</span>
+            <span class="pill">custom properties</span>
+            <span class="pill">reduced-motion aware</span>
+            <span class="pill">JS reactive layer</span>
+          </div>
+        </article>
+      </border-wc>
+
+      <border-wc effect="organic" reactive>
+        <aside class="stack">
+          <h2>Live controls</h2>
+          <p>Shuffle the theme tokens or change the hero border effect. The content stays ordinary HTML.</p>
+          <div class="toolbar">
+            <button type="button" id="themeButton">Shuffle tokens</button>
+            <select id="heroEffect" aria-label="Hero border effect">
+              <option value="aura">Aura</option>
+              <option value="organic">Organic</option>
+              <option value="glitch">Glitch</option>
+              <option value="fuzzy">Fuzzy</option>
+              <option value="grass">Grass</option>
+              <option value="scanner">Scanner</option>
+              <option value="sketch">Sketch</option>
+            </select>
+          </div>
+          <p class="note">Future renderer idea: CSS for most cases, canvas/WebGL for shader borders, particle edges, fluid noise, and image-based masks.</p>
+        </aside>
+      </border-wc>
+    </section>
+
+    <section class="cards" aria-label="Border effect examples">
+      <border-wc effect="quiet"><article class="effect-card"><div><h3>Quiet</h3><p>A subtle animated edge for cards, panels, and ordinary content grouping.</p></div><code>effect="quiet"</code></article></border-wc>
+      <border-wc effect="marching"><article class="effect-card"><div><h3>Marching ants</h3><p>Selection, crop tools, drag/drop targets, or “currently editing” states.</p></div><code>effect="marching"</code></article></border-wc>
+      <border-wc effect="organic" reactive><article class="effect-card"><div><h3>Organic</h3><p>Pointer-responsive glow and tilt; feels alive without canvas.</p></div><code>effect="organic" reactive</code></article></border-wc>
+      <border-wc effect="glitch"><article class="effect-card"><div><h3>Glitch</h3><p>Cyberpunk warning card, broken state, “bad data,” or playful error UI.</p></div><code>effect="glitch"</code></article></border-wc>
+      <border-wc effect="fuzzy"><article class="effect-card"><div><h3>Fuzzy</h3><p>A soft textile/noise edge; useful for cozy, handmade, or creature-like surfaces.</p></div><code>effect="fuzzy"</code></article></border-wc>
+      <border-wc effect="grass"><article class="effect-card"><div><h3>Growing grass</h3><p>Novelty effect: garden cards, game terrain, eco dashboards, playful classroom demos.</p></div><code>effect="grass"</code></article></border-wc>
+      <border-wc effect="danger"><article class="effect-card"><div><h3>Danger pulse</h3><p>Alert zones, monitoring dashboards, build failures, or production warnings.</p></div><code>effect="danger"</code></article></border-wc>
+      <border-wc effect="scanner"><article class="effect-card"><div><h3>Scanner</h3><p>A moving highlight that implies inspection, loading, AI analysis, or active focus.</p></div><code>effect="scanner"</code></article></border-wc>
+      <border-wc effect="sketch"><article class="effect-card"><div><h3>Sketch</h3><p>Hand-drawn wireframe style for drafts, annotations, comments, and rough ideas.</p></div><code>effect="sketch"</code></article></border-wc>
+      <border-wc effect="beacon"><article class="effect-card"><div><h3>Beacon</h3><p>A sparse orbiting glint; good for “new,” “featured,” or “currently active.”</p></div><code>effect="beacon"</code></article></border-wc>
+    </section>
+
+    <border-wc class="wide" effect="scanner" reactive>
+      <section class="stack">
+        <h2>Design implication</h2>
+        <p>
+          The component does not need to own layout or content semantics. It can be a very small
+          decoration primitive that composes with Vanilla Breeze tokens. That makes it useful for
+          cards, callouts, status boxes, labs, games, dashboards, drop zones, and marketing sections.
+        </p>
+        <div class="meter"><p>CSS-only feasibility</p><span style="--value: 88%"></span></div>
+        <div class="meter"><p>JS reactive value</p><span style="--value: 62%"></span></div>
+        <div class="meter"><p>Canvas/WebGL upside for premium effects</p><span style="--value: 78%"></span></div>
+      </section>
+    </border-wc>
+  </main>
+
+  <script type="module">
+    class BorderWC extends HTMLElement {
+      connectedCallback() {
+        if (!this.firstElementChild?.classList.contains('border-wc-inner')) {
+          const inner = document.createElement('div');
+          inner.className = 'border-wc-inner';
+          inner.append(...this.childNodes);
+          this.append(inner);
+        }
+
+        if (this.hasAttribute('reactive')) {
+          this.addEventListener('pointermove', this.#onPointerMove);
+          this.addEventListener('pointerleave', this.#onPointerLeave);
+        }
+      }
+
+      disconnectedCallback() {
+        this.removeEventListener('pointermove', this.#onPointerMove);
+        this.removeEventListener('pointerleave', this.#onPointerLeave);
+      }
+
+      #onPointerMove = (event) => {
+        const box = this.getBoundingClientRect();
+        const x = ((event.clientX - box.left) / box.width) * 100;
+        const y = ((event.clientY - box.top) / box.height) * 100;
+        const tilt = ((x - 50) / 50) * 4;
+        this.style.setProperty('--mx', `${x.toFixed(2)}%`);
+        this.style.setProperty('--my', `${y.toFixed(2)}%`);
+        this.style.setProperty('--tilt', `${tilt.toFixed(2)}deg`);
+      };
+
+      #onPointerLeave = () => {
+        this.style.removeProperty('--mx');
+        this.style.removeProperty('--my');
+        this.style.removeProperty('--tilt');
+      };
+    }
+
+    customElements.define('border-wc', BorderWC);
+
+    const palettes = [
+      ['oklch(78% 0.18 200)', 'oklch(76% 0.18 330)', 'oklch(84% 0.18 96)'],
+      ['oklch(72% 0.2 35)', 'oklch(82% 0.16 80)', 'oklch(72% 0.18 150)'],
+      ['oklch(68% 0.2 285)', 'oklch(74% 0.18 225)', 'oklch(78% 0.12 180)'],
+      ['oklch(76% 0.18 145)', 'oklch(70% 0.14 190)', 'oklch(90% 0.12 100)']
+    ];
+
+    document.querySelector('#themeButton').addEventListener('click', () => {
+      const palette = palettes[Math.floor(Math.random() * palettes.length)];
+      document.documentElement.style.setProperty('--vb-accent-1', palette[0]);
+      document.documentElement.style.setProperty('--vb-accent-2', palette[1]);
+      document.documentElement.style.setProperty('--vb-accent-3', palette[2]);
+    });
+
+    const hero = document.querySelector('.hero border-wc');
+    document.querySelector('#heroEffect').addEventListener('change', (event) => {
+      hero.setAttribute('effect', event.target.value);
+    });
+  </script>
+</body>
+</html>
