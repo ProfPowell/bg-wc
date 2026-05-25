@@ -96,13 +96,16 @@ The border spec already calls gl-wc "`<bg-wc>` (formerly `<gl-wc>`)"; the rename
 - **Repo:** prefer renaming in place (`git mv`, preserve history, update remotes) over a fresh repo, unless a clean cut is wanted.
 - **Open:** whether `data-bg` → `data-background` is worth the churn now or stays an alias indefinitely.
 
-## 8. Open questions
+## 8. Resolved decisions (2026-05-25)
 
-1. `data-border`: standalone binder (like `data-bg`), a VB-registry effect that injects `<border-wc>`, or both?
-2. Shared geometry primitive: follows the base rule (authored once, lives in VB as part of "the shape," embedded in `bg-wc`/`border-wc` for standalone). Confirm this is the right call for a JS utility (vs a tiny shared package) given VB is primarily CSS+components.
-3. `data-bg` → `data-background` rename: do it, or alias both forever?
-4. Does VB base ship a `data-background` *light* (CSS gradient/pattern backgrounds) so the background surface has a real base tier, or is background base just "set `background:`"?
-5. Family/package naming under `@profpowell/*`; whether "Decorated Layers" is a public name or an internal organizing term.
+1. **Author hook = the `data-border` attribute** (family-consistent with `data-effect`/`data-background`). Base values render via VB CSS (`[data-border~="…"]`); extreme values are handled by the `data-border` binder injecting `<border-wc>` — a binder, not a VB-registry effect.
+2. **Geometry: authored in VB, embedded in packages for standalone.** (Confirmed; not a separate micro-package.)
+3. **`data-background` is canonical; `data-bg` (and `--gl-wc-*`) kept as deprecated aliases.**
+4. **Background gets a light CSS base tier in VB** (token-driven gradients/patterns); `bg-wc` is the extreme. Background is symmetric with the other surfaces.
+5. **"Decorated Layers" is an internal organizing term**, not a public brand. Packages ship as `@profpowell/bg-wc`, `@profpowell/border-wc`, etc.
+6. **JS cursor spotlight lives in VB base** as opt-in (`--spotlight-enabled`).
+
+Remaining (implementation-time, settle in per-piece plans): which shipped VB themes adopt these by default; the one-source embedded-base build path; wrap-vs-annotate for the `data-border` binder.
 
 ## 9. Non-goals (YAGNI)
 

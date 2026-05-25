@@ -105,10 +105,13 @@ Themes set the tokens (the POC's `neon-preview`/`kawaii-preview` show the patter
 - **P2:** spotlight JS; `data-scrollbar`/`data-cursor` per-element variants; theme presets wired into a few shipped VB themes.
 - **P3:** `::-webkit-scrollbar` enhanced path (thumb hover, SVG thumbs) for browsers that want it; reconcile with Baseline `scrollbar-*`.
 
-## 8. Open questions
+## 8. Resolved + remaining
 
-- O1 (author surface): `data-border` attribute vs utility classes vs both.
-- O2 (spotlight home): VB base vs extreme package.
-- O3: do base borders also expose utility classes for non-attribute use (e.g. inside component shadow DOM)?
+**Resolved (2026-05-25):**
+- O1 author surface → **`data-border` attribute** (primary; utility classes only if authors later ask).
+- O2 spotlight home → **VB base, opt-in** (`--spotlight-enabled`).
+
+**Remaining (settle during implementation):**
+- O3: whether base borders also expose utility classes for non-attribute use (e.g. inside component shadow DOM).
 - O4: which shipped VB themes adopt these by default (showcase vs restraint).
-- O5: confirm the embedded-base build path (one source → VB + packages) with VB's build.
+- O5: confirm the one-source embedded-base build path (VB + packages) with VB's build.
