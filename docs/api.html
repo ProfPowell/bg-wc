@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="midnight">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>gl-wc &mdash; docs</title>
   <meta name="description" content="API reference for the gl-wc web component: attributes, properties, methods, events, custom properties, presets, and the data-bg behavior.">
-  <link rel="stylesheet" href="./docs.css">
+  <link rel="stylesheet" href="./site.css">
 </head>
 <body>
   <header class="topbar">
     <div class="crumb">
-      <a href="../">Gallery</a>
+      <a href="./index.html">Gallery</a>
       <span class="sep">/</span>
       <a href="../demos/">Demos</a>
       <span class="sep">/</span>
@@ -419,7 +419,7 @@ console.log('PNG ready:', url);</code-block>
       </p>
       <p>Two ways to stay under the cap:</p>
       <ul class="checks">
-        <li><strong>Unmount what's not shown.</strong> Removing a <code>&lt;gl-wc&gt;</code> from the DOM frees its context immediately &mdash; <code>disconnectedCallback</code> calls <code>WEBGL_lose_context</code>. Group presets behind tabs and mount only the active group (see the <a href="../">gallery</a>); switching tabs releases the old contexts before the new ones allocate.</li>
+        <li><strong>Unmount what's not shown.</strong> Removing a <code>&lt;gl-wc&gt;</code> from the DOM frees its context immediately &mdash; <code>disconnectedCallback</code> calls <code>WEBGL_lose_context</code>. Group presets behind tabs and mount only the active group (see the <a href="./index.html">gallery</a>); switching tabs releases the old contexts before the new ones allocate.</li>
         <li><strong>Group the catalog.</strong> The registry tags each preset with a <code>group</code>; <code>listGroups()</code> returns them as <code>{ id, label, presets }</code> so tooling can build a grouped UI without loading any preset modules.</li>
       </ul>
       <code-block theme="dark" language="javascript">import { listGroups } from '@profpowell/gl-wc/presets/index.js';
@@ -533,17 +533,14 @@ addEventListener('scroll', () =&gt; {
   </main>
 
   <footer>
-    <p>MIT &middot; <a href="https://github.com/ProfPowell/gl-wc">ProfPowell/gl-wc</a> &middot; <a href="../">Gallery</a> &middot; <a href="../demos/">Demos</a></p>
+    <p>MIT &middot; <a href="https://github.com/ProfPowell/gl-wc">ProfPowell/gl-wc</a> &middot; <a href="./index.html">Gallery</a> &middot; <a href="../demos/">Demos</a></p>
   </footer>
 
-  <!-- ProfPowell code-block component renders the snippets above with
-       syntax highlighting. highlight.js is bundled into its dist, so this
-       single module loads standalone. Until it registers (or if the CDN
-       is blocked) the code-block:not(:defined) CSS keeps snippets legible. -->
-  <script type="module" src="https://unpkg.com/@profpowell/code-block@2.9.0/dist/code-block.js"></script>
-
-  <!-- data-bg auto-binds on import; that gives the hero its mesh-gradient
-       and the data-bg section its aurora layer above. -->
-  <script type="module" src="../../src/data-bg.js"></script>
+  <!-- Single docs entry module: registers vanilla-breeze + the code-block
+       component (which renders the snippets above) and imports the data-bg
+       binder, which auto-binds the hero's mesh-gradient and the aurora
+       section above. The code-block:not(:defined) CSS keeps snippets legible
+       until the component registers. -->
+  <script type="module" src="./docs-entry.js"></script>
 </body>
 </html>

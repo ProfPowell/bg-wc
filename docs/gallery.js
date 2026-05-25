@@ -3,8 +3,22 @@
 // browser allows. Switching groups removes the old cards (each <gl-wc>'s
 // disconnectedCallback frees its context) before mounting the new ones.
 
+import 'vanilla-breeze';
+import 'vanilla-breeze/css';
+import '@profpowell/code-block';
 import '../src/gl-wc.js';
 import { listGroups } from '../src/presets/index.js';
+
+const THEME_CSS = {
+  classic: () => import('vanilla-breeze/themes/classic'),
+  dawn: () => import('vanilla-breeze/themes/dawn'),
+  midnight: () => import('vanilla-breeze/themes/midnight'),
+  clinical: () => import('vanilla-breeze/themes/clinical'),
+};
+async function applyTheme(name) {
+  await THEME_CSS[name]?.();
+  document.documentElement.dataset.theme = name;
+}
 
 const grid = document.getElementById('grid');
 const tabsHost = document.getElementById('groupTabs');
@@ -82,10 +96,9 @@ for (const g of groups) {
 }
 
 renderGroup(groups[0].id);
+applyTheme(themeSel.value);
 
-themeSel.addEventListener('change', () => {
-  document.documentElement.dataset.theme = themeSel.value;
-});
+themeSel.addEventListener('change', () => applyTheme(themeSel.value));
 paletteSel.addEventListener('change', () => {
   for (const el of document.querySelectorAll('gl-wc')) el.setAttribute('palette', paletteSel.value);
 });

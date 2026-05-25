@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="midnight">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>gl-wc — preset gallery</title>
   <meta name="description" content="Theme-aware graphics-layer web component. Nine WebGL and Canvas2D presets.">
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./site.css">
 </head>
 <body>
   <header class="topbar">
@@ -16,10 +16,10 @@
     <div class="controls">
       <label>Theme
         <select id="themeSelect">
-          <option value="dark">Dark</option>
-          <option value="light">Light</option>
-          <option value="mint">Mint</option>
-          <option value="a11y">High contrast</option>
+          <option value="classic">Classic</option>
+          <option value="dawn">Dawn</option>
+          <option value="midnight" selected>Midnight</option>
+          <option value="clinical">High contrast</option>
         </select>
       </label>
       <label>Palette
@@ -36,8 +36,8 @@
           <option value="force">force</option>
         </select>
       </label>
-      <a class="repo" href="./docs/">Docs &rarr;</a>
-      <a class="repo" href="./demos/">Themed demos &rarr;</a>
+      <a class="repo" href="./api.html">Docs &rarr;</a>
+      <a class="repo" href="../demos/">Themed demos &rarr;</a>
       <a class="repo" href="https://github.com/ProfPowell/gl-wc" target="_blank" rel="noopener">GitHub &rarr;</a>
     </div>
   </header>
@@ -65,12 +65,12 @@
 
     <section class="snippet">
       <h3 class="section-title">Quick start</h3>
-      <pre><code>&lt;script type="module" src="./src/gl-wc.js"&gt;&lt;/script&gt;
+      <code-block language="html">&lt;script type="module" src="https://unpkg.com/@profpowell/gl-wc"&gt;&lt;/script&gt;
 
 &lt;gl-wc preset="dither" intensity="0.7"&gt;
   &lt;h1&gt;Hero headline&lt;/h1&gt;
   &lt;img slot="fallback" src="hero.webp" alt=""&gt;
-&lt;/gl-wc&gt;</code></pre>
+&lt;/gl-wc&gt;</code-block>
       <p class="muted">
         Tokens consumed: <code>--color-background</code>, <code>--color-foreground</code>,
         <code>--color-primary</code>, <code>--color-accent</code>, <code>--color-info</code>,
@@ -84,6 +84,6 @@
     <p>MIT &middot; <a href="https://github.com/ProfPowell/gl-wc">ProfPowell/gl-wc</a></p>
   </footer>
 
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./gallery.js"></script>
 </body>
 </html>
