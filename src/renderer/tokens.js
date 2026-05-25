@@ -53,9 +53,12 @@ export function readTokenString(host, token, override) {
     const v = cs.getPropertyValue(override).trim();
     if (v) return v;
   }
-  const v = cs.getPropertyValue(token).trim();
-  if (v) return v;
-  return DEFAULTS[token] || '#000';
+  const tokens = Array.isArray(token) ? token : [token];
+  for (const t of tokens) {
+    const v = cs.getPropertyValue(t).trim();
+    if (v) return v;
+  }
+  return DEFAULTS[tokens[0]] || '#000';
 }
 
 export function resolveTokens(host, mapping) {
