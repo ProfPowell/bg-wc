@@ -49,16 +49,14 @@
     "analyze": "cem analyze",
     "prepublishOnly": "npm run build && npm run analyze"
   },
-  "dependencies": {
-    "@profpowell/code-block": "^2.9.0",
-    "vanilla-breeze": "^0.1.3"
-  },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.11.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.60.0",
+    "@profpowell/code-block": "^2.9.0",
     "eslint": "^10.4.0",
     "prettier": "^3.8.3",
+    "vanilla-breeze": "^0.1.3",
     "vite": "^7.3.3"
   }
 }
