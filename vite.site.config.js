@@ -4,7 +4,7 @@ import { globSync } from 'node:fs';
 // Product-site + demos multi-page build. Bare imports (vanilla-breeze,
 // @profpowell/code-block) resolve from node_modules — no CDN.
 const input = Object.fromEntries(
-  ['docs/index.html', 'docs/api.html', ...globSync('demos/*.html')].map((f) => [
+  ['index.html', 'docs/index.html', 'docs/api.html', ...globSync('demos/*.html')].map((f) => [
     f.replace(/[/.]/g, '_'),
     f,
   ])

@@ -21,26 +21,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Assemble deploy directory
-        run: |
-          set -eux
-          mkdir -p dist/site dist/src
-          cp -R site/. dist/site/
-          cp -R src/.  dist/src/
-          cat > dist/index.html <<'HTML'
-          <!doctype html>
-          <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <title>gl-wc</title>
-            <meta http-equiv="refresh" content="0; url=./site/">
-            <link rel="canonical" href="./site/">
-          </head>
-          <body>
-            <p><a href="./site/">Open the gl-wc preset gallery &rarr;</a></p>
-          </body>
-          </html>
-          HTML
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build:site
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -50,7 +41,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: dist-site
 
   deploy:
     needs: build
