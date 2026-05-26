@@ -4,7 +4,7 @@
 
 import { clearAndFill } from '../renderer/canvas2d.js';
 
-const DEFAULT = 'GL·WC ★ VANILLA BREEZE ★ ';
+const DEFAULT = 'BG·WC ★ VANILLA BREEZE ★ ';
 
 export function create({ c2d, getColors }) {
   let w = 1,

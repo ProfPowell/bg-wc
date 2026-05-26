@@ -138,7 +138,7 @@ class BgWc extends HTMLElement {
     c.setAttribute('aria-hidden', 'true');
     c.setAttribute('role', 'presentation');
     // Exposed so authors can style the canvas from outside the shadow root,
-    // e.g. `gl-wc::part(canvas) { image-rendering: pixelated }`.
+    // e.g. `bg-wc::part(canvas) { image-rendering: pixelated }`.
     c.setAttribute('part', 'canvas');
     return c;
   }
@@ -383,12 +383,12 @@ class BgWc extends HTMLElement {
     } catch {}
     if (this.#rendererKind === 'webgl') {
       // Stop listening for loss before we intentionally drop the context,
-      // so our own teardown doesn't fire a spurious gl-wc:error.
+      // so our own teardown doesn't fire a spurious bg-wc:error.
       this.#canvas.removeEventListener('webglcontextlost', this.#onCtxLost);
       this.#canvas.removeEventListener('webglcontextrestored', this.#onCtxRestored);
       // Explicitly free the context so a removed element releases its slot
       // immediately, instead of lingering until GC. Browsers cap simultaneous
-      // WebGL contexts (~16); pages that mount/unmount many <gl-wc>
+      // WebGL contexts (~16); pages that mount/unmount many <bg-wc>
       // (galleries, tab groups) rely on this to stay under the limit.
       if (this.#ctx) {
         try {
@@ -451,9 +451,8 @@ class BgWc extends HTMLElement {
     if (rect.width === 0 || rect.height === 0) return;
     const css = getComputedStyle(this);
     const pr = (n) => parseFloat(css.getPropertyValue(n));
-    const cssVar = Number.isFinite(pr('--bg-wc-pixel-ratio'))
-      ? pr('--bg-wc-pixel-ratio')
-      : pr('--gl-wc-pixel-ratio');
+    const bgPr = pr('--bg-wc-pixel-ratio');
+    const cssVar = Number.isFinite(bgPr) ? bgPr : pr('--gl-wc-pixel-ratio');
     const attr = parseFloat(this.getAttribute('pixel-ratio'));
     const dpr = Number.isFinite(cssVar)
       ? cssVar
