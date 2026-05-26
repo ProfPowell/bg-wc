@@ -1,14 +1,15 @@
 {
-  "name": "@profpowell/gl-wc",
-  "version": "0.1.0",
-  "description": "Theme-aware graphics-layer web component: animated WebGL & Canvas2D backgrounds behind any HTML content.",
+  "name": "@profpowell/bg-wc",
+  "version": "0.2.0",
+  "description": "Theme-aware background web component: animated WebGL & Canvas2D backgrounds behind any HTML content.",
   "license": "MIT",
   "type": "module",
-  "main": "dist/gl-wc.js",
-  "module": "dist/gl-wc.js",
+  "main": "dist/bg-wc.js",
+  "module": "dist/bg-wc.js",
   "exports": {
-    ".": "./dist/gl-wc.js",
-    "./data-bg": "./dist/data-bg.js",
+    ".": "./dist/bg-wc.js",
+    "./data-background": "./dist/data-background.js",
+    "./data-bg": "./dist/data-background.js",
     "./presets/*": "./dist/presets/*.js"
   },
   "files": [
@@ -18,22 +19,23 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ProfPowell/gl-wc.git"
+    "url": "git+https://github.com/ProfPowell/bg-wc.git"
   },
-  "homepage": "https://profpowell.github.io/gl-wc/",
+  "homepage": "https://profpowell.github.io/bg-wc/",
   "keywords": [
+    "background",
     "web-component",
     "custom-element",
     "webgl",
     "canvas",
     "shader",
     "particles",
-    "background",
     "vanilla-breeze"
   ],
   "author": "ProfPowell",
   "sideEffects": [
-    "dist/gl-wc.js"
+    "dist/bg-wc.js",
+    "dist/data-background.js"
   ],
   "scripts": {
     "dev": "vite --config vite.site.config.js",
