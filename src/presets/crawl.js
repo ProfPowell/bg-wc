@@ -5,7 +5,7 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 
 const DEFAULT =
-  'A long time ago|in a codebase|far, far away…||gl-wc renders|text in the|graphics layer.';
+  'A long time ago|in a codebase|far, far away…||bg-wc renders|text in the|graphics layer.';
 
 export function create({ c2d, getColors }) {
   let w = 1,

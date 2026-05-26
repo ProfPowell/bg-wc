@@ -7,7 +7,7 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 
 const DEFAULT =
-  'gl-wc|webgl|canvas|shader|theme|tokens|preset|gradient|aurora|plasma|vector|retro|pixels|noise|motion|render|frame|glow|particles|dataviz|surface|ambient';
+  'bg-wc|webgl|canvas|shader|theme|tokens|preset|gradient|aurora|plasma|vector|retro|pixels|noise|motion|render|frame|glow|particles|dataviz|surface|ambient';
 
 export function create({ c2d, getColors }) {
   let w = 1,
