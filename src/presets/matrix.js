@@ -7,10 +7,11 @@ import { mulberry32 } from '../util/pause.js';
 const GLYPHS = 'アイウエオカキクケコサシスセソタチツテトナニヌ0123456789:.=*+-<>';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let cols = 0;
   let fontSize = 16;
-  let drops = [];          // y pixel position of each column head
+  let drops = []; // y pixel position of each column head
   let rand = mulberry32(1);
   let lastSeed = null;
   let lastT = 0;
@@ -25,7 +26,11 @@ export function create({ c2d, getColors }) {
   }
 
   function ensure(params) {
-    if (params.seed !== lastSeed) { rand = mulberry32(params.seed || 1); lastSeed = params.seed; rebuild(params); }
+    if (params.seed !== lastSeed) {
+      rand = mulberry32(params.seed || 1);
+      lastSeed = params.seed;
+      rebuild(params);
+    }
     if (!drops.length) rebuild(params);
   }
 
@@ -45,14 +50,14 @@ export function create({ c2d, getColors }) {
 
     const head = c.fg || [0.8, 1, 0.8, 1];
     const trail = c.primary;
-    const headStyle = `rgb(${Math.min(255, (head[0] * 255 + 80)) | 0},${Math.min(255, (head[1] * 255 + 80)) | 0},${Math.min(255, (head[2] * 255 + 80)) | 0})`;
+    const headStyle = `rgb(${Math.min(255, head[0] * 255 + 80) | 0},${Math.min(255, head[1] * 255 + 80) | 0},${Math.min(255, head[2] * 255 + 80) | 0})`;
     const trailStyle = `rgb(${(trail[0] * 255) | 0},${(trail[1] * 255) | 0},${(trail[2] * 255) | 0})`;
 
     c2d.font = `${fontSize}px ui-monospace, monospace`;
     c2d.textBaseline = 'top';
 
     // Advance roughly fontSize per (speed-scaled) step; accumulate fractional rows.
-    const step = (4 + params.speed * 10) * dt;   // rows per frame
+    const step = (4 + params.speed * 10) * dt; // rows per frame
     for (let i = 0; i < cols; i++) {
       const x = i * fontSize;
       const yRow = drops[i];
@@ -71,8 +76,14 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; rebuild({ density: 0.5, seed: lastSeed || 1 }); },
-    frame(t, params) { frame(t, params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+      rebuild({ density: 0.5, seed: lastSeed || 1 });
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
     staticFrame(params) {
       // Single still: scatter glyph columns at random heights.
       ensure(params);
@@ -95,6 +106,8 @@ export function create({ c2d, getColors }) {
       }
       c2d.globalAlpha = 1;
     },
-    dispose() { drops = []; },
+    dispose() {
+      drops = [];
+    },
   };
 }

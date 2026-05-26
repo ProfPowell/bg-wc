@@ -115,10 +115,14 @@ export function stopWatching() {
 if (typeof document !== 'undefined') {
   ensureStyle();
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      scanAndBind(document);
-      startObserver();
-    }, { once: true });
+    document.addEventListener(
+      'DOMContentLoaded',
+      () => {
+        scanAndBind(document);
+        startObserver();
+      },
+      { once: true }
+    );
   } else {
     scanAndBind(document);
     startObserver();

@@ -7,19 +7,30 @@ import { clearAndFill } from '../renderer/canvas2d.js';
 const DEFAULT = 'GL·WC';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
 
-  function rgb(c) { return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`; }
+  function rgb(c) {
+    return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`;
+  }
 
   // Bounce-out easing toward a settled value of 1.
   function bounce(x) {
     if (x < 0) return 0;
     if (x >= 1) return 1;
-    const n1 = 7.5625, d1 = 2.75;
+    const n1 = 7.5625,
+      d1 = 2.75;
     if (x < 1 / d1) return n1 * x * x;
-    if (x < 2 / d1) { x -= 1.5 / d1; return n1 * x * x + 0.75; }
-    if (x < 2.5 / d1) { x -= 2.25 / d1; return n1 * x * x + 0.9375; }
-    x -= 2.625 / d1; return n1 * x * x + 0.984375;
+    if (x < 2 / d1) {
+      x -= 1.5 / d1;
+      return n1 * x * x + 0.75;
+    }
+    if (x < 2.5 / d1) {
+      x -= 2.25 / d1;
+      return n1 * x * x + 0.9375;
+    }
+    x -= 2.625 / d1;
+    return n1 * x * x + 0.984375;
   }
 
   function frame(t, params) {
@@ -47,13 +58,18 @@ export function create({ c2d, getColors }) {
     for (let i = 0; i < chars.length; i++) {
       const cw = widths[i];
       const cx = x + cw / 2;
-      const local = (tt - i * stagger) / inDur;       // 0..1 drop-in window
+      const local = (tt - i * stagger) / inDur; // 0..1 drop-in window
       let y, alpha;
-      if (local <= 0) { x += cw; continue; }           // not yet arrived
-      if (local >= 1) { y = midY; alpha = 1; }
-      else {
+      if (local <= 0) {
+        x += cw;
+        continue;
+      } // not yet arrived
+      if (local >= 1) {
+        y = midY;
+        alpha = 1;
+      } else {
         const b = bounce(local);
-        y = -fs + (midY + fs) * b;                     // drop from above to midY
+        y = -fs + (midY + fs) * b; // drop from above to midY
         alpha = Math.min(1, local * 2);
       }
       let col;
@@ -92,9 +108,16 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { settled(params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      settled(params);
+    },
     dispose() {},
   };
 }

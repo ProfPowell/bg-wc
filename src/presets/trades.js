@@ -5,10 +5,32 @@
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 
-const SYMS = ['AAPL','MSFT','NVDA','TSLA','AMZN','META','GOOG','AMD','INTC','NFLX','BABA','ORCL','CRM','UBER','SHOP','SQ','PYPL','SNAP','RBLX','COIN'];
+const SYMS = [
+  'AAPL',
+  'MSFT',
+  'NVDA',
+  'TSLA',
+  'AMZN',
+  'META',
+  'GOOG',
+  'AMD',
+  'INTC',
+  'NFLX',
+  'BABA',
+  'ORCL',
+  'CRM',
+  'UBER',
+  'SHOP',
+  'SQ',
+  'PYPL',
+  'SNAP',
+  'RBLX',
+  'COIN',
+];
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let rand = mulberry32(1);
   let rows = [];
   let candles = [];
@@ -25,8 +47,14 @@ export function create({ c2d, getColors }) {
     candles = [];
     let p = 100;
     for (let i = 0; i < 60; i++) {
-      const o = p, cl = p + (rand() - 0.5) * 14;
-      candles.push({ o, c: cl, hi: Math.max(o, cl) + rand() * 6, lo: Math.min(o, cl) - rand() * 6 });
+      const o = p,
+        cl = p + (rand() - 0.5) * 14;
+      candles.push({
+        o,
+        c: cl,
+        hi: Math.max(o, cl) + rand() * 6,
+        lo: Math.min(o, cl) - rand() * 6,
+      });
       p = cl;
     }
     lastSeed = params.seed;
@@ -57,7 +85,7 @@ export function create({ c2d, getColors }) {
       const scroll = (t * speed * (1 + col * 0.08)) % rowH;
       const n = Math.ceil(areaH / rowH) + 1;
       for (let i = 0; i < n; i++) {
-        const idx = (i + col * 7 + Math.floor(t * speed / rowH)) % rows.length;
+        const idx = (i + col * 7 + Math.floor((t * speed) / rowH)) % rows.length;
         const r = rows[idx];
         if (!r) continue;
         const y = areaH - (i * rowH - scroll);
@@ -76,12 +104,19 @@ export function create({ c2d, getColors }) {
         c2d.fillStyle = fg;
         c2d.fillText(r.sym.padEnd(5), x, y);
         c2d.fillStyle = col2;
-        c2d.fillText(`${price} ${chg >= 0 ? '▲' : '▼'}${Math.abs(chg).toFixed(1)}%`, x + fs * 3.4, y);
+        c2d.fillText(
+          `${price} ${chg >= 0 ? '▲' : '▼'}${Math.abs(chg).toFixed(1)}%`,
+          x + fs * 3.4,
+          y
+        );
       }
       // column divider
       c2d.strokeStyle = `rgba(${c.fg.map((v) => (v * 255) | 0).join(',')},0.08)`;
       c2d.lineWidth = 1;
-      c2d.beginPath(); c2d.moveTo(col * colW, 0); c2d.lineTo(col * colW, areaH); c2d.stroke();
+      c2d.beginPath();
+      c2d.moveTo(col * colW, 0);
+      c2d.lineTo(col * colW, areaH);
+      c2d.stroke();
     }
 
     // candlestick strip
@@ -97,16 +132,30 @@ export function create({ c2d, getColors }) {
       const cx = i * cw + cw / 2;
       const isUp = cd.c >= cd.o;
       c2d.strokeStyle = c2d.fillStyle = isUp ? up : down;
-      c2d.beginPath(); c2d.moveTo(cx, baseY - (cd.hi - 100) * scale); c2d.lineTo(cx, baseY - (cd.lo - 100) * scale); c2d.stroke();
-      const yA = baseY - (cd.o - 100) * scale, yB = baseY - (cd.c - 100) * scale;
+      c2d.beginPath();
+      c2d.moveTo(cx, baseY - (cd.hi - 100) * scale);
+      c2d.lineTo(cx, baseY - (cd.lo - 100) * scale);
+      c2d.stroke();
+      const yA = baseY - (cd.o - 100) * scale,
+        yB = baseY - (cd.c - 100) * scale;
       c2d.fillRect(cx - cw * 0.3, Math.min(yA, yB), cw * 0.6, Math.max(2, Math.abs(yB - yA)));
     }
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { frame(0, params); },
-    dispose() { rows = []; candles = []; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      frame(0, params);
+    },
+    dispose() {
+      rows = [];
+      candles = [];
+    },
   };
 }

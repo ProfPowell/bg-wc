@@ -19,7 +19,7 @@ export async function observeBatteryPowerSave(cb) {
 
 // Tiny seedable PRNG (mulberry32). Deterministic per seed.
 export function mulberry32(seed) {
-  let a = (seed | 0) || 1;
+  let a = seed | 0 || 1;
   return function () {
     a |= 0;
     a = (a + 0x6d2b79f5) | 0;

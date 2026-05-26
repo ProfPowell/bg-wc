@@ -45,8 +45,11 @@ export function parseColor(str) {
 export function readTokenString(host, token, override) {
   const cs = getComputedStyle(host);
   if (override) {
-    const v = cs.getPropertyValue(override).trim();
-    if (v) return v;
+    const overrides = Array.isArray(override) ? override : [override];
+    for (const o of overrides) {
+      const v = cs.getPropertyValue(o).trim();
+      if (v) return v;
+    }
   }
   const tokens = Array.isArray(token) ? token : [token];
   for (const t of tokens) {

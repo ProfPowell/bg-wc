@@ -5,7 +5,8 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let rocks = [];
   let rand = mulberry32(1);
   let lastKey = '';
@@ -16,7 +17,7 @@ export function create({ c2d, getColors }) {
     rocks = new Array(n);
     for (let i = 0; i < n; i++) {
       const verts = 8 + ((rand() * 5) | 0);
-      const base = 0.03 + rand() * 0.06;        // radius as fraction of min(w,h)
+      const base = 0.03 + rand() * 0.06; // radius as fraction of min(w,h)
       const shape = [];
       for (let v = 0; v < verts; v++) {
         const a = (v / verts) * Math.PI * 2;
@@ -24,9 +25,12 @@ export function create({ c2d, getColors }) {
         shape.push([Math.cos(a) * rr, Math.sin(a) * rr]);
       }
       rocks[i] = {
-        x: rand(), y: rand(),
-        vx: (rand() - 0.5) * 0.05, vy: (rand() - 0.5) * 0.05,
-        rot: rand() * Math.PI * 2, vrot: (rand() - 0.5) * 0.6,
+        x: rand(),
+        y: rand(),
+        vx: (rand() - 0.5) * 0.05,
+        vy: (rand() - 0.5) * 0.05,
+        rot: rand() * Math.PI * 2,
+        vrot: (rand() - 0.5) * 0.6,
         shape,
       };
     }
@@ -38,7 +42,9 @@ export function create({ c2d, getColors }) {
     if (!rocks.length || key !== lastKey) rebuild(params);
   }
 
-  function rgb(c) { return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`; }
+  function rgb(c) {
+    return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`;
+  }
 
   function frame(t, params) {
     ensure(params);
@@ -64,10 +70,11 @@ export function create({ c2d, getColors }) {
       c2d.scale(minDim, minDim);
       for (let i = 0; i < rk.shape.length; i++) {
         const [x, y] = rk.shape[i];
-        if (i) c2d.lineTo(x, y); else c2d.moveTo(x, y);
+        if (i) c2d.lineTo(x, y);
+        else c2d.moveTo(x, y);
       }
       c2d.closePath();
-      c2d.restore();          // restore before stroke so lineWidth isn't scaled
+      c2d.restore(); // restore before stroke so lineWidth isn't scaled
     }
     if (glow > 0.05) {
       c2d.strokeStyle = `rgba(${(c1[0] * 255) | 0},${(c1[1] * 255) | 0},${(c1[2] * 255) | 0},${(0.18 * glow).toFixed(3)})`;
@@ -80,9 +87,18 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { frame(0, params); },
-    dispose() { rocks = []; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      frame(0, params);
+    },
+    dispose() {
+      rocks = [];
+    },
   };
 }

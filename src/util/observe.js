@@ -1,8 +1,7 @@
 export function observeVisibility(host, cb) {
-  const io = new IntersectionObserver(
-    (entries) => cb(entries[0].isIntersecting),
-    { rootMargin: '200px' }
-  );
+  const io = new IntersectionObserver((entries) => cb(entries[0].isIntersecting), {
+    rootMargin: '200px',
+  });
   io.observe(host);
   return () => io.disconnect();
 }

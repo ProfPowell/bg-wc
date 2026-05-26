@@ -6,7 +6,8 @@ import { clearAndFill } from '../renderer/canvas2d.js';
 const CAPS = { low: 150, med: 500, high: 1500 };
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let parts = [];
   let lastKey = '';
 
@@ -24,7 +25,7 @@ export function create({ c2d, getColors }) {
         vx: Math.cos(ang) * sp,
         vy: Math.sin(ang) * sp,
         r: 1 + rand() * 3,
-        hue: rand(),  // 0..1
+        hue: rand(), // 0..1
       };
     }
     lastKey = `${params.seed}|${params.density}|${params.quality}`;
@@ -59,8 +60,10 @@ export function create({ c2d, getColors }) {
       const p = parts[i];
       p.x += p.vx * intMul * 0.4;
       p.y += p.vy * intMul * 0.4;
-      if (p.x < 0) p.x += 1; else if (p.x > 1) p.x -= 1;
-      if (p.y < 0) p.y += 1; else if (p.y > 1) p.y -= 1;
+      if (p.x < 0) p.x += 1;
+      else if (p.x > 1) p.x -= 1;
+      if (p.y < 0) p.y += 1;
+      else if (p.y > 1) p.y -= 1;
       c2d.fillStyle = pickColor(p, params.palette, c);
       c2d.beginPath();
       c2d.arc(p.x * w, p.y * h, p.r, 0, Math.PI * 2);
@@ -69,9 +72,18 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { frame(0, params); },
-    dispose() { parts = []; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      frame(0, params);
+    },
+    dispose() {
+      parts = [];
+    },
   };
 }

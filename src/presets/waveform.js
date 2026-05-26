@@ -6,18 +6,25 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
 
-  function hash(x) { return Math.sin(x * 127.1) * 43758.5453 % 1; }
-  function rgba(c, a) { return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`; }
+  function hash(x) {
+    return (Math.sin(x * 127.1) * 43758.5453) % 1;
+  }
+  function rgba(c, a) {
+    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
+  }
 
   function frame(t, params) {
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
 
     const lines = Math.round(14 + params.density * 26);
-    const padX = w * 0.1, plotW = w - padX * 2;
-    const top = h * 0.12, bottom = h * 0.9;
+    const padX = w * 0.1,
+      plotW = w - padX * 2;
+    const top = h * 0.12,
+      bottom = h * 0.9;
     const gap = (bottom - top) / lines;
     const amp = gap * (2.2 + params.intensity * 3.0);
     const samples = 90;
@@ -38,7 +45,8 @@ export function create({ c2d, getColors }) {
         n += Math.sin(u * 41 - t * 0.8 + seedRow * 2.0) * 0.3;
         n += (hash(Math.floor(u * 60) + seedRow + Math.floor(t * 6)) || 0) * 0.4;
         const y = baseY - Math.abs(n) * env * amp;
-        if (s) c2d.lineTo(x, y); else c2d.moveTo(x, y);
+        if (s) c2d.lineTo(x, y);
+        else c2d.moveTo(x, y);
       }
       // close down to baseline to fill (occlusion)
       c2d.lineTo(padX + plotW, baseY + 2);
@@ -55,9 +63,16 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { frame(0, params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      frame(0, params);
+    },
     dispose() {},
   };
 }

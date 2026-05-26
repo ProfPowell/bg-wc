@@ -49,7 +49,8 @@ export function create({ gl, getColors }) {
   const uC3 = gl.getUniformLocation(program, 'u_c3');
   const uBg = gl.getUniformLocation(program, 'u_bg');
 
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
 
   function draw(t, params) {
     const c = getColors();
@@ -68,11 +69,21 @@ export function create({ gl, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { draw(t, params); },
-    staticFrame(params) { draw(0, params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      draw(t, params);
+    },
+    staticFrame(params) {
+      draw(0, params);
+    },
     dispose() {
-      try { gl.deleteProgram(program); gl.deleteBuffer(buf); } catch {}
+      try {
+        gl.deleteProgram(program);
+        gl.deleteBuffer(buf);
+      } catch {}
     },
   };
 }

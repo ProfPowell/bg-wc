@@ -7,7 +7,8 @@ import { clearAndFill } from '../renderer/canvas2d.js';
 const CAPS = { low: 30, med: 70, high: 120 };
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let nodes = [];
   let lastKey = '';
 
@@ -43,8 +44,10 @@ export function create({ c2d, getColors }) {
       const n = nodes[i];
       n.x += n.vx * speedScale;
       n.y += n.vy * speedScale;
-      if (n.x < 0) n.x += 1; else if (n.x > 1) n.x -= 1;
-      if (n.y < 0) n.y += 1; else if (n.y > 1) n.y -= 1;
+      if (n.x < 0) n.x += 1;
+      else if (n.x > 1) n.x -= 1;
+      if (n.y < 0) n.y += 1;
+      else if (n.y > 1) n.y -= 1;
     }
 
     // Link threshold: bigger intensity → longer links.
@@ -58,7 +61,8 @@ export function create({ c2d, getColors }) {
       const a = nodes[i];
       for (let j = i + 1; j < nodes.length; j++) {
         const b = nodes[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
+        const dx = a.x - b.x,
+          dy = a.y - b.y;
         const d2 = dx * dx + dy * dy;
         if (d2 < linkDist * linkDist) {
           const d = Math.sqrt(d2);
@@ -83,9 +87,18 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { frame(0, params); },
-    dispose() { nodes = []; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      frame(0, params);
+    },
+    dispose() {
+      nodes = [];
+    },
   };
 }

@@ -7,7 +7,8 @@ import { clearAndFill } from '../renderer/canvas2d.js';
 const CAPS = { low: 80, med: 220, high: 500 };
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let pieces = [];
   let rand = mulberry32(1);
   let lastSeed = null;
@@ -32,15 +33,18 @@ export function create({ c2d, getColors }) {
   function buildPalette(c) {
     return [
       `rgb(${(c.primary[0] * 255) | 0},${(c.primary[1] * 255) | 0},${(c.primary[2] * 255) | 0})`,
-      `rgb(${(c.accent[0]  * 255) | 0},${(c.accent[1]  * 255) | 0},${(c.accent[2]  * 255) | 0})`,
+      `rgb(${(c.accent[0] * 255) | 0},${(c.accent[1] * 255) | 0},${(c.accent[2] * 255) | 0})`,
       `rgb(${(c.success[0] * 255) | 0},${(c.success[1] * 255) | 0},${(c.success[2] * 255) | 0})`,
       `rgb(${(c.warning[0] * 255) | 0},${(c.warning[1] * 255) | 0},${(c.warning[2] * 255) | 0})`,
-      `rgb(${(c.error[0]   * 255) | 0},${(c.error[1]   * 255) | 0},${(c.error[2]   * 255) | 0})`,
+      `rgb(${(c.error[0] * 255) | 0},${(c.error[1] * 255) | 0},${(c.error[2] * 255) | 0})`,
     ];
   }
 
   function frame(t, params) {
-    if (params.seed !== lastSeed) { rand = mulberry32(params.seed || 13); lastSeed = params.seed; }
+    if (params.seed !== lastSeed) {
+      rand = mulberry32(params.seed || 13);
+      lastSeed = params.seed;
+    }
     const c = getColors();
     const palette = buildPalette(c);
     const cap = CAPS[params.quality] || CAPS.med;
@@ -80,8 +84,13 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
     staticFrame(params) {
       // single burst snapshot — fill once with a fixed scatter
       const c = getColors();
@@ -90,16 +99,21 @@ export function create({ c2d, getColors }) {
       const r = mulberry32(params.seed || 13);
       const n = 40 + Math.floor(80 * params.density);
       for (let i = 0; i < n; i++) {
-        const x = r() * w, y = r() * h;
+        const x = r() * w,
+          y = r() * h;
         const rot = r() * Math.PI * 2;
-        const pw = 5 + r() * 7, ph = 8 + r() * 10;
+        const pw = 5 + r() * 7,
+          ph = 8 + r() * 10;
         c2d.save();
-        c2d.translate(x, y); c2d.rotate(rot);
+        c2d.translate(x, y);
+        c2d.rotate(rot);
         c2d.fillStyle = palette[(r() * palette.length) | 0];
         c2d.fillRect(-pw / 2, -ph / 2, pw, ph);
         c2d.restore();
       }
     },
-    dispose() { pieces = []; },
+    dispose() {
+      pieces = [];
+    },
   };
 }

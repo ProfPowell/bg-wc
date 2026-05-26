@@ -5,7 +5,8 @@
 import { mulberry32 } from '../util/pause.js';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let shapes = [];
   let rand = mulberry32(1);
   let lastSeed = null;
@@ -16,8 +17,10 @@ export function create({ c2d, getColors }) {
     const pts = [];
     for (let i = 0; i < n; i++) {
       pts.push({
-        x: rand(), y: rand(),
-        vx: (rand() - 0.5) * 0.5, vy: (rand() - 0.5) * 0.5,
+        x: rand(),
+        y: rand(),
+        vx: (rand() - 0.5) * 0.5,
+        vy: (rand() - 0.5) * 0.5,
       });
     }
     return { pts, palIdx };
@@ -25,7 +28,7 @@ export function create({ c2d, getColors }) {
 
   function rebuild(params) {
     rand = mulberry32(params.seed || 1);
-    const count = 1 + Math.round(params.density * 2);   // 1–3 shapes
+    const count = 1 + Math.round(params.density * 2); // 1–3 shapes
     shapes = [];
     for (let i = 0; i < count; i++) shapes.push(makeShape(i));
     lastSeed = params.seed;
@@ -55,9 +58,22 @@ export function create({ c2d, getColors }) {
 
     for (const s of shapes) {
       for (const p of s.pts) {
-        p.x += p.vx * sp; p.y += p.vy * sp;
-        if (p.x < 0) { p.x = 0; p.vx = Math.abs(p.vx); } else if (p.x > 1) { p.x = 1; p.vx = -Math.abs(p.vx); }
-        if (p.y < 0) { p.y = 0; p.vy = Math.abs(p.vy); } else if (p.y > 1) { p.y = 1; p.vy = -Math.abs(p.vy); }
+        p.x += p.vx * sp;
+        p.y += p.vy * sp;
+        if (p.x < 0) {
+          p.x = 0;
+          p.vx = Math.abs(p.vx);
+        } else if (p.x > 1) {
+          p.x = 1;
+          p.vx = -Math.abs(p.vx);
+        }
+        if (p.y < 0) {
+          p.y = 0;
+          p.vy = Math.abs(p.vy);
+        } else if (p.y > 1) {
+          p.y = 1;
+          p.vy = -Math.abs(p.vy);
+        }
       }
       // Color cycles slowly through the theme tints.
       const col = palette[(s.palIdx + Math.floor(t * 0.2)) % palette.length];
@@ -65,7 +81,8 @@ export function create({ c2d, getColors }) {
       c2d.beginPath();
       for (let i = 0; i < s.pts.length; i++) {
         const p = s.pts[i];
-        if (i) c2d.lineTo(p.x * w, p.y * h); else c2d.moveTo(p.x * w, p.y * h);
+        if (i) c2d.lineTo(p.x * w, p.y * h);
+        else c2d.moveTo(p.x * w, p.y * h);
       }
       c2d.closePath();
       c2d.stroke();
@@ -73,8 +90,13 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
     staticFrame(params) {
       // No wake — draw the shapes once on a clean field.
       ensure(params);
@@ -90,12 +112,15 @@ export function create({ c2d, getColors }) {
         c2d.beginPath();
         for (let i = 0; i < s.pts.length; i++) {
           const p = s.pts[i];
-          if (i) c2d.lineTo(p.x * w, p.y * h); else c2d.moveTo(p.x * w, p.y * h);
+          if (i) c2d.lineTo(p.x * w, p.y * h);
+          else c2d.moveTo(p.x * w, p.y * h);
         }
         c2d.closePath();
         c2d.stroke();
       }
     },
-    dispose() { shapes = []; },
+    dispose() {
+      shapes = [];
+    },
   };
 }
