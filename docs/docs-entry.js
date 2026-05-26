@@ -4,3 +4,4 @@ import 'vanilla-breeze';
 import 'vanilla-breeze/css';
 import '@profpowell/code-block';
 import '../src/data-background.js';
+import './prefer-dark.js';
