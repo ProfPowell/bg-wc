@@ -30,20 +30,40 @@ header.site {
 
 main { padding: clamp(16px, 4vw, 24px); max-width: 1200px; margin: 0 auto; }
 
+/* Full-bleed hero, shared by the gallery (<bg-wc> element) and the API page
+   (data-background binder). Edge-to-edge animated background; the text sits in
+   an offset themed-glass panel aligned to the page content column. */
 .hero {
-  margin-bottom: 40px; border-radius: 14px; overflow: hidden;
-  border: 1px solid var(--color-border);
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 40px;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid var(--color-border);
 }
-#heroBg { display: block; min-height: 320px; }
+/* Gallery: the <bg-wc> element is the block that gives the hero its height. */
+#heroBg { display: block; min-height: clamp(360px, 60vh, 560px); }
 /* The text sits over an arbitrary animated background in any theme/mode, so give
    it a themed translucent "glass" panel for guaranteed contrast (the panel is
    --color-background, the text --color-text — they always contrast), while the
    animation still reads around and softly through it. */
+/* Offset glass panel: left edge aligned to the 1200px content column, so the
+   animation reads in the open space beside it. The themed translucent fill +
+   blur guarantee text contrast over any background/theme. */
 .hero-inner {
-  margin: clamp(16px, 4vw, 40px);
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  max-width: 600px;
+  margin-block: clamp(20px, 6vh, 64px);
+  margin-inline-start: max(
+    clamp(16px, 4vw, 24px),
+    calc((100% - 1200px) / 2 + clamp(16px, 4vw, 24px))
+  );
+  margin-inline-end: clamp(16px, 4vw, 24px);
   padding: clamp(28px, 4vw, 44px);
   display: flex; flex-direction: column; gap: 14px;
-  max-width: 600px;
+  text-align: left;
   background: color-mix(in oklab, var(--color-background) 72%, transparent);
   border: var(--border-width-thin, 1px) solid var(--color-border);
   border-radius: var(--radius-l, 16px);
@@ -180,31 +200,15 @@ a { color: var(--color-primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
 
-/* API-page hero (the data-background full-bleed variant). Scoped via [data-background] so it
-   does not collide with the gallery's bordered/rounded .hero above. */
+/* API hero uses the data-background binder (injected <bg-wc> sits behind at
+   z-index:-1). The section itself carries the height + vertical centering,
+   since the injected background is absolutely positioned. Panel + full-bleed
+   framing come from the shared .hero / .hero-inner rules above. */
 .hero[data-background] {
-  position: relative;
-  min-height: 56vh;
-  margin-bottom: 0;
-  border: 0;
-  border-radius: 0;
-  border-bottom: 1px solid var(--color-border);
-  display: flex; align-items: center;
-  overflow: hidden;
+  min-height: clamp(360px, 60vh, 560px);
+  display: flex;
+  align-items: center;
 }
-.hero[data-background] .hero-inner {
-  position: relative; z-index: 2;
-  margin: clamp(20px, 5vh, 64px) auto;
-  padding: clamp(28px, 5vw, 56px);
-  max-width: 760px;
-  text-align: center;
-  background: color-mix(in oklab, var(--color-background) 74%, transparent);
-  border: var(--border-width-thin, 1px) solid var(--color-border);
-  border-radius: var(--radius-l, 18px);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-}
-.hero[data-background] .meta-row { justify-content: center; }
 .hero[data-background] h1 {
   font-size: clamp(48px, 7vw, 96px);
   font-weight: 700;
