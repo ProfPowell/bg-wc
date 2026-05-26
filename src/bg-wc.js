@@ -1,4 +1,4 @@
-// <bg-wc> — theme-aware graphics-layer web component (canonical; <gl-wc> is a deprecated alias, see legacy-alias.js).
+// <bg-wc> — theme-aware graphics-layer web component (canonical; <gl-wc> is a deprecated alias, inlined below).
 // See spec.md for the full design.
 
 import { loadPreset, listPresets } from './presets/index.js';
@@ -520,9 +520,25 @@ if (!customElements.get('bg-wc')) {
   customElements.define('bg-wc', BgWc);
 }
 
-// Register the deprecated <gl-wc> alias (side-effecting import).
-import('./legacy-alias.js');
+// Deprecated <gl-wc> alias: a subclass that warns once on first connect, so
+// existing markup keeps working through the rename. Inlined (not a separate
+// module) to register synchronously alongside <bg-wc> without a circular import.
+let warnedGlWc = false;
+class GlWcAlias extends BgWc {
+  connectedCallback() {
+    if (!warnedGlWc) {
+      warnedGlWc = true;
+      console.warn(
+        '<gl-wc> is deprecated and will be removed in a future major. Use <bg-wc> instead.'
+      );
+    }
+    super.connectedCallback?.();
+  }
+}
+if (!customElements.get('gl-wc')) {
+  customElements.define('gl-wc', GlWcAlias);
+}
 
-export { BgWc };
+export { BgWc, GlWcAlias };
 export { listPresets };
 export default BgWc;
