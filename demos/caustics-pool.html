@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Caustics Pool &mdash; gl-wc demos</title>
+  <title>Caustics Pool &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
       background: linear-gradient(180deg, #0b8aa8 0%, #07556e 60%, #033a4d 100%);
     }
     /* Caustics preset multiplied over the water */
-    gl-wc.caustics {
+    bg-wc.caustics {
       position: absolute; inset: 0; z-index: 2;
       mix-blend-mode: screen;
       opacity: 0.92;
@@ -107,7 +107,7 @@
   <nav class="nav"><a href="./">&larr; demos</a></nav>
   <main class="stage">
     <div class="water-tint"></div>
-    <gl-wc class="caustics" preset="caustics" intensity="0.85" density="0.45" speed="0.55"></gl-wc>
+    <bg-wc class="caustics" preset="caustics" intensity="0.85" density="0.45" speed="0.55"></bg-wc>
     <div class="surface"></div>
     <div class="shaft s1"></div>
     <div class="shaft s2"></div>
@@ -131,6 +131,6 @@
       </div>
     </div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

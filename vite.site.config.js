@@ -27,7 +27,7 @@ const input = Object.fromEntries(
 // vanilla-breeze, so an empty module simply disables in-page search.
 const PAGEFIND_ID = '/pagefind/pagefind.js';
 const pagefindStub = {
-  name: 'gl-wc:pagefind-stub',
+  name: 'bg-wc:pagefind-stub',
   resolveId(id) {
     if (id === PAGEFIND_ID) return '\0pagefind-stub';
     return null;
@@ -40,7 +40,7 @@ const pagefindStub = {
 
 // vanilla-breeze locates two kinds of assets relative to its own (bundled-away)
 // script and otherwise falls back to absolute `/cdn/...`, which 404s under the
-// `/gl-wc/` Pages path. We pin both to a site-root `vb/` dir (the page <head>
+// `/bg-wc/` Pages path. We pin both to a site-root `vb/` dir (the page <head>
 // sets window.__VB_THEME_BASE + documentElement.dataset.iconPath there) and
 // serve the real files from node_modules — dev via middleware, build via
 // emitted assets — so there's no CDN dependency and no 404:
@@ -53,7 +53,7 @@ const VB_BUILD_ICONS = [
   'type', 'check', 'chevron-down', 'chevron-up', 'x', 'circle',
 ];
 const vbAssets = {
-  name: 'gl-wc:vb-assets',
+  name: 'bg-wc:vb-assets',
   configureServer(server) {
     server.middlewares.use((req, res, next) => {
       const t = req.url && req.url.match(/^\/vb\/themes\/([\w-]+\.css)(?:\?.*)?$/);

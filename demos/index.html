@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>gl-wc — themed demos</title>
+  <title>bg-wc — themed demos</title>
   <meta name="description" content="Four aesthetics built from one web component: supergraphics, 8-bit retro, Stripe-style refined wave, and vaporwave.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +38,7 @@
     }
     a.demo:hover { transform: translateY(-3px); border-color: var(--accent); }
     .preview { aspect-ratio: 16 / 9; position: relative; }
-    .preview gl-wc { display: block; width: 100%; height: 100%; }
+    .preview bg-wc { display: block; width: 100%; height: 100%; }
     .preview .label {
       position: absolute; left: 14px; top: 14px;
       font-family: ui-monospace, monospace; font-size: 11px;
@@ -49,7 +49,7 @@
     .meta .name { font-weight: 600; font-size: 16px; }
     .meta .desc { font-size: 13px; opacity: 0.6; font-family: ui-monospace, monospace; }
 
-    /* Each preview gets its own scoped tokens so the gl-wc instance sees the demo's palette. */
+    /* Each preview gets its own scoped tokens so the bg-wc instance sees the demo's palette. */
     .demo[data-theme="supergraphics"] { --color-background: #f3eddf; --color-foreground: #1a1a1a; --color-primary: #ffffff; --color-accent: #000000; --color-info: #1e3a8a; }
     .demo[data-theme="retro-8bit"]    { --color-background: #0a0a18; --color-foreground: #00ff88; --color-primary: #ff00aa; --color-accent: #00ddff; --color-info: #ffee00; }
     .demo[data-theme="stripe-wave"]   { --color-background: #0a2540; --color-foreground: #ffffff; --color-primary: #635bff; --color-accent: #00d4ff; --color-info: #ff5996; }
@@ -89,7 +89,7 @@
 </head>
 <body>
   <header class="topbar">
-    <h1>&lt;gl-wc&gt;<span class="crumb">/</span>themed demos</h1>
+    <h1>&lt;bg-wc&gt;<span class="crumb">/</span>themed demos</h1>
     <div style="display: flex; gap: 18px;">
       <a href="../docs/">Docs &rarr;</a>
       <a href="../">&larr; Gallery</a>
@@ -99,235 +99,235 @@
     <h2>One web component, many aesthetics</h2>
     <p class="lede">
       Each demo scopes a small palette of <code>--color-*</code> tokens to the page and points one or two
-      <code>&lt;gl-wc&gt;</code> instances at the right preset &mdash; then the design language around the
+      <code>&lt;bg-wc&gt;</code> instances at the right preset &mdash; then the design language around the
       animation is what makes the look. Click through to see them full-bleed.
     </p>
     <div class="demos">
       <a class="demo" data-theme="supergraphics" href="./supergraphics.html">
         <div class="preview">
-          <gl-wc preset="dither" intensity="0.92" density="0.22" speed="0.45"></gl-wc>
+          <bg-wc preset="dither" intensity="0.92" density="0.22" speed="0.45"></bg-wc>
           <span class="label">dither + svg</span>
         </div>
         <div class="meta"><span class="name">Supergraphics</span><span class="desc">shapes, halftone</span></div>
       </a>
       <a class="demo" data-theme="retro-8bit" href="./retro-8bit.html">
         <div class="preview">
-          <gl-wc preset="dither" intensity="0.92" density="0" speed="0.35" pixel-ratio="0.5"
-                 style="image-rendering: pixelated"></gl-wc>
+          <bg-wc preset="dither" intensity="0.92" density="0" speed="0.35" pixel-ratio="0.5"
+                 style="image-rendering: pixelated"></bg-wc>
           <span class="label">dither + crt</span>
         </div>
         <div class="meta"><span class="name">8-bit retro</span><span class="desc">arcade, scanlines</span></div>
       </a>
       <a class="demo" data-theme="stripe-wave" href="./stripe-wave.html">
         <div class="preview">
-          <gl-wc preset="mesh-gradient" intensity="0.7" speed="0.45"></gl-wc>
+          <bg-wc preset="mesh-gradient" intensity="0.7" speed="0.45"></bg-wc>
           <span class="label">mesh-gradient</span>
         </div>
         <div class="meta"><span class="name">Refined wave</span><span class="desc">SaaS hero</span></div>
       </a>
       <a class="demo" data-theme="vaporwave" href="./vaporwave.html">
         <div class="preview">
-          <gl-wc preset="network" intensity="0.6" density="0.7" speed="0.7"></gl-wc>
+          <bg-wc preset="network" intensity="0.6" density="0.7" speed="0.7"></bg-wc>
           <span class="label">network</span>
         </div>
         <div class="meta"><span class="name">Vaporwave</span><span class="desc">neon, perspective</span></div>
       </a>
       <a class="demo" data-theme="brutalist" href="./brutalist.html">
         <div class="preview">
-          <gl-wc preset="noise" intensity="0.85" density="0.55" speed="0.4"></gl-wc>
+          <bg-wc preset="noise" intensity="0.85" density="0.55" speed="0.4"></bg-wc>
           <span class="label">noise</span>
         </div>
         <div class="meta"><span class="name">Brutalist</span><span class="desc">monospace, grid</span></div>
       </a>
       <a class="demo" data-theme="frutiger" href="./frutiger.html">
         <div class="preview">
-          <gl-wc preset="mesh-gradient" intensity="0.8" speed="0.42"></gl-wc>
+          <bg-wc preset="mesh-gradient" intensity="0.8" speed="0.42"></bg-wc>
           <span class="label">mesh-gradient</span>
         </div>
         <div class="meta"><span class="name">Frutiger Aero</span><span class="desc">glass, sky</span></div>
       </a>
       <a class="demo" data-theme="terminal" href="./terminal.html">
         <div class="preview">
-          <gl-wc preset="particles" intensity="0.55" density="0.9" speed="2.4"></gl-wc>
+          <bg-wc preset="particles" intensity="0.55" density="0.9" speed="2.4"></bg-wc>
           <span class="label">particles</span>
         </div>
         <div class="meta"><span class="name">Terminal</span><span class="desc">CRT, phosphor</span></div>
       </a>
       <a class="demo" data-theme="editorial" href="./editorial.html">
         <div class="preview">
-          <gl-wc preset="dither" intensity="0.92" density="0.05" speed="0.35"></gl-wc>
+          <bg-wc preset="dither" intensity="0.92" density="0.05" speed="0.35"></bg-wc>
           <span class="label">dither</span>
         </div>
         <div class="meta"><span class="name">Editorial</span><span class="desc">newsprint, halftone</span></div>
       </a>
       <a class="demo" data-theme="organic" href="./organic.html">
         <div class="preview">
-          <gl-wc preset="mesh-gradient" intensity="0.55" speed="0.22"></gl-wc>
+          <bg-wc preset="mesh-gradient" intensity="0.55" speed="0.22"></bg-wc>
           <span class="label">mesh-gradient</span>
         </div>
         <div class="meta"><span class="name">Organic</span><span class="desc">botanical, earth</span></div>
       </a>
       <a class="demo" data-theme="kawaii" href="./kawaii.html">
         <div class="preview">
-          <gl-wc preset="particles" palette="rainbow" intensity="0.4" density="0.35" speed="1.6"></gl-wc>
+          <bg-wc preset="particles" palette="rainbow" intensity="0.4" density="0.35" speed="1.6"></bg-wc>
           <span class="label">particles + rainbow</span>
         </div>
         <div class="meta"><span class="name">Kawaii</span><span class="desc">pastel, sparkle</span></div>
       </a>
       <a class="demo" data-theme="manga" href="./manga.html">
         <div class="preview">
-          <gl-wc preset="dither" intensity="0.95" density="0.45" speed="0.4"
-                 style="--gl-wc-color-1:#ffffff; --gl-wc-color-2:#0a0a0a;"></gl-wc>
+          <bg-wc preset="dither" intensity="0.95" density="0.45" speed="0.4"
+                 style="--bg-wc-color-1:#ffffff; --bg-wc-color-2:#0a0a0a;"></bg-wc>
           <span class="label">dither (B&amp;W)</span>
         </div>
         <div class="meta"><span class="name">Manga</span><span class="desc">panels, screentone</span></div>
       </a>
       <a class="demo" data-theme="cyberpunk" href="./cyberpunk.html">
         <div class="preview">
-          <gl-wc preset="warp" intensity="0.85" density="0.55" speed="0.7"></gl-wc>
+          <bg-wc preset="warp" intensity="0.85" density="0.55" speed="0.7"></bg-wc>
           <span class="label">warp</span>
         </div>
         <div class="meta"><span class="name">Cyberpunk</span><span class="desc">neon, glitch</span></div>
       </a>
       <a class="demo" data-theme="coastal" href="./coastal.html">
         <div class="preview">
-          <gl-wc preset="mesh-gradient" intensity="0.85" speed="0.35"
-                 style="--gl-wc-color-1:#ff8a5c; --gl-wc-color-2:#ff5e8e; --gl-wc-color-3:#6a52ff;"></gl-wc>
+          <bg-wc preset="mesh-gradient" intensity="0.85" speed="0.35"
+                 style="--bg-wc-color-1:#ff8a5c; --bg-wc-color-2:#ff5e8e; --bg-wc-color-3:#6a52ff;"></bg-wc>
           <span class="label">mesh-gradient</span>
         </div>
         <div class="meta"><span class="name">Coastal</span><span class="desc">sunset, palm</span></div>
       </a>
       <a class="demo" data-theme="memphis" href="./memphis.html">
         <div class="preview">
-          <gl-wc preset="waves" intensity="0.7" density="0.35" speed="0.7"></gl-wc>
+          <bg-wc preset="waves" intensity="0.7" density="0.35" speed="0.7"></bg-wc>
           <span class="label">waves</span>
         </div>
         <div class="meta"><span class="name">Memphis</span><span class="desc">80s, squiggles</span></div>
       </a>
       <a class="demo" data-theme="alpha" href="./space-1970s.html">
         <div class="preview">
-          <gl-wc preset="lava" intensity="0.55" density="0.4" speed="0.35"></gl-wc>
+          <bg-wc preset="lava" intensity="0.55" density="0.4" speed="0.35"></bg-wc>
           <span class="label">lava</span>
         </div>
         <div class="meta"><span class="name">Alpha</span><span class="desc">70s space</span></div>
       </a>
       <a class="demo" data-theme="dot-matrix" href="./dot-matrix.html">
         <div class="preview" style="background: repeating-linear-gradient(to bottom, #f0eed8 0 12px, #d9e9c4 12px 24px);">
-          <gl-wc preset="dither" intensity="0.92" density="0.7" speed="0.25"
-                 style="--gl-wc-color-1:#f0eed8; --gl-wc-color-2:#1a3320; mix-blend-mode:multiply; opacity:0.4;"></gl-wc>
+          <bg-wc preset="dither" intensity="0.92" density="0.7" speed="0.25"
+                 style="--bg-wc-color-1:#f0eed8; --bg-wc-color-2:#1a3320; mix-blend-mode:multiply; opacity:0.4;"></bg-wc>
           <span class="label">dither + scroll</span>
         </div>
         <div class="meta"><span class="name">Dot matrix</span><span class="desc">paper, print</span></div>
       </a>
       <a class="demo" data-theme="poster-wall" href="./poster-wall.html">
         <div class="preview">
-          <gl-wc preset="plasma" intensity="0.6" density="0.45" speed="0.7"></gl-wc>
+          <bg-wc preset="plasma" intensity="0.6" density="0.45" speed="0.7"></bg-wc>
           <span class="label">17 presets &times; 3 rows</span>
         </div>
         <div class="meta"><span class="name">Poster wall</span><span class="desc">infinite scroll</span></div>
       </a>
       <a class="demo" data-theme="pricing" href="./stripe-pricing.html">
         <div class="preview">
-          <gl-wc preset="mesh-gradient" intensity="0.78" speed="0.32"></gl-wc>
+          <bg-wc preset="mesh-gradient" intensity="0.78" speed="0.32"></bg-wc>
           <span class="label">mesh-gradient</span>
         </div>
         <div class="meta"><span class="name">Pricing</span><span class="desc">SaaS tiers</span></div>
       </a>
       <a class="demo" data-theme="aurora" href="./aurora-hero.html">
         <div class="preview">
-          <gl-wc preset="aurora" intensity="0.85" density="0.45" speed="0.32"></gl-wc>
+          <bg-wc preset="aurora" intensity="0.85" density="0.45" speed="0.32"></bg-wc>
           <span class="label">aurora + stars</span>
         </div>
         <div class="meta"><span class="name">Aurora</span><span class="desc">night sky</span></div>
       </a>
       <a class="demo" data-theme="demoscene" href="./demoscene.html">
         <div class="preview">
-          <gl-wc preset="plasma" intensity="0.85" density="0.55" speed="1.4"></gl-wc>
+          <bg-wc preset="plasma" intensity="0.85" density="0.55" speed="1.4"></bg-wc>
           <span class="label">plasma + crt</span>
         </div>
         <div class="meta"><span class="name">Demoscene</span><span class="desc">marquee, scanlines</span></div>
       </a>
       <a class="demo" data-theme="caustics-pool" href="./caustics-pool.html">
         <div class="preview">
-          <gl-wc preset="caustics" intensity="0.85" density="0.45" speed="0.55"></gl-wc>
+          <bg-wc preset="caustics" intensity="0.85" density="0.45" speed="0.55"></bg-wc>
           <span class="label">caustics</span>
         </div>
         <div class="meta"><span class="name">Caustics pool</span><span class="desc">underwater glass</span></div>
       </a>
       <a class="demo" data-theme="tunnel" href="./tunnel-zoom.html">
         <div class="preview">
-          <gl-wc preset="tunnel" intensity="0.85" density="0.4" speed="0.6"></gl-wc>
+          <bg-wc preset="tunnel" intensity="0.85" density="0.4" speed="0.6"></bg-wc>
           <span class="label">tunnel</span>
         </div>
         <div class="meta"><span class="name">Tunnel</span><span class="desc">infinite zoom</span></div>
       </a>
       <a class="demo" data-theme="vhs" href="./vhs.html">
         <div class="preview">
-          <gl-wc preset="vhs" intensity="0.6" density="0.5" speed="1"></gl-wc>
+          <bg-wc preset="vhs" intensity="0.6" density="0.5" speed="1"></bg-wc>
           <span class="label">vhs</span>
         </div>
         <div class="meta"><span class="name">VHS</span><span class="desc">80s camcorder</span></div>
       </a>
       <a class="demo" data-theme="trench" href="./trench-run.html">
         <div class="preview">
-          <gl-wc preset="trench" intensity="0.7" density="0.5" speed="1.2"></gl-wc>
+          <bg-wc preset="trench" intensity="0.7" density="0.5" speed="1.2"></bg-wc>
           <span class="label">trench + wireframe</span>
         </div>
         <div class="meta"><span class="name">Trench run</span><span class="desc">vector HUD</span></div>
       </a>
       <a class="demo" data-theme="vibe" href="./vibe.html">
         <div class="preview">
-          <gl-wc preset="conic" intensity="0.7" speed="1.4"></gl-wc>
+          <bg-wc preset="conic" intensity="0.7" speed="1.4"></bg-wc>
           <span class="label">grain + conic + scroll</span>
         </div>
         <div class="meta"><span class="name">Vibe</span><span class="desc">landing kit</span></div>
       </a>
       <a class="demo" data-theme="arcade" href="./arcade.html">
         <div class="preview">
-          <gl-wc preset="tempest" intensity="0.7" density="0.5" speed="0.9"></gl-wc>
+          <bg-wc preset="tempest" intensity="0.7" density="0.5" speed="0.9"></bg-wc>
           <span class="label">tempest + fireworks</span>
         </div>
         <div class="meta"><span class="name">Arcade</span><span class="desc">vector attract mode</span></div>
       </a>
       <a class="demo" data-theme="crawl" href="./crawl.html">
         <div class="preview">
-          <gl-wc preset="crawl" speed="0.9" intensity="0.9"
-                 text="gl-wc|renders text|in the|graphics layer"></gl-wc>
+          <bg-wc preset="crawl" speed="0.9" intensity="0.9"
+                 text="bg-wc|renders text|in the|graphics layer"></bg-wc>
           <span class="label">crawl + stars</span>
         </div>
         <div class="meta"><span class="name">Opening crawl</span><span class="desc">vector text</span></div>
       </a>
       <a class="demo" data-theme="popart" href="./popart.html">
         <div class="preview">
-          <gl-wc preset="benday" intensity="0.7" density="0.45" speed="0.5"></gl-wc>
+          <bg-wc preset="benday" intensity="0.7" density="0.45" speed="0.5"></bg-wc>
           <span class="label">benday + comic</span>
         </div>
         <div class="meta"><span class="name">Pop art</span><span class="desc">Lichtenstein panel</span></div>
       </a>
       <a class="demo" data-theme="mallsoft" href="./mallsoft.html">
         <div class="preview">
-          <gl-wc preset="marble" intensity="0.55" density="0.4" speed="0.5"></gl-wc>
+          <bg-wc preset="marble" intensity="0.55" density="0.4" speed="0.5"></bg-wc>
           <span class="label">marble + grain + drift</span>
         </div>
         <div class="meta"><span class="name">Mallsoft</span><span class="desc">plaza, soft drift</span></div>
       </a>
       <a class="demo" data-theme="desktop" href="./desktop.html">
         <div class="preview">
-          <gl-wc preset="bliss" intensity="0.7" density="0.5" speed="0.5"></gl-wc>
+          <bg-wc preset="bliss" intensity="0.7" density="0.5" speed="0.5"></bg-wc>
           <span class="label">bliss</span>
         </div>
         <div class="meta"><span class="name">Desktop</span><span class="desc">old-OS wallpaper</span></div>
       </a>
       <a class="demo" data-theme="dataviz" href="./trading.html">
         <div class="preview">
-          <gl-wc preset="trades" density="0.6" speed="1"></gl-wc>
+          <bg-wc preset="trades" density="0.6" speed="1"></bg-wc>
           <span class="label">trades + dashboard</span>
         </div>
         <div class="meta"><span class="name">Trading desk</span><span class="desc">live dataviz</span></div>
       </a>
       <a class="demo" data-theme="ai" href="./ai-studio.html">
         <div class="preview">
-          <gl-wc preset="mesh-gradient" intensity="0.6" speed="0.5"></gl-wc>
+          <bg-wc preset="mesh-gradient" intensity="0.6" speed="0.5"></bg-wc>
           <span class="label">prompt → surface</span>
         </div>
         <div class="meta"><span class="name">AI Studio</span><span class="desc">generative</span></div>
@@ -335,8 +335,8 @@
     </div>
   </main>
   <footer>
-    <p>MIT &middot; <a href="https://github.com/ProfPowell/gl-wc">ProfPowell/gl-wc</a></p>
+    <p>MIT &middot; <a href="https://github.com/ProfPowell/bg-wc">ProfPowell/bg-wc</a></p>
   </footer>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

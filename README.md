@@ -1,4 +1,4 @@
-# `<gl-wc>`
+# `<bg-wc>`
 
 Theme-aware graphics-layer web component. Renders an animated WebGL or
 Canvas2D background behind any HTML content, picking the right renderer
@@ -10,25 +10,25 @@ via shadow-DOM inheritance — no coupling to any particular CSS system.
 
 ```html
 <script type="module">
-  import '@profpowell/gl-wc';
+  import '@profpowell/bg-wc';
 </script>
 
-<gl-wc preset="mesh-gradient" intensity="0.65">
+<bg-wc preset="mesh-gradient" intensity="0.65">
   <h1>Hero headline</h1>
   <p>This content sits above the rendered layer.</p>
   <img slot="fallback" src="hero-static.webp" alt="">
-</gl-wc>
+</bg-wc>
 ```
 
 ## Install
 
 ```sh
-npm install @profpowell/gl-wc
+npm install @profpowell/bg-wc
 ```
 
 ## Live demo
 
-[**profpowell.github.io/gl-wc**](https://profpowell.github.io/gl-wc/) — preset
+[**profpowell.github.io/bg-wc**](https://profpowell.github.io/bg-wc/) — preset
 gallery with live theme, palette, and motion controls.
 
 ## Presets
@@ -55,6 +55,39 @@ See [`spec.md`](./spec.md) for the full design — public API, lifecycle
 events, accessibility posture, performance budgets, and the reduced-motion
 contract.
 
+## data-background binder
+
+For pages that prefer not to introduce a new element tag, import the optional
+binder. It scans for `data-background` attributes and injects a `<bg-wc>`
+behind each host element automatically.
+
+```js
+import '@profpowell/bg-wc/data-background';
+```
+
+```html
+<section
+  data-background="aurora"
+  data-background-intensity="0.7"
+  data-background-speed="0.3"
+  data-background-color-1="#4dffa1">
+  <h1>Northern lights, behind anything.</h1>
+</section>
+```
+
+## CSS custom properties
+
+Override tokens per instance without touching the global theme:
+
+```css
+bg-wc {
+  --bg-wc-color-1: hotpink;    /* beats --color-primary */
+  --bg-wc-color-bg: #0a0a0a;   /* beats --color-background */
+  --bg-wc-intensity: 0.8;      /* beats the intensity attribute */
+  --bg-wc-speed: 0.5;
+}
+```
+
 ## Run the site locally
 
 ```sh
@@ -65,6 +98,19 @@ npm run dev   # opens the gallery at /docs/index.html
 Build the deployable site with `npm run build:site` (output in `dist-site/`).
 The GitHub Action (`.github/workflows/deploy-pages.yml`) runs this on push to
 `main` and publishes to GitHub Pages.
+
+## Migrating from gl-wc
+
+The library was previously published as `@profpowell/gl-wc`. The old names
+still work as deprecated aliases, so existing code continues to run — but you
+should switch to the new canonical names:
+
+- Element tag: `<gl-wc>` → `<bg-wc>`
+- Binder import: `@profpowell/gl-wc/data-bg` → `@profpowell/bg-wc/data-background`
+- Binder attributes: `data-bg` / `data-bg-*` → `data-background` / `data-background-*`
+- CSS custom properties: `--gl-wc-*` → `--bg-wc-*`
+- Events: `gl-wc:ready`, `gl-wc:error`, `gl-wc:preset-changed`, `gl-wc:visibility` → `bg-wc:*`
+- Package: `@profpowell/gl-wc` → `@profpowell/bg-wc`
 
 ## License
 

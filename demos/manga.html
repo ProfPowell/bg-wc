@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Manga &mdash; gl-wc demos</title>
+  <title>Manga &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Anton&family=Noto+Sans+JP:wght@500;700;900&family=Patrick+Hand&display=swap" rel="stylesheet">
@@ -47,7 +47,7 @@
     .panel.p5 { grid-row: 3; grid-column: 2; }
 
     /* Halftone screentone via dither, multiplied onto the panel */
-    .panel gl-wc.tone {
+    .panel bg-wc.tone {
       position: absolute; inset: 0;
       mix-blend-mode: multiply;
       pointer-events: none;
@@ -161,8 +161,8 @@
     <div class="panels">
       <!-- Panel 1: big impact, speed lines + BWOOM -->
       <div class="panel p1">
-        <gl-wc class="tone" preset="dither" intensity="0.95" density="0.45" speed="0.4"
-               style="--gl-wc-color-1:#ffffff; --gl-wc-color-2:#0a0a0a;"></gl-wc>
+        <bg-wc class="tone" preset="dither" intensity="0.95" density="0.45" speed="0.4"
+               style="--bg-wc-color-1:#ffffff; --bg-wc-color-2:#0a0a0a;"></bg-wc>
         <div class="speed-lines"></div>
         <div class="bubble tl">A custom element. Tiny. <em>Loud.</em></div>
         <div class="sfx bwoom">BWOOM</div>
@@ -171,8 +171,8 @@
 
       <!-- Panel 2: portrait / vertical kanji -->
       <div class="panel p2">
-        <gl-wc class="tone" preset="dither" intensity="0.92" density="0.7" speed="0.3"
-               style="--gl-wc-color-1:#faf8f4; --gl-wc-color-2:#0a0a0a;"></gl-wc>
+        <bg-wc class="tone" preset="dither" intensity="0.92" density="0.7" speed="0.3"
+               style="--bg-wc-color-1:#faf8f4; --bg-wc-color-2:#0a0a0a;"></bg-wc>
         <div class="kanji k4">迫力</div>
         <div class="bubble br">&laquo;...one canvas. one custom element.&raquo;</div>
         <div class="corner">P. 02</div>
@@ -180,8 +180,8 @@
 
       <!-- Panel 3: action panel, dash -->
       <div class="panel p3">
-        <gl-wc class="tone" preset="dither" intensity="0.95" density="0.2" speed="0.55"
-               style="--gl-wc-color-1:#ffffff; --gl-wc-color-2:#0a0a0a;"></gl-wc>
+        <bg-wc class="tone" preset="dither" intensity="0.95" density="0.2" speed="0.55"
+               style="--bg-wc-color-1:#ffffff; --bg-wc-color-2:#0a0a0a;"></bg-wc>
         <div class="speed-lines right"></div>
         <div class="sfx dash">&mdash; DASH! &mdash;</div>
         <div class="corner">P. 03</div>
@@ -189,8 +189,8 @@
 
       <!-- Panel 4: small, sound effect SHHK -->
       <div class="panel p4">
-        <gl-wc class="tone" preset="dither" intensity="0.95" density="0.8" speed="0.25"
-               style="--gl-wc-color-1:#faf8f4; --gl-wc-color-2:#0a0a0a;"></gl-wc>
+        <bg-wc class="tone" preset="dither" intensity="0.95" density="0.8" speed="0.25"
+               style="--bg-wc-color-1:#faf8f4; --bg-wc-color-2:#0a0a0a;"></bg-wc>
         <div class="sfx shhk">SHHK&hellip;</div>
         <div class="corner">P. 04</div>
       </div>
@@ -204,6 +204,6 @@
       </div>
     </div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

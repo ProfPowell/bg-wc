@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vaporwave &mdash; gl-wc demos</title>
+  <title>Vaporwave &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
     .stage { position: relative; width: 100vw; height: 100vh; }
 
     /* Layer 1: animated network */
-    gl-wc.bg { position: absolute; inset: 0; z-index: 1; }
+    bg-wc.bg { position: absolute; inset: 0; z-index: 1; }
 
     /* Layer 2: sun — radial gradient over the horizon */
     .sun {
@@ -132,7 +132,7 @@
 <body>
   <nav class="nav"><a href="./">&larr; demos</a></nav>
   <main class="stage">
-    <gl-wc class="bg" preset="network" intensity="0.55" density="0.6" speed="0.6"></gl-wc>
+    <bg-wc class="bg" preset="network" intensity="0.55" density="0.6" speed="0.6"></bg-wc>
     <div class="sun"></div>
     <div class="grid"></div>
     <div class="horizon"></div>
@@ -144,6 +144,6 @@
     </div>
     <div class="vhs"></div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>gl-wc — preset gallery</title>
+  <title>bg-wc — preset gallery</title>
   <meta name="description" content="Theme-aware graphics-layer web component: animated WebGL and Canvas2D backgrounds for any HTML.">
   <!-- Point vanilla-breeze at the site-root vb/ dir for its theme CSS and icon
        SVGs (served by vite.site.config.js). Must run before VB initializes. -->
@@ -18,12 +18,12 @@
 </head>
 <body>
   <header class="site" data-sticky data-layout="cluster" data-layout-justify="between" data-layout-gap="m">
-    <a href="./" class="brand"><strong>&lt;gl-wc&gt;</strong></a>
+    <a href="./" class="brand"><strong>&lt;bg-wc&gt;</strong></a>
     <nav class="horizontal pills" aria-label="Site">
       <ul>
         <li><a href="./api.html">Docs</a></li>
         <li><a href="../demos/">Demos</a></li>
-        <li><a href="https://github.com/ProfPowell/gl-wc" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://github.com/ProfPowell/bg-wc" target="_blank" rel="noopener">GitHub</a></li>
       </ul>
     </nav>
     <theme-picker compact>
@@ -36,16 +36,16 @@
 
   <main data-layout="stack" data-layout-gap="l">
     <section class="hero">
-      <gl-wc preset="mesh-gradient" intensity="0.65" speed="1" density="0.5" id="heroBg">
+      <bg-wc preset="mesh-gradient" intensity="0.65" speed="1" density="0.5" id="heroBg">
         <div class="hero-inner" data-layout="stack" data-layout-gap="s">
           <h2>Animated backgrounds for any HTML</h2>
           <p>
             Dozens of presets across WebGL and Canvas2D. Reads your design tokens via
             shadow-DOM inheritance. Auto-pauses off-screen and on tab hide.
           </p>
-          <code>&lt;gl-wc preset="mesh-gradient" intensity="0.65"&gt;…&lt;/gl-wc&gt;</code>
+          <code>&lt;bg-wc preset="mesh-gradient" intensity="0.65"&gt;…&lt;/bg-wc&gt;</code>
         </div>
-      </gl-wc>
+      </bg-wc>
     </section>
 
     <section data-layout="stack" data-layout-gap="s">
@@ -75,23 +75,23 @@
 
     <section class="snippet" data-layout="stack" data-layout-gap="s">
       <h2>Quick start</h2>
-      <code-block language="html">&lt;script type="module" src="https://unpkg.com/@profpowell/gl-wc"&gt;&lt;/script&gt;
+      <code-block language="html">&lt;script type="module" src="https://unpkg.com/@profpowell/bg-wc"&gt;&lt;/script&gt;
 
-&lt;gl-wc preset="dither" intensity="0.7"&gt;
+&lt;bg-wc preset="dither" intensity="0.7"&gt;
   &lt;h1&gt;Hero headline&lt;/h1&gt;
   &lt;img slot="fallback" src="hero.webp" alt=""&gt;
-&lt;/gl-wc&gt;</code-block>
+&lt;/bg-wc&gt;</code-block>
       <p class="muted">
         Tokens consumed: <code>--color-background</code>, <code>--color-text</code>,
         <code>--color-primary</code>, <code>--color-accent</code>, <code>--color-info</code>,
         <code>--color-success</code>, <code>--color-warning</code>, <code>--color-error</code>.
-        Override any with <code>--gl-wc-color-*</code>.
+        Override any with <code>--bg-wc-color-*</code>.
       </p>
     </section>
   </main>
 
   <footer data-layout="cluster" data-layout-justify="center" data-layout-gap="s">
-    <p>MIT · <a href="https://github.com/ProfPowell/gl-wc">ProfPowell/gl-wc</a></p>
+    <p>MIT · <a href="https://github.com/ProfPowell/bg-wc">ProfPowell/bg-wc</a></p>
   </footer>
 
   <script type="module" src="./gallery.js"></script>

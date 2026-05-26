@@ -1,19 +1,19 @@
 // Test-site driver: groups presets into tabs and mounts only the active
 // group, so the page never holds more simultaneous WebGL contexts than the
-// browser allows. Switching groups removes the old cards (each <gl-wc>'s
+// browser allows. Switching groups removes the old cards (each <bg-wc>'s
 // disconnectedCallback frees its context) before mounting the new ones.
 
 import 'vanilla-breeze';
 import 'vanilla-breeze/css';
 import '@profpowell/code-block';
-import '../src/gl-wc.js';
+import '../src/bg-wc.js';
 import { listGroups } from '../src/presets/index.js';
 
 // Theme + light/dark are owned by vanilla-breeze's <theme-picker> (accent color
-// + Auto/Light/Dark + density), which persists the visitor's choice. gl-wc just
+// + Auto/Light/Dark + density), which persists the visitor's choice. bg-wc just
 // reads the resulting --color-* tokens via shadow-DOM inheritance. We only nudge
 // the first-load default to dark (where the presets look most vivid) — see below.
-// `palette` and `motion` below are gl-wc-specific attributes, not VB theming.
+// `palette` and `motion` below are bg-wc-specific attributes, not VB theming.
 
 const grid = document.getElementById('grid');
 const tabsHost = document.getElementById('groupTabs');
@@ -27,7 +27,7 @@ function makeCard({ name, renderer }) {
   card.className = 'card';
   card.innerHTML = `
     <div class="card-stage">
-      <gl-wc preset="${name}" intensity="0.6" speed="1" density="0.5"></gl-wc>
+      <bg-wc preset="${name}" intensity="0.6" speed="1" density="0.5"></bg-wc>
     </div>
     <div class="card-meta">
       <h4>${name}</h4>
@@ -48,7 +48,7 @@ function makeCard({ name, renderer }) {
       </label>
     </div>
   `;
-  const el = card.querySelector('gl-wc');
+  const el = card.querySelector('bg-wc');
   // Inherit the current page-level palette / motion selections.
   if (paletteSel.value !== 'theme') el.setAttribute('palette', paletteSel.value);
   if (motionSel.value !== 'auto') el.setAttribute('motion', motionSel.value);
@@ -109,12 +109,12 @@ function preferDarkByDefault() {
 window.addEventListener('load', preferDarkByDefault);
 
 paletteSel.addEventListener('change', () => {
-  for (const el of document.querySelectorAll('gl-wc')) el.setAttribute('palette', paletteSel.value);
+  for (const el of document.querySelectorAll('bg-wc')) el.setAttribute('palette', paletteSel.value);
 });
 motionSel.addEventListener('change', () => {
-  for (const el of document.querySelectorAll('gl-wc')) el.setAttribute('motion', motionSel.value);
+  for (const el of document.querySelectorAll('bg-wc')) el.setAttribute('motion', motionSel.value);
 });
 
 // Log lifecycle events for inspection.
-addEventListener('error', (e) => console.error('[gl-wc page error]', e.error));
-grid.addEventListener('gl-wc:error', (e) => console.warn('[gl-wc:error]', e.detail), true);
+addEventListener('error', (e) => console.error('[bg-wc page error]', e.error));
+grid.addEventListener('bg-wc:error', (e) => console.warn('[bg-wc:error]', e.detail), true);

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trading Desk &mdash; gl-wc demos</title>
+  <title>Trading Desk &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
     body { font-family: 'IBM Plex Mono', ui-monospace, monospace; min-height: 100vh; }
 
     .desk { position: relative; width: 100vw; height: 100vh; }
-    gl-wc.tape { position: absolute; inset: 0; z-index: 0; opacity: 0.9; }
+    bg-wc.tape { position: absolute; inset: 0; z-index: 0; opacity: 0.9; }
 
     .topbar {
       position: absolute; top: 0; left: 0; right: 0; z-index: 4; height: 44px;
@@ -47,7 +47,7 @@
     }
     .panel .hd { font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
       color: rgba(215,230,255,0.7); padding: 8px 12px; border-bottom: 1px solid var(--border); }
-    .panel gl-wc { display: block; width: 100%; height: calc(100% - 31px); }
+    .panel bg-wc { display: block; width: 100%; height: calc(100% - 31px); }
 
     .chart { left: 24px; bottom: 24px; width: min(380px, 42vw); height: 230px; }
     .map   { right: 24px; bottom: 24px; width: min(380px, 42vw); height: 230px; }
@@ -60,7 +60,7 @@
 <body>
   <main class="desk">
     <!-- full-bleed scrolling tape -->
-    <gl-wc class="tape" preset="trades" density="0.65" speed="1.1"></gl-wc>
+    <bg-wc class="tape" preset="trades" density="0.65" speed="1.1"></bg-wc>
 
     <div class="topbar">
       <span class="live"><span class="dot"></span>MARKETS LIVE</span>
@@ -75,14 +75,14 @@
 
     <section class="panel chart">
       <div class="hd">Portfolio &middot; intraday</div>
-      <gl-wc preset="dashboard" intensity="0.7" speed="1"></gl-wc>
+      <bg-wc preset="dashboard" intensity="0.7" speed="1"></bg-wc>
     </section>
     <section class="panel map">
       <div class="hd">Order flow &middot; global</div>
-      <gl-wc preset="vectormap" density="0.6" speed="0.7"></gl-wc>
+      <bg-wc preset="vectormap" density="0.6" speed="0.7"></bg-wc>
     </section>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
   <script>
     // ticking clock for flavor
     const el = document.getElementById('clock');

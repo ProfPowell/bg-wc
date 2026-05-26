@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Supergraphics &mdash; gl-wc demos</title>
+  <title>Supergraphics &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -29,7 +29,7 @@
     }
 
     /* Halftone screen, painted on top via multiply blend so it grits up the flats. */
-    gl-wc.halftone {
+    bg-wc.halftone {
       position: absolute; inset: 0;
       mix-blend-mode: multiply;
       opacity: 0.10;
@@ -136,8 +136,8 @@
       <span aria-hidden="true">M</span>
     </div>
 
-    <gl-wc class="halftone" preset="noise" intensity="0.7" density="0.85" speed="0.25"
-           style="--gl-wc-color-fg:#000000; --gl-wc-color-bg:#ffffff;"></gl-wc>
+    <bg-wc class="halftone" preset="noise" intensity="0.7" density="0.85" speed="0.25"
+           style="--bg-wc-color-fg:#000000; --bg-wc-color-bg:#ffffff;"></bg-wc>
 
     <div class="label-tl">
       <a href="./">&larr; Demos</a>
@@ -148,7 +148,7 @@
       VB &times; integration layer
     </div>
     <div class="label-bl">
-      gl-wc &times; dither &middot; halftone overlay<br>
+      bg-wc &times; dither &middot; halftone overlay<br>
       mix-blend-mode: multiply
     </div>
     <div class="label-br">
@@ -156,6 +156,6 @@
       MMXXVI
     </div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aurora &mdash; gl-wc demos</title>
+  <title>Aurora &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -22,9 +22,9 @@
     .stage { position: relative; width: 100vw; height: 100vh; }
 
     /* Aurora preset fills the sky */
-    gl-wc.sky { position: absolute; inset: 0; }
+    bg-wc.sky { position: absolute; inset: 0; }
     /* Stars preset on top, slow + sparse */
-    gl-wc.stars { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    bg-wc.stars { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
 
     /* Mountain silhouette across the bottom */
     svg.skyline {
@@ -91,9 +91,9 @@
 <body>
   <nav class="nav"><a href="./">&larr; demos</a></nav>
   <main class="stage">
-    <gl-wc class="sky"   preset="aurora" intensity="0.85" density="0.45" speed="0.32"></gl-wc>
-    <gl-wc class="stars" preset="stars"  intensity="0.5"  density="0.45" speed="0.25"
-           style="--gl-wc-color-bg: transparent;"></gl-wc>
+    <bg-wc class="sky"   preset="aurora" intensity="0.85" density="0.45" speed="0.32"></bg-wc>
+    <bg-wc class="stars" preset="stars"  intensity="0.5"  density="0.45" speed="0.25"
+           style="--bg-wc-color-bg: transparent;"></bg-wc>
 
     <svg class="skyline" viewBox="0 0 1600 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
       <!-- distant range -->
@@ -122,6 +122,6 @@
       <div><b>&minus;28&deg;C</b>Surface temp</div>
     </div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Studio &mdash; gl-wc demos</title>
+  <title>AI Studio &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -73,16 +73,16 @@
 </head>
 <body>
   <main class="stage">
-    <gl-wc id="bg" preset="mesh-gradient" intensity="0.6" speed="0.5"></gl-wc>
+    <bg-wc id="bg" preset="mesh-gradient" intensity="0.6" speed="0.5"></bg-wc>
     <div class="veil"></div>
 
     <header class="topbar">
-      <div class="brand"><span class="spark"></span> gl-wc&nbsp;studio</div>
+      <div class="brand"><span class="spark"></span> bg-wc&nbsp;studio</div>
       <a href="./">&larr; demos</a>
     </header>
 
     <div class="center">
-      <div class="result-chip"><span class="dot"></span> gl-wc-diffusion v1 &middot; <code id="chipPreset">mesh-gradient</code></div>
+      <div class="result-chip"><span class="dot"></span> bg-wc-diffusion v1 &middot; <code id="chipPreset">mesh-gradient</code></div>
       <h1 id="headline">Describe a background. Watch it render.</h1>
     </div>
 
@@ -92,13 +92,13 @@
       <div class="status" id="status"><span class="ring"></span><span id="statusLabel">ready</span></div>
     </div>
 
-    <gl-wc class="grain" preset="grain" intensity="0.45" density="0.7"></gl-wc>
+    <bg-wc class="grain" preset="grain" intensity="0.45" density="0.7"></bg-wc>
   </main>
 
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
   <script type="module">
     // A faux "prompt → background" generator: type a prompt, show a spinner,
-    // then live-swap the gl-wc preset. gl-wc's runtime preset hot-swap +
+    // then live-swap the bg-wc preset. bg-wc's runtime preset hot-swap +
     // theme-token reads make each "generation" instant and dependency-free.
     const bg = document.getElementById('bg');
     const promptText = document.getElementById('promptText');

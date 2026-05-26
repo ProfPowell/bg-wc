@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cyberpunk &mdash; gl-wc demos</title>
+  <title>Cyberpunk &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+JP:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
     .stage { position: relative; width: 100vw; height: 100vh; }
 
     /* Distorted neon grid */
-    gl-wc.grid { position: absolute; inset: 0; }
+    bg-wc.grid { position: absolute; inset: 0; }
 
     /* Top gradient for atmosphere */
     .atmos {
@@ -164,7 +164,7 @@
 <body>
   <nav class="nav"><a href="./">[&larr; /DEMOS]</a></nav>
   <main class="stage">
-    <gl-wc class="grid" preset="warp" intensity="0.85" density="0.55" speed="0.7"></gl-wc>
+    <bg-wc class="grid" preset="warp" intensity="0.85" density="0.55" speed="0.7"></bg-wc>
     <div class="atmos"></div>
     <div class="atmos bottom"></div>
     <div class="kanji-bg" aria-hidden="true">電脳</div>
@@ -177,7 +177,7 @@
       </div>
       <h1 data-text="SYSTEM/ONLINE">SYSTEM/<span class="accent">ONLINE</span></h1>
       <p class="lede">
-        $ <span style="color:var(--color-info)">gl-wc preset="warp"</span> &nbsp;//&nbsp;
+        $ <span style="color:var(--color-info)">bg-wc preset="warp"</span> &nbsp;//&nbsp;
         warped neon grid, chromatic glitch text, scanlines &mdash; a vertical kanji watermarks
         the wall behind. The render loop pauses whenever the operator looks away.
       </p>
@@ -191,9 +191,9 @@
       <div class="c tl"></div><div class="c tr"></div>
       <div class="c bl"></div><div class="c br"></div>
     </div>
-    <div class="hud">// gl-wc &middot; warp 0.85 / 0.55 / 0.7 &middot; render: webgl &middot; tokens inherited from :host //</div>
+    <div class="hud">// bg-wc &middot; warp 0.85 / 0.55 / 0.7 &middot; render: webgl &middot; tokens inherited from :host //</div>
     <div class="scan"></div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>
