@@ -4,50 +4,12 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/data-bg.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "bindDataBackgrounds",
-          "parameters": [
-            {
-              "name": "root",
-              "default": "document"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "stopWatching"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "bindDataBackgrounds",
-          "declaration": {
-            "name": "bindDataBackgrounds",
-            "module": "src/data-bg.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "stopWatching",
-          "declaration": {
-            "name": "stopWatching",
-            "module": "src/data-bg.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/gl-wc.js",
+      "path": "src/bg-wc.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "GlWc",
+          "name": "BgWc",
           "members": [
             {
               "kind": "field",
@@ -82,7 +44,7 @@
             {
               "kind": "field",
               "name": "textContent",
-              "default": "` :host { display: block; position: relative; overflow: hidden; isolation: isolate; background: var(--gl-wc-color-bg, var(--color-background, transparent)); } :host([hidden]) { display: none; } canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: var(--gl-wc-z-index, 0); pointer-events: none; display: block; } .content { position: relative; z-index: 1; } .fallback { position: absolute; inset: 0; z-index: 0; display: none; } .fallback ::slotted(*) { width: 100%; height: 100%; object-fit: cover; display: block; } :host([data-fallback]) .fallback { display: block; } :host([data-fallback]) canvas { display: none; } `"
+              "default": "` :host { display: block; position: relative; overflow: hidden; isolation: isolate; background: var(--bg-wc-color-bg, var(--gl-wc-color-bg, var(--color-background, transparent))); } :host([hidden]) { display: none; } canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: var(--bg-wc-z-index, var(--gl-wc-z-index, 0)); pointer-events: none; display: block; } .content { position: relative; z-index: 1; } .fallback { position: absolute; inset: 0; z-index: 0; display: none; } .fallback ::slotted(*) { width: 100%; height: 100%; object-fit: cover; display: block; } :host([data-fallback]) .fallback { display: block; } :host([data-fallback]) canvas { display: none; } `"
             },
             {
               "kind": "field",
@@ -103,7 +65,7 @@
           ],
           "events": [
             {
-              "name": "type",
+              "name": "t",
               "type": {
                 "text": "CustomEvent"
               }
@@ -147,8 +109,203 @@
           "superclass": {
             "name": "HTMLElement"
           },
+          "tagName": "bg-wc",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "GlWcAlias",
+          "superclass": {
+            "name": "BgWc",
+            "module": "src/bg-wc.js"
+          },
           "tagName": "gl-wc",
           "customElement": true,
+          "attributes": [
+            {
+              "name": "preset",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "palette",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "intensity",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "speed",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "density",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "seed",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "paused",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "pixel-ratio",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "quality",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "fit",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "motion",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "ready",
+              "readonly": true,
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "preset",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "paused",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "pause",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "resume",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "snapshot",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "presets",
+              "static": true,
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "textContent",
+              "default": "` :host { display: block; position: relative; overflow: hidden; isolation: isolate; background: var(--bg-wc-color-bg, var(--gl-wc-color-bg, var(--color-background, transparent))); } :host([hidden]) { display: none; } canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: var(--bg-wc-z-index, var(--gl-wc-z-index, 0)); pointer-events: none; display: block; } .content { position: relative; z-index: 1; } .fallback { position: absolute; inset: 0; z-index: 0; display: none; } .fallback ::slotted(*) { width: 100%; height: 100%; object-fit: cover; display: block; } :host([data-fallback]) .fallback { display: block; } :host([data-fallback]) canvas { display: none; } `",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "className",
+              "type": {
+                "text": "string"
+              },
+              "default": "'content'",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "default": "'fallback'",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            }
+          ],
+          "events": [
+            {
+              "name": "t",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            }
+          ],
           "cssParts": [
             {
               "name": "canvas",
@@ -160,18 +317,34 @@
       "exports": [
         {
           "kind": "custom-element-definition",
+          "name": "bg-wc",
+          "declaration": {
+            "name": "BgWc",
+            "module": "src/bg-wc.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
           "name": "gl-wc",
           "declaration": {
-            "name": "GlWc",
-            "module": "src/gl-wc.js"
+            "name": "GlWcAlias",
+            "module": "src/bg-wc.js"
           }
         },
         {
           "kind": "js",
-          "name": "GlWc",
+          "name": "BgWc",
           "declaration": {
-            "name": "GlWc",
-            "module": "src/gl-wc.js"
+            "name": "BgWc",
+            "module": "src/bg-wc.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "GlWcAlias",
+          "declaration": {
+            "name": "GlWcAlias",
+            "module": "src/bg-wc.js"
           }
         },
         {
@@ -179,15 +352,157 @@
           "name": "listPresets",
           "declaration": {
             "name": "listPresets",
-            "module": "src/gl-wc.js"
+            "module": "src/bg-wc.js"
           }
         },
         {
           "kind": "js",
           "name": "default",
           "declaration": {
-            "name": "GlWc",
-            "module": "src/gl-wc.js"
+            "name": "BgWc",
+            "module": "src/bg-wc.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/data-background.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "bindDataBackgrounds",
+          "parameters": [
+            {
+              "name": "root",
+              "default": "document"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "stopWatching"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "bindDataBackgrounds",
+          "declaration": {
+            "name": "bindDataBackgrounds",
+            "module": "src/data-background.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "stopWatching",
+          "declaration": {
+            "name": "stopWatching",
+            "module": "src/data-background.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/util/observe.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "observeVisibility",
+          "parameters": [
+            {
+              "name": "host"
+            },
+            {
+              "name": "cb"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "observeReducedMotion",
+          "parameters": [
+            {
+              "name": "cb"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "observeTabVisibility",
+          "parameters": [
+            {
+              "name": "cb"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "observeVisibility",
+          "declaration": {
+            "name": "observeVisibility",
+            "module": "src/util/observe.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "observeReducedMotion",
+          "declaration": {
+            "name": "observeReducedMotion",
+            "module": "src/util/observe.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "observeTabVisibility",
+          "declaration": {
+            "name": "observeTabVisibility",
+            "module": "src/util/observe.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/util/pause.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "observeBatteryPowerSave",
+          "parameters": [
+            {
+              "name": "cb"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "mulberry32",
+          "parameters": [
+            {
+              "name": "seed"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "observeBatteryPowerSave",
+          "declaration": {
+            "name": "observeBatteryPowerSave",
+            "module": "src/util/pause.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "mulberry32",
+          "declaration": {
+            "name": "mulberry32",
+            "module": "src/util/pause.js"
           }
         }
       ]
@@ -474,110 +789,6 @@
           "declaration": {
             "name": "bindQuad",
             "module": "src/renderer/webgl.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/util/observe.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "observeVisibility",
-          "parameters": [
-            {
-              "name": "host"
-            },
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "observeReducedMotion",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "observeTabVisibility",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "observeVisibility",
-          "declaration": {
-            "name": "observeVisibility",
-            "module": "src/util/observe.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "observeReducedMotion",
-          "declaration": {
-            "name": "observeReducedMotion",
-            "module": "src/util/observe.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "observeTabVisibility",
-          "declaration": {
-            "name": "observeTabVisibility",
-            "module": "src/util/observe.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/util/pause.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "observeBatteryPowerSave",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "mulberry32",
-          "parameters": [
-            {
-              "name": "seed"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "observeBatteryPowerSave",
-          "declaration": {
-            "name": "observeBatteryPowerSave",
-            "module": "src/util/pause.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "mulberry32",
-          "declaration": {
-            "name": "mulberry32",
-            "module": "src/util/pause.js"
           }
         }
       ]

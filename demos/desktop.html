@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Desktop &mdash; gl-wc demos</title>
+  <title>Desktop &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
     body { font-family: 'Inter', "Segoe UI", Tahoma, sans-serif; min-height: 100vh; background: #2a6dd6; }
 
     .screen { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-    gl-wc.wallpaper { position: absolute; inset: 0; z-index: 0; }
+    bg-wc.wallpaper { position: absolute; inset: 0; z-index: 0; }
 
     /* desktop icons */
     .icons { position: absolute; top: 18px; left: 16px; z-index: 2; display: flex; flex-direction: column; gap: 22px; }
@@ -80,22 +80,22 @@
 </head>
 <body>
   <main class="screen">
-    <gl-wc class="wallpaper" preset="bliss" intensity="0.7" density="0.5" speed="0.5"></gl-wc>
+    <bg-wc class="wallpaper" preset="bliss" intensity="0.7" density="0.5" speed="0.5"></bg-wc>
 
     <div class="icons">
       <div class="icon"><div class="glyph">&#128193;</div>My Presets</div>
-      <div class="icon"><div class="glyph">&#127912;</div>gl-wc</div>
+      <div class="icon"><div class="glyph">&#127912;</div>bg-wc</div>
       <div class="icon"><div class="glyph">&#128465;</div>Recycle</div>
     </div>
 
     <section class="window">
       <div class="titlebar">
-        <span class="ico"></span> gl-wc.exe &mdash; Display Properties
+        <span class="ico"></span> bg-wc.exe &mdash; Display Properties
         <span class="btns"><b>_</b><b>&#9633;</b><b class="x">&times;</b></span>
       </div>
       <div class="winbody">
         <h2>Background</h2>
-        <p>Your desktop is rendered by <code>&lt;gl-wc preset="bliss"&gt;</code> &mdash; rolling
+        <p>Your desktop is rendered by <code>&lt;bg-wc preset="bliss"&gt;</code> &mdash; rolling
           hills, a gradient sky, and drifting clouds, all from the theme tokens. No wallpaper file.</p>
         <p>Pick another preset any time. It even pauses when the screen saver kicks in.</p>
         <div class="row">
@@ -111,6 +111,6 @@
       <div class="clock">2:06 PM</div>
     </div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Editorial &mdash; gl-wc demos</title>
+  <title>Editorial &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -82,7 +82,7 @@
       background: var(--ink);
       overflow: hidden;
     }
-    .photo gl-wc { display: block; width: 100%; height: 100%; }
+    .photo bg-wc { display: block; width: 100%; height: 100%; }
     .photo + .caption {
       font-family: Inter, sans-serif;
       font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
@@ -137,7 +137,7 @@
     <p class="byline">FEATURE <span class="red">&bull;</span> WEB COMPONENTS &nbsp;&middot;&nbsp; By the editors</p>
     <h2 class="hero-headline">A single primitive replaces a catalog of one-off integrations.</h2>
     <p class="dek">
-      The <code>&lt;gl-wc&gt;</code> custom element ships a small kernel with each visual preset
+      The <code>&lt;bg-wc&gt;</code> custom element ships a small kernel with each visual preset
       loaded only on first use. Pages that don't ask for animation pay nothing; pages that do
       get a familiar attribute surface and one canvas, no matter how many presets are in play.
     </p>
@@ -145,8 +145,8 @@
     <div class="feature">
       <div>
         <div class="photo">
-          <gl-wc preset="dither" intensity="0.92" density="0.05" speed="0.35"
-                 style="--gl-wc-color-1:#f6f3eb; --gl-wc-color-2:#1a1a1a;"></gl-wc>
+          <bg-wc preset="dither" intensity="0.92" density="0.05" speed="0.35"
+                 style="--bg-wc-color-1:#f6f3eb; --bg-wc-color-2:#1a1a1a;"></bg-wc>
         </div>
         <p class="caption">Fig. 1. &mdash; <code>preset="dither"</code> rendered in two inks: page cream and process black.</p>
         <p class="pull">"Twenty years of animation engines, replaced by one canvas and a handful of CSS variables."</p>
@@ -159,6 +159,6 @@
       </div>
     </div>
   </article>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

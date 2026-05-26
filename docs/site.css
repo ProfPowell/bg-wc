@@ -1,4 +1,4 @@
-/* Layout-only styles for the gl-wc gallery. Design tokens come from
+/* Layout-only styles for the bg-wc gallery. Design tokens come from
    vanilla-breeze (imported in gallery.js); this file never redefines them.
    References use vanilla-breeze token names (e.g. --color-text, --color-surface)
    with fallbacks for robustness. */
@@ -15,7 +15,7 @@ body {
 
 /* Header: layout comes from data-layout="cluster"; vanilla-breeze styles the
    nav (.horizontal.pills), buttons, and selects. Only the sticky bar chrome
-   and the monospace brand are gl-wc-specific. */
+   and the monospace brand are bg-wc-specific. */
 header.site {
   position: sticky; top: 0; z-index: 50;
   padding: 12px clamp(16px, 4vw, 24px);
@@ -116,7 +116,7 @@ main { padding: clamp(16px, 4vw, 24px); max-width: 1200px; margin: 0 auto; }
   flex-direction: column;
 }
 .card-stage { height: 180px; }
-.card-stage gl-wc { display: block; width: 100%; height: 100%; }
+.card-stage bg-wc { display: block; width: 100%; height: 100%; }
 .card-meta {
   padding: 10px 14px;
   display: flex; align-items: center; justify-content: space-between;
@@ -180,9 +180,9 @@ a { color: var(--color-primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
 
-/* API-page hero (the data-bg full-bleed variant). Scoped via [data-bg] so it
+/* API-page hero (the data-background full-bleed variant). Scoped via [data-background] so it
    does not collide with the gallery's bordered/rounded .hero above. */
-.hero[data-bg] {
+.hero[data-background] {
   position: relative;
   min-height: 56vh;
   margin-bottom: 0;
@@ -192,7 +192,7 @@ code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
   display: flex; align-items: center;
   overflow: hidden;
 }
-.hero[data-bg] .hero-inner {
+.hero[data-background] .hero-inner {
   position: relative; z-index: 2;
   margin: clamp(20px, 5vh, 64px) auto;
   padding: clamp(28px, 5vw, 56px);
@@ -204,8 +204,8 @@ code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
-.hero[data-bg] .meta-row { justify-content: center; }
-.hero[data-bg] h1 {
+.hero[data-background] .meta-row { justify-content: center; }
+.hero[data-background] h1 {
   font-size: clamp(48px, 7vw, 96px);
   font-weight: 700;
   letter-spacing: -0.035em;
@@ -378,7 +378,7 @@ tbody tr:hover { background: rgba(91,142,255,0.05); }
   font-weight: 700;
 }
 
-/* Boxed "callout" — wraps the data-bg section so the aurora behind it
+/* Boxed "callout" — wraps the data-background section so the aurora behind it
    shows through a card frame. */
 .boxed {
   background: color-mix(in oklab, var(--color-background) 82%, transparent);
@@ -389,6 +389,6 @@ tbody tr:hover { background: rgba(91,142,255,0.05); }
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* The data-bg-on section needs vertical breathing room so the
+/* The data-background section needs vertical breathing room so the
    aurora reads beneath it. */
-#data-bg { padding: 56px 0; border-radius: 16px; overflow: hidden; }
+#data-background { padding: 56px 0; border-radius: 16px; overflow: hidden; }

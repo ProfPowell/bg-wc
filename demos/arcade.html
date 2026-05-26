@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Arcade &mdash; gl-wc demos</title>
+  <title>Arcade &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet">
@@ -20,8 +20,8 @@
     body { font-family: 'Press Start 2P', monospace; min-height: 100vh; }
 
     .cab { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-    gl-wc.tube { position: absolute; inset: 0; z-index: 0; }
-    gl-wc.fx   { position: absolute; inset: 0; z-index: 1; }  /* fireballs over the tube */
+    bg-wc.tube { position: absolute; inset: 0; z-index: 0; }
+    bg-wc.fx   { position: absolute; inset: 0; z-index: 1; }  /* fireballs over the tube */
 
     .vig { position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse at center, transparent 45%, rgba(4,0,12,0.75) 100%); }
@@ -99,9 +99,9 @@
 </head>
 <body>
   <main class="cab">
-    <gl-wc class="tube" preset="tempest" intensity="0.7" density="0.5" speed="0.9"></gl-wc>
-    <gl-wc class="fx" preset="fireworks" intensity="0.7" density="0.5" speed="1"
-           style="--gl-wc-color-bg: transparent;"></gl-wc>
+    <bg-wc class="tube" preset="tempest" intensity="0.7" density="0.5" speed="0.9"></bg-wc>
+    <bg-wc class="fx" preset="fireworks" intensity="0.7" density="0.5" speed="1"
+           style="--bg-wc-color-bg: transparent;"></bg-wc>
 
     <div class="vig"></div>
 
@@ -123,6 +123,6 @@
 
     <div class="scan"></div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

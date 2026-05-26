@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 // Regression: when the page is restored from the back/forward cache, the WebGL
-// context that was dropped while the page was frozen must be rebuilt. gl-wc used
+// context that was dropped while the page was frozen must be rebuilt. bg-wc used
 // to only recover via `webglcontextrestored` (which bfcache restore does not
 // reliably fire), leaving the canvas hidden behind a stuck `data-fallback`.
 // bfcache itself can't be driven under CDP/Playwright, so we reproduce the same

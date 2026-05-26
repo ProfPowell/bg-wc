@@ -6,15 +6,20 @@
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 
-const DEFAULT = 'gl-wc|webgl|canvas|shader|theme|tokens|preset|gradient|aurora|plasma|vector|retro|pixels|noise|motion|render|frame|glow|particles|dataviz|surface|ambient';
+const DEFAULT =
+  'bg-wc|webgl|canvas|shader|theme|tokens|preset|gradient|aurora|plasma|vector|retro|pixels|noise|motion|render|frame|glow|particles|dataviz|surface|ambient';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let words = [];
   let lastKey = '';
 
   function build(params) {
-    const list = (params.text || DEFAULT).split(/[|,]/).map((s) => s.trim()).filter(Boolean);
+    const list = (params.text || DEFAULT)
+      .split(/[|,]/)
+      .map((s) => s.trim())
+      .filter(Boolean);
     const rand = mulberry32(params.seed || 1);
     words = list.map((word, i) => ({
       word,
@@ -29,7 +34,9 @@ export function create({ c2d, getColors }) {
     lastKey = `${params.seed}|${params.text}`;
   }
 
-  function rgba(c, a) { return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`; }
+  function rgba(c, a) {
+    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
+  }
 
   function frame(t, params) {
     const key = `${params.seed}|${params.text}`;
@@ -57,9 +64,18 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { frame(1.5, params); },
-    dispose() { words = []; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      frame(1.5, params);
+    },
+    dispose() {
+      words = [];
+    },
   };
 }

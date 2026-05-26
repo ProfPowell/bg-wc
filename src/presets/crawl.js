@@ -4,14 +4,18 @@
 
 import { clearAndFill } from '../renderer/canvas2d.js';
 
-const DEFAULT = 'A long time ago|in a codebase|far, far away…||gl-wc renders|text in the|graphics layer.';
+const DEFAULT =
+  'A long time ago|in a codebase|far, far away…||bg-wc renders|text in the|graphics layer.';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let scroll = 0;
   let lastT = 0;
 
-  function rgb(c, a) { return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`; }
+  function rgb(c, a) {
+    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
+  }
 
   function frame(t, params) {
     const c = getColors();
@@ -22,21 +26,21 @@ export function create({ c2d, getColors }) {
     lastT = t;
 
     const lineGap = h * 0.13;
-    const total = lines.length * lineGap + h;     // loop length
-    scroll = (scroll + dt * params.speed * h * 0.10) % total;
+    const total = lines.length * lineGap + h; // loop length
+    scroll = (scroll + dt * params.speed * h * 0.1) % total;
 
     const baseFs = h * 0.075;
     c2d.textAlign = 'center';
     c2d.textBaseline = 'middle';
 
-    const horizon = h * 0.12;                       // vanishing line near the top
+    const horizon = h * 0.12; // vanishing line near the top
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       if (!line) continue;
       // dist: distance the line has travelled up from the bottom.
       const dist = scroll - i * lineGap;
       if (dist < 0 || dist > total - h * 0.2) continue;
-      const p = dist / (h - horizon);               // 0 bottom → ~1 at horizon
+      const p = dist / (h - horizon); // 0 bottom → ~1 at horizon
       if (p > 1) continue;
       // Perspective compression: ease toward the horizon, shrink + fade.
       const y = h - dist * (1 - p * 0.55);
@@ -48,16 +52,25 @@ export function create({ c2d, getColors }) {
       let col;
       if (params.palette === 'rainbow') col = `hsla(${(i * 40) % 360},85%,62%,${alpha})`;
       else if (params.palette === 'mono') col = rgb(c.fg, alpha);
-      else col = rgb(c.primary, alpha);             // classic single tint (set primary to gold)
+      else col = rgb(c.primary, alpha); // classic single tint (set primary to gold)
       c2d.fillStyle = col;
       c2d.fillText(line, w / 2, y);
     }
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { lastT = 0; scroll = h * 0.5; frame(0, params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      lastT = 0;
+      scroll = h * 0.5;
+      frame(0, params);
+    },
     dispose() {},
   };
 }

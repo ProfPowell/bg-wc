@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mallsoft &mdash; gl-wc demos</title>
+  <title>Mallsoft &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&family=Noto+Serif+JP:wght@300;500&display=swap" rel="stylesheet">
@@ -20,15 +20,15 @@
     body { font-family: 'Cormorant Garamond', Georgia, serif; min-height: 100vh; }
 
     .plaza { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-    gl-wc.marble { position: absolute; inset: 0; z-index: 0; }
+    bg-wc.marble { position: absolute; inset: 0; z-index: 0; }
 
     /* Soft haze + a slow drift on the whole marble layer (still-image drift). */
-    gl-wc.marble { animation: drift 28s ease-in-out infinite alternate; transform-origin: center; }
+    bg-wc.marble { animation: drift 28s ease-in-out infinite alternate; transform-origin: center; }
     @keyframes drift {
       from { transform: scale(1.08) translate(-1.5%, -1%); }
       to   { transform: scale(1.14) translate(1.5%, 1%); }
     }
-    @media (prefers-reduced-motion: reduce) { gl-wc.marble { animation: none; transform: scale(1.08); } }
+    @media (prefers-reduced-motion: reduce) { bg-wc.marble { animation: none; transform: scale(1.08); } }
 
     /* Checkerboard marble floor in perspective. */
     .floor {
@@ -81,7 +81,7 @@
 </head>
 <body>
   <main class="plaza">
-    <gl-wc class="marble" preset="marble" intensity="0.55" density="0.4" speed="0.5"></gl-wc>
+    <bg-wc class="marble" preset="marble" intensity="0.55" density="0.4" speed="0.5"></bg-wc>
     <div class="floor"></div>
 
     <div class="floating f1">&#127995;</div>
@@ -94,9 +94,9 @@
       <div class="tag">&mdash; soft hours, marble floors &mdash;</div>
     </div>
 
-    <gl-wc class="grain" preset="grain" intensity="0.45" density="0.7"></gl-wc>
+    <bg-wc class="grain" preset="grain" intensity="0.45" density="0.7"></bg-wc>
     <nav class="nav"><a href="./">&larr; demos</a></nav>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

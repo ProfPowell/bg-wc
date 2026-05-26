@@ -1,15 +1,11 @@
-// <gl-wc> — theme-aware graphics-layer web component.
+// <bg-wc> — theme-aware graphics-layer web component (canonical; <gl-wc> is a deprecated alias, inlined below).
 // See spec.md for the full design.
 
 import { loadPreset, listPresets } from './presets/index.js';
 import { createGLContext } from './renderer/webgl.js';
 import { createC2DContext, resizeCanvas } from './renderer/canvas2d.js';
 import { resolveTokens } from './renderer/tokens.js';
-import {
-  observeVisibility,
-  observeReducedMotion,
-  observeTabVisibility,
-} from './util/observe.js';
+import { observeVisibility, observeReducedMotion, observeTabVisibility } from './util/observe.js';
 import { observeBatteryPowerSave } from './util/pause.js';
 
 const STYLE = `
@@ -18,7 +14,7 @@ const STYLE = `
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  background: var(--gl-wc-color-bg, var(--color-background, transparent));
+  background: var(--bg-wc-color-bg, var(--gl-wc-color-bg, var(--color-background, transparent)));
 }
 :host([hidden]) { display: none; }
 canvas {
@@ -26,7 +22,7 @@ canvas {
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: var(--gl-wc-z-index, 0);
+  z-index: var(--bg-wc-z-index, var(--gl-wc-z-index, 0));
   pointer-events: none;
   display: block;
 }
@@ -52,21 +48,33 @@ canvas {
 
 // Authors can override any of these via component-namespaced CSS vars.
 const COLOR_MAPPING = {
-  primary: { token: '--color-primary',    override: '--gl-wc-color-1' },
-  accent:  { token: '--color-accent',     override: '--gl-wc-color-2' },
-  info:    { token: '--color-info',       override: '--gl-wc-color-3' },
-  bg:      { token: '--color-background', override: '--gl-wc-color-bg' },
-  fg:      { token: ['--color-foreground', '--color-text'], override: '--gl-wc-color-fg' },
-  success: { token: '--color-success',    override: null },
-  warning: { token: '--color-warning',    override: null },
-  error:   { token: '--color-error',      override: null },
+  primary: { token: '--color-primary', override: ['--bg-wc-color-1', '--gl-wc-color-1'] },
+  accent: { token: '--color-accent', override: ['--bg-wc-color-2', '--gl-wc-color-2'] },
+  info: { token: '--color-info', override: ['--bg-wc-color-3', '--gl-wc-color-3'] },
+  bg: { token: '--color-background', override: ['--bg-wc-color-bg', '--gl-wc-color-bg'] },
+  fg: {
+    token: ['--color-foreground', '--color-text'],
+    override: ['--bg-wc-color-fg', '--gl-wc-color-fg'],
+  },
+  success: { token: '--color-success', override: null },
+  warning: { token: '--color-warning', override: null },
+  error: { token: '--color-error', override: null },
 };
 
-class GlWc extends HTMLElement {
+class BgWc extends HTMLElement {
   static get observedAttributes() {
     return [
-      'preset', 'palette', 'intensity', 'speed', 'density', 'seed',
-      'paused', 'pixel-ratio', 'quality', 'fit', 'motion',
+      'preset',
+      'palette',
+      'intensity',
+      'speed',
+      'density',
+      'seed',
+      'paused',
+      'pixel-ratio',
+      'quality',
+      'fit',
+      'motion',
     ];
   }
 
@@ -108,12 +116,18 @@ class GlWc extends HTMLElement {
 
     root.append(style, this.#canvas, fallback, content);
 
-    try { this.#internals = this.attachInternals?.(); } catch {}
+    try {
+      this.#internals = this.attachInternals?.();
+    } catch {}
     this.addEventListener('focusin', () => {
-      try { this.#internals?.states?.add?.('--child-focused'); } catch {}
+      try {
+        this.#internals?.states?.add?.('--child-focused');
+      } catch {}
     });
     this.addEventListener('focusout', () => {
-      try { this.#internals?.states?.delete?.('--child-focused'); } catch {}
+      try {
+        this.#internals?.states?.delete?.('--child-focused');
+      } catch {}
     });
 
     this.#resetReady();
@@ -124,43 +138,59 @@ class GlWc extends HTMLElement {
     c.setAttribute('aria-hidden', 'true');
     c.setAttribute('role', 'presentation');
     // Exposed so authors can style the canvas from outside the shadow root,
-    // e.g. `gl-wc::part(canvas) { image-rendering: pixelated }`.
+    // e.g. `bg-wc::part(canvas) { image-rendering: pixelated }`.
     c.setAttribute('part', 'canvas');
     return c;
   }
 
   #resetReady() {
-    this.#ready = new Promise((res) => { this.#readyResolve = res; });
+    this.#ready = new Promise((res) => {
+      this.#readyResolve = res;
+    });
   }
 
   // --- Public surface --------------------------------------------------------
 
-  get ready() { return this.#ready; }
+  get ready() {
+    return this.#ready;
+  }
 
-  get preset() { return this.getAttribute('preset'); }
+  get preset() {
+    return this.getAttribute('preset');
+  }
   set preset(v) {
     if (v == null) this.removeAttribute('preset');
     else this.setAttribute('preset', String(v));
   }
 
-  get paused() { return this.hasAttribute('paused'); }
+  get paused() {
+    return this.hasAttribute('paused');
+  }
   set paused(v) {
     if (v) this.setAttribute('paused', '');
     else this.removeAttribute('paused');
   }
 
-  pause() { this.paused = true; }
-  resume() { this.paused = false; }
+  pause() {
+    this.paused = true;
+  }
+  resume() {
+    this.paused = false;
+  }
 
   async snapshot() {
     // Re-render one frame at current time, then read pixels.
     if (this.#instance) {
-      try { this.#instance.frame?.(this.#timeS, this.#readParams()); } catch {}
+      try {
+        this.#instance.frame?.(this.#timeS, this.#readParams());
+      } catch {}
     }
     return new Promise((res) => this.#canvas.toBlob((b) => res(b), 'image/png'));
   }
 
-  static presets() { return listPresets(); }
+  static presets() {
+    return listPresets();
+  }
 
   // --- Lifecycle -------------------------------------------------------------
 
@@ -169,11 +199,14 @@ class GlWc extends HTMLElement {
       observeVisibility(this, (v) => {
         this.#visible = v;
         this.#evalPlay();
-        this.#emit('gl-wc:visibility', { visible: v });
+        this.#emit('bg-wc:visibility', { visible: v });
       })
     );
     this.#cleanups.push(
-      observeTabVisibility((v) => { this.#docVisible = v; this.#evalPlay(); })
+      observeTabVisibility((v) => {
+        this.#docVisible = v;
+        this.#evalPlay();
+      })
     );
     const rm = observeReducedMotion((m) => {
       this.#reducedMotion = m;
@@ -184,8 +217,10 @@ class GlWc extends HTMLElement {
     this.#cleanups.push(rm.dispose);
 
     if (this.getAttribute('power-save') !== 'off') {
-      observeBatteryPowerSave((p) => { this.#powerSave = p; this.#evalPlay(); })
-        .then((d) => this.#cleanups.push(d));
+      observeBatteryPowerSave((p) => {
+        this.#powerSave = p;
+        this.#evalPlay();
+      }).then((d) => this.#cleanups.push(d));
     }
 
     // Back/forward-cache restore: while the page was frozen the browser may have
@@ -209,8 +244,14 @@ class GlWc extends HTMLElement {
   disconnectedCallback() {
     cancelAnimationFrame(this.#rafId);
     this.#rafId = 0;
-    try { this.#resizeObs?.disconnect(); } catch {}
-    for (const c of this.#cleanups) { try { c(); } catch {} }
+    try {
+      this.#resizeObs?.disconnect();
+    } catch {}
+    for (const c of this.#cleanups) {
+      try {
+        c();
+      } catch {}
+    }
     this.#cleanups.length = 0;
     this.#disposeInstance();
   }
@@ -234,7 +275,11 @@ class GlWc extends HTMLElement {
   // --- Internals -------------------------------------------------------------
 
   #emit(type, detail) {
-    this.dispatchEvent(new CustomEvent(type, { detail, bubbles: false, composed: true }));
+    const fire = (t) =>
+      this.dispatchEvent(new CustomEvent(t, { detail, bubbles: false, composed: true }));
+    fire(type);
+    // Legacy twin: keep gl-wc:* listeners working during deprecation.
+    if (type.startsWith('bg-wc:')) fire('gl-wc:' + type.slice('bg-wc:'.length));
   }
 
   async #loadCurrentPreset(prevName = null) {
@@ -249,7 +294,7 @@ class GlWc extends HTMLElement {
     } catch (err) {
       if (token !== this.#loadingToken) return;
       this.setAttribute('data-fallback', '');
-      this.#emit('gl-wc:error', { phase: 'load', error: err });
+      this.#emit('bg-wc:error', { phase: 'load', error: err });
       return;
     }
     if (token !== this.#loadingToken) return;
@@ -262,11 +307,14 @@ class GlWc extends HTMLElement {
 
     let ctx;
     try {
-      ctx = loaded.renderer === 'webgl' ? createGLContext(this.#canvas) : createC2DContext(this.#canvas);
+      ctx =
+        loaded.renderer === 'webgl'
+          ? createGLContext(this.#canvas)
+          : createC2DContext(this.#canvas);
       if (!ctx) throw new Error(`${loaded.renderer} context unavailable`);
     } catch (err) {
       this.setAttribute('data-fallback', '');
-      this.#emit('gl-wc:error', { phase: 'init', error: err });
+      this.#emit('bg-wc:error', { phase: 'init', error: err });
       return;
     }
 
@@ -285,7 +333,7 @@ class GlWc extends HTMLElement {
       });
     } catch (err) {
       this.setAttribute('data-fallback', '');
-      this.#emit('gl-wc:error', { phase: 'init', error: err });
+      this.#emit('bg-wc:error', { phase: 'init', error: err });
       this.#disposeInstance();
       return;
     }
@@ -298,14 +346,16 @@ class GlWc extends HTMLElement {
     this.#updateFallbackVisibility();
 
     // First frame so :ready means "something rendered"
-    try { this.#instance.frame?.(0, this.#readParams()); } catch (err) {
-      this.#emit('gl-wc:error', { phase: 'runtime', error: err });
+    try {
+      this.#instance.frame?.(0, this.#readParams());
+    } catch (err) {
+      this.#emit('bg-wc:error', { phase: 'runtime', error: err });
     }
 
-    this.#emit('gl-wc:ready', { preset: name, renderer: loaded.renderer });
+    this.#emit('bg-wc:ready', { preset: name, renderer: loaded.renderer });
     this.#readyResolve();
     if (prevName != null && prevName !== name) {
-      this.#emit('gl-wc:preset-changed', { from: prevName, to: name });
+      this.#emit('bg-wc:preset-changed', { from: prevName, to: name });
     }
     this.#evalPlay();
   }
@@ -320,7 +370,7 @@ class GlWc extends HTMLElement {
     cancelAnimationFrame(this.#rafId);
     this.#rafId = 0;
     this.setAttribute('data-fallback', '');
-    this.#emit('gl-wc:error', { phase: 'runtime', error: new Error('webgl context lost') });
+    this.#emit('bg-wc:error', { phase: 'runtime', error: new Error('webgl context lost') });
   };
   #onCtxRestored = () => {
     this.removeAttribute('data-fallback');
@@ -328,18 +378,22 @@ class GlWc extends HTMLElement {
   };
 
   #disposeInstance() {
-    try { this.#instance?.dispose?.(); } catch {}
+    try {
+      this.#instance?.dispose?.();
+    } catch {}
     if (this.#rendererKind === 'webgl') {
       // Stop listening for loss before we intentionally drop the context,
-      // so our own teardown doesn't fire a spurious gl-wc:error.
+      // so our own teardown doesn't fire a spurious bg-wc:error.
       this.#canvas.removeEventListener('webglcontextlost', this.#onCtxLost);
       this.#canvas.removeEventListener('webglcontextrestored', this.#onCtxRestored);
       // Explicitly free the context so a removed element releases its slot
       // immediately, instead of lingering until GC. Browsers cap simultaneous
-      // WebGL contexts (~16); pages that mount/unmount many <gl-wc>
+      // WebGL contexts (~16); pages that mount/unmount many <bg-wc>
       // (galleries, tab groups) rely on this to stay under the limit.
       if (this.#ctx) {
-        try { this.#ctx.getExtension('WEBGL_lose_context')?.loseContext(); } catch {}
+        try {
+          this.#ctx.getExtension('WEBGL_lose_context')?.loseContext();
+        } catch {}
       }
     }
     this.#instance = null;
@@ -353,21 +407,25 @@ class GlWc extends HTMLElement {
       return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : def;
     };
     const css = getComputedStyle(this);
-    const cssVar = (name) => {
-      const v = parseFloat(css.getPropertyValue(name));
-      return Number.isFinite(v) ? v : null;
+    // Read --bg-wc-<suffix>, falling back to legacy --gl-wc-<suffix>.
+    const cssVar = (suffix) => {
+      for (const prefix of ['--bg-wc-', '--gl-wc-']) {
+        const v = parseFloat(css.getPropertyValue(prefix + suffix));
+        if (Number.isFinite(v)) return v;
+      }
+      return null;
     };
     return {
       palette: this.getAttribute('palette') || 'theme',
-      intensity: cssVar('--gl-wc-intensity') ?? num('intensity', 0.5, 0, 1),
-      speed:     cssVar('--gl-wc-speed')     ?? num('speed', 1, 0, 5),
-      density:   cssVar('--gl-wc-density')   ?? num('density', 0.5, 0, 1),
-      seed:      num('seed', 0, -1e9, 1e9) | 0,
-      quality:   this.getAttribute('quality') || 'med',
-      fit:       this.getAttribute('fit') || 'cover',
+      intensity: cssVar('intensity') ?? num('intensity', 0.5, 0, 1),
+      speed: cssVar('speed') ?? num('speed', 1, 0, 5),
+      density: cssVar('density') ?? num('density', 0.5, 0, 1),
+      seed: num('seed', 0, -1e9, 1e9) | 0,
+      quality: this.getAttribute('quality') || 'med',
+      fit: this.getAttribute('fit') || 'cover',
       // Free-text payload for text presets (crawl / marquee / …). Read fresh
       // each frame, so changing it needs no re-init. Lines split on "|".
-      text:      this.getAttribute('text') || '',
+      text: this.getAttribute('text') || '',
     };
   }
 
@@ -392,18 +450,22 @@ class GlWc extends HTMLElement {
     const rect = this.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
     const css = getComputedStyle(this);
-    const cssVar = parseFloat(css.getPropertyValue('--gl-wc-pixel-ratio'));
+    const pr = (n) => parseFloat(css.getPropertyValue(n));
+    const bgPr = pr('--bg-wc-pixel-ratio');
+    const cssVar = Number.isFinite(bgPr) ? bgPr : pr('--gl-wc-pixel-ratio');
     const attr = parseFloat(this.getAttribute('pixel-ratio'));
     const dpr = Number.isFinite(cssVar)
       ? cssVar
       : Number.isFinite(attr)
         ? attr
-        : Math.min((globalThis.devicePixelRatio || 1), 2);
+        : Math.min(globalThis.devicePixelRatio || 1, 2);
     const [W, H] = resizeCanvas(this.#canvas, rect.width, rect.height, dpr);
     if (this.#rendererKind === 'webgl' && this.#ctx) {
       this.#ctx.viewport(0, 0, W, H);
     }
-    try { this.#instance?.resize?.(W, H); } catch {}
+    try {
+      this.#instance?.resize?.(W, H);
+    } catch {}
   }
 
   #shouldPlay() {
@@ -427,8 +489,10 @@ class GlWc extends HTMLElement {
       this.#rafId = 0;
       // If reduced motion is the reason we're stopped, ask the preset for one frame if it supports it.
       if (this.#instance && this.#reducedMotionActive() && this.#instance.staticFrame) {
-        try { this.#instance.staticFrame(this.#readParams()); } catch (err) {
-          this.#emit('gl-wc:error', { phase: 'runtime', error: err });
+        try {
+          this.#instance.staticFrame(this.#readParams());
+        } catch (err) {
+          this.#emit('bg-wc:error', { phase: 'runtime', error: err });
         }
       }
     }
@@ -446,14 +510,34 @@ class GlWc extends HTMLElement {
       cancelAnimationFrame(this.#rafId);
       this.#rafId = 0;
       this.setAttribute('data-fallback', '');
-      this.#emit('gl-wc:error', { phase: 'runtime', error: err });
+      this.#emit('bg-wc:error', { phase: 'runtime', error: err });
     }
   };
 }
 
-if (!customElements.get('gl-wc')) {
-  customElements.define('gl-wc', GlWc);
+if (!customElements.get('bg-wc')) {
+  customElements.define('bg-wc', BgWc);
 }
 
-export { GlWc, listPresets };
-export default GlWc;
+// Deprecated <gl-wc> alias: a subclass that warns once on first connect, so
+// existing markup keeps working through the rename. Inlined (not a separate
+// module) to register synchronously alongside <bg-wc> without a circular import.
+let warnedGlWc = false;
+class GlWcAlias extends BgWc {
+  connectedCallback() {
+    if (!warnedGlWc) {
+      warnedGlWc = true;
+      console.warn(
+        '<gl-wc> is deprecated and will be removed in a future major. Use <bg-wc> instead.'
+      );
+    }
+    super.connectedCallback?.();
+  }
+}
+if (!customElements.get('gl-wc')) {
+  customElements.define('gl-wc', GlWcAlias);
+}
+
+export { BgWc, GlWcAlias };
+export { listPresets };
+export default BgWc;

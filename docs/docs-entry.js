@@ -3,4 +3,4 @@
 import 'vanilla-breeze';
 import 'vanilla-breeze/css';
 import '@profpowell/code-block';
-import '../src/data-bg.js';
+import '../src/data-background.js';

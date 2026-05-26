@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dot Matrix &mdash; gl-wc demos</title>
+  <title>Dot Matrix &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@500&display=swap" rel="stylesheet">
@@ -42,7 +42,7 @@
     .reel::after  { right: 8px; }
 
     /* Dither overlay — the printer's ink-rich grit on top of the page */
-    gl-wc.grit {
+    bg-wc.grit {
       position: absolute; inset: 0;
       mix-blend-mode: multiply;
       opacity: 0.16;
@@ -133,8 +133,8 @@
   <div class="printer-pin"><span class="led"></span> EPSON FX-80 READY &middot; SCROLL TO PRINT</div>
 
   <article class="reel">
-    <gl-wc class="grit" preset="dither" intensity="0.92" density="0.7" speed="0.25"
-           style="--gl-wc-color-1:#f0eed8; --gl-wc-color-2:#1a3320;"></gl-wc>
+    <bg-wc class="grit" preset="dither" intensity="0.92" density="0.7" speed="0.25"
+           style="--bg-wc-color-1:#f0eed8; --bg-wc-color-2:#1a3320;"></bg-wc>
 
     <div class="pages">
       <div class="head">
@@ -147,10 +147,10 @@
       <div class="line">TO     : ALL FRONTEND OPERATORS</div>
       <div class="line">FROM   : COMPONENT DEPT., FLOOR 9</div>
       <div class="line">DATE   : 23 MAY 2026</div>
-      <div class="line">RE     : &lt;gl-wc&gt; v0.2 &mdash; FIELD REPORT</div>
+      <div class="line">RE     : &lt;bg-wc&gt; v0.2 &mdash; FIELD REPORT</div>
       <div class="line sep"></div>
 
-      <div class="line">Operators are reminded that the &lt;gl-wc&gt; surface is now available</div>
+      <div class="line">Operators are reminded that the &lt;bg-wc&gt; surface is now available</div>
       <div class="line">on the production net. Thirteen presets ship in the kernel:</div>
       <div class="line gap"></div>
       <div class="line">  WEBGL    : DITHER, NOISE, MESH-GRADIENT, WARP, WAVES, LAVA</div>
@@ -179,8 +179,8 @@
       <div class="line">below 20% and unplugged, the element pauses.</div>
       <div class="line sep"></div>
 
-      <div class="line">Distribution: see /docs/integrations/web-components/gl-wc.html</div>
-      <div class="line">Source       : https://github.com/ProfPowell/gl-wc</div>
+      <div class="line">Distribution: see /docs/integrations/web-components/bg-wc.html</div>
+      <div class="line">Source       : https://github.com/ProfPowell/bg-wc</div>
       <div class="line">License      : MIT</div>
       <div class="line gap"></div>
 
@@ -193,7 +193,7 @@
     </div>
   </article>
 
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
   <script>
     // Reveal each .line as it scrolls into view — feels like the printer
     // chunking each row through the platen.

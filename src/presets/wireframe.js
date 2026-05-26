@@ -10,25 +10,36 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
 
   function frame(t, params) {
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
 
-    const cx = w / 2, cy = h / 2;
+    const cx = w / 2,
+      cy = h / 2;
     const R = Math.min(w, h) * 0.34;
     const ay = t * 0.4 * params.speed;
     const ax = 0.45;
-    const cay = Math.cos(ay), say = Math.sin(ay);
-    const cax = Math.cos(ax), sax = Math.sin(ax);
+    const cay = Math.cos(ay),
+      say = Math.sin(ay);
+    const cax = Math.cos(ax),
+      sax = Math.sin(ax);
 
-    const pr = (c.primary[0] * 255) | 0, pg = (c.primary[1] * 255) | 0, pb = (c.primary[2] * 255) | 0;
-    const ar = (c.accent[0] * 255) | 0, ag = (c.accent[1] * 255) | 0, ab = (c.accent[2] * 255) | 0;
+    const pr = (c.primary[0] * 255) | 0,
+      pg = (c.primary[1] * 255) | 0,
+      pb = (c.primary[2] * 255) | 0;
+    const ar = (c.accent[0] * 255) | 0,
+      ag = (c.accent[1] * 255) | 0,
+      ab = (c.accent[2] * 255) | 0;
 
     function proj(theta, phi) {
-      const st = Math.sin(theta), ct = Math.cos(theta);
-      const x = st * Math.cos(phi), y = ct, z = st * Math.sin(phi);
+      const st = Math.sin(theta),
+        ct = Math.cos(theta);
+      const x = st * Math.cos(phi),
+        y = ct,
+        z = st * Math.sin(phi);
       const x1 = x * cay + z * say;
       const z1 = -x * say + z * cay;
       const y2 = y * cax - z1 * sax;
@@ -37,11 +48,12 @@ export function create({ c2d, getColors }) {
     }
 
     // Accumulate segments split by depth, then stroke each batch once.
-    const front = [];  // flat [x0,y0,x1,y1, …]
+    const front = []; // flat [x0,y0,x1,y1, …]
     const back = [];
     function addLine(pts) {
       for (let i = 1; i < pts.length; i++) {
-        const a = pts[i - 1], b = pts[i];
+        const a = pts[i - 1],
+          b = pts[i];
         const arr = (a[2] + b[2]) * 0.5 > 0 ? front : back;
         arr.push(a[0], a[1], b[0], b[1]);
       }
@@ -58,7 +70,9 @@ export function create({ c2d, getColors }) {
       c2d.stroke();
     }
 
-    const latN = 8, lonN = 14, seg = 40;
+    const latN = 8,
+      lonN = 14,
+      seg = 40;
     for (let i = 1; i < latN; i++) {
       const theta = (Math.PI * i) / latN;
       const pts = [];
@@ -82,9 +96,11 @@ export function create({ c2d, getColors }) {
     {
       const pts = [];
       for (let s = 0; s <= seg; s++) pts.push(proj(Math.PI / 2 + 0.04, (s / seg) * Math.PI * 2));
-      const ef = [], eb = [];
+      const ef = [],
+        eb = [];
       for (let i = 1; i < pts.length; i++) {
-        const a = pts[i - 1], b = pts[i];
+        const a = pts[i - 1],
+          b = pts[i];
         ((a[2] + b[2]) * 0.5 > 0 ? ef : eb).push(a[0], a[1], b[0], b[1]);
       }
       strokeSegs(eb, `rgba(${ar},${ag},${ab},0.3)`, 1.8);
@@ -103,9 +119,16 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { frame(0.6, params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      frame(0.6, params);
+    },
     dispose() {},
   };
 }

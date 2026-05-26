@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VHS &mdash; gl-wc demos</title>
+  <title>VHS &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
     .tv {
       position: relative; width: 100vw; height: 100vh; overflow: hidden;
     }
-    gl-wc.bg { position: absolute; inset: 0; }
+    bg-wc.bg { position: absolute; inset: 0; }
 
     /* Rounded CRT bezel darkening at the edges */
     .bezel {
@@ -109,7 +109,7 @@
 </head>
 <body>
   <main class="tv">
-    <gl-wc class="bg" preset="vhs" intensity="0.6" density="0.5" speed="1"></gl-wc>
+    <bg-wc class="bg" preset="vhs" intensity="0.6" density="0.5" speed="1"></bg-wc>
 
     <div class="title">
       <h1>PLAY &#9654;</h1>
@@ -120,7 +120,7 @@
       <div class="rec"><span class="dot"></span> REC</div>
       <div class="mode">SP &middot; HQ</div>
       <div class="battery">&#9632;&#9632;&#9632;&#9633; BATT</div>
-      <div class="play">&#9654;&#9654; gl-wc</div>
+      <div class="play">&#9654;&#9654; bg-wc</div>
       <div class="stamp">JAN&nbsp;01&nbsp;1986<br>PM&nbsp;12:00:00</div>
       <div class="counter">0:09:17<br>SP&nbsp;T-120</div>
     </div>
@@ -128,6 +128,6 @@
     <nav class="nav"><a href="./">&larr; demos</a></nav>
     <div class="bezel"></div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

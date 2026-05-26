@@ -54,13 +54,14 @@ export function create({ gl, getColors }) {
   const buf = fullscreenQuad(gl);
   const aPos = gl.getAttribLocation(program, 'a_pos');
   const uTime = gl.getUniformLocation(program, 'u_time');
-  const uInt  = gl.getUniformLocation(program, 'u_intensity');
-  const uDen  = gl.getUniformLocation(program, 'u_density');
-  const uC1   = gl.getUniformLocation(program, 'u_c1');
-  const uBg   = gl.getUniformLocation(program, 'u_bg');
-  const uRes  = gl.getUniformLocation(program, 'u_res');
+  const uInt = gl.getUniformLocation(program, 'u_intensity');
+  const uDen = gl.getUniformLocation(program, 'u_density');
+  const uC1 = gl.getUniformLocation(program, 'u_c1');
+  const uBg = gl.getUniformLocation(program, 'u_bg');
+  const uRes = gl.getUniformLocation(program, 'u_res');
 
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
 
   function draw(t, params) {
     const c = getColors();
@@ -79,9 +80,21 @@ export function create({ gl, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { draw(t, params); },
-    staticFrame(params) { draw(0, params); },
-    dispose() { try { gl.deleteProgram(program); gl.deleteBuffer(buf); } catch {} },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      draw(t, params);
+    },
+    staticFrame(params) {
+      draw(0, params);
+    },
+    dispose() {
+      try {
+        gl.deleteProgram(program);
+        gl.deleteBuffer(buf);
+      } catch {}
+    },
   };
 }

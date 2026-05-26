@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Coastal &mdash; gl-wc demos</title>
+  <title>Coastal &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -23,8 +23,8 @@
 
     .stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
 
-    /* Sky / sun gl-wc mesh */
-    gl-wc.sky { position: absolute; left: 0; right: 0; top: 0; height: 62vh; }
+    /* Sky / sun bg-wc mesh */
+    bg-wc.sky { position: absolute; left: 0; right: 0; top: 0; height: 62vh; }
 
     /* Sun disc */
     .sun {
@@ -135,11 +135,11 @@
   <nav class="nav"><a href="./">&larr; demos</a></nav>
   <div class="credit">
     08 / Coastal<br>
-    gl-wc &times; mesh-gradient
+    bg-wc &times; mesh-gradient
   </div>
   <main class="stage">
-    <gl-wc class="sky" preset="mesh-gradient" intensity="0.85" speed="0.35"
-           style="--gl-wc-color-1:#ff8a5c; --gl-wc-color-2:#ff5e8e; --gl-wc-color-3:#6a52ff; --gl-wc-color-bg:#fde4cc;"></gl-wc>
+    <bg-wc class="sky" preset="mesh-gradient" intensity="0.85" speed="0.35"
+           style="--bg-wc-color-1:#ff8a5c; --bg-wc-color-2:#ff5e8e; --bg-wc-color-3:#6a52ff; --bg-wc-color-bg:#fde4cc;"></bg-wc>
     <div class="sun"></div>
     <div class="ocean"></div>
     <div class="reflection"></div>
@@ -172,11 +172,11 @@
       <h1>Sunsets over <span class="ink">scope creep.</span></h1>
       <p class="lede">
         Mesh-gradient does the sky &mdash; warm, slow, primary tokens swapped for sunset hues
-        via per-instance <code>--gl-wc-color-*</code> overrides. The ocean, palm, and shimmering
+        via per-instance <code>--bg-wc-color-*</code> overrides. The ocean, palm, and shimmering
         reflection are just CSS over the top.
       </p>
     </div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ test('fg read falls back to --color-text when --color-foreground is unset', asyn
   const value = await page.evaluate(() => {
     const host = document.getElementById('host');
     host.style.setProperty('--color-text', 'rgb(10, 20, 30)');
-    return window.readTokenString(host, ['--color-foreground', '--color-text'], '--gl-wc-color-fg');
+    return window.readTokenString(host, ['--color-foreground', '--color-text'], ['--bg-wc-color-fg', '--gl-wc-color-fg']);
   });
   expect(value).toBe('rgb(10, 20, 30)');
 });
@@ -16,7 +16,7 @@ test('fg read prefers --color-foreground when both are set', async ({ page }) =>
     const host = document.getElementById('host');
     host.style.setProperty('--color-foreground', 'rgb(1, 2, 3)');
     host.style.setProperty('--color-text', 'rgb(9, 9, 9)');
-    return window.readTokenString(host, ['--color-foreground', '--color-text'], '--gl-wc-color-fg');
+    return window.readTokenString(host, ['--color-foreground', '--color-text'], ['--bg-wc-color-fg', '--gl-wc-color-fg']);
   });
   expect(value).toBe('rgb(1, 2, 3)');
 });
@@ -42,4 +42,26 @@ test('cssToRgba handles hsl() and named colors too', async ({ page }) => {
   expect(hsl[1]).toBeGreaterThan(hsl[0]); // green channel dominant
   expect(named[0] + named[1] + named[2]).toBeGreaterThan(0); // not black
   expect(transparent).toEqual([0, 0, 0, 0]);
+});
+
+test('readTokenString prefers --bg-wc override, falls back to --gl-wc', async ({ page }) => {
+  await page.goto('/test/tokens-page.html');
+  const r = await page.evaluate(() => {
+    const host = document.createElement('div');
+    host.style.setProperty('--gl-wc-color-1', 'rgb(10, 20, 30)');
+    document.body.appendChild(host);
+    const legacyOnly = window.readTokenString(host, '--color-primary', [
+      '--bg-wc-color-1',
+      '--gl-wc-color-1',
+    ]);
+    host.style.setProperty('--bg-wc-color-1', 'rgb(40, 50, 60)');
+    const canonical = window.readTokenString(host, '--color-primary', [
+      '--bg-wc-color-1',
+      '--gl-wc-color-1',
+    ]);
+    host.remove();
+    return { legacyOnly, canonical };
+  });
+  expect(r.legacyOnly).toBe('rgb(10, 20, 30)');
+  expect(r.canonical).toBe('rgb(40, 50, 60)');
 });

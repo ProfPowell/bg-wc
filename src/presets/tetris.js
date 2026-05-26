@@ -7,23 +7,42 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 
 const SHAPES = [
-  [[1, 1, 1, 1]],                       // I
-  [[1, 1], [1, 1]],                     // O
-  [[0, 1, 0], [1, 1, 1]],               // T
-  [[1, 0, 0], [1, 1, 1]],               // J
-  [[0, 0, 1], [1, 1, 1]],               // L
-  [[0, 1, 1], [1, 1, 0]],               // S
-  [[1, 1, 0], [0, 1, 1]],               // Z
+  [[1, 1, 1, 1]], // I
+  [
+    [1, 1],
+    [1, 1],
+  ], // O
+  [
+    [0, 1, 0],
+    [1, 1, 1],
+  ], // T
+  [
+    [1, 0, 0],
+    [1, 1, 1],
+  ], // J
+  [
+    [0, 0, 1],
+    [1, 1, 1],
+  ], // L
+  [
+    [0, 1, 1],
+    [1, 1, 0],
+  ], // S
+  [
+    [1, 1, 0],
+    [0, 1, 1],
+  ], // Z
 ];
 
 const COLS = 12;
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let cell = 1;
   let rows = 1;
-  let grid = null;        // rows × COLS of color index | null
-  let active = null;      // { shape, x, y, color }
+  let grid = null; // rows × COLS of color index | null
+  let active = null; // { shape, x, y, color }
   let rand = mulberry32(1);
   let lastSeed = null;
   let lastT = 0;
@@ -46,12 +65,22 @@ export function create({ c2d, getColors }) {
   }
 
   function palette(c) {
-    return [c.primary, c.accent, c.info, c.success || c.primary, c.warning || c.accent, c.error || c.info];
+    return [
+      c.primary,
+      c.accent,
+      c.info,
+      c.success || c.primary,
+      c.warning || c.accent,
+      c.error || c.info,
+    ];
   }
 
   function spawn(pal) {
     const shape = SHAPES[(rand() * SHAPES.length) | 0];
-    const x = Math.max(0, Math.min(COLS - shape[0].length, ((rand() * (COLS - shape[0].length + 1)) | 0)));
+    const x = Math.max(
+      0,
+      Math.min(COLS - shape[0].length, (rand() * (COLS - shape[0].length + 1)) | 0)
+    );
     return { shape, x, y: -shape.length, color: pal[(rand() * pal.length) | 0] };
   }
 
@@ -73,8 +102,12 @@ export function create({ c2d, getColors }) {
     for (let r = 0; r < piece.shape.length; r++) {
       for (let c = 0; c < piece.shape[r].length; c++) {
         if (!piece.shape[r][c]) continue;
-        const gy = piece.y + r, gx = piece.x + c;
-        if (gy < 0) { toppedOut = true; continue; }
+        const gy = piece.y + r,
+          gx = piece.x + c;
+        if (gy < 0) {
+          toppedOut = true;
+          continue;
+        }
         grid[gy][gx] = piece.color;
       }
     }
@@ -107,7 +140,10 @@ export function create({ c2d, getColors }) {
   }
 
   function frame(t, params) {
-    if (params.seed !== lastSeed) { rand = mulberry32(params.seed || 1); lastSeed = params.seed; }
+    if (params.seed !== lastSeed) {
+      rand = mulberry32(params.seed || 1);
+      lastSeed = params.seed;
+    }
     recalcLayout();
 
     const c = getColors();
@@ -159,8 +195,13 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
     staticFrame(params) {
       // Single still — pre-fill the lower half with random colored cells.
       const c = getColors();
@@ -174,6 +215,9 @@ export function create({ c2d, getColors }) {
         }
       }
     },
-    dispose() { grid = null; active = null; },
+    dispose() {
+      grid = null;
+      active = null;
+    },
   };
 }

@@ -6,20 +6,25 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let pts = [];
   let lastKey = '';
 
   function build(params) {
     const rand = mulberry32(params.seed || 1);
     const clusters = 3;
-    const centers = Array.from({ length: clusters }, () => ({ x: 0.2 + rand() * 0.6, y: 0.2 + rand() * 0.6 }));
+    const centers = Array.from({ length: clusters }, () => ({
+      x: 0.2 + rand() * 0.6,
+      y: 0.2 + rand() * 0.6,
+    }));
     const n = Math.round(60 + params.density * 240);
     pts = new Array(n);
     for (let i = 0; i < n; i++) {
       const cl = (rand() * clusters) | 0;
       const cen = centers[cl];
-      const ang = rand() * 6.28, rad = rand() * 0.18;
+      const ang = rand() * 6.28,
+        rad = rand() * 0.18;
       pts[i] = {
         bx: cen.x + Math.cos(ang) * rad,
         by: cen.y + Math.sin(ang) * rad,
@@ -33,15 +38,37 @@ export function create({ c2d, getColors }) {
     lastKey = `${params.seed}|${params.density}`;
   }
 
-  function rgba(c, a) { return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`; }
+  function rgba(c, a) {
+    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
+  }
 
   function glyph(shape, x, y, s) {
     switch (shape) {
-      case 0: c2d.moveTo(x, y - s); c2d.lineTo(x + s, y + s); c2d.lineTo(x - s, y + s); c2d.closePath(); break;        // triangle
-      case 1: c2d.rect(x - s, y - s, s * 2, s * 2); break;                                                            // square
-      case 2: c2d.moveTo(x + s, y); c2d.arc(x, y, s, 0, Math.PI * 2); break;                                          // circle
-      case 3: c2d.moveTo(x - s, y); c2d.lineTo(x + s, y); c2d.moveTo(x, y - s); c2d.lineTo(x, y + s); break;          // cross
-      default: c2d.moveTo(x, y - s); c2d.lineTo(x + s, y); c2d.lineTo(x, y + s); c2d.lineTo(x - s, y); c2d.closePath(); // diamond
+      case 0:
+        c2d.moveTo(x, y - s);
+        c2d.lineTo(x + s, y + s);
+        c2d.lineTo(x - s, y + s);
+        c2d.closePath();
+        break; // triangle
+      case 1:
+        c2d.rect(x - s, y - s, s * 2, s * 2);
+        break; // square
+      case 2:
+        c2d.moveTo(x + s, y);
+        c2d.arc(x, y, s, 0, Math.PI * 2);
+        break; // circle
+      case 3:
+        c2d.moveTo(x - s, y);
+        c2d.lineTo(x + s, y);
+        c2d.moveTo(x, y - s);
+        c2d.lineTo(x, y + s);
+        break; // cross
+      default:
+        c2d.moveTo(x, y - s);
+        c2d.lineTo(x + s, y);
+        c2d.lineTo(x, y + s);
+        c2d.lineTo(x - s, y);
+        c2d.closePath(); // diamond
     }
   }
 
@@ -52,9 +79,12 @@ export function create({ c2d, getColors }) {
     clearAndFill(c2d, w, h, c.bg);
 
     // axes
-    c2d.strokeStyle = rgba(c.fg, 0.18); c2d.lineWidth = 1;
+    c2d.strokeStyle = rgba(c.fg, 0.18);
+    c2d.lineWidth = 1;
     c2d.beginPath();
-    c2d.moveTo(w * 0.08, h * 0.06); c2d.lineTo(w * 0.08, h * 0.94); c2d.lineTo(w * 0.96, h * 0.94);
+    c2d.moveTo(w * 0.08, h * 0.06);
+    c2d.lineTo(w * 0.08, h * 0.94);
+    c2d.lineTo(w * 0.96, h * 0.94);
     c2d.stroke();
 
     const clusterCols = [c.primary, c.accent, c.info];
@@ -74,9 +104,18 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { frame(0, params); },
-    dispose() { pts = []; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      frame(0, params);
+    },
+    dispose() {
+      pts = [];
+    },
   };
 }

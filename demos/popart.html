@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pop Art &mdash; gl-wc demos</title>
+  <title>Pop Art &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Anton&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
       border: 6px solid var(--ink);
     }
     .panel { position: relative; overflow: hidden; border: 5px solid var(--ink); background: #fff; }
-    .panel gl-wc { position: absolute; inset: 0; }
+    .panel bg-wc { position: absolute; inset: 0; }
     .panel.big { grid-row: 1 / 3; }
 
     .bubble {
@@ -68,24 +68,24 @@
     <div class="panels">
       <!-- Big hero panel: comic burst -->
       <div class="panel big">
-        <gl-wc preset="comic" intensity="0.8" density="0.5" speed="0.8"></gl-wc>
+        <bg-wc preset="comic" intensity="0.8" density="0.5" speed="0.8"></bg-wc>
         <div class="bubble tl">A web component?!<br>In MY graphics layer?!</div>
         <div class="sfx pow">POP!</div>
       </div>
       <!-- Top-right: benday dots -->
       <div class="panel">
-        <gl-wc preset="benday" intensity="0.7" density="0.45" speed="0.5"></gl-wc>
+        <bg-wc preset="benday" intensity="0.7" density="0.45" speed="0.5"></bg-wc>
         <div class="sfx zap">ZAP!</div>
       </div>
       <!-- Bottom-right: benday with caption -->
       <div class="panel">
-        <gl-wc preset="benday" intensity="0.6" density="0.7" speed="0.4"
-               style="--gl-wc-color-1:#2b6cff; --gl-wc-color-2:#ff3b4e; --gl-wc-color-3:#ffe04a;"></gl-wc>
+        <bg-wc preset="benday" intensity="0.6" density="0.7" speed="0.4"
+               style="--bg-wc-color-1:#2b6cff; --bg-wc-color-2:#ff3b4e; --bg-wc-color-3:#ffe04a;"></bg-wc>
         <div class="caption">Meanwhile, at the CSS factory…</div>
       </div>
     </div>
     <nav class="nav"><a href="./">&larr; DEMOS</a></nav>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

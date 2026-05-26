@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Demoscene &mdash; gl-wc demos</title>
+  <title>Demoscene &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
 
     .stage { position: relative; width: 100vw; height: 100vh; }
 
-    gl-wc.bg { position: absolute; inset: 0; }
+    bg-wc.bg { position: absolute; inset: 0; }
 
     /* CRT scanlines + vignette */
     .scan {
@@ -132,7 +132,7 @@
   <div class="counter">FX 12 / 17</div>
 
   <main class="stage">
-    <gl-wc class="bg" preset="plasma" intensity="0.85" density="0.55" speed="1.4"></gl-wc>
+    <bg-wc class="bg" preset="plasma" intensity="0.85" density="0.55" speed="1.4"></bg-wc>
 
     <div class="title-area">
       <h1 class="title">GL-WC<br>DEMO</h1>
@@ -173,6 +173,6 @@
     <div class="vig"></div>
     <div class="scan"></div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

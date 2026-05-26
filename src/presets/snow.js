@@ -6,7 +6,8 @@ import { clearAndFill } from '../renderer/canvas2d.js';
 const CAPS = { low: 60, med: 180, high: 400 };
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let flakes = [];
   let lastKey = '';
 
@@ -20,7 +21,7 @@ export function create({ c2d, getColors }) {
         x: rand(),
         y: rand(),
         r: 1 + rand() * 2.5,
-        v: 0.04 + rand() * 0.10,
+        v: 0.04 + rand() * 0.1,
         drift: rand() * Math.PI * 2,
         driftAmp: 0.005 + rand() * 0.02,
       };
@@ -42,8 +43,8 @@ export function create({ c2d, getColors }) {
     const fall = t * (0.5 + params.intensity);
     for (let i = 0; i < flakes.length; i++) {
       const f = flakes[i];
-      const y = ((f.y + fall * f.v) % 1 + 1) % 1;
-      const x = ((f.x + Math.sin(fall + f.drift) * f.driftAmp) % 1 + 1) % 1;
+      const y = (((f.y + fall * f.v) % 1) + 1) % 1;
+      const x = (((f.x + Math.sin(fall + f.drift) * f.driftAmp) % 1) + 1) % 1;
       const a = 0.55 + 0.4 * Math.sin(t * 0.7 + f.drift);
       c2d.fillStyle = `rgba(${fg},${a.toFixed(3)})`;
       c2d.beginPath();
@@ -53,9 +54,18 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { draw(t, params); },
-    staticFrame(params) { draw(0, params); },
-    dispose() { flakes = []; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      draw(t, params);
+    },
+    staticFrame(params) {
+      draw(0, params);
+    },
+    dispose() {
+      flakes = [];
+    },
   };
 }

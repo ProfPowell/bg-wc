@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Alpha &mdash; gl-wc demos</title>
+  <title>Alpha &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -22,9 +22,9 @@
     .stage { position: relative; width: 100vw; height: 100vh; }
 
     /* Lava preset doing nebula duty */
-    gl-wc.nebula { position: absolute; inset: 0; opacity: 0.72; }
+    bg-wc.nebula { position: absolute; inset: 0; opacity: 0.72; }
     /* Stars preset on top, sparse + slow */
-    gl-wc.stars { position: absolute; inset: 0; z-index: 2; }
+    bg-wc.stars { position: absolute; inset: 0; z-index: 2; }
 
     /* Earth/moon silhouette in lower-right */
     .planet {
@@ -121,9 +121,9 @@
 <body>
   <nav class="nav"><a href="./">&larr; demos</a></nav>
   <main class="stage">
-    <gl-wc class="nebula" preset="lava" intensity="0.55" density="0.4" speed="0.35"></gl-wc>
-    <gl-wc class="stars" preset="stars" intensity="0.55" density="0.35" speed="0.3"
-           style="--gl-wc-color-bg: transparent;"></gl-wc>
+    <bg-wc class="nebula" preset="lava" intensity="0.55" density="0.4" speed="0.35"></bg-wc>
+    <bg-wc class="stars" preset="stars" intensity="0.55" density="0.35" speed="0.3"
+           style="--bg-wc-color-bg: transparent;"></bg-wc>
     <div class="planet"></div>
     <div class="vig"></div>
 
@@ -150,7 +150,7 @@
       <h1>signal fr<span class="o">o</span>m<br>the <span class="o">o</span>uter dark.</h1>
       <p class="lede">
         Lava metaballs do the nebula. Stars drift on top. The whole composition runs
-        from two <code>&lt;gl-wc&gt;</code> instances, both off-screen-paused, both motion-aware.
+        from two <code>&lt;bg-wc&gt;</code> instances, both off-screen-paused, both motion-aware.
       </p>
     </div>
 
@@ -162,6 +162,6 @@
       <div><span>raf</span>idle-paused</div>
     </div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

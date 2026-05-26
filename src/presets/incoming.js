@@ -7,7 +7,8 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let ships = [];
   let rand = mulberry32(1);
   let lastSeed = null;
@@ -17,8 +18,8 @@ export function create({ c2d, getColors }) {
     const ang = rand() * Math.PI * 2;
     return {
       ang,
-      bearing: rand() * Math.PI * 2,    // drift direction
-      z: 0.02 + rand() * 0.1,           // 0 (far) → 1 (close)
+      bearing: rand() * Math.PI * 2, // drift direction
+      z: 0.02 + rand() * 0.1, // 0 (far) → 1 (close)
       vz: 0.15 + rand() * 0.35,
       drift: 0.02 + rand() * 0.05,
       roll: rand() * Math.PI * 2,
@@ -26,23 +27,33 @@ export function create({ c2d, getColors }) {
   }
 
   function ensure(params, n) {
-    if (params.seed !== lastSeed) { rand = mulberry32(params.seed || 1); lastSeed = params.seed; ships = []; }
+    if (params.seed !== lastSeed) {
+      rand = mulberry32(params.seed || 1);
+      lastSeed = params.seed;
+      ships = [];
+    }
     while (ships.length < n) ships.push(spawn());
     if (ships.length > n) ships.length = n;
   }
 
-  function rgb(c, a) { return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`; }
+  function rgb(c, a) {
+    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
+  }
 
   // Draw a TIE-style wireframe at unit scale in a single path / stroke.
   function ship(s, stroke) {
     c2d.strokeStyle = stroke;
     c2d.beginPath();
     // central pod (two rings)
-    c2d.moveTo(0.18, 0); c2d.arc(0, 0, 0.18, 0, Math.PI * 2);
-    c2d.moveTo(0.08, 0); c2d.arc(0, 0, 0.08, 0, Math.PI * 2);
+    c2d.moveTo(0.18, 0);
+    c2d.arc(0, 0, 0.18, 0, Math.PI * 2);
+    c2d.moveTo(0.08, 0);
+    c2d.arc(0, 0, 0.08, 0, Math.PI * 2);
     // wing struts
-    c2d.moveTo(-0.18, 0); c2d.lineTo(-0.42, 0);
-    c2d.moveTo(0.18, 0);  c2d.lineTo(0.42, 0);
+    c2d.moveTo(-0.18, 0);
+    c2d.lineTo(-0.42, 0);
+    c2d.moveTo(0.18, 0);
+    c2d.lineTo(0.42, 0);
     // hex side panels
     for (const sx of [-1, 1]) {
       const px = sx * 0.62;
@@ -66,7 +77,8 @@ export function create({ c2d, getColors }) {
     const dt = Math.max(0, Math.min(0.1, t - lastT));
     lastT = t;
 
-    const cx = w / 2, cy = h / 2;
+    const cx = w / 2,
+      cy = h / 2;
     const minDim = Math.min(w, h);
     const primary = c.primary;
     c2d.lineWidth = 1.5;
@@ -76,7 +88,7 @@ export function create({ c2d, getColors }) {
     ships.sort((a, b) => a.z - b.z);
     for (const s of ships) {
       s.z += s.vz * params.speed * dt;
-      const dist = (s.z * s.z) * 0.75;           // accelerating outward
+      const dist = s.z * s.z * 0.75; // accelerating outward
       const x = cx + Math.cos(s.bearing) * dist * w;
       const y = cy + Math.sin(s.bearing) * dist * h;
       const scale = minDim * 0.06 * s.z;
@@ -99,17 +111,31 @@ export function create({ c2d, getColors }) {
     const ch = minDim * 0.06;
     c2d.beginPath();
     c2d.arc(cx, cy, ch, 0, Math.PI * 2);
-    c2d.moveTo(cx - ch * 1.6, cy); c2d.lineTo(cx - ch * 0.5, cy);
-    c2d.moveTo(cx + ch * 0.5, cy); c2d.lineTo(cx + ch * 1.6, cy);
-    c2d.moveTo(cx, cy - ch * 1.6); c2d.lineTo(cx, cy - ch * 0.5);
-    c2d.moveTo(cx, cy + ch * 0.5); c2d.lineTo(cx, cy + ch * 1.6);
+    c2d.moveTo(cx - ch * 1.6, cy);
+    c2d.lineTo(cx - ch * 0.5, cy);
+    c2d.moveTo(cx + ch * 0.5, cy);
+    c2d.lineTo(cx + ch * 1.6, cy);
+    c2d.moveTo(cx, cy - ch * 1.6);
+    c2d.lineTo(cx, cy - ch * 0.5);
+    c2d.moveTo(cx, cy + ch * 0.5);
+    c2d.lineTo(cx, cy + ch * 1.6);
     c2d.stroke();
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
-    staticFrame(params) { lastT = 0; frame(0.5, params); },
-    dispose() { ships = []; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
+    staticFrame(params) {
+      lastT = 0;
+      frame(0.5, params);
+    },
+    dispose() {
+      ships = [];
+    },
   };
 }

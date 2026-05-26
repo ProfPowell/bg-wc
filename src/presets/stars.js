@@ -6,7 +6,8 @@ import { clearAndFill } from '../renderer/canvas2d.js';
 const CAPS = { low: 80, med: 220, high: 500 };
 
 export function create({ c2d, getColors, getParams: _getParams }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let stars = [];
   let lastSeed = null;
   let lastDensity = null;
@@ -26,8 +27,8 @@ export function create({ c2d, getColors, getParams: _getParams }) {
         y: rand(),
         r: 0.3 + rand() * (layer ? 1.6 : 1.0),
         v: (0.01 + rand() * 0.04) * (layer ? 2.4 : 1.0),
-        tw: rand() * Math.PI * 2,     // twinkle phase
-        twr: 0.5 + rand() * 0.5,      // twinkle rate
+        tw: rand() * Math.PI * 2, // twinkle phase
+        twr: 0.5 + rand() * 0.5, // twinkle rate
         layer,
       };
     }
@@ -58,7 +59,7 @@ export function create({ c2d, getColors, getParams: _getParams }) {
     const fg = `${(c.fg[0] * 255) | 0},${(c.fg[1] * 255) | 0},${(c.fg[2] * 255) | 0}`;
     for (let i = 0; i < stars.length; i++) {
       const s = stars[i];
-      const y = ((s.y + t * s.v) % 1 + 1) % 1;
+      const y = (((s.y + t * s.v) % 1) + 1) % 1;
       const x = s.x;
       const twinkle = 0.5 + 0.5 * Math.sin(t * s.twr * 1.5 + s.tw);
       const a = (0.4 + 0.6 * twinkle) * (s.layer ? 1.0 : 0.85);
@@ -70,9 +71,18 @@ export function create({ c2d, getColors, getParams: _getParams }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { draw(t, params); },
-    staticFrame(params) { draw(0, params); },
-    dispose() { stars = []; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      draw(t, params);
+    },
+    staticFrame(params) {
+      draw(0, params);
+    },
+    dispose() {
+      stars = [];
+    },
   };
 }

@@ -6,7 +6,8 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 
 export function create({ c2d, getColors }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
   let rings = [];
   let spawnAcc = 0;
   let lastT = 0;
@@ -29,7 +30,8 @@ export function create({ c2d, getColors }) {
       spawnAcc -= interval;
     }
 
-    const cx = w * 0.5, cy = h * 0.5;
+    const cx = w * 0.5,
+      cy = h * 0.5;
     const maxR = Math.hypot(cx, cy);
     // Expansion speed (px/s) — scales with intensity
     const expansion = maxR * (0.35 + params.intensity * 0.65) * 0.5;
@@ -54,13 +56,19 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { frame(t, params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      frame(t, params);
+    },
     staticFrame(params) {
       // Render a snapshot with several pre-existing rings at different radii.
       const c = getColors();
       clearAndFill(c2d, w, h, c.bg);
-      const cx = w * 0.5, cy = h * 0.5;
+      const cx = w * 0.5,
+        cy = h * 0.5;
       const maxR = Math.hypot(cx, cy);
       const palette = [c.primary, c.accent, c.info];
       c2d.lineWidth = 1.5 + params.density * 12;
@@ -76,6 +84,8 @@ export function create({ c2d, getColors }) {
         c2d.stroke();
       }
     },
-    dispose() { rings = []; },
+    dispose() {
+      rings = [];
+    },
   };
 }

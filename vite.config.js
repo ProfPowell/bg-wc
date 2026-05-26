@@ -10,8 +10,8 @@ export default defineConfig({
     minify: false,
     lib: {
       entry: {
-        'gl-wc': 'src/gl-wc.js',
-        'data-bg': 'src/data-bg.js',
+        'bg-wc': 'src/bg-wc.js',
+        'data-background': 'src/data-background.js',
       },
       formats: ['es'],
     },

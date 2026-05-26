@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('gl-wc element upgrades and exposes its API', async ({ page }) => {
+test('bg-wc element upgrades and exposes its API', async ({ page }) => {
   await page.goto('/test/test-page.html');
   const isUpgraded = await page.evaluate(() => {
     const el = document.getElementById('wc');

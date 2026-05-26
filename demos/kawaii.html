@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kawaii &mdash; gl-wc demos</title>
+  <title>Kawaii &mdash; bg-wc demos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=M+PLUS+Rounded+1c:wght@500;700;900&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
 
     .stage { position: relative; width: 100vw; height: 100vh; padding: 4vh 4vw; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
 
-    gl-wc.sparkles { position: absolute; inset: 0; opacity: 0.55; z-index: 1; pointer-events: none; }
+    bg-wc.sparkles { position: absolute; inset: 0; opacity: 0.55; z-index: 1; pointer-events: none; }
 
     /* Pastel cloud blobs */
     .cloud {
@@ -121,7 +121,7 @@
 <body>
   <nav class="nav"><a href="./">&larr; demos</a></nav>
   <main class="stage">
-    <gl-wc class="sparkles" preset="particles" palette="rainbow" intensity="0.4" density="0.35" speed="1.6"></gl-wc>
+    <bg-wc class="sparkles" preset="particles" palette="rainbow" intensity="0.4" density="0.35" speed="1.6"></bg-wc>
     <div class="cloud c1"></div>
     <div class="cloud c2"></div>
     <div class="cloud c3"></div>
@@ -142,6 +142,6 @@
       <span class="pill g">speed="1.6"</span>
     </div>
   </main>
-  <script type="module" src="../src/gl-wc.js"></script>
+  <script type="module" src="../src/bg-wc.js"></script>
 </body>
 </html>

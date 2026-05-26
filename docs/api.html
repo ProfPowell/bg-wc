@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>gl-wc &mdash; docs</title>
-  <meta name="description" content="API reference for the gl-wc web component: attributes, properties, methods, events, custom properties, presets, and the data-bg behavior.">
+  <title>bg-wc &mdash; docs</title>
+  <meta name="description" content="API reference for the bg-wc web component: attributes, properties, methods, events, custom properties, presets, and the data-background behavior.">
   <!-- Point vanilla-breeze at the site-root vb/ dir for its theme CSS and icon
        SVGs (served by vite.site.config.js). Must run before VB initializes. -->
   <script>
@@ -18,13 +18,13 @@
 </head>
 <body>
   <header class="site" data-sticky data-layout="cluster" data-layout-justify="between" data-layout-gap="m">
-    <a href="./index.html" class="brand"><strong>&lt;gl-wc&gt;</strong></a>
+    <a href="./index.html" class="brand"><strong>&lt;bg-wc&gt;</strong></a>
     <nav class="horizontal pills" aria-label="Site">
       <ul>
         <li><a href="./index.html">Gallery</a></li>
         <li><a href="../demos/">Demos</a></li>
         <li><a href="./api.html" aria-current="page">Docs</a></li>
-        <li><a href="https://github.com/ProfPowell/gl-wc" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://github.com/ProfPowell/bg-wc" target="_blank" rel="noopener">GitHub</a></li>
       </ul>
     </nav>
     <theme-picker compact>
@@ -35,11 +35,11 @@
     </theme-picker>
   </header>
 
-  <!-- Hero — uses data-bg to demo the binder it documents. -->
-  <section class="hero" data-bg="mesh-gradient" data-bg-intensity="0.65" data-bg-speed="0.35">
+  <!-- Hero — uses data-background to demo the binder it documents. -->
+  <section class="hero" data-background="mesh-gradient" data-background-intensity="0.65" data-background-speed="0.35">
     <div class="hero-inner">
       <div class="eyebrow">v0.2 &middot; integration-tier web component</div>
-      <h1>&lt;gl-wc&gt;</h1>
+      <h1>&lt;bg-wc&gt;</h1>
       <p class="lede">
         Theme-aware graphics-layer web component. Renders an animated WebGL or
         Canvas2D background behind any HTML content, opting into the right
@@ -63,17 +63,17 @@
       <div class="grid-2">
         <div>
           <h3>npm</h3>
-          <code-block theme="dark" language="bash">npm install @profpowell/gl-wc</code-block>
+          <code-block theme="dark" language="bash">npm install @profpowell/bg-wc</code-block>
           <p class="muted">
             Then import the element. The component self-registers as
-            <code>&lt;gl-wc&gt;</code> on import.
+            <code>&lt;bg-wc&gt;</code> on import.
           </p>
-          <code-block theme="dark" language="javascript">import '@profpowell/gl-wc';</code-block>
+          <code-block theme="dark" language="javascript">import '@profpowell/bg-wc';</code-block>
         </div>
         <div>
           <h3>From source / CDN</h3>
           <code-block theme="dark" language="html">&lt;script type="module"
-        src="https://unpkg.com/@profpowell/gl-wc"&gt;
+        src="https://unpkg.com/@profpowell/bg-wc"&gt;
 &lt;/script&gt;</code-block>
           <p class="muted">
             Or vendor the <code>src/</code> directory and reference it directly &mdash;
@@ -91,11 +91,11 @@
         (<code>--color-primary</code>, <code>--color-accent</code>, &hellip;).
         The component reads them at frame time.
       </p>
-      <code-block theme="dark" language="html">&lt;gl-wc preset="mesh-gradient" intensity="0.65"&gt;
+      <code-block theme="dark" language="html">&lt;bg-wc preset="mesh-gradient" intensity="0.65"&gt;
   &lt;h1&gt;Hero headline&lt;/h1&gt;
   &lt;p&gt;Content sits above the rendered layer in the light DOM.&lt;/p&gt;
   &lt;img slot="fallback" src="hero.webp" alt=""&gt;
-&lt;/gl-wc&gt;</code-block>
+&lt;/bg-wc&gt;</code-block>
       <p class="muted">
         Nothing required beyond the <code>preset</code> attribute. The
         <code>fallback</code> slot shows when <code>prefers-reduced-motion: reduce</code>
@@ -103,56 +103,56 @@
       </p>
     </section>
 
-    <!-- 3. data-bg behavior ----------------------------------- -->
-    <section id="data-bg" data-bg="aurora" data-bg-intensity="0.7" data-bg-speed="0.3">
+    <!-- 3. data-background behavior ----------------------------------- -->
+    <section id="data-background" data-background="aurora" data-background-intensity="0.7" data-background-speed="0.3">
       <div class="boxed">
-        <h2>data-bg behavior</h2>
+        <h2>data-background behavior</h2>
         <p>
           For pages that don't want to introduce a new custom element into
-          their markup, import the optional <code>data-bg</code> binder. It
-          scans for elements with a <code>data-bg</code> attribute and
-          injects a <code>&lt;gl-wc&gt;</code> behind that element's content
+          their markup, import the optional <code>data-background</code> binder. It
+          scans for elements with a <code>data-background</code> attribute and
+          injects a <code>&lt;bg-wc&gt;</code> behind that element's content
           via <code>z-index: -1</code> inside an isolated stacking context.
           The namespace is distinct from VB's <code>data-effect</code>, so
           the two can coexist on the same element.
         </p>
-        <code-block theme="dark" language="javascript">import '@profpowell/gl-wc/data-bg';</code-block>
+        <code-block theme="dark" language="javascript">import '@profpowell/bg-wc/data-background';</code-block>
         <code-block theme="dark" language="html">&lt;section
-  data-bg="aurora"
-  data-bg-intensity="0.7"
-  data-bg-speed="0.3"
-  data-bg-color-1="#4dffa1"&gt;
+  data-background="aurora"
+  data-background-intensity="0.7"
+  data-background-speed="0.3"
+  data-background-color-1="#4dffa1"&gt;
   &lt;h1&gt;Northern lights, behind anything.&lt;/h1&gt;
-  &lt;p&gt;Existing children stay put; gl-wc slides in behind.&lt;/p&gt;
+  &lt;p&gt;Existing children stay put; bg-wc slides in behind.&lt;/p&gt;
 &lt;/section&gt;</code-block>
         <h3>Attribute mapping</h3>
         <p>
-          <code>data-bg</code> is the preset name. Any other key starting with
-          <code>data-bg-</code> maps to the corresponding gl-wc attribute &mdash; or, for
-          color overrides, the corresponding <code>--gl-wc-color-*</code> custom
+          <code>data-background</code> is the preset name. Any other key starting with
+          <code>data-background-</code> maps to the corresponding bg-wc attribute &mdash; or, for
+          color overrides, the corresponding <code>--bg-wc-color-*</code> custom
           property:
         </p>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>data-bg-*</th><th>Maps to</th></tr></thead>
+            <thead><tr><th>data-background-*</th><th>Maps to</th></tr></thead>
             <tbody>
-              <tr><td><code>data-bg</code></td><td>The <code>preset</code> attribute. Required.</td></tr>
-              <tr><td><code>data-bg-intensity</code></td><td><code>intensity</code> attribute</td></tr>
-              <tr><td><code>data-bg-speed</code></td><td><code>speed</code></td></tr>
-              <tr><td><code>data-bg-density</code></td><td><code>density</code></td></tr>
-              <tr><td><code>data-bg-seed</code></td><td><code>seed</code></td></tr>
-              <tr><td><code>data-bg-palette</code></td><td><code>palette</code></td></tr>
-              <tr><td><code>data-bg-quality</code></td><td><code>quality</code></td></tr>
-              <tr><td><code>data-bg-fit</code></td><td><code>fit</code></td></tr>
-              <tr><td><code>data-bg-motion</code></td><td><code>motion</code></td></tr>
-              <tr><td><code>data-bg-paused</code></td><td><code>paused</code></td></tr>
-              <tr><td><code>data-bg-pixel-ratio</code></td><td><code>pixel-ratio</code></td></tr>
-              <tr><td><code>data-bg-color-1</code></td><td><code>--gl-wc-color-1</code> CSS var</td></tr>
-              <tr><td><code>data-bg-color-2</code></td><td><code>--gl-wc-color-2</code></td></tr>
-              <tr><td><code>data-bg-color-3</code></td><td><code>--gl-wc-color-3</code></td></tr>
-              <tr><td><code>data-bg-color-bg</code></td><td><code>--gl-wc-color-bg</code></td></tr>
-              <tr><td><code>data-bg-color-fg</code></td><td><code>--gl-wc-color-fg</code></td></tr>
-              <tr><td><code>data-bg-skip</code></td><td>Presence skips binding (escape hatch).</td></tr>
+              <tr><td><code>data-background</code></td><td>The <code>preset</code> attribute. Required.</td></tr>
+              <tr><td><code>data-background-intensity</code></td><td><code>intensity</code> attribute</td></tr>
+              <tr><td><code>data-background-speed</code></td><td><code>speed</code></td></tr>
+              <tr><td><code>data-background-density</code></td><td><code>density</code></td></tr>
+              <tr><td><code>data-background-seed</code></td><td><code>seed</code></td></tr>
+              <tr><td><code>data-background-palette</code></td><td><code>palette</code></td></tr>
+              <tr><td><code>data-background-quality</code></td><td><code>quality</code></td></tr>
+              <tr><td><code>data-background-fit</code></td><td><code>fit</code></td></tr>
+              <tr><td><code>data-background-motion</code></td><td><code>motion</code></td></tr>
+              <tr><td><code>data-background-paused</code></td><td><code>paused</code></td></tr>
+              <tr><td><code>data-background-pixel-ratio</code></td><td><code>pixel-ratio</code></td></tr>
+              <tr><td><code>data-background-color-1</code></td><td><code>--bg-wc-color-1</code> CSS var</td></tr>
+              <tr><td><code>data-background-color-2</code></td><td><code>--bg-wc-color-2</code></td></tr>
+              <tr><td><code>data-background-color-3</code></td><td><code>--bg-wc-color-3</code></td></tr>
+              <tr><td><code>data-background-color-bg</code></td><td><code>--bg-wc-color-bg</code></td></tr>
+              <tr><td><code>data-background-color-fg</code></td><td><code>--bg-wc-color-fg</code></td></tr>
+              <tr><td><code>data-background-skip</code></td><td>Presence skips binding (escape hatch).</td></tr>
             </tbody>
           </table>
         </div>
@@ -210,7 +210,7 @@
           </tbody>
         </table>
       </div>
-      <code-block theme="dark" language="javascript">const el = document.querySelector('gl-wc');
+      <code-block theme="dark" language="javascript">const el = document.querySelector('bg-wc');
 await el.ready;
 const blob = await el.snapshot();
 const url = URL.createObjectURL(blob);
@@ -224,14 +224,14 @@ console.log('PNG ready:', url);</code-block>
         <table>
           <thead><tr><th>Event</th><th>Detail</th><th>When</th></tr></thead>
           <tbody>
-            <tr><td><code>gl-wc:ready</code></td><td><code>{ preset, renderer }</code></td><td>First frame rendered.</td></tr>
-            <tr><td><code>gl-wc:preset-changed</code></td><td><code>{ from, to }</code></td><td>After a successful preset swap.</td></tr>
-            <tr><td><code>gl-wc:error</code></td><td><code>{ phase, error }</code></td><td>Compile, load, or runtime error. Element transitions to the fallback slot.</td></tr>
-            <tr><td><code>gl-wc:visibility</code></td><td><code>{ visible: boolean }</code></td><td>IntersectionObserver gate flipped.</td></tr>
+            <tr><td><code>bg-wc:ready</code></td><td><code>{ preset, renderer }</code></td><td>First frame rendered.</td></tr>
+            <tr><td><code>bg-wc:preset-changed</code></td><td><code>{ from, to }</code></td><td>After a successful preset swap.</td></tr>
+            <tr><td><code>bg-wc:error</code></td><td><code>{ phase, error }</code></td><td>Compile, load, or runtime error. Element transitions to the fallback slot.</td></tr>
+            <tr><td><code>bg-wc:visibility</code></td><td><code>{ visible: boolean }</code></td><td>IntersectionObserver gate flipped.</td></tr>
           </tbody>
         </table>
       </div>
-      <code-block theme="dark" language="javascript">el.addEventListener('gl-wc:ready', (e) =&gt; {
+      <code-block theme="dark" language="javascript">el.addEventListener('bg-wc:ready', (e) =&gt; {
   console.log('preset:', e.detail.preset, 'renderer:', e.detail.renderer);
 });</code-block>
     </section>
@@ -269,16 +269,16 @@ console.log('PNG ready:', url);</code-block>
         <table>
           <thead><tr><th>Override</th><th>Beats</th></tr></thead>
           <tbody>
-            <tr><td><code>--gl-wc-color-1</code></td><td><code>--color-primary</code></td></tr>
-            <tr><td><code>--gl-wc-color-2</code></td><td><code>--color-accent</code></td></tr>
-            <tr><td><code>--gl-wc-color-3</code></td><td><code>--color-info</code></td></tr>
-            <tr><td><code>--gl-wc-color-bg</code></td><td><code>--color-background</code></td></tr>
-            <tr><td><code>--gl-wc-color-fg</code></td><td><code>--color-foreground</code></td></tr>
-            <tr><td><code>--gl-wc-speed</code></td><td><code>speed</code> attribute</td></tr>
-            <tr><td><code>--gl-wc-density</code></td><td><code>density</code></td></tr>
-            <tr><td><code>--gl-wc-intensity</code></td><td><code>intensity</code></td></tr>
-            <tr><td><code>--gl-wc-pixel-ratio</code></td><td><code>pixel-ratio</code></td></tr>
-            <tr><td><code>--gl-wc-z-index</code></td><td>Internal canvas stacking</td></tr>
+            <tr><td><code>--bg-wc-color-1</code></td><td><code>--color-primary</code></td></tr>
+            <tr><td><code>--bg-wc-color-2</code></td><td><code>--color-accent</code></td></tr>
+            <tr><td><code>--bg-wc-color-3</code></td><td><code>--color-info</code></td></tr>
+            <tr><td><code>--bg-wc-color-bg</code></td><td><code>--color-background</code></td></tr>
+            <tr><td><code>--bg-wc-color-fg</code></td><td><code>--color-foreground</code></td></tr>
+            <tr><td><code>--bg-wc-speed</code></td><td><code>speed</code> attribute</td></tr>
+            <tr><td><code>--bg-wc-density</code></td><td><code>density</code></td></tr>
+            <tr><td><code>--bg-wc-intensity</code></td><td><code>intensity</code></td></tr>
+            <tr><td><code>--bg-wc-pixel-ratio</code></td><td><code>pixel-ratio</code></td></tr>
+            <tr><td><code>--bg-wc-z-index</code></td><td>Internal canvas stacking</td></tr>
           </tbody>
         </table>
       </div>
@@ -286,7 +286,7 @@ console.log('PNG ready:', url);</code-block>
       <p>
         The internal <code>&lt;canvas&gt;</code> is exposed as <code>part="canvas"</code>:
       </p>
-      <code-block theme="dark" language="css">gl-wc::part(canvas) {
+      <code-block theme="dark" language="css">bg-wc::part(canvas) {
   image-rendering: pixelated;       /* useful for the retro look */
   filter: hue-rotate(20deg);
 }</code-block>
@@ -429,16 +429,16 @@ console.log('PNG ready:', url);</code-block>
       <h3>Many instances on one page</h3>
       <p>
         Browsers cap simultaneous <strong>WebGL</strong> contexts (commonly ~16). Each
-        shader-preset <code>&lt;gl-wc&gt;</code> holds one context, so a page that mounts
+        shader-preset <code>&lt;bg-wc&gt;</code> holds one context, so a page that mounts
         more than that at once (a full catalog grid, a poster wall) will see the
         browser drop the oldest contexts. Canvas2D presets are not affected.
       </p>
       <p>Two ways to stay under the cap:</p>
       <ul class="checks">
-        <li><strong>Unmount what's not shown.</strong> Removing a <code>&lt;gl-wc&gt;</code> from the DOM frees its context immediately &mdash; <code>disconnectedCallback</code> calls <code>WEBGL_lose_context</code>. Group presets behind tabs and mount only the active group (see the <a href="./index.html">gallery</a>); switching tabs releases the old contexts before the new ones allocate.</li>
+        <li><strong>Unmount what's not shown.</strong> Removing a <code>&lt;bg-wc&gt;</code> from the DOM frees its context immediately &mdash; <code>disconnectedCallback</code> calls <code>WEBGL_lose_context</code>. Group presets behind tabs and mount only the active group (see the <a href="./index.html">gallery</a>); switching tabs releases the old contexts before the new ones allocate.</li>
         <li><strong>Group the catalog.</strong> The registry tags each preset with a <code>group</code>; <code>listGroups()</code> returns them as <code>{ id, label, presets }</code> so tooling can build a grouped UI without loading any preset modules.</li>
       </ul>
-      <code-block theme="dark" language="javascript">import { listGroups } from '@profpowell/gl-wc/presets/index.js';
+      <code-block theme="dark" language="javascript">import { listGroups } from '@profpowell/bg-wc/presets/index.js';
 
 for (const { id, label, presets } of listGroups()) {
   console.log(label, presets.map(p =&gt; p.name));
@@ -455,30 +455,30 @@ for (const { id, label, presets } of listGroups()) {
       <h3>Halftone overlay on flat shapes</h3>
       <code-block theme="dark" language="html">&lt;div class="poster"&gt;
   &lt;svg class="shapes"&gt;...&lt;/svg&gt;
-  &lt;gl-wc preset="noise" intensity="0.7"
+  &lt;bg-wc preset="noise" intensity="0.7"
          style="position:absolute; inset:0;
                 mix-blend-mode:multiply; opacity:0.18;
-                --gl-wc-color-fg:#000; --gl-wc-color-bg:#fff;"&gt;
-  &lt;/gl-wc&gt;
+                --bg-wc-color-fg:#000; --bg-wc-color-bg:#fff;"&gt;
+  &lt;/bg-wc&gt;
 &lt;/div&gt;</code-block>
 
       <h3>Two layered presets (aurora behind stars)</h3>
       <code-block theme="dark" language="html">&lt;div class="sky"&gt;
-  &lt;gl-wc preset="aurora"&gt;&lt;/gl-wc&gt;
-  &lt;gl-wc preset="stars"
-         style="--gl-wc-color-bg: transparent;"&gt;&lt;/gl-wc&gt;
+  &lt;bg-wc preset="aurora"&gt;&lt;/bg-wc&gt;
+  &lt;bg-wc preset="stars"
+         style="--bg-wc-color-bg: transparent;"&gt;&lt;/bg-wc&gt;
 &lt;/div&gt;</code-block>
       <p class="muted">
         The top layer must declare a transparent background or its
         Canvas2D <code>clearRect</code> + bg-fill will mask the layer below.
       </p>
 
-      <h3>Section background via data-bg</h3>
+      <h3>Section background via data-background</h3>
       <code-block theme="dark" language="html">&lt;section
-  data-bg="caustics"
-  data-bg-intensity="0.8"
-  data-bg-density="0.45"
-  data-bg-speed="0.55"&gt;
+  data-background="caustics"
+  data-background-intensity="0.8"
+  data-background-density="0.45"
+  data-background-speed="0.55"&gt;
   &lt;h1&gt;Six metres down.&lt;/h1&gt;
 &lt;/section&gt;</code-block>
 
@@ -497,30 +497,30 @@ a.click();</code-block>
       <h3>Conic spotlight border</h3>
       <p>Put a <code>conic</code> behind a panel inset by a hair; only the rim shows, so the border sweeps with light. No <code>@property</code> shim required.</p>
       <code-block theme="dark" language="html">&lt;div class="glow-card"&gt;
-  &lt;gl-wc preset="conic" speed="1.6"&gt;&lt;/gl-wc&gt;
+  &lt;bg-wc preset="conic" speed="1.6"&gt;&lt;/bg-wc&gt;
   &lt;div class="inner"&gt;Card content&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;style&gt;
 .glow-card { position: relative; border-radius: 18px; padding: 1.5px; overflow: hidden; isolation: isolate; }
-.glow-card &gt; gl-wc { position: absolute; inset: -60%; z-index: 0; } /* oversize so corners stay covered */
+.glow-card &gt; bg-wc { position: absolute; inset: -60%; z-index: 0; } /* oversize so corners stay covered */
 .glow-card .inner { position: relative; z-index: 1; background: var(--surface); border-radius: 16.5px; padding: 28px; }
 &lt;/style&gt;</code-block>
 
       <h3>Scroll-linked background</h3>
-      <p>The component re-reads <code>--gl-wc-intensity</code> / <code>--gl-wc-speed</code> (and color tokens) every frame, so driving them from a scroll handler is all it takes.</p>
-      <code-block theme="dark" language="javascript">const hero = document.querySelector('gl-wc');
+      <p>The component re-reads <code>--bg-wc-intensity</code> / <code>--bg-wc-speed</code> (and color tokens) every frame, so driving them from a scroll handler is all it takes.</p>
+      <code-block theme="dark" language="javascript">const hero = document.querySelector('bg-wc');
 addEventListener('scroll', () =&gt; {
   const p = Math.min(1, scrollY / innerHeight);
-  hero.style.setProperty('--gl-wc-intensity', (0.45 + p * 0.5).toFixed(3));
+  hero.style.setProperty('--bg-wc-intensity', (0.45 + p * 0.5).toFixed(3));
   hero.style.filter = `hue-rotate(${Math.round(p * 80)}deg)`;
 }, { passive: true });</code-block>
 
       <h3>Whole-page film grain</h3>
-      <code-block theme="dark" language="html">&lt;gl-wc preset="grain" intensity="0.5"
+      <code-block theme="dark" language="html">&lt;bg-wc preset="grain" intensity="0.5"
        style="position:fixed; inset:0; z-index:100;
               pointer-events:none; mix-blend-mode:soft-light; opacity:0.6;"&gt;
-&lt;/gl-wc&gt;</code-block>
+&lt;/bg-wc&gt;</code-block>
     </section>
 
     <!-- 12. Browser support ----------------------------------- -->
@@ -549,11 +549,11 @@ addEventListener('scroll', () =&gt; {
   </main>
 
   <footer>
-    <p>MIT &middot; <a href="https://github.com/ProfPowell/gl-wc">ProfPowell/gl-wc</a> &middot; <a href="./index.html">Gallery</a> &middot; <a href="../demos/">Demos</a></p>
+    <p>MIT &middot; <a href="https://github.com/ProfPowell/bg-wc">ProfPowell/bg-wc</a> &middot; <a href="./index.html">Gallery</a> &middot; <a href="../demos/">Demos</a></p>
   </footer>
 
   <!-- Single docs entry module: registers vanilla-breeze + the code-block
-       component (which renders the snippets above) and imports the data-bg
+       component (which renders the snippets above) and imports the data-background
        binder, which auto-binds the hero's mesh-gradient and the aurora
        section above. The code-block:not(:defined) CSS keeps snippets legible
        until the component registers. -->
