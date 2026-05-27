@@ -200,51 +200,7 @@ a { color: var(--color-primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
 
-/* API hero uses the data-background binder (injected <bg-wc> sits behind at
-   z-index:-1). The section itself carries the height + vertical centering,
-   since the injected background is absolutely positioned. Panel + full-bleed
-   framing come from the shared .hero / .hero-inner rules above. */
-.hero[data-background] {
-  min-height: clamp(360px, 60vh, 560px);
-  display: flex;
-  align-items: center;
-}
-.hero[data-background] h1 {
-  font-size: clamp(48px, 7vw, 96px);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 0.96;
-  margin: 0 0 18px;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-}
 section[id] { scroll-margin-top: 80px; }
-
-.eyebrow {
-  font-family: ui-monospace, monospace;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: 18px;
-}
-.lede {
-  font-size: clamp(16px, 1.3vw, 19px);
-  line-height: 1.55;
-  max-width: 640px;
-  opacity: 0.85;
-  margin: 0 0 28px;
-}
-.meta-row { display: flex; gap: 10px; flex-wrap: wrap; }
-.chip {
-  font-size: 12px;
-  font-family: ui-monospace, monospace;
-  padding: 4px 10px;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: rgba(255,255,255,0.04);
-  color: var(--color-text, var(--color-foreground, #1a1a1a));
-  opacity: 0.85;
-}
 
 /* Content sections */
 main.content {
@@ -254,6 +210,14 @@ main.content {
   display: flex; flex-direction: column;
   gap: 56px;
 }
+
+main.content h1 {
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin: 0 0 8px;
+}
+.page-head .muted { margin: 0; max-width: 640px; }
 
 main.content h2 {
   font-size: clamp(24px, 2.6vw, 32px);
