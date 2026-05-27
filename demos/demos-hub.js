@@ -4,4 +4,5 @@
 import 'vanilla-breeze';
 import 'vanilla-breeze/css';
 import '../src/bg-wc.js';
+import '@profpowell/browser-window';
 import '../docs/prefer-dark.js';
