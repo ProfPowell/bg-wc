@@ -1,29 +1,29 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-mode="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>bg-wc — themed demos</title>
-  <meta name="description" content="Four aesthetics built from one web component: supergraphics, 8-bit retro, Stripe-style refined wave, and vaporwave.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta name="description" content="Themed demos built from one web component: supergraphics, 8-bit retro, Stripe-style refined wave, vaporwave, and more.">
+  <!-- Point vanilla-breeze at the site-root vb/ dir for its theme CSS and icon
+       SVGs (served by vite.site.config.js). Must run before VB initializes. -->
+  <script>
+    (() => {
+      const vb = new URL('../vb', document.baseURI).href.replace(/\/$/, '');
+      window.__VB_THEME_BASE = vb;
+      document.documentElement.dataset.iconPath = vb + '/icons';
+    })();
+  </script>
+  <link rel="stylesheet" href="../docs/site.css">
   <style>
+    /* Card-frame vars alias vanilla-breeze tokens so the grid follows the theme
+       picker. The per-card --color-* preview palettes below stay fixed. */
     :root {
-      --bg: #0b0d12;
-      --fg: #e8eaf2;
-      --surface: #131722;
-      --border: #232a3a;
-      --accent: #5b8eff;
+      --surface: var(--color-surface, color-mix(in oklab, var(--color-foreground) 6%, var(--color-background)));
+      --border: var(--color-border);
+      --accent: var(--color-primary);
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
-    body { font-family: Inter, -apple-system, system-ui, sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
-    .topbar { padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 10; }
-    .topbar h1 { margin: 0; font-size: 16px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 500; }
-    .topbar .crumb { opacity: 0.4; padding: 0 6px; }
-    .topbar a { color: var(--accent); text-decoration: none; font-size: 13px; }
-    .topbar a:hover { text-decoration: underline; }
 
     main { padding: 48px 24px; max-width: 1180px; margin: 0 auto; }
     h2 { font-size: clamp(26px, 3vw, 36px); margin: 0 0 12px; letter-spacing: -0.02em; }
@@ -88,12 +88,22 @@
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <h1>&lt;bg-wc&gt;<span class="crumb">/</span>themed demos</h1>
-    <div style="display: flex; gap: 18px;">
-      <a href="../docs/">&larr; Gallery</a>
-      <a href="../docs/api.html">Docs &rarr;</a>
-    </div>
+  <header class="site" data-sticky data-layout="cluster" data-layout-justify="between" data-layout-gap="m">
+    <a href="../docs/index.html" class="brand"><strong>&lt;bg-wc&gt;</strong></a>
+    <nav class="horizontal pills" aria-label="Site">
+      <ul>
+        <li><a href="../docs/index.html">Gallery</a></li>
+        <li><a href="../docs/api.html">Docs</a></li>
+        <li><a href="./" aria-current="page">Demos</a></li>
+        <li><a href="https://github.com/ProfPowell/bg-wc" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+    <theme-picker compact>
+      <button type="button" data-trigger class="ghost">
+        <icon-wc name="palette" size="sm"></icon-wc>
+        Theme
+      </button>
+    </theme-picker>
   </header>
   <main>
     <h2>One web component, many aesthetics</h2>
@@ -337,6 +347,6 @@
   <footer>
     <p>MIT &middot; <a href="https://github.com/ProfPowell/bg-wc">ProfPowell/bg-wc</a></p>
   </footer>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module" src="./demos-hub.js"></script>
 </body>
 </html>
