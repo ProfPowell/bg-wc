@@ -22,3 +22,25 @@ document.addEventListener('click', (e) => {
     win.toggleMaximize();
   }
 });
+
+// Lock background scroll while a browser-window is maximized. The overlay is
+// position:fixed, so without this the page behind it still scrolls on wheel.
+// browser-window toggles the .browser-window-maximized class on open/close
+// (via its maximize button, backdrop click, or Escape), so observe that.
+const docEl = document.documentElement;
+let savedOverflow = null;
+function syncScrollLock() {
+  const anyOpen = !!document.querySelector('browser-window.browser-window-maximized');
+  if (anyOpen && savedOverflow === null) {
+    savedOverflow = docEl.style.overflow;
+    docEl.style.overflow = 'hidden';
+  } else if (!anyOpen && savedOverflow !== null) {
+    docEl.style.overflow = savedOverflow;
+    savedOverflow = null;
+  }
+}
+new MutationObserver(syncScrollLock).observe(document.body, {
+  subtree: true,
+  attributes: true,
+  attributeFilter: ['class'],
+});
