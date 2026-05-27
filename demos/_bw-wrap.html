@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" data-mode="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>bg-wc — browser-window test (wrapped preview)</title>
+  <script>
+    (() => {
+      const vb = new URL('../vb', document.baseURI).href.replace(/\/$/, '');
+      window.__VB_THEME_BASE = vb;
+      document.documentElement.dataset.iconPath = vb + '/icons';
+    })();
+  </script>
+  <link rel="stylesheet" href="../docs/site.css">
+  <style>
+    main { padding: 48px 24px; max-width: 1180px; margin: 0 auto; }
+    h2 { font-size: clamp(24px, 3vw, 32px); margin: 0 0 6px; letter-spacing: -0.02em; }
+    p.lede { opacity: 0.75; margin: 0 0 36px; max-width: 640px; line-height: 1.6; }
+    .bw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 28px; }
+    browser-window { width: 100%; }
+    /* Slotted preview fills the window body; each carries the demo's palette. */
+    .bw-preview { position: relative; aspect-ratio: 16 / 10; }
+    .bw-preview bg-wc { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+    .bw-caption { margin-top: 10px; font-size: 13px; opacity: 0.6; font-family: ui-monospace, monospace; }
+  </style>
+</head>
+<body>
+  <header class="site" data-sticky data-layout="cluster" data-layout-justify="between" data-layout-gap="m">
+    <a href="../docs/index.html" class="brand"><strong>&lt;bg-wc&gt;</strong></a>
+    <nav class="horizontal pills" aria-label="Site">
+      <ul>
+        <li><a href="../docs/index.html">Gallery</a></li>
+        <li><a href="../docs/api.html">Docs</a></li>
+        <li><a href="./" aria-current="page">Demos</a></li>
+        <li><a href="https://github.com/ProfPowell/bg-wc" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+    <theme-picker compact>
+      <button type="button" data-trigger class="ghost">
+        <icon-wc name="palette" size="sm"></icon-wc>
+        Theme
+      </button>
+    </theme-picker>
+  </header>
+
+  <main>
+    <h2>Approach A — wrapped preview</h2>
+    <p class="lede">
+      Each <code>&lt;browser-window&gt;</code> wraps a live <code>&lt;bg-wc&gt;</code> preview as slotted
+      content (no iframe). Lightweight; shows the animation in window chrome, not the full demo page.
+    </p>
+    <div class="bw-grid">
+      <div>
+        <browser-window mode="dark" shadow title="Cyberpunk" url="profpowell.github.io/bg-wc/demos/cyberpunk.html">
+          <div class="bw-preview" style="--color-background:#050511; --color-foreground:#f0f0f8; --color-primary:#ff0080; --color-accent:#00ffe1; --color-info:#ffea00;">
+            <bg-wc preset="warp" intensity="0.85" density="0.55" speed="0.7"></bg-wc>
+          </div>
+        </browser-window>
+        <p class="bw-caption">cyberpunk &middot; warp &middot; <a href="./cyberpunk.html">open full demo &rarr;</a></p>
+      </div>
+      <div>
+        <browser-window mode="dark" shadow title="Refined wave" url="profpowell.github.io/bg-wc/demos/stripe-wave.html">
+          <div class="bw-preview" style="--color-background:#0a2540; --color-foreground:#ffffff; --color-primary:#635bff; --color-accent:#00d4ff; --color-info:#ff5996;">
+            <bg-wc preset="mesh-gradient" intensity="0.7" speed="0.45"></bg-wc>
+          </div>
+        </browser-window>
+        <p class="bw-caption">stripe-wave &middot; mesh-gradient &middot; <a href="./stripe-wave.html">open full demo &rarr;</a></p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="./_bw-test.js"></script>
+</body>
+</html>
