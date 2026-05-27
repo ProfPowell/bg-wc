@@ -14,11 +14,10 @@ import './prefer-dark.js';
 // + Auto/Light/Dark + density), which persists the visitor's choice. bg-wc just
 // reads the resulting --color-* tokens via shadow-DOM inheritance. We only nudge
 // the first-load default to dark (where the presets look most vivid) — see below.
-// `palette` and `motion` below are bg-wc-specific attributes, not VB theming.
+// `motion` below is a bg-wc-specific attribute, not VB theming.
 
 const grid = document.getElementById('grid');
 const tabsHost = document.getElementById('groupTabs');
-const paletteSel = document.getElementById('paletteSelect');
 const motionSel = document.getElementById('motionSelect');
 
 const groups = listGroups();
@@ -50,8 +49,7 @@ function makeCard({ name, renderer }) {
     </div>
   `;
   const el = card.querySelector('bg-wc');
-  // Inherit the current page-level palette / motion selections.
-  if (paletteSel.value !== 'theme') el.setAttribute('palette', paletteSel.value);
+  // Inherit the current page-level motion selection.
   if (motionSel.value !== 'auto') el.setAttribute('motion', motionSel.value);
   for (const range of card.querySelectorAll('input[type=range]')) {
     const val = range.parentElement.querySelector('.val');
@@ -91,10 +89,6 @@ for (const g of groups) {
 }
 
 renderGroup(groups[0].id);
-
-paletteSel.addEventListener('change', () => {
-  for (const el of document.querySelectorAll('bg-wc')) el.setAttribute('palette', paletteSel.value);
-});
 motionSel.addEventListener('change', () => {
   for (const el of document.querySelectorAll('bg-wc')) el.setAttribute('motion', motionSel.value);
 });
