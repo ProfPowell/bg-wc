@@ -11,7 +11,7 @@ export function create({ host, c2d, getColors }) {
 
   function modeOf() {
     const m = (host.getAttribute('mode') || 'isometric').toLowerCase();
-    return ['isometric', 'flat', 'sparse', 'stacked'].includes(m) ? m : 'isometric';
+    return ['isometric', 'flat', 'sparse', 'stacked', 'blocks'].includes(m) ? m : 'isometric';
   }
 
   function rebuild(params) {
@@ -61,6 +61,33 @@ export function create({ host, c2d, getColors }) {
         });
       }
       state = { mode, stacks };
+    } else if (mode === 'blocks') {
+      // Grid-aligned squares clustered toward viewport edges, single hue with
+      // three shade levels. Pint-style "stylized boxes" — mostly static, with
+      // occasional cells fading in/out for subtle life.
+      const cols = Math.max(8, Math.floor(10 + density * 8));   // 10-18
+      const rows = Math.max(6, Math.floor(7 + density * 5));    // 7-12
+      const cells = [];
+      for (let r = 0; r < rows; r++) {
+        for (let col = 0; col < cols; col++) {
+          // Edge bias: cells near any edge are far more likely to fill;
+          // center cells are usually empty so the eye reads a frame, not a wash.
+          const ex = Math.min(col, cols - 1 - col) / (cols / 2);
+          const ey = Math.min(r, rows - 1 - r) / (rows / 2);
+          const edgeDist = Math.min(ex, ey);
+          const fillProb = 0.15 + (1 - edgeDist) * 0.55;
+          if (rng() >= fillProb) continue;
+          cells.push({
+            col,
+            row: r,
+            shade: rng() < 0.4 ? 2 : rng() < 0.6 ? 1 : 0, // mostly mid/dark, some light
+            phase: rng() * Math.PI * 2,
+            cycle: rng() < 0.25, // only ~1/4 of cells subtly pulse
+            merge: rng() < 0.18 && col < cols - 1 && r < rows - 1 ? 2 : 1,
+          });
+        }
+      }
+      state = { mode, cells, cols, rows };
     }
     lastMode = mode;
     lastSeed = seed;
@@ -175,6 +202,31 @@ export function create({ host, c2d, getColors }) {
     }
   }
 
+  function drawBlocks(t, params, c) {
+    const cellW = w / state.cols;
+    const cellH = h / state.rows;
+    // Three shade alphas (light / mid / dark) applied to primary, against
+    // whatever bg the host provides — typical Pint usage is dark-navy bg
+    // with light-teal primary, so the alpha steps read as a tonal range.
+    const shadeAlpha = [0.32, 0.58, 0.85];
+    const intMul = 0.7 + 0.3 * params.intensity;
+    for (const cell of state.cells) {
+      let presence = 1;
+      if (cell.cycle) {
+        // Slow per-cell pulse — keeps the field alive without flickering.
+        const phaseT = t * 0.15 + cell.phase;
+        presence = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(phaseT));
+      }
+      const alpha = shadeAlpha[cell.shade] * presence * intMul;
+      c2d.fillStyle = rgb(c.primary, alpha);
+      const x = cell.col * cellW;
+      const y = cell.row * cellH;
+      const sz = cell.merge;
+      // Inset by 1px to keep crisp grid spacing between adjacent cells.
+      c2d.fillRect(x + 1, y + 1, cellW * sz - 2, cellH * sz - 2);
+    }
+  }
+
   function frame(t, params) {
     const dt = Math.max(0, Math.min(0.1, t - lastT));
     lastT = t;
@@ -185,6 +237,7 @@ export function create({ host, c2d, getColors }) {
     else if (state.mode === 'flat') drawFlat(t, params, c);
     else if (state.mode === 'sparse') drawSparse(t, dt, params, c);
     else if (state.mode === 'stacked') drawStacked(t, params, c);
+    else if (state.mode === 'blocks') drawBlocks(t, params, c);
   }
 
   return {

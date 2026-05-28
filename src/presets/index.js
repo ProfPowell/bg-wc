@@ -8,6 +8,11 @@
 const REGISTRY = {
   // Smooth color fields
   ribbons: { renderer: 'canvas2d', group: 'gradient', loader: () => import('./ribbons.js') },
+  flowlines: {
+    renderer: 'canvas2d',
+    group: 'gradient',
+    loader: () => import('./flowlines.js'),
+  },
   'mesh-gradient': {
     renderer: 'webgl',
     group: 'gradient',

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flowlines &mdash; bg-wc demo</title>
+  <style>
+    :root {
+      /* Cerence-style: dark navy base, cyan-teal streamlines. */
+      --color-background: #0a1626;
+      --color-primary:    #4dd0c8;
+      --color-accent:     #2aa5b8;
+      --color-info:       #1a6b7a;
+      --color-text:       #e6f4f7;
+      --color-foreground: #e6f4f7;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--color-background);
+      color: var(--color-text);
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+    }
+    body { min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+
+    bg-wc.flow {
+      position: absolute; inset: 0;
+      display: block;
+      pointer-events: none;
+    }
+
+    .content {
+      position: absolute; z-index: 5;
+      top: 50%; left: 8vw;
+      transform: translateY(-50%);
+      max-width: 640px;
+    }
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      letter-spacing: -0.025em;
+      line-height: 1.04;
+      margin: 0 0 1.25rem;
+      font-weight: 300;
+    }
+    h1 strong { font-weight: 700; color: var(--color-primary); }
+    .lede {
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      color: rgba(230, 244, 247, 0.78);
+      margin: 0 0 2rem;
+      line-height: 1.55;
+    }
+    .meta {
+      display: flex; gap: 1.5rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(230, 244, 247, 0.55);
+    }
+    .meta span::before {
+      content: ""; display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--color-primary);
+      margin-right: 8px; vertical-align: middle;
+    }
+
+    .corner-back {
+      position: absolute; z-index: 6;
+      top: 24px; left: 28px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(230, 244, 247, 0.55);
+      text-decoration: none;
+    }
+    .corner-back:hover { color: var(--color-primary); }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <bg-wc class="flow" preset="flowlines" density="0.6" intensity="0.55" speed="0.35"></bg-wc>
+
+    <a class="corner-back" href="./" target="_top">&larr; Demos</a>
+
+    <div class="content">
+      <h1>Website <strong>Redesign</strong>.</h1>
+      <p class="lede">
+        Thin streamlines flow across a dark canvas, tracing the slow
+        rhythm of a 2D vector field. Same component, no SVG, no library
+        soup &mdash; just <code>preset="flowlines"</code>.
+      </p>
+      <div class="meta">
+        <span>bg-wc &times; flowlines</span>
+        <span>Canvas2D</span>
+        <span>theme-aware</span>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>

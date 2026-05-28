@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const PRESETS = ['mosaic', 'ribbons', 'source', 'system7'];
+const PRESETS = ['mosaic', 'ribbons', 'source', 'system7', 'supergraphics', 'flowlines'];
 
 for (const name of PRESETS) {
   test(`preset "${name}" loads and renders to canvas`, async ({ page }) => {
@@ -22,7 +22,7 @@ for (const name of PRESETS) {
 // mode-distinguishing assertions come in Task 2 when mosaic is implemented.
 test('mosaic honors each `mode` value without erroring', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
-  for (const mode of ['isometric', 'flat', 'sparse', 'stacked']) {
+  for (const mode of ['isometric', 'flat', 'sparse', 'stacked', 'blocks']) {
     const ok = await page.evaluate(async (m) => {
       const el = document.getElementById('wc');
       el.setAttribute('mode', m);
