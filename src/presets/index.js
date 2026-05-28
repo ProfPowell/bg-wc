@@ -7,6 +7,7 @@
 
 const REGISTRY = {
   // Smooth color fields
+  ribbons: { renderer: 'canvas2d', group: 'gradient', loader: () => import('./ribbons.js') },
   'mesh-gradient': {
     renderer: 'webgl',
     group: 'gradient',
@@ -19,6 +20,7 @@ const REGISTRY = {
   conic: { renderer: 'webgl', group: 'gradient', loader: () => import('./conic.js') },
 
   // Structured / geometric patterns
+  mosaic:  { renderer: 'canvas2d', group: 'pattern', loader: () => import('./mosaic.js') },
   dither: { renderer: 'webgl', group: 'pattern', loader: () => import('./dither.js') },
   halftone: { renderer: 'webgl', group: 'pattern', loader: () => import('./halftone.js') },
   warp: { renderer: 'webgl', group: 'pattern', loader: () => import('./warp.js') },
@@ -41,6 +43,7 @@ const REGISTRY = {
   deco: { renderer: 'webgl', group: 'pop', loader: () => import('./deco.js') },
 
   // 80s / 90s — distortion, displays, demoscene
+  system7: { renderer: 'canvas2d', group: 'retro', loader: () => import('./system7.js') },
   glitch: { renderer: 'webgl', group: 'retro', loader: () => import('./glitch.js') },
   vhs: { renderer: 'webgl', group: 'retro', loader: () => import('./vhs.js') },
   synthwave: { renderer: 'webgl', group: 'retro', loader: () => import('./synthwave.js') },
@@ -61,6 +64,7 @@ const REGISTRY = {
   fireworks: { renderer: 'canvas2d', group: 'vector', loader: () => import('./fireworks.js') },
 
   // Type as the background — set the string with the `text` attribute
+  source:  { renderer: 'canvas2d', group: 'text', loader: () => import('./source.js') },
   crawl: { renderer: 'canvas2d', group: 'text', loader: () => import('./crawl.js') },
   marquee: { renderer: 'canvas2d', group: 'text', loader: () => import('./marquee.js') },
   sinescroll: { renderer: 'canvas2d', group: 'text', loader: () => import('./sinescroll.js') },
