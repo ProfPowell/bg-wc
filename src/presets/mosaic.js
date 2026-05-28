@@ -1,18 +1,13 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { mulberry32 } from '../util/pause.js';
+
+const ACCENT_TILE_THRESHOLD = 0.85;
 
 export function create({ host, c2d, getColors }) {
   let w = 0, h = 0;
   let lastSeed = -1, lastMode = '', lastDensity = -1;
   let state = null;
-
-  function mulberry32(a) {
-    return function () {
-      a |= 0; a = (a + 0x6D2B79F5) | 0;
-      let t = Math.imul(a ^ (a >>> 15), 1 | a);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
+  let lastT = 0;
 
   function modeOf() {
     const m = (host.getAttribute('mode') || 'isometric').toLowerCase();
@@ -53,7 +48,7 @@ export function create({ host, c2d, getColors }) {
       for (let i = 0; i < pulseCount; i++) {
         pulses.push({ next: rng() * 4, ttl: 0, cx: 0, cy: 0, color: rng() < 0.5 ? 'primary' : 'accent' });
       }
-      state = { mode, step, pulses };
+      state = { mode, step, pulses, rng };
     } else if (mode === 'stacked') {
       const stacks = [];
       const count = Math.max(4, Math.floor(6 + density * 14));
@@ -110,7 +105,7 @@ export function create({ host, c2d, getColors }) {
       c2d.fill();
       c2d.strokeStyle = rgb(c.fg, 0.08 + 0.06 * intensity);
       c2d.stroke();
-      if (tile.hue > 0.85) {
+      if (tile.hue > ACCENT_TILE_THRESHOLD) {
         c2d.fillStyle = rgb(c.accent, baseAlpha * 1.4 * pulse);
         c2d.fill();
       }
@@ -132,8 +127,9 @@ export function create({ host, c2d, getColors }) {
     }
   }
 
-  function drawSparse(t, params, c) {
+  function drawSparse(t, dt, params, c) {
     const step = state.step;
+    const rng = state.rng;
     c2d.strokeStyle = rgb(c.fg, 0.06 + 0.04 * params.intensity);
     c2d.lineWidth = 1;
     c2d.beginPath();
@@ -145,15 +141,15 @@ export function create({ host, c2d, getColors }) {
     }
     c2d.stroke();
     for (const p of state.pulses) {
-      p.next -= 0.016;
+      p.next -= dt;
       if (p.next <= 0 && p.ttl <= 0) {
-        p.cx = Math.floor(Math.random() * Math.floor(w / step)) * step;
-        p.cy = Math.floor(Math.random() * Math.floor(h / step)) * step;
+        p.cx = Math.floor(rng() * Math.floor(w / step)) * step;
+        p.cy = Math.floor(rng() * Math.floor(h / step)) * step;
         p.ttl = 1.2;
-        p.next = 1.5 + Math.random() * 3;
+        p.next = 1.5 + rng() * 3;
       }
       if (p.ttl > 0) {
-        p.ttl -= 0.016;
+        p.ttl -= dt;
         const a = Math.sin((1 - p.ttl / 1.2) * Math.PI) * params.intensity * 0.45;
         c2d.fillStyle = rgb(p.color === 'primary' ? c.primary : c.accent, a);
         c2d.fillRect(p.cx + 1, p.cy + 1, step - 2, step - 2);
@@ -180,12 +176,14 @@ export function create({ host, c2d, getColors }) {
   }
 
   function frame(t, params) {
+    const dt = Math.max(0, Math.min(0.1, t - lastT));
+    lastT = t;
     ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     if (state.mode === 'isometric') drawIso(t, params, c);
     else if (state.mode === 'flat') drawFlat(t, params, c);
-    else if (state.mode === 'sparse') drawSparse(t, params, c);
+    else if (state.mode === 'sparse') drawSparse(t, dt, params, c);
     else if (state.mode === 'stacked') drawStacked(t, params, c);
   }
 
@@ -193,5 +191,8 @@ export function create({ host, c2d, getColors }) {
     resize(nw, nh) { w = nw; h = nh; },
     frame,
     staticFrame(params) { frame(0, params); },
+    dispose() {
+      state = null;
+    },
   };
 }
