@@ -20,7 +20,7 @@ const REGISTRY = {
   conic: { renderer: 'webgl', group: 'gradient', loader: () => import('./conic.js') },
 
   // Structured / geometric patterns
-  mosaic:  { renderer: 'canvas2d', group: 'pattern', loader: () => import('./mosaic.js') },
+  mosaic: { renderer: 'canvas2d', group: 'pattern', loader: () => import('./mosaic.js') },
   dither: { renderer: 'webgl', group: 'pattern', loader: () => import('./dither.js') },
   halftone: { renderer: 'webgl', group: 'pattern', loader: () => import('./halftone.js') },
   warp: { renderer: 'webgl', group: 'pattern', loader: () => import('./warp.js') },
@@ -64,7 +64,7 @@ const REGISTRY = {
   fireworks: { renderer: 'canvas2d', group: 'vector', loader: () => import('./fireworks.js') },
 
   // Type as the background — set the string with the `text` attribute
-  source:  { renderer: 'canvas2d', group: 'text', loader: () => import('./source.js') },
+  source: { renderer: 'canvas2d', group: 'text', loader: () => import('./source.js') },
   crawl: { renderer: 'canvas2d', group: 'text', loader: () => import('./crawl.js') },
   marquee: { renderer: 'canvas2d', group: 'text', loader: () => import('./marquee.js') },
   sinescroll: { renderer: 'canvas2d', group: 'text', loader: () => import('./sinescroll.js') },

@@ -18,6 +18,8 @@ for (const name of PRESETS) {
   });
 }
 
+// Smoke-level: confirms each mode value loads without error. Real
+// mode-distinguishing assertions come in Task 2 when mosaic is implemented.
 test('mosaic honors each `mode` value without erroring', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
   for (const mode of ['isometric', 'flat', 'sparse', 'stacked']) {
@@ -32,6 +34,8 @@ test('mosaic honors each `mode` value without erroring', async ({ page }) => {
   }
 });
 
+// Smoke-level: confirms toggling use-theme produces a render with bytes.
+// Real chrome-color assertions come in Task 5 when system7 is implemented.
 test('system7 honors use-theme toggle', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
   const detail = await page.evaluate(async () => {

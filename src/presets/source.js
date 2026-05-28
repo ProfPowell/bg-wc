@@ -1,6 +1,6 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 
-export function create({ host, canvas, c2d, getColors, getParams }) {
+export function create({ c2d, getColors }) {
   let w = 0, h = 0;
   function frame(/* t, params */) {
     const c = getColors();
