@@ -21,6 +21,11 @@ const REGISTRY = {
 
   // Structured / geometric patterns
   mosaic: { renderer: 'canvas2d', group: 'pattern', loader: () => import('./mosaic.js') },
+  supergraphics: {
+    renderer: 'canvas2d',
+    group: 'pattern',
+    loader: () => import('./supergraphics.js'),
+  },
   dither: { renderer: 'webgl', group: 'pattern', loader: () => import('./dither.js') },
   halftone: { renderer: 'webgl', group: 'pattern', loader: () => import('./halftone.js') },
   warp: { renderer: 'webgl', group: 'pattern', loader: () => import('./warp.js') },
