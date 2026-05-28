@@ -174,6 +174,8 @@
             <tr><td><code>fit</code></td><td><code>"cover"</code> | <code>"contain"</code> | <code>"stretch"</code></td><td><code>"cover"</code></td><td>How the surface sizes inside the host.</td></tr>
             <tr><td><code>motion</code></td><td><code>"auto"</code> | <code>"reduce"</code> | <code>"force"</code></td><td><code>"auto"</code></td><td><code>auto</code> honors <code>prefers-reduced-motion</code>.</td></tr>
             <tr><td><code>text</code></td><td>string</td><td>&mdash;</td><td>Payload for text presets (crawl / marquee / sinescroll / cascade). Lines split on <code>|</code>. Read fresh each frame.</td></tr>
+            <tr><td><code>mode</code></td><td>string</td><td>&mdash;</td><td>Used by <code>mosaic</code>; one of <code>isometric</code>, <code>flat</code>, <code>sparse</code>, <code>stacked</code>.</td></tr>
+            <tr><td><code>use-theme</code></td><td>boolean</td><td>unset</td><td>Used by <code>system7</code>; presence enables theme-token coloring instead of hard black/white.</td></tr>
           </tbody>
         </table>
       </div>
@@ -380,6 +382,29 @@ console.log('PNG ready:', url);</code-block>
             <tr><td><code>tetris</code></td><td>Ambient falling tetrominoes</td><td>primary, accent, info, success, warning, error</td></tr>
             <tr><td><code>matrix</code></td><td>Falling digital rain with glyph trails</td><td>primary, foreground, background</td></tr>
             <tr><td><code>mystify</code></td><td>Windows "Mystify" bouncing polyline screensaver</td><td>primary, accent, info, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Canvas2D pattern &amp; geometric presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>mosaic</code></td>
+                <td>Refined squares. <code>mode</code>: <code>isometric</code> (default),
+                    <code>flat</code>, <code>sparse</code>, <code>stacked</code>.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>ribbons</code></td>
+                <td>Bezier wave ribbons with crisp top-edge strokes.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>source</code></td>
+                <td>Faded HTML source listing. Set <code>text</code> attribute to override
+                    with custom source.</td>
+                <td>primary, foreground, background</td></tr>
+            <tr><td><code>system7</code></td>
+                <td>Drifting Mac windows on 50% stipple. Add <code>use-theme</code> to
+                    honor theme tokens; otherwise black-on-white.</td>
+                <td>primary, background (when <code>use-theme</code> set)</td></tr>
           </tbody>
         </table>
       </div>
