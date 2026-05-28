@@ -1,8 +1,8 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
 
-const HARD_BLACK = [0, 0, 0];
-const HARD_WHITE = [1, 1, 1];
+const HARD_BLACK = [0, 0, 0, 1];
+const HARD_WHITE = [1, 1, 1, 1];
 const MIN_WINDOWS = 2;
 const MAX_WINDOWS = 8;
 const STIPPLE_TILE = 4; // pattern tile size in CSS px
