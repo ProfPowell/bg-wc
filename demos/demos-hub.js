@@ -25,6 +25,12 @@ function unmountDemo(win) {
   if (win?.hasAttribute('src')) win.removeAttribute('src');
 }
 
+// On overlay open, free contexts: unmount every OTHER tile and force-reload
+// this one (remove+set src) so the overlay always gets a guaranteed-fresh
+// WebGL context, even if this tile's context had been dropped during scroll
+// churn. browser-window's built-in _reloadIframeIfNeeded only reloads when
+// the iframe body is empty, so a lost-context iframe needs an explicit
+// remove+set src to be torn down and rebuilt.
 document.addEventListener('click', (e) => {
   const open = e.target.closest('.bw-open');
   if (!open) return;
@@ -32,13 +38,20 @@ document.addEventListener('click', (e) => {
   const win = open.closest('.bw-card')?.querySelector('browser-window');
   if (win && typeof win.toggleMaximize === 'function') {
     e.preventDefault();
-    mountDemo(win); // ensure the iframe is loaded before maximizing
+    document
+      .querySelectorAll('.bw-card browser-window')
+      .forEach((w) => { if (w !== win) unmountDemo(w); });
+    unmountDemo(win); // tear down (releases any previous context)
+    mountDemo(win); // rebuild fresh
     win.toggleMaximize();
   }
 });
 
-// Mount tiles as they approach the viewport; unmount when they leave so the
-// number of live WebGL contexts stays close to what's actually on screen.
+// Mount tiles only while strictly visible; unmount when they leave so the live
+// WebGL-context count stays close to what's on screen. rootMargin '0px' (not a
+// pre-load band) keeps the budget tight enough that even worst-case multi-bg
+// demos (popart=3, trench-run=2) on the visible row don't push us over the
+// browser's ~16 WebGL-context cap.
 const demoObserver = new IntersectionObserver(
   (entries) => {
     for (const e of entries) {
@@ -47,9 +60,19 @@ const demoObserver = new IntersectionObserver(
       else if (!win?.classList.contains('browser-window-maximized')) unmountDemo(win);
     }
   },
-  { rootMargin: '150px 0px' }
+  { rootMargin: '0px' }
 );
 document.querySelectorAll('.bw-card').forEach((card) => demoObserver.observe(card));
+
+// After the overlay closes, remount the tiles currently in view (the IO only
+// fires on intersection CHANGE; without scrolling, it won't re-mount).
+function remountVisibleNow() {
+  const vh = window.innerHeight;
+  for (const card of document.querySelectorAll('.bw-card')) {
+    const r = card.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < vh) mountDemo(card.querySelector('browser-window'));
+  }
+}
 
 // Lock background scroll while a browser-window is maximized. The overlay is
 // position:fixed, so without this the page behind it still scrolls on wheel.
@@ -57,6 +80,7 @@ document.querySelectorAll('.bw-card').forEach((card) => demoObserver.observe(car
 // (via its maximize button, backdrop click, or Escape), so observe that.
 const docEl = document.documentElement;
 let savedOverflow = null;
+let wasOverlayOpen = false;
 function syncScrollLock() {
   const anyOpen = !!document.querySelector('browser-window.browser-window-maximized');
   if (anyOpen && savedOverflow === null) {
@@ -66,6 +90,8 @@ function syncScrollLock() {
     docEl.style.overflow = savedOverflow;
     savedOverflow = null;
   }
+  if (wasOverlayOpen && !anyOpen) remountVisibleNow();
+  wasOverlayOpen = anyOpen;
 }
 new MutationObserver(syncScrollLock).observe(document.body, {
   subtree: true,
