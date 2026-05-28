@@ -27,7 +27,7 @@ export function create({ c2d, getColors }) {
 
     const lineGap = h * 0.13;
     const total = lines.length * lineGap + h; // loop length
-    scroll = (scroll + dt * params.speed * h * 0.1) % total;
+    scroll = (scroll + dt * h * 0.1) % total;
 
     const baseFs = h * 0.075;
     c2d.textAlign = 'center';

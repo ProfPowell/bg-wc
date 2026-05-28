@@ -153,8 +153,8 @@ export function create({ c2d, getColors }) {
     const dt = Math.max(0, Math.min(0.1, t - lastT));
     lastT = t;
 
-    // Fall rate scales with speed; density makes pieces fall faster too.
-    const interval = 0.12 / (0.4 + params.speed * 0.8 + params.density * 0.4);
+    // Fall rate scales via host-applied speed on dt; density tightens further.
+    const interval = 0.12 / (1.2 + params.density * 0.4);
     fallAcc += dt;
 
     while (fallAcc >= interval) {

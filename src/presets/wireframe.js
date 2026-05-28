@@ -20,7 +20,7 @@ export function create({ c2d, getColors }) {
     const cx = w / 2,
       cy = h / 2;
     const R = Math.min(w, h) * 0.34;
-    const ay = t * 0.4 * params.speed;
+    const ay = t * 0.4;
     const ax = 0.45;
     const cay = Math.cos(ay),
       say = Math.sin(ay);

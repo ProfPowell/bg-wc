@@ -20,8 +20,8 @@ export function create({ c2d, getColors }) {
     const dt = Math.max(0, Math.min(0.1, t - lastT));
     lastT = t;
 
-    // Spawn ring at intervals — speed shrinks the interval.
-    const interval = 1.4 / (0.4 + params.speed * 1.0);
+    // Spawn ring at fixed intervals — host speed-scales the dt accumulator.
+    const interval = 1.0;
     spawnAcc += dt;
     while (spawnAcc >= interval) {
       const palette = [c.primary, c.accent, c.info];

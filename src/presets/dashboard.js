@@ -25,7 +25,8 @@ export function create({ c2d, getColors }) {
     if (!seeds.length || params.seed !== lastSeed) build(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
-    const sp = params.speed;
+    // host speed-scales t; treat sp as a constant tempo multiplier.
+    const sp = 1;
 
     // grid lines
     c2d.strokeStyle = rgba(c.fg, 0.07);

@@ -87,7 +87,7 @@ export function create({ c2d, getColors }) {
     // Painter's order: far ships first.
     ships.sort((a, b) => a.z - b.z);
     for (const s of ships) {
-      s.z += s.vz * params.speed * dt;
+      s.z += s.vz * dt;
       const dist = s.z * s.z * 0.75; // accelerating outward
       const x = cx + Math.cos(s.bearing) * dist * w;
       const y = cy + Math.sin(s.bearing) * dist * h;

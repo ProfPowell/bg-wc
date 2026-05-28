@@ -47,12 +47,12 @@ export function create({ c2d, getColors }) {
     const totalW = widths.reduce((s, x) => s + x, 0);
     const midY = h / 2;
 
-    // Cycle: stagger letters in, hold, restart. speed scales the tempo.
+    // Cycle: stagger letters in, hold, restart. host already speed-scales t.
     const stagger = 0.18;
     const inDur = 0.7;
     const hold = 1.6;
     const cycle = chars.length * stagger + inDur + hold;
-    const tt = (t * params.speed) % cycle;
+    const tt = t % cycle;
 
     let x = (w - totalW) / 2;
     for (let i = 0; i < chars.length; i++) {

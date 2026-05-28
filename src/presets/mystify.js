@@ -50,7 +50,7 @@ export function create({ c2d, getColors }) {
 
     const dt = Math.max(0, Math.min(0.1, t - lastT));
     lastT = t;
-    const sp = dt * params.speed;
+    const sp = dt;
 
     const palette = [c.primary, c.accent, c.info];
     c2d.lineWidth = 2;

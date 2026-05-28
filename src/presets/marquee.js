@@ -38,7 +38,7 @@ export function create({ c2d, getColors }) {
 
     const dt = Math.max(0, Math.min(0.1, t - lastT));
     lastT = t;
-    offset = (offset + dt * params.speed * 120) % unit;
+    offset = (offset + dt * 120) % unit;
 
     const midY = h / 2;
     const lw = Math.max(1.5, fs * 0.03);

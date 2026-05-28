@@ -78,7 +78,7 @@ export function create({ c2d, getColors }) {
     const rowH = fs * 1.5;
     const chartH = h * 0.26;
     const areaH = h - chartH;
-    const speed = 18 * params.speed;
+    const speed = 18; // host already speed-scales t
 
     for (let col = 0; col < cols; col++) {
       const x = col * colW + 8;

@@ -20,12 +20,12 @@ export function create({ c2d, getColors }) {
       cy = h / 2;
     const scale = Math.min(w, h) * 0.42;
     const R = 1.0;
-    const r = 0.28 + 0.16 * Math.sin(t * 0.08 * params.speed);
-    const d = 0.45 + 0.3 * Math.cos(t * 0.06 * params.speed);
+    const r = 0.28 + 0.16 * Math.sin(t * 0.08);
+    const d = 0.45 + 0.3 * Math.cos(t * 0.06);
     const loops = Math.round(3 + params.density * 5); // denser rosette
     const stepsPerLoop = 90; // ~90 segs/loop is plenty smooth
     const steps = loops * stepsPerLoop;
-    const spin = t * 0.15 * params.speed;
+    const spin = t * 0.15;
     const glow = params.intensity;
 
     const palette = [c.primary, c.accent, c.info];

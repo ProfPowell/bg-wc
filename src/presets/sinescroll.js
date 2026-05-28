@@ -32,7 +32,7 @@ export function create({ c2d, getColors }) {
 
     const dt = Math.max(0, Math.min(0.1, t - lastT));
     lastT = t;
-    offset = (offset + dt * params.speed * 140) % unit;
+    offset = (offset + dt * 140) % unit;
 
     const midY = h / 2;
     const amp = h * (0.1 + params.intensity * 0.16);

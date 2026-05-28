@@ -56,8 +56,8 @@ export function create({ c2d, getColors }) {
     c2d.font = `${fontSize}px ui-monospace, monospace`;
     c2d.textBaseline = 'top';
 
-    // Advance roughly fontSize per (speed-scaled) step; accumulate fractional rows.
-    const step = (4 + params.speed * 10) * dt; // rows per frame
+    // Advance roughly fontSize per step; host already speed-scales dt.
+    const step = 14 * dt; // rows per frame
     for (let i = 0; i < cols; i++) {
       const x = i * fontSize;
       const yRow = drops[i];

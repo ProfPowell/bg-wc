@@ -522,6 +522,10 @@ class BgWc extends HTMLElement {
     const params = this.#readParams();
     const dt = Math.min(0.1, (nowMs - this.#lastTickMs) / 1000);
     this.#lastTickMs = nowMs;
+    // Time is speed-scaled here so every preset gets `speed` for free via
+    // its `t` argument (and any `dt = t - lastT` it derives). Presets MUST
+    // NOT multiply time-based motion by params.speed again — that would
+    // double-apply (speed²). See gl-wc-ant.
     this.#timeS += dt * params.speed;
     try {
       this.#instance?.frame?.(this.#timeS, params);
