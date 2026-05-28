@@ -284,7 +284,23 @@ class BgWc extends HTMLElement {
 
   async #loadCurrentPreset(prevName = null) {
     const name = this.preset;
-    if (!name) return;
+    if (!name) {
+      // Transitioning to an inert state (preset attribute removed). Stop
+      // rendering, free the GL context, surface the fallback slot, and
+      // settle `ready` so callers awaiting it don't hang. Skip
+      // #updateFallbackVisibility — there's no instance to render, so we
+      // always want the fallback visible here.
+      cancelAnimationFrame(this.#rafId);
+      this.#rafId = 0;
+      this.#disposeInstance();
+      this.setAttribute('data-fallback', '');
+      if (prevName != null) {
+        this.#emit('bg-wc:preset-changed', { from: prevName, to: null });
+      }
+      this.#resetReady();
+      this.#readyResolve();
+      return;
+    }
     const token = ++this.#loadingToken;
     this.#resetReady();
 
@@ -295,6 +311,7 @@ class BgWc extends HTMLElement {
       if (token !== this.#loadingToken) return;
       this.setAttribute('data-fallback', '');
       this.#emit('bg-wc:error', { phase: 'load', error: err });
+      this.#readyResolve();
       return;
     }
     if (token !== this.#loadingToken) return;
@@ -315,6 +332,7 @@ class BgWc extends HTMLElement {
     } catch (err) {
       this.setAttribute('data-fallback', '');
       this.#emit('bg-wc:error', { phase: 'init', error: err });
+      this.#readyResolve();
       return;
     }
 
@@ -335,6 +353,7 @@ class BgWc extends HTMLElement {
       this.setAttribute('data-fallback', '');
       this.#emit('bg-wc:error', { phase: 'init', error: err });
       this.#disposeInstance();
+      this.#readyResolve();
       return;
     }
 

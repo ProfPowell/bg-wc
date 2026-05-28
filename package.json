@@ -14,6 +14,7 @@
   },
   "files": [
     "dist",
+    "custom-elements.json",
     "README.md",
     "LICENSE"
   ],

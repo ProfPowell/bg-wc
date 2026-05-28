@@ -423,7 +423,7 @@ console.log('PNG ready:', url);</code-block>
         <li><strong>Unmount what's not shown.</strong> Removing a <code>&lt;bg-wc&gt;</code> from the DOM frees its context immediately &mdash; <code>disconnectedCallback</code> calls <code>WEBGL_lose_context</code>. Group presets behind tabs and mount only the active group (see the <a href="./index.html">gallery</a>); switching tabs releases the old contexts before the new ones allocate.</li>
         <li><strong>Group the catalog.</strong> The registry tags each preset with a <code>group</code>; <code>listGroups()</code> returns them as <code>{ id, label, presets }</code> so tooling can build a grouped UI without loading any preset modules.</li>
       </ul>
-      <code-block theme="dark" language="javascript">import { listGroups } from '@profpowell/bg-wc/presets/index.js';
+      <code-block theme="dark" language="javascript">import { listGroups } from '@profpowell/bg-wc/presets/index';
 
 for (const { id, label, presets } of listGroups()) {
   console.log(label, presets.map(p =&gt; p.name));
