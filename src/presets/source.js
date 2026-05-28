@@ -48,6 +48,52 @@ const DEFAULT_LISTING = `<!doctype html>
   <footer>
     <small>&copy; 2026 Pint, Inc.</small>
   </footer>
+  <style>
+    :root {
+      --color-primary: oklch(45% 0.16 290);
+      --color-bg: #fafafa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 16px/1.5 -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1a1a1a;
+      background: var(--color-bg);
+    }
+    .site-nav {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #eee;
+    }
+    .hero {
+      padding: 6rem 2rem;
+      max-width: 60rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      letter-spacing: -0.02em;
+    }
+    .services {
+      display: grid;
+      gap: 1.5rem;
+      padding: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    }
+    .card {
+      padding: 1.5rem;
+      border: 1px solid #eee;
+      border-radius: 4px;
+    }
+    .cta {
+      display: inline-block;
+      background: var(--color-primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+  </style>
   <script>
     (function () {
       const links = document.querySelectorAll('a[data-prefetch]');
@@ -57,6 +103,10 @@ const DEFAULT_LISTING = `<!doctype html>
 </body>
 </html>`;
 
+const LINE_PER_SECONDS = 6; // base scroll: 1 line every N seconds at speed=1
+const LINE_HEIGHT_RATIO = 1.4;
+const LEFT_MARGIN = 8;
+const FLICKER_BOOST = 0.5;
 const FLICKER_TTL = 0.35;
 
 function tokenize(line) {
@@ -110,7 +160,7 @@ function tokenize(line) {
   return out;
 }
 
-export function create({ c2d, getColors, getParams: _getParams }) {
+export function create({ c2d, getColors }) {
   let w = 0, h = 0;
   let lines = null;
   let lastText = null;
@@ -165,10 +215,10 @@ export function create({ c2d, getColors, getParams: _getParams }) {
 
     const dt = Math.max(0, Math.min(0.1, t - lastT));
     lastT = t;
-    scroll += dt * 16;
 
     const fontSize = fontSizeFor(params);
-    const lineH = fontSize * 1.4;
+    const lineH = fontSize * LINE_HEIGHT_RATIO;
+    scroll += dt * (lineH / LINE_PER_SECONDS);
     c2d.font = `${fontSize}px ui-monospace, monospace`;
     c2d.textBaseline = 'top';
 
@@ -195,12 +245,12 @@ export function create({ c2d, getColors, getParams: _getParams }) {
       for (let i = 0; i < lines.length; i++) {
         const y = baseY + i * lineH;
         if (y < -lineH || y > h) continue;
-        let x = 8;
+        let x = LEFT_MARGIN;
         for (let ti = 0; ti < lines[i].length; ti++) {
           const tok = lines[i][ti];
           const flick = flickers.find((f) => f.li === i && f.ti === ti);
           const baseAlpha = alphaFor(tok.type);
-          const a = flick ? Math.min(1, baseAlpha + 0.5 * (flick.ttl / FLICKER_TTL)) : baseAlpha;
+          const a = flick ? Math.min(1, baseAlpha + FLICKER_BOOST * (flick.ttl / FLICKER_TTL)) : baseAlpha;
           c2d.fillStyle = rgb(colorFor(tok.type, c), a);
           c2d.fillText(tok.text, x, y);
           x += c2d.measureText(tok.text).width;
@@ -217,13 +267,13 @@ export function create({ c2d, getColors, getParams: _getParams }) {
       const c = getColors();
       clearAndFill(c2d, w, h, c.bg);
       const fontSize = fontSizeFor(params);
-      const lineH = fontSize * 1.4;
+      const lineH = fontSize * LINE_HEIGHT_RATIO;
       c2d.font = `${fontSize}px ui-monospace, monospace`;
       c2d.textBaseline = 'top';
       for (let i = 0; i < lines.length; i++) {
         const y = i * lineH;
         if (y > h) break;
-        let x = 8;
+        let x = LEFT_MARGIN;
         for (const tok of lines[i]) {
           c2d.fillStyle = rgb(colorFor(tok.type, c), alphaFor(tok.type));
           c2d.fillText(tok.text, x, y);
