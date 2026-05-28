@@ -6,7 +6,8 @@ per preset.
 
 Vanilla JS — consumers get zero-config ESM from `dist/`; the repo builds
 with Vite. Reads design tokens (`--color-primary`, `--color-accent`, …)
-via shadow-DOM inheritance — no coupling to any particular CSS system.
+via shadow-DOM inheritance — no coupling to any particular CSS system, but made for
+Vanilla Breeze by default.
 
 ```html
 <script type="module">
@@ -95,22 +96,6 @@ npm install
 npm run dev   # opens the gallery at /docs/index.html
 ```
 
-Build the deployable site with `npm run build:site` (output in `dist-site/`).
-The GitHub Action (`.github/workflows/deploy-pages.yml`) runs this on push to
-`main` and publishes to GitHub Pages.
-
-## Migrating from gl-wc
-
-The library was previously published as `@profpowell/gl-wc`. The old names
-still work as deprecated aliases, so existing code continues to run — but you
-should switch to the new canonical names:
-
-- Element tag: `<gl-wc>` → `<bg-wc>`
-- Binder import: `@profpowell/gl-wc/data-bg` → `@profpowell/bg-wc/data-background`
-- Binder attributes: `data-bg` / `data-bg-*` → `data-background` / `data-background-*`
-- CSS custom properties: `--gl-wc-*` → `--bg-wc-*`
-- Events: `gl-wc:ready`, `gl-wc:error`, `gl-wc:preset-changed`, `gl-wc:visibility` → `bg-wc:*`
-- Package: `@profpowell/gl-wc` → `@profpowell/bg-wc`
 
 ## License
 
