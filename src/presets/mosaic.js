@@ -63,8 +63,9 @@ export function create({ host, c2d, getColors }) {
       state = { mode, stacks };
     } else if (mode === 'blocks') {
       // Grid-aligned squares clustered toward viewport edges, single hue with
-      // three shade levels. Pint-style "stylized boxes" — mostly static, with
-      // occasional cells fading in/out for subtle life.
+      // three shade levels. Every cell breathes at its own rate; a diagonal
+      // wave periodically brightens a sweeping strip so the eye sees motion
+      // without the composition changing.
       const cols = Math.max(8, Math.floor(10 + density * 8));   // 10-18
       const rows = Math.max(6, Math.floor(7 + density * 5));    // 7-12
       const cells = [];
@@ -82,7 +83,10 @@ export function create({ host, c2d, getColors }) {
             row: r,
             shade: rng() < 0.4 ? 2 : rng() < 0.6 ? 1 : 0, // mostly mid/dark, some light
             phase: rng() * Math.PI * 2,
-            cycle: rng() < 0.25, // only ~1/4 of cells subtly pulse
+            // Varied breathing frequencies — some quick (~3s), some slow (~18s).
+            pulseFreq: 0.35 + rng() * 1.7,
+            // Diagonal coordinate 0..1 used by the wave sweep.
+            wavePos: (col / cols + r / rows) * 0.5,
             merge: rng() < 0.18 && col < cols - 1 && r < rows - 1 ? 2 : 1,
           });
         }
@@ -210,14 +214,21 @@ export function create({ host, c2d, getColors }) {
     // with light-teal primary, so the alpha steps read as a tonal range.
     const shadeAlpha = [0.32, 0.58, 0.85];
     const intMul = 0.7 + 0.3 * params.intensity;
+    // Diagonal wave sweeps across the grid every ~12s at speed=1, lifting
+    // the brightness of cells in its path.
+    const wavePhase = t * 0.5;
+
     for (const cell of state.cells) {
-      let presence = 1;
-      if (cell.cycle) {
-        // Slow per-cell pulse — keeps the field alive without flickering.
-        const phaseT = t * 0.15 + cell.phase;
-        presence = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(phaseT));
-      }
-      const alpha = shadeAlpha[cell.shade] * presence * intMul;
+      // Per-cell breathing — varies brightness in a band around the cell's
+      // base shade; varied freq means cells don't pulse in unison.
+      const breath = 0.78 + 0.22 * Math.sin(t * cell.pulseFreq + cell.phase);
+      // Diagonal wave bump — additive, only when the wave's crest is over
+      // this cell. The Math.max keeps it non-negative so dim cells only
+      // ever brighten, never go below their breath baseline.
+      const waveBoost = Math.max(0, Math.sin(wavePhase - cell.wavePos * Math.PI * 2)) * 0.35;
+      const presence = Math.min(1.1, breath + waveBoost);
+
+      const alpha = Math.min(1, shadeAlpha[cell.shade] * presence * intMul);
       c2d.fillStyle = rgb(c.primary, alpha);
       const x = cell.col * cellW;
       const y = cell.row * cellH;
