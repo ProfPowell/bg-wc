@@ -29,38 +29,51 @@ npm install @profpowell/bg-wc
 
 ## Live demo
 
-[**profpowell.github.io/bg-wc**](https://profpowell.github.io/bg-wc/) — preset
-gallery with live theme, palette, and motion controls.
+[**profpowell.github.io/bg-wc**](https://profpowell.github.io/bg-wc/) —
+gallery of every preset, plus themed demos showing presets composed
+into real-looking pages.
 
-## Presets
+## Preset highlights
 
-| Name            | Renderer  | Notes                                                          |
-| --------------- | --------- | -------------------------------------------------------------- |
-| `dither`        | WebGL     | Animated gradient between primary & accent, ordered-dither.    |
-| `noise`         | WebGL     | Drifting fractal noise, two-color tint.                        |
-| `mesh-gradient` | WebGL     | Soft blobs in primary / accent / info colors.                  |
-| `warp`          | WebGL     | Displacement-warped grid over background.                      |
-| `stars`         | Canvas2D  | Drifting starfield, optional parallax at intensity > 0.5.      |
-| `snow`          | Canvas2D  | Falling flakes with horizontal drift.                          |
-| `confetti`      | Canvas2D  | Continuous drop using the full semantic palette.               |
-| `network`       | Canvas2D  | Connected-dots mesh — lines between near neighbors.            |
-| `particles`     | Canvas2D  | Generic drift — honors `palette="theme"|"rainbow"|"mono"`.     |
+A handful of the 60+ presets. Each adapts to whatever theme tokens you
+set.
 
-## Attributes (summary)
+| Name             | Renderer | Notes                                                   |
+| ---------------- | -------- | ------------------------------------------------------- |
+| `mesh-gradient`  | WebGL    | Soft blobs in primary / accent / info colors.           |
+| `aurora`         | WebGL    | Drifting aurora bands; the canonical "ambient" preset.  |
+| `mosaic`         | Canvas2D | Squares; four modes via `mode` attribute (see below).   |
+| `ribbons`        | Canvas2D | Stacked Bezier ribbons with crisp top-edge strokes.     |
+| `supergraphics`  | Canvas2D | Mural-scale curved bands (Sea Ranch / Stauffacher).     |
+| `flowlines`      | Canvas2D | Thin streamlines through a slow vector field.           |
+| `source`         | Canvas2D | Faded HTML source listing; pass `text` to override.     |
+| `system7`        | Canvas2D | Classic Mac windows on 50% stipple.                     |
+| `matrix`         | Canvas2D | Falling digital rain; pass `text` to override glyphs.   |
+| `confetti`       | Canvas2D | Continuous drop using the full semantic palette.        |
 
-`preset`, `palette`, `intensity` (0–1), `speed` (0–5), `density` (0–1),
-`seed` (int), `paused`, `pixel-ratio`, `quality` (`low|med|high`),
-`fit` (`cover|contain|stretch`), `motion` (`auto|reduce|force`).
+[**Full preset catalog →**](https://profpowell.github.io/bg-wc/docs/api.html#presets)
 
-See [`spec.md`](./spec.md) for the full design — public API, lifecycle
-events, accessibility posture, performance budgets, and the reduced-motion
-contract.
+## Attributes
 
-## data-background binder
+`preset` `palette` `intensity` (0–1) `speed` (0–5) `density` (0–1)
+`seed` (int) `paused` `pixel-ratio` `quality` (`low|med|high`)
+`fit` (`cover|contain|stretch`) `motion` (`auto|reduce|force`)
 
-For pages that prefer not to introduce a new element tag, import the optional
-binder. It scans for `data-background` attributes and injects a `<bg-wc>`
-behind each host element automatically.
+Some presets read additional attributes from the host: `mosaic` reads
+`mode` (`isometric` | `flat` | `sparse` | `stacked` | `blocks`);
+`system7` reads `use-theme` (boolean — when present, sources colors
+from theme tokens instead of hard black-on-white). `mosaic`, `source`,
+and a few others accept `text` to override default content.
+
+[**Full API reference →**](https://profpowell.github.io/bg-wc/docs/api.html)
+
+## `data-background` binder
+
+For pages that prefer not to introduce a new element tag, import the
+optional binder. It scans for `data-background` attributes and injects
+a `<bg-wc>` behind each host element automatically. The binder is
+fully open — any `data-background-X` becomes attribute `X` on the
+injected canvas, including preset-specific attrs like `mode`.
 
 ```js
 import '@profpowell/bg-wc/data-background';
@@ -68,13 +81,18 @@ import '@profpowell/bg-wc/data-background';
 
 ```html
 <section
-  data-background="aurora"
-  data-background-intensity="0.7"
-  data-background-speed="0.3"
-  data-background-color-1="#4dffa1">
-  <h1>Northern lights, behind anything.</h1>
+  data-background="mosaic"
+  data-background-mode="blocks"
+  data-background-density="0.55"
+  data-background-intensity="0.7">
+  <h1>Squares, behind anything.</h1>
+  <p>Zero custom elements in the markup.</p>
 </section>
 ```
+
+No `<bg-wc>` tag. No wrapper divs. The binder installs a tiny
+stylesheet that positions the injected canvas behind the host's
+content via `z-index: -1` inside an isolated stacking context.
 
 ## CSS custom properties
 
@@ -93,9 +111,16 @@ bg-wc {
 
 ```sh
 npm install
-npm run dev   # opens the gallery at /docs/index.html
+npm run dev   # serves the gallery + demos
 ```
 
+## Migrating from gl-wc
+
+The package was previously `@profpowell/gl-wc`; the old tag
+(`<gl-wc>`), binder attributes (`data-bg-*`), CSS variables
+(`--gl-wc-*`), and events (`gl-wc:*`) still work as deprecated aliases
+and emit a one-time console warning. The deprecated aliases ship
+through the `0.x` series; planning to remove them in `1.0`.
 
 ## License
 
