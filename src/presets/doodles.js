@@ -254,6 +254,7 @@ export function create({ host, c2d, getColors }) {
       const saved = rand;
       rand = r; // marginPoint/spawn use module-closure `rand`
       c2d.clearRect(0, 0, w, h);
+      instances = [];
       const n = Math.max(2, Math.round((CAPS[params.quality] || CAPS.med) * (0.4 + params.density)));
       const pool = activePool();
       for (let i = 0; i < n; i++) {
