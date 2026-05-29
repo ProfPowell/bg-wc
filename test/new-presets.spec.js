@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const PRESETS = ['mosaic', 'ribbons', 'source', 'system7', 'supergraphics', 'flowlines'];
+const PRESETS = ['mosaic', 'ribbons', 'source', 'system7', 'supergraphics', 'flowlines', 'paper-grain'];
 
 for (const name of PRESETS) {
   test(`preset "${name}" loads and renders to canvas`, async ({ page }) => {
