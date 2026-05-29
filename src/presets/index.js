@@ -39,6 +39,7 @@ const REGISTRY = {
   kaleidoscope: { renderer: 'webgl', group: 'pattern', loader: () => import('./kaleidoscope.js') },
   grain: { renderer: 'webgl', group: 'pattern', loader: () => import('./grain.js') },
   'paper-grain': { renderer: 'webgl', group: 'pattern', loader: () => import('./paper-grain.js') },
+  doodles: { renderer: 'canvas2d', group: 'pattern', loader: () => import('./doodles.js') },
 
   // Organic ambient motion
   noise: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./noise.js') },

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const PRESETS = ['mosaic', 'ribbons', 'source', 'system7', 'supergraphics', 'flowlines', 'paper-grain'];
+const PRESETS = ['mosaic', 'ribbons', 'source', 'system7', 'supergraphics', 'flowlines', 'paper-grain', 'doodles'];
 
 for (const name of PRESETS) {
   test(`preset "${name}" loads and renders to canvas`, async ({ page }) => {
@@ -50,4 +50,21 @@ test('system7 honors use-theme toggle', async ({ page }) => {
   });
   expect(detail.size1).toBeGreaterThan(0);
   expect(detail.size2).toBeGreaterThan(0);
+});
+
+// doodles: every `mode` family value loads and renders without error, and an
+// absent mode (defaults to all families) also renders.
+test('doodles honors each `mode` value and defaults to all', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  for (const mode of ['planner', 'botanical', 'geometric', 'planner botanical', '']) {
+    const ok = await page.evaluate(async (m) => {
+      const el = document.getElementById('wc');
+      if (m) el.setAttribute('mode', m);
+      else el.removeAttribute('mode');
+      el.setAttribute('preset', 'doodles');
+      await el.ready;
+      return !el.hasAttribute('data-fallback');
+    }, mode);
+    expect(ok, `mode="${mode}" should render`).toBe(true);
+  }
 });
