@@ -149,7 +149,7 @@ export function create({ host, c2d, getColors }) {
     return [s + rand() * (w - 2 * s), s + rand() * (h - 2 * s)];
   }
 
-  function spawn(now, pool, color, speed) {
+  function spawn(now, pool, color) {
     if (!pool.length) return;
     const icon = pool[(rand() * pool.length) | 0]();
     const s = (26 + rand() * 30) * (0.8 + rand() * 0.4);
@@ -162,7 +162,7 @@ export function create({ host, c2d, getColors }) {
         py + (ny - 0.5) * s + (rand() - 0.5) * jitter,
       ])
     );
-    const drawDur = (0.6 + rand() * 0.6) / Math.max(0.25, speed);
+    const drawDur = 0.6 + rand() * 0.6;
     instances.push({
       strokes,
       lens: strokes.map(strokeLen),
@@ -230,7 +230,7 @@ export function create({ host, c2d, getColors }) {
     spawnAccum += rate * dt;
     const pool = activePool();
     while (spawnAccum >= 1 && instances.length < target) {
-      spawn(t, pool, color, params.speed);
+      spawn(t, pool, color);
       spawnAccum -= 1;
     }
 
@@ -258,10 +258,9 @@ export function create({ host, c2d, getColors }) {
       const n = Math.max(2, Math.round((CAPS[params.quality] || CAPS.med) * (0.4 + params.density)));
       const pool = activePool();
       for (let i = 0; i < n; i++) {
-        spawn(0, pool, color, 1);
+        spawn(0, pool, color);
       }
       for (const inst of instances) drawInstance(inst, inst.drawDur); // p=1, alpha=1
-      instances = [];
       rand = saved;
     },
     dispose() {
