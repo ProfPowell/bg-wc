@@ -63,11 +63,68 @@ function divider() {
     [[0.92, 0.42], [0.92, 0.58]],
   ];
 }
+function dottedUnderline() {
+  const strokes = [];
+  for (let i = 0; i < 5; i++) {
+    const x = 0.08 + i * 0.19;
+    strokes.push([[x, 0.55], [x + 0.1, 0.55]]);
+  }
+  return strokes;
+}
+function sparkle() {
+  // 4-point sparkle (distinct from the 5-point star).
+  const pts = [];
+  for (let i = 0; i <= 8; i++) {
+    const a = -Math.PI / 2 + (i * Math.PI) / 4;
+    const r = i % 2 === 0 ? 0.46 : 0.12;
+    pts.push([0.5 + Math.cos(a) * r, 0.5 + Math.sin(a) * r]);
+  }
+  return [pts];
+}
+function banner() {
+  // Ribbon with swallowtail notches at both ends.
+  return [
+    [[0.1, 0.38], [0.9, 0.38], [0.82, 0.5], [0.9, 0.62], [0.1, 0.62], [0.18, 0.5], [0.1, 0.38]],
+  ];
+}
+function leaf() {
+  return [
+    [[0.5, 0.95], [0.68, 0.66], [0.6, 0.32], [0.5, 0.06], [0.4, 0.32], [0.32, 0.66], [0.5, 0.95]],
+    [[0.5, 0.88], [0.5, 0.16]], // midrib
+  ];
+}
+function vine() {
+  const main = [];
+  for (let i = 0; i <= 16; i++) {
+    const t = i / 16;
+    main.push([0.5 + 0.22 * Math.sin(t * Math.PI * 2.2), 0.92 - t * 0.84]);
+  }
+  return [main, [[0.5, 0.62], [0.28, 0.52]], [[0.5, 0.38], [0.72, 0.28]]];
+}
+function circle() {
+  const pts = [];
+  for (let i = 0; i <= 24; i++) {
+    const a = (i * Math.PI * 2) / 24;
+    pts.push([0.5 + Math.cos(a) * 0.4, 0.5 + Math.sin(a) * 0.4]);
+  }
+  return [pts];
+}
+function dotCluster() {
+  // Three small dots, each a short closed loop so it reveals quickly as a dot.
+  return [[0.35, 0.4], [0.6, 0.55], [0.45, 0.7]].map(([cx, cy]) => {
+    const pts = [];
+    for (let i = 0; i <= 8; i++) {
+      const a = (i * Math.PI * 2) / 8;
+      pts.push([cx + Math.cos(a) * 0.07, cy + Math.sin(a) * 0.07]);
+    }
+    return pts;
+  });
+}
 
 const FAMILIES = {
-  planner: [star, arrow, check],
-  botanical: [sprig, heart],
-  geometric: [box, triangle, divider],
+  planner: [star, arrow, check, dottedUnderline, sparkle, banner],
+  botanical: [sprig, heart, leaf, vine],
+  geometric: [box, triangle, divider, circle, dotCluster],
 };
 const ALL = ['planner', 'botanical', 'geometric'];
 
@@ -84,6 +141,9 @@ function poolFor(families) {
   for (const f of families) out.push(...FAMILIES[f]);
   return out;
 }
+
+// Exported for unit testing (pure, deterministic).
+export { parseMode, poolFor, FAMILIES };
 
 // --- Geometry helpers ------------------------------------------------------
 
