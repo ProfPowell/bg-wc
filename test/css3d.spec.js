@@ -112,3 +112,35 @@ test('changing mode on a canvas preset does NOT re-init (mosaic unaffected)', as
   });
   expect(ok).toBe(true);
 });
+
+const FLY_MODES = ['', 'ring straight cube', 'corridor helix sphere', 'hex wave pyramid', 'tube straight card'];
+
+for (const mode of FLY_MODES) {
+  test(`fly-through renders for mode="${mode}"`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const ok = await page.evaluate(async (m) => {
+      const el = document.getElementById('wc');
+      if (m) el.setAttribute('mode', m);
+      else el.removeAttribute('mode');
+      el.setAttribute('preset', 'fly-through');
+      await el.ready;
+      const scene = el.shadowRoot.querySelector('.scene');
+      return !el.hasAttribute('data-fallback') && scene && scene.querySelectorAll('.ring').length > 0;
+    }, mode);
+    expect(ok, `mode="${mode}" should render rings`).toBe(true);
+  });
+}
+
+test('fly-through palette="theme" pulls a token color onto a unit', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const usesToken = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    el.setAttribute('preset', 'fly-through');
+    el.setAttribute('palette', 'theme');
+    await el.ready;
+    const face = el.shadowRoot.querySelector('.ring i');
+    const bg = getComputedStyle(face).backgroundColor;
+    return /^rgb/.test(bg);
+  });
+  expect(usesToken).toBe(true);
+});
