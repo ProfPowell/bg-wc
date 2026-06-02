@@ -56,8 +56,13 @@ Three integration strategies were considered:
   JS owns *parameters*. At build: node count from `density`, theme colors → CSS
   vars, profile/path/unit → which classes/vars apply. Live: `speed` →
   `animation-duration`, `intensity` → perspective/scale, pause →
-  `animation-play-state`, reduced-motion → paused at a representative offset. The
-  rAF loop does not run for css3d presets.
+  `animation-play-state`, reduced-motion → paused at a representative offset.
+  The rAF loop, when it runs, **only reconciles parameters** — reading
+  `getColors()`/params and writing a handful of CSS vars (colors, perspective,
+  duration) so live theme switches (e.g. night mode) apply. It never writes
+  per-node transforms; motion lives entirely in CSS. Motion is started/stopped via
+  `setPlaying` (`animation-play-state`), independent of whether rAF is ticking, so
+  pause/visibility/reduced-motion freeze the scene to a still pose.
 
 Approach C keeps the pens' fidelity and performance while honoring the component
 contract (theme tokens, pause, reduced-motion, fallback) through CSS state instead
@@ -104,10 +109,12 @@ Seven contained changes; the canvas path is otherwise untouched.
    `gl`/`c2d` (which are `null` for css3d).
 3. **`#resize`**: css3d branch writes size vars onto the stage (`--w`,`--h`); there
    is no drawing buffer to size and no `gl.viewport`.
-4. **`#evalPlay`**: for `css3d`, do **not** start the rAF loop. Instead call
-   `this.#instance.setPlaying(shouldPlay)`, which toggles `animation-play-state`
-   via a var/attr on the stage. Pause, tab-hidden, power-save, and reduced-motion
-   all route through this single call.
+4. **`#evalPlay`**: compute play state once (`#shouldPlay()`). For `css3d`, call
+   `this.#instance.setPlaying(play)` (toggles `animation-play-state` via a stage
+   attr) — this is what actually freezes/runs the scene. The normal rAF loop still
+   starts when `play` is true; for css3d its `frame()` only reconciles params/colors
+   (live theming), never per-node motion. Pause, tab-hidden, power-save, and
+   reduced-motion all flow through `#shouldPlay()` → `setPlaying(false)`.
 5. **`#updateFallbackVisibility`**: treat css3d instances as having a static
    representation (a paused scene is still visible), so reduced-motion shows the
    paused scene rather than swapping in the fallback slot.
@@ -117,9 +124,12 @@ Seven contained changes; the canvas path is otherwise untouched.
    (e.g. `mosaic`) keep reading `mode` per frame and are unaffected.
 
 The instance contract is otherwise reused verbatim
-(`create`/`resize`/`frame`/`staticFrame`/`dispose`). The only new, optional method
-is `setPlaying(bool)`. `frame(t, params)` is a no-op for these presets (or, at most,
-reconciles a live var); it is not on the hot path.
+(`create`/`resize`/`frame`/`dispose`). The only new method is `setPlaying(bool)`
+(toggles `animation-play-state`). For css3d, `frame(t, params)` does **only** a
+cheap param/color reconcile (a few `setProperty` calls, guarded so unchanged values
+are skipped) — never per-node transforms. `setPlaying` is the source of truth for
+motion; the reduced-motion still-pose is just the paused scene, so no `staticFrame`
+is needed.
 
 ## Preset: `fly-through`
 
