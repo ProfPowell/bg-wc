@@ -26,13 +26,13 @@ void main() {
   vec2 cell = fract(p) - 0.5;
   float r = length(cell);
   float a = atan(cell.y, cell.x);
-  float wedge = (2.0 * PI) / u_fold;
-  float af = abs(mod(a, wedge) - wedge * 0.5);
-  float lobe = cos(af);
 
   float lw = 0.022 + 0.02 * u_intensity;
-  float starEdge = 0.30 - 0.12 * (1.0 - lobe);
-  float starLine = band(r - starEdge, lw);
+  // n-pointed star outline: radius oscillates fully around the circle so the
+  // points are pronounced (a folded-angle edge barely varied and read as a
+  // plain ring).
+  float rstar = 0.32 + 0.13 * cos(u_fold * a);
+  float starLine = band(r - rstar, lw);
   float grid = min(0.5 - abs(cell.x), 0.5 - abs(cell.y));
   float gridLine = band(grid, lw * 0.8);
   float diag = min(abs(cell.x - cell.y), abs(cell.x + cell.y));
