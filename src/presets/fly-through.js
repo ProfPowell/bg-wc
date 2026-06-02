@@ -352,7 +352,10 @@ export function create({ host, css3d, getColors, getParams }) {
     if (params.speed !== lastSpeed) {
       lastSpeed = params.speed;
       const dur = 24 / Math.max(0.05, params.speed);
-      css3d.setVars({ '--fly-dur': `${dur.toFixed(2)}s`, '--fly-delay': `${(-0.75 * dur).toFixed(2)}s` });
+      css3d.setVars({
+        '--fly-dur': `${dur.toFixed(2)}s`,
+        '--fly-delay': `${(-0.75 * dur).toFixed(2)}s`,
+      });
     }
     const spectrum = params.palette === 'spectrum';
     const key = spectrum ? 'spectrum' : rgb(c.primary) + rgb(c.accent) + rgb(c.info);

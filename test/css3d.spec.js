@@ -168,3 +168,13 @@ test('explode is registered as a css3d preset', async ({ page }) => {
   expect(meta.renderer).toBe('css3d');
   expect(meta.group).toBe('dimensional');
 });
+
+test('dimensional demo renders both presets with content on top', async ({ page }) => {
+  await page.goto('/demos/dimensional.html');
+  await page.evaluate(async () => {
+    for (const el of document.querySelectorAll('bg-wc')) await el.ready;
+  });
+  // Content slot is visible above the stage.
+  await expect(page.locator('.overlay h1').first()).toBeVisible();
+  await page.screenshot({ path: 'test-results/dimensional-demo.png', fullPage: false });
+});

@@ -50,7 +50,7 @@ export function create({ host, css3d, getColors, getParams }) {
 
   const p = getParams();
   const mode = (host.getAttribute('mode') || 'radial').toLowerCase();
-  const rand = mulberry32((p.seed | 0) || 1);
+  const rand = mulberry32(p.seed | 0 || 1);
   // density 0..1 → grid side, capped.
   const side = Math.max(4, Math.round(4 + p.density * 10));
   const burst = 2 + p.intensity * 6; // em
@@ -92,7 +92,10 @@ export function create({ host, css3d, getColors, getParams }) {
     const params = getParams();
     const c = getColors();
     const cycle = (6 / Math.max(0.05, params.speed)).toFixed(2);
-    css3d.setVars({ '--ex-cycle': `${cycle}s`, '--ex-floor': (0.2 + params.intensity * 0.4).toFixed(2) });
+    css3d.setVars({
+      '--ex-cycle': `${cycle}s`,
+      '--ex-floor': (0.2 + params.intensity * 0.4).toFixed(2),
+    });
     const key = rgb(c.primary) + rgb(c.bg) + rgb(c.fg);
     if (key !== lastKey) {
       lastKey = key;
