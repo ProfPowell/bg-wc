@@ -477,6 +477,12 @@ class BgWc extends HTMLElement {
   }
 
   #updateFallbackVisibility() {
+    if (this.#rendererKind === 'css3d') {
+      // The paused scene is itself the static representation; never swap to the
+      // fallback slot for css3d (even under reduced motion).
+      this.removeAttribute('data-fallback');
+      return;
+    }
     const reduce = this.#reducedMotionActive();
     // If reduced and the preset has no staticFrame, surface fallback. Otherwise let the canvas (or its static frame) show.
     if (reduce && !this.#instance?.staticFrame) {
@@ -525,7 +531,15 @@ class BgWc extends HTMLElement {
   }
 
   #evalPlay() {
-    if (this.#shouldPlay()) {
+    const play = this.#shouldPlay();
+    if (this.#rendererKind === 'css3d') {
+      // setPlaying is the source of truth for CSS motion. rAF still runs when
+      // playing, but only to reconcile params/colors (cheap), never per-node.
+      try {
+        this.#instance?.setPlaying?.(play);
+      } catch {}
+    }
+    if (play) {
       if (!this.#rafId) {
         this.#lastTickMs = performance.now();
         this.#rafId = requestAnimationFrame(this.#tick);
@@ -533,7 +547,9 @@ class BgWc extends HTMLElement {
     } else {
       cancelAnimationFrame(this.#rafId);
       this.#rafId = 0;
-      // If reduced motion is the reason we're stopped, ask the preset for one frame if it supports it.
+      // If reduced motion is the reason we're stopped, ask the preset for one
+      // frame if it supports it. (css3d has no staticFrame — its paused scene
+      // is already the static representation.)
       if (this.#instance && this.#reducedMotionActive() && this.#instance.staticFrame) {
         try {
           this.#instance.staticFrame(this.#readParams());
