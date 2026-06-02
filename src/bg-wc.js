@@ -4,6 +4,7 @@
 import { loadPreset, listPresets } from './presets/index.js';
 import { createGLContext } from './renderer/webgl.js';
 import { createC2DContext, resizeCanvas } from './renderer/canvas2d.js';
+import { createCSS3DContext } from './renderer/css3d.js';
 import { resolveTokens } from './renderer/tokens.js';
 import { observeVisibility, observeReducedMotion, observeTabVisibility } from './util/observe.js';
 import { observeBatteryPowerSave } from './util/pause.js';
@@ -44,6 +45,14 @@ canvas {
 }
 :host([data-fallback]) .fallback { display: block; }
 :host([data-fallback]) canvas { display: none; }
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: var(--bg-wc-z-index, var(--gl-wc-z-index, 0));
+  pointer-events: none;
+  overflow: hidden;
+}
+:host([data-fallback]) .stage { display: none; }
 `;
 
 // Authors can override any of these via component-namespaced CSS vars.
@@ -75,9 +84,11 @@ class BgWc extends HTMLElement {
       'quality',
       'fit',
       'motion',
+      'mode',
     ];
   }
 
+  // Active layer element: <canvas> for webgl/canvas2d, <div class="stage"> for css3d.
   #canvas;
   #instance = null;
   #rendererKind = null;
@@ -179,6 +190,8 @@ class BgWc extends HTMLElement {
   }
 
   async snapshot() {
+    // css3d renders to DOM, not a canvas — there is no pixel buffer to read.
+    if (this.#rendererKind === 'css3d') return null;
     // Re-render one frame at current time, then read pixels.
     if (this.#instance) {
       try {
@@ -268,8 +281,13 @@ class BgWc extends HTMLElement {
       this.#evalPlay();
     } else if (name === 'pixel-ratio' || name === 'fit') {
       this.#resize();
+    } else if (name === 'mode' || name === 'density') {
+      // css3d builds its scene from these at create-time, so a change requires a
+      // rebuild. Canvas presets read them per frame and need no re-init — pass
+      // the current preset name as prevName so no spurious preset-changed fires.
+      if (this.#rendererKind === 'css3d') this.#loadCurrentPreset(this.preset);
     }
-    // intensity/speed/density/seed/palette/quality are read fresh each frame.
+    // intensity/speed/seed/palette/quality are read fresh each frame.
   }
 
   // --- Internals -------------------------------------------------------------
@@ -316,25 +334,33 @@ class BgWc extends HTMLElement {
     }
     if (token !== this.#loadingToken) return;
 
-    // Swap canvas so we can switch renderer kinds without stale-context issues.
+    // Swap the layer element so we can switch renderer kinds without stale
+    // context issues. For css3d the layer is a <div> stage; otherwise a <canvas>.
+    // NOTE: #canvas holds the active layer element (canvas OR stage); canvas-only
+    // code paths gate on #rendererKind.
     this.#disposeInstance();
-    const fresh = this.#makeCanvas();
-    this.#canvas.replaceWith(fresh);
-    this.#canvas = fresh;
 
-    let ctx;
+    let ctx, layer;
     try {
-      ctx =
-        loaded.renderer === 'webgl'
-          ? createGLContext(this.#canvas)
-          : createC2DContext(this.#canvas);
-      if (!ctx) throw new Error(`${loaded.renderer} context unavailable`);
+      if (loaded.renderer === 'css3d') {
+        ctx = createCSS3DContext();
+        layer = ctx.stage;
+      } else {
+        layer = this.#makeCanvas();
+        ctx =
+          loaded.renderer === 'webgl'
+            ? createGLContext(layer)
+            : createC2DContext(layer);
+        if (!ctx) throw new Error(`${loaded.renderer} context unavailable`);
+      }
     } catch (err) {
       this.setAttribute('data-fallback', '');
       this.#emit('bg-wc:error', { phase: 'init', error: err });
       this.#readyResolve();
       return;
     }
+    this.#canvas.replaceWith(layer);
+    this.#canvas = layer;
 
     this.#rendererKind = loaded.renderer;
     this.#ctx = ctx;
@@ -343,9 +369,10 @@ class BgWc extends HTMLElement {
     try {
       this.#instance = loaded.create({
         host: this,
-        canvas: this.#canvas,
+        canvas: loaded.renderer === 'css3d' ? null : this.#canvas,
         gl: loaded.renderer === 'webgl' ? ctx : null,
         c2d: loaded.renderer === 'canvas2d' ? ctx : null,
+        css3d: loaded.renderer === 'css3d' ? ctx : null,
         getColors: () => resolveTokens(this, COLOR_MAPPING),
         getParams: () => this.#readParams(),
       });
@@ -456,6 +483,12 @@ class BgWc extends HTMLElement {
   }
 
   #updateFallbackVisibility() {
+    if (this.#rendererKind === 'css3d') {
+      // The paused scene is itself the static representation; never swap to the
+      // fallback slot for css3d (even under reduced motion).
+      this.removeAttribute('data-fallback');
+      return;
+    }
     const reduce = this.#reducedMotionActive();
     // If reduced and the preset has no staticFrame, surface fallback. Otherwise let the canvas (or its static frame) show.
     if (reduce && !this.#instance?.staticFrame) {
@@ -468,6 +501,12 @@ class BgWc extends HTMLElement {
   #resize() {
     const rect = this.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
+    if (this.#rendererKind === 'css3d') {
+      try {
+        this.#instance?.resize?.(rect.width, rect.height);
+      } catch {}
+      return;
+    }
     const css = getComputedStyle(this);
     const pr = (n) => parseFloat(css.getPropertyValue(n));
     const bgPr = pr('--bg-wc-pixel-ratio');
@@ -498,7 +537,15 @@ class BgWc extends HTMLElement {
   }
 
   #evalPlay() {
-    if (this.#shouldPlay()) {
+    const play = this.#shouldPlay();
+    if (this.#rendererKind === 'css3d') {
+      // setPlaying is the source of truth for CSS motion. rAF still runs when
+      // playing, but only to reconcile params/colors (cheap), never per-node.
+      try {
+        this.#instance?.setPlaying?.(play);
+      } catch {}
+    }
+    if (play) {
       if (!this.#rafId) {
         this.#lastTickMs = performance.now();
         this.#rafId = requestAnimationFrame(this.#tick);
@@ -506,7 +553,9 @@ class BgWc extends HTMLElement {
     } else {
       cancelAnimationFrame(this.#rafId);
       this.#rafId = 0;
-      // If reduced motion is the reason we're stopped, ask the preset for one frame if it supports it.
+      // If reduced motion is the reason we're stopped, ask the preset for one
+      // frame if it supports it. (css3d has no staticFrame — its paused scene
+      // is already the static representation.)
       if (this.#instance && this.#reducedMotionActive() && this.#instance.staticFrame) {
         try {
           this.#instance.staticFrame(this.#readParams());
