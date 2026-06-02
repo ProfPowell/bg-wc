@@ -84,6 +84,7 @@ class BgWc extends HTMLElement {
       'quality',
       'fit',
       'motion',
+      'mode',
     ];
   }
 
@@ -280,8 +281,13 @@ class BgWc extends HTMLElement {
       this.#evalPlay();
     } else if (name === 'pixel-ratio' || name === 'fit') {
       this.#resize();
+    } else if (name === 'mode' || name === 'density') {
+      // css3d builds its scene from these at create-time, so a change requires a
+      // rebuild. Canvas presets read them per frame and need no re-init — pass
+      // the current preset name as prevName so no spurious preset-changed fires.
+      if (this.#rendererKind === 'css3d') this.#loadCurrentPreset(this.preset);
     }
-    // intensity/speed/density/seed/palette/quality are read fresh each frame.
+    // intensity/speed/seed/palette/quality are read fresh each frame.
   }
 
   // --- Internals -------------------------------------------------------------

@@ -81,3 +81,34 @@ test('snapshot() returns null for a css3d preset', async ({ page }) => {
   });
   expect(snap).toBeNull();
 });
+
+test('changing density rebuilds the css3d scene (node count changes)', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const counts = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    el.setAttribute('density', '0.25');
+    el.setAttribute('preset', 'fly-through');
+    await el.ready;
+    const before = el.shadowRoot.querySelectorAll('.ring').length;
+    el.setAttribute('density', '0.9');
+    await el.ready;
+    const after = el.shadowRoot.querySelectorAll('.ring').length;
+    return { before, after };
+  });
+  expect(counts.after).toBeGreaterThan(counts.before);
+});
+
+test('changing mode on a canvas preset does NOT re-init (mosaic unaffected)', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const ok = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    el.setAttribute('preset', 'mosaic');
+    await el.ready;
+    let reinits = 0;
+    el.addEventListener('bg-wc:ready', () => reinits++);
+    el.setAttribute('mode', 'flat');
+    await new Promise((r) => requestAnimationFrame(r));
+    return reinits === 0 && !el.hasAttribute('data-fallback');
+  });
+  expect(ok).toBe(true);
+});
