@@ -36,3 +36,18 @@ test('girih is registered in the ornamental group', async ({ page }) => {
   expect(meta.renderer).toBe('webgl');
   expect(meta.group).toBe('ornamental');
 });
+
+test('mandala renders to canvas', async ({ page }) => {
+  const r = await loadsAndRenders(page, 'mandala', '');
+  expect(r.rendered).toBe(true);
+  expect(r.fallback).toBe(false);
+});
+
+test('mandala is registered in the ornamental group', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const meta = await page.evaluate(() =>
+    customElements.get('bg-wc').presets().find((p) => p.name === 'mandala')
+  );
+  expect(meta.renderer).toBe('webgl');
+  expect(meta.group).toBe('ornamental');
+});
