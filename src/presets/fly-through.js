@@ -354,7 +354,7 @@ export function create({ host, css3d, getColors, getParams }) {
       const dur = 24 / Math.max(0.05, params.speed);
       css3d.setVars({ '--fly-dur': `${dur.toFixed(2)}s`, '--fly-delay': `${(-0.75 * dur).toFixed(2)}s` });
     }
-    const spectrum = (params.palette || 'theme') === 'spectrum';
+    const spectrum = params.palette === 'spectrum';
     const key = spectrum ? 'spectrum' : rgb(c.primary) + rgb(c.accent) + rgb(c.info);
     if (key !== lastColorKey) {
       lastColorKey = key;
@@ -364,8 +364,8 @@ export function create({ host, css3d, getColors, getParams }) {
         const baseColor = spectrum
           ? null // handled via HSL per unit
           : palette[ri % palette.length];
-        ring.querySelectorAll('i').forEach((unit) => {
-          const lightFactor = parseFloat(unit.style.getPropertyValue('--light') || '60') / 100;
+        ring.querySelectorAll('i').forEach((face) => {
+          const lightFactor = parseFloat(face.style.getPropertyValue('--light') || '60') / 100;
           let rv, gv, bv;
           if (spectrum) {
             const h = (ri * 360) / rings.length;
@@ -376,7 +376,7 @@ export function create({ host, css3d, getColors, getParams }) {
             gv = Math.round((baseColor[1] + (1 - baseColor[1]) * (1 - lightFactor)) * 255);
             bv = Math.round((baseColor[2] + (1 - baseColor[2]) * (1 - lightFactor)) * 255);
           }
-          unit.style.backgroundColor = `rgb(${rv}, ${gv}, ${bv})`;
+          face.style.backgroundColor = `rgb(${rv}, ${gv}, ${bv})`;
         });
       });
     }
