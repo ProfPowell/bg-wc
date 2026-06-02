@@ -54,6 +54,9 @@ const REGISTRY = {
   comic: { renderer: 'webgl', group: 'pop', loader: () => import('./comic.js') },
   deco: { renderer: 'webgl', group: 'pop', loader: () => import('./deco.js') },
 
+  // Ornamental geometry
+  girih: { renderer: 'webgl', group: 'ornamental', loader: () => import('./girih.js') },
+
   // 80s / 90s — distortion, displays, demoscene
   system7: { renderer: 'canvas2d', group: 'retro', loader: () => import('./system7.js') },
   glitch: { renderer: 'webgl', group: 'retro', loader: () => import('./glitch.js') },
@@ -113,6 +116,7 @@ const GROUP_LABELS = {
   vector: 'Vector',
   text: 'Text',
   pop: 'Pop art',
+  ornamental: 'Ornamental',
   dataviz: 'Dataviz',
   particles: 'Particles',
   dimensional: 'Dimensional / 3D',
