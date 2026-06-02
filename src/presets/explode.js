@@ -34,8 +34,10 @@ const STYLE = `
   .particle { position: absolute; transform: rotateX(90deg); transform-style: preserve-3d; }
   .particle::before { content: ''; position: absolute; inset: -1em;
     background-image: radial-gradient(var(--ex-color, #fff), transparent 60%);
-    animation: explodeBurst var(--ex-cycle, 6s) infinite cubic-bezier(0.25,0,0.65,1.25),
-               explodeFade var(--ex-cycle, 6s) infinite linear; }
+    /* --ex-delay phase-shifts the loop so a paused (reduced-motion) frame lands
+       mid-burst rather than on the degenerate 0% (unexploded) frame. */
+    animation: explodeBurst var(--ex-cycle, 6s) cubic-bezier(0.25,0,0.65,1.25) var(--ex-delay, -5.4s) infinite,
+               explodeFade var(--ex-cycle, 6s) linear var(--ex-delay, -5.4s) infinite; }
   @keyframes explodeRotate { to { transform: rotateY(360deg); } }
   @keyframes explodeBurst {
     0%, 40%, 100% { transform: translate(0, 0); animation-timing-function: cubic-bezier(0.25,-0.25,0,1); }

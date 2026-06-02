@@ -169,6 +169,53 @@ test('explode is registered as a css3d preset', async ({ page }) => {
   expect(meta.group).toBe('dimensional');
 });
 
+test('switching from a css3d preset back to a canvas preset tears down the stage', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const result = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    el.setAttribute('preset', 'fly-through');
+    await el.ready;
+    const root = el.shadowRoot;
+    const hadStage = !!root.querySelector('div.stage');
+    // Switch to a canvas preset; the stage + its injected <style> must be gone.
+    el.setAttribute('preset', 'mosaic');
+    await el.ready;
+    return {
+      hadStage,
+      stageGone: !root.querySelector('div.stage'),
+      hasCanvas: !!root.querySelector('canvas'),
+      fallback: el.hasAttribute('data-fallback'),
+    };
+  });
+  expect(result.hadStage).toBe(true);
+  expect(result.stageGone).toBe(true);
+  expect(result.hasCanvas).toBe(true);
+  expect(result.fallback).toBe(false);
+});
+
+test('explode under reduced motion freezes a mid-burst (non-degenerate) pose', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/test/new-presets-page.html');
+  const result = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    el.setAttribute('preset', 'explode');
+    await el.ready;
+    const stage = el.shadowRoot.querySelector('div.stage');
+    return {
+      fallback: el.hasAttribute('data-fallback'),
+      playing: stage.getAttribute('data-playing'),
+      // The injected style declares a negative --ex-delay default so the frozen
+      // frame is mid-burst; confirm the rule is present in the stylesheet.
+      hasDelay: stage.querySelector('style').textContent.includes('--ex-delay'),
+      particles: el.shadowRoot.querySelectorAll('.particle').length,
+    };
+  });
+  expect(result.fallback).toBe(false);
+  expect(result.playing).toBe('0');
+  expect(result.hasDelay).toBe(true);
+  expect(result.particles).toBeGreaterThan(0);
+});
+
 test('dimensional demo renders both presets with content on top', async ({ page }) => {
   await page.goto('/demos/dimensional.html');
   await page.evaluate(async () => {
