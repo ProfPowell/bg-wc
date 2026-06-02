@@ -91,6 +91,9 @@ const REGISTRY = {
   pulse: { renderer: 'canvas2d', group: 'particles', loader: () => import('./pulse.js') },
   tetris: { renderer: 'canvas2d', group: 'particles', loader: () => import('./tetris.js') },
 
+  // Dimensional / CSS-3D scenes
+  'fly-through': { renderer: 'css3d', group: 'dimensional', loader: () => import('./fly-through.js') },
+
   // Animated charts — busy data backgrounds
   trades: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./trades.js') },
   dashboard: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./dashboard.js') },
@@ -111,6 +114,7 @@ const GROUP_LABELS = {
   pop: 'Pop art',
   dataviz: 'Dataviz',
   particles: 'Particles',
+  dimensional: 'Dimensional / 3D',
 };
 
 export function listPresets() {
