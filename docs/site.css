@@ -154,6 +154,27 @@ main { padding: clamp(16px, 4vw, 24px); max-width: 1200px; margin: 0 auto; }
 .badge.webgl    { background: color-mix(in oklab, var(--color-primary) 20%, transparent); color: var(--color-primary); }
 .badge.canvas2d { background: color-mix(in oklab, var(--color-accent) 20%, transparent);  color: var(--color-accent); }
 .badge.css3d    { background: color-mix(in oklab, var(--color-info) 20%, transparent);    color: var(--color-info); }
+.card-modes {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 10px 14px 0;
+}
+.mode-pill {
+  font: 600 11px/1 ui-monospace, monospace;
+  letter-spacing: 0.04em;
+  color: var(--color-foreground);
+  background: color-mix(in oklab, var(--color-foreground) 8%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 99px;
+  padding: 5px 11px;
+  cursor: pointer;
+}
+.mode-pill:hover { border-color: color-mix(in oklab, var(--color-primary) 50%, var(--color-border)); }
+.mode-pill[aria-pressed="true"] {
+  background: var(--color-primary);
+  border-color: transparent;
+  color: var(--color-background);
+}
+.mode-pill:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
 .card-controls {
   padding: 8px 14px 14px;
   display: flex; flex-direction: column; gap: 6px;
