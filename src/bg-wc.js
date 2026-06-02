@@ -87,6 +87,7 @@ class BgWc extends HTMLElement {
     ];
   }
 
+  // Active layer element: <canvas> for webgl/canvas2d, <div class="stage"> for css3d.
   #canvas;
   #instance = null;
   #rendererKind = null;
@@ -188,6 +189,8 @@ class BgWc extends HTMLElement {
   }
 
   async snapshot() {
+    // css3d renders to DOM, not a canvas — there is no pixel buffer to read.
+    if (this.#rendererKind === 'css3d') return null;
     // Re-render one frame at current time, then read pixels.
     if (this.#instance) {
       try {
