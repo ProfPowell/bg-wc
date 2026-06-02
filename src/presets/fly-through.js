@@ -11,6 +11,10 @@ const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !i
 const PROFILES = ['ring', 'corridor', 'hex', 'tube'];
 const PATHS = ['straight', 'helix', 'wave'];
 const UNITS = ['cube', 'sphere', 'pyramid', 'card'];
+// `orbit` (default) rotates the whole tunnel in view — always full, the best
+// resting background. `fly` sends the camera down the tube (immersive, but the
+// view is sparse at the phases where you're between rings).
+const MOTIONS = ['orbit', 'fly'];
 
 function parseMode(host) {
   const tokens = (host.getAttribute('mode') || '').toLowerCase().split(/\s+/).filter(Boolean);
@@ -18,6 +22,7 @@ function parseMode(host) {
     profile: tokens.find((t) => PROFILES.includes(t)) || 'ring',
     path: tokens.find((t) => PATHS.includes(t)) || 'straight',
     unit: tokens.find((t) => UNITS.includes(t)) || 'cube',
+    motion: tokens.find((t) => MOTIONS.includes(t)) || 'orbit',
   };
 }
 
@@ -323,7 +328,7 @@ function styleFor() {
 export function create({ host, css3d, getColors, getParams }) {
   css3d.mountStyle(styleFor());
 
-  const { profile, path, unit } = parseMode(host);
+  const { profile, path, unit, motion } = parseMode(host);
   const p = getParams();
   const N = Math.max(8, Math.round(8 + p.density * 64));
   const count = unitCount(profile);
@@ -346,17 +351,22 @@ export function create({ host, css3d, getColors, getParams }) {
     const params = getParams();
     const c = getColors();
     css3d.setVars({
-      '--fly-anim': 'flyThrough',
+      // `orbit` rotates the whole tunnel (the `scene` keyframe — always full);
+      // `fly` sends the camera through it (the `flyThrough` keyframe).
+      '--fly-anim': motion === 'fly' ? 'flyThrough' : 'scene',
       // `em` (not px) so perspective tracks the stage font-size set in resize();
       // 25..62em ≈ the prior 400..1000px at the baseline 16px font.
       '--perspective': `${(25 + params.intensity * 37.5).toFixed(1)}em`,
     });
     if (params.speed !== lastSpeed) {
       lastSpeed = params.speed;
-      const dur = 24 / Math.max(0.05, params.speed);
+      // Orbit reads best slow and majestic; fly wants a quicker pass.
+      const dur = (motion === 'fly' ? 24 : 60) / Math.max(0.05, params.speed);
       css3d.setVars({
         '--fly-dur': `${dur.toFixed(2)}s`,
-        '--fly-delay': `${(-0.75 * dur).toFixed(2)}s`,
+        // Only fly needs a starting offset (skip the degenerate first frame);
+        // any orbit angle is already a full view.
+        '--fly-delay': motion === 'fly' ? `${(-0.75 * dur).toFixed(2)}s` : '0s',
       });
     }
     const spectrum = params.palette === 'spectrum';

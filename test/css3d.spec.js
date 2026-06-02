@@ -216,6 +216,24 @@ test('explode under reduced motion freezes a mid-burst (non-degenerate) pose', a
   expect(result.particles).toBeGreaterThan(0);
 });
 
+test('fly-through defaults to the orbit motion; mode "fly" switches to fly-through', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const anims = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    el.setAttribute('preset', 'fly-through');
+    await el.ready;
+    const sceneAnim = () =>
+      getComputedStyle(el.shadowRoot.querySelector('.scene')).animationName;
+    const orbit = sceneAnim();
+    el.setAttribute('mode', 'ring straight cube fly');
+    await el.ready;
+    const fly = sceneAnim();
+    return { orbit, fly };
+  });
+  expect(anims.orbit).toBe('scene');
+  expect(anims.fly).toBe('flyThrough');
+});
+
 test('dimensional demo renders both presets with content on top', async ({ page }) => {
   await page.goto('/demos/dimensional.html');
   await page.evaluate(async () => {

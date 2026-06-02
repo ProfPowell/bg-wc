@@ -174,7 +174,7 @@
             <tr><td><code>fit</code></td><td><code>"cover"</code> | <code>"contain"</code> | <code>"stretch"</code></td><td><code>"cover"</code></td><td>How the surface sizes inside the host.</td></tr>
             <tr><td><code>motion</code></td><td><code>"auto"</code> | <code>"reduce"</code> | <code>"force"</code></td><td><code>"auto"</code></td><td><code>auto</code> honors <code>prefers-reduced-motion</code>.</td></tr>
             <tr><td><code>text</code></td><td>string</td><td>&mdash;</td><td>Payload for text presets (crawl / marquee / sinescroll / cascade). Lines split on <code>|</code>. Read fresh each frame.</td></tr>
-            <tr><td><code>mode</code></td><td>string</td><td>&mdash;</td><td>Preset-specific variant selector. <code>mosaic</code>: <code>isometric</code>, <code>flat</code>, <code>sparse</code>, <code>stacked</code>; <code>doodles</code>: family names; <code>fly-through</code>: space-delimited profile&times;path&times;unit; <code>explode</code>: <code>radial</code> | <code>cube</code>. Changing it rebuilds css3d scenes.</td></tr>
+            <tr><td><code>mode</code></td><td>string</td><td>&mdash;</td><td>Preset-specific variant selector. <code>mosaic</code>: <code>isometric</code>, <code>flat</code>, <code>sparse</code>, <code>stacked</code>; <code>doodles</code>: family names; <code>fly-through</code>: space-delimited motion&times;profile&times;path&times;unit; <code>explode</code>: <code>radial</code> | <code>cube</code>. Changing it rebuilds css3d scenes.</td></tr>
             <tr><td><code>use-theme</code></td><td>boolean</td><td>unset</td><td>Used by <code>system7</code>; presence enables theme-token coloring instead of hard black/white.</td></tr>
           </tbody>
         </table>
@@ -421,12 +421,14 @@ console.log('PNG ready:', url);</code-block>
           <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
           <tbody>
             <tr><td><code>fly-through</code></td>
-                <td>A tunnel the camera flies through. <code>mode</code> composes three
-                    axes (space-delimited): profile <code>ring</code> (default) |
-                    <code>corridor</code> | <code>hex</code> | <code>tube</code>; path
-                    <code>straight</code> (default) | <code>helix</code> | <code>wave</code>;
-                    unit <code>cube</code> (default) | <code>sphere</code> | <code>pyramid</code> |
-                    <code>card</code>. <code>palette="spectrum"</code> for a rainbow instead of theme colors.</td>
+                <td>A rotating tunnel of theme-colored segments. <code>mode</code> composes
+                    space-delimited axes: motion <code>orbit</code> (default, rotates the whole
+                    tunnel in view) | <code>fly</code> (camera flies through it); profile
+                    <code>ring</code> (default) | <code>corridor</code> | <code>hex</code> |
+                    <code>tube</code>; path <code>straight</code> | <code>helix</code> |
+                    <code>wave</code>; unit <code>cube</code> | <code>sphere</code> |
+                    <code>pyramid</code> | <code>card</code>. <code>palette="spectrum"</code> for a
+                    rainbow instead of theme colors.</td>
                 <td>primary, accent, info</td></tr>
             <tr><td><code>explode</code></td>
                 <td>A field of particles over a floor grid that bursts outward and
