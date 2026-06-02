@@ -53,6 +53,7 @@ const REGISTRY = {
   benday: { renderer: 'webgl', group: 'pop', loader: () => import('./benday.js') },
   comic: { renderer: 'webgl', group: 'pop', loader: () => import('./comic.js') },
   deco: { renderer: 'webgl', group: 'pop', loader: () => import('./deco.js') },
+  atomic: { renderer: 'canvas2d', group: 'pop', loader: () => import('./atomic.js') },
 
   // Ornamental geometry
   girih: { renderer: 'webgl', group: 'ornamental', loader: () => import('./girih.js') },

@@ -51,3 +51,20 @@ test('mandala is registered in the ornamental group', async ({ page }) => {
   expect(meta.renderer).toBe('webgl');
   expect(meta.group).toBe('ornamental');
 });
+
+for (const mode of ['', 'mixed', 'boomerangs', 'starbursts', 'harlequin']) {
+  test(`atomic renders for mode="${mode}"`, async ({ page }) => {
+    const r = await loadsAndRenders(page, 'atomic', mode);
+    expect(r.rendered, `mode="${mode}" should render`).toBe(true);
+    expect(r.fallback).toBe(false);
+  });
+}
+
+test('atomic is registered in the pop group', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const meta = await page.evaluate(() =>
+    customElements.get('bg-wc').presets().find((p) => p.name === 'atomic')
+  );
+  expect(meta.renderer).toBe('canvas2d');
+  expect(meta.group).toBe('pop');
+});
