@@ -347,7 +347,9 @@ export function create({ host, css3d, getColors, getParams }) {
     const c = getColors();
     css3d.setVars({
       '--fly-anim': 'flyThrough',
-      '--perspective': `${Math.round(400 + params.intensity * 600)}px`,
+      // `em` (not px) so perspective tracks the stage font-size set in resize();
+      // 25..62em ≈ the prior 400..1000px at the baseline 16px font.
+      '--perspective': `${(25 + params.intensity * 37.5).toFixed(1)}em`,
     });
     if (params.speed !== lastSpeed) {
       lastSpeed = params.speed;
@@ -394,7 +396,12 @@ export function create({ host, css3d, getColors, getParams }) {
     frame() {
       reconcile();
     },
-    resize() {},
+    resize(w, h) {
+      // Scale the scene DOWN for small containers (gallery cards), capped at the
+      // 16px baseline so a full-viewport hero keeps the tuned look. Perspective
+      // is in em, so the tunnel holds its proportions at any size.
+      css3d.stage.style.fontSize = `${Math.min(16, Math.max(3, Math.min(w, h) / 44))}px`;
+    },
     dispose() {
       css3d.dispose();
     },

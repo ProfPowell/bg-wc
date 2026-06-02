@@ -153,6 +153,7 @@ main { padding: clamp(16px, 4vw, 24px); max-width: 1200px; margin: 0 auto; }
 }
 .badge.webgl    { background: color-mix(in oklab, var(--color-primary) 20%, transparent); color: var(--color-primary); }
 .badge.canvas2d { background: color-mix(in oklab, var(--color-accent) 20%, transparent);  color: var(--color-accent); }
+.badge.css3d    { background: color-mix(in oklab, var(--color-info) 20%, transparent);    color: var(--color-info); }
 .card-controls {
   padding: 8px 14px 14px;
   display: flex; flex-direction: column; gap: 6px;

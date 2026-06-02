@@ -113,7 +113,11 @@ export function create({ host, css3d, getColors, getParams }) {
     frame() {
       reconcile();
     },
-    resize() {},
+    resize(w, h) {
+      // Scale the field DOWN for small containers (gallery cards), capped at the
+      // 16px baseline so a full-viewport section keeps the tuned look.
+      css3d.stage.style.fontSize = `${Math.min(16, Math.max(3, Math.min(w, h) / 30))}px`;
+    },
     dispose() {
       css3d.dispose();
     },
