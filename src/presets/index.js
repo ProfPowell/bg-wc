@@ -93,6 +93,7 @@ const REGISTRY = {
 
   // Dimensional / CSS-3D scenes
   'fly-through': { renderer: 'css3d', group: 'dimensional', loader: () => import('./fly-through.js') },
+  explode: { renderer: 'css3d', group: 'dimensional', loader: () => import('./explode.js') },
 
   // Animated charts — busy data backgrounds
   trades: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./trades.js') },

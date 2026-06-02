@@ -144,3 +144,27 @@ test('fly-through palette="theme" pulls a token color onto a unit', async ({ pag
   });
   expect(usesToken).toBe(true);
 });
+
+for (const mode of ['', 'radial', 'cube']) {
+  test(`explode renders for mode="${mode}"`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const ok = await page.evaluate(async (m) => {
+      const el = document.getElementById('wc');
+      if (m) el.setAttribute('mode', m);
+      else el.removeAttribute('mode');
+      el.setAttribute('preset', 'explode');
+      await el.ready;
+      return !el.hasAttribute('data-fallback') && el.shadowRoot.querySelectorAll('.particle').length > 0;
+    }, mode);
+    expect(ok, `mode="${mode}" should render particles`).toBe(true);
+  });
+}
+
+test('explode is registered as a css3d preset', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const meta = await page.evaluate(() =>
+    customElements.get('bg-wc').presets().find((p) => p.name === 'explode')
+  );
+  expect(meta.renderer).toBe('css3d');
+  expect(meta.group).toBe('dimensional');
+});
