@@ -68,3 +68,20 @@ test('atomic is registered in the pop group', async ({ page }) => {
   expect(meta.renderer).toBe('canvas2d');
   expect(meta.group).toBe('pop');
 });
+
+for (const mode of ['', 'riley', 'cafewall', 'moire', 'drift']) {
+  test(`op-art renders for mode="${mode}"`, async ({ page }) => {
+    const r = await loadsAndRenders(page, 'op-art', mode);
+    expect(r.rendered, `mode="${mode}" should render`).toBe(true);
+    expect(r.fallback).toBe(false);
+  });
+}
+
+test('op-art is registered in the ornamental group', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const meta = await page.evaluate(() =>
+    customElements.get('bg-wc').presets().find((p) => p.name === 'op-art')
+  );
+  expect(meta.renderer).toBe('webgl');
+  expect(meta.group).toBe('ornamental');
+});
