@@ -14,11 +14,38 @@ const DEFAULTS = {
 
 const cache = new Map();
 let probeCtx = null;
+let probeEl = null;
+
+// Resolve a CSS color the canvas can't parse (notably `light-dark()`) to a
+// concrete color via the DOM. The browser resolves `light-dark()` against the
+// page's `color-scheme`, which a bare canvas context has no notion of — so a
+// theme that serves tokens as `light-dark(...)` (e.g. vanilla-breeze in
+// light/auto mode) would otherwise collapse to black. Resolved against
+// document.body so the page's scheme applies.
+function resolveViaDom(str) {
+  if (typeof document === 'undefined' || !document.body) return str;
+  if (!probeEl) {
+    probeEl = document.createElement('span');
+    probeEl.setAttribute('aria-hidden', 'true');
+    probeEl.style.cssText = 'position:fixed;left:-9999px;top:0;width:0;height:0';
+  }
+  if (!probeEl.isConnected) document.body.appendChild(probeEl);
+  probeEl.style.color = '';
+  probeEl.style.color = str; // invalid input leaves it empty
+  const resolved = getComputedStyle(probeEl).color;
+  return resolved || str;
+}
 
 export function parseColor(str) {
   if (!str) return [0, 0, 0, 0];
   const key = String(str).trim();
   if (!key || key === 'transparent') return [0, 0, 0, 0];
+  // `light-dark()` is scheme-dependent (the same string resolves differently in
+  // light vs dark), so resolve it fresh through the DOM and do NOT cache by the
+  // light-dark string. The resolved rgb() goes through the normal cached path.
+  if (key.indexOf('light-dark(') >= 0) {
+    return parseColor(resolveViaDom(key));
+  }
   const hit = cache.get(key);
   if (hit) return hit;
   if (!probeCtx) {

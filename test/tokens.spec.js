@@ -44,6 +44,24 @@ test('cssToRgba handles hsl() and named colors too', async ({ page }) => {
   expect(transparent).toEqual([0, 0, 0, 0]);
 });
 
+test('cssToRgba resolves light-dark() per color-scheme (vanilla-breeze light mode)', async ({
+  page,
+}) => {
+  await page.goto('/test/tokens-page.html');
+  const r = await page.evaluate(() => {
+    document.documentElement.style.colorScheme = 'light';
+    const light = window.cssToRgba('light-dark(oklch(15% 0 0), oklch(96% 0 0))'); // → near-black
+    document.documentElement.style.colorScheme = 'dark';
+    const dark = window.cssToRgba('light-dark(oklch(15% 0 0), oklch(96% 0 0))'); // → near-white
+    return { light, dark };
+  });
+  // light-dark() previously collapsed to black (canvas can't parse it). Now the
+  // light scheme picks the first arg (dark ink) and dark scheme the second (light).
+  const lum = (c) => c[0] + c[1] + c[2];
+  expect(lum(r.light)).toBeLessThan(0.6); // dark in light scheme
+  expect(lum(r.dark)).toBeGreaterThan(2.4); // light in dark scheme
+});
+
 test('readTokenString prefers --bg-wc override, falls back to --gl-wc', async ({ page }) => {
   await page.goto('/test/tokens-page.html');
   const r = await page.evaluate(() => {
