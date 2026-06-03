@@ -85,3 +85,18 @@ test('op-art is registered in the ornamental group', async ({ page }) => {
   expect(meta.renderer).toBe('webgl');
   expect(meta.group).toBe('ornamental');
 });
+
+test('ornamental presets show a static frame under reduced motion (no fallback)', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const preset of ['girih', 'mandala', 'atomic', 'op-art']) {
+    const ok = await page.evaluate(async (p) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', p);
+      await el.ready;
+      const c = el.shadowRoot.querySelector('canvas');
+      return !el.hasAttribute('data-fallback') && !!c && c.width > 0;
+    }, preset);
+    expect(ok, `${preset} should render a static frame, not fallback`).toBe(true);
+  }
+});

@@ -52,9 +52,17 @@ export function create({ gl, getColors, host }) {
   const buf = fullscreenQuad(gl);
   const aPos = gl.getAttribLocation(program, 'a_pos');
   const u = (n) => gl.getUniformLocation(program, n);
-  const uTime = u('u_time'), uInt = u('u_intensity'), uDen = u('u_density'), uFold = u('u_fold');
-  const uC1 = u('u_c1'), uC2 = u('u_c2'), uC3 = u('u_c3'), uBg = u('u_bg'), uRes = u('u_res');
-  let w = 1, h = 1;
+  const uTime = u('u_time'),
+    uInt = u('u_intensity'),
+    uDen = u('u_density'),
+    uFold = u('u_fold');
+  const uC1 = u('u_c1'),
+    uC2 = u('u_c2'),
+    uC3 = u('u_c3'),
+    uBg = u('u_bg'),
+    uRes = u('u_res');
+  let w = 1,
+    h = 1;
 
   function foldOf() {
     const m = (host.getAttribute('mode') || '').toLowerCase();
@@ -83,9 +91,21 @@ export function create({ gl, getColors, host }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { draw(t, params); },
-    staticFrame(params) { draw(0, params); },
-    dispose() { try { gl.deleteProgram(program); gl.deleteBuffer(buf); } catch {} },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      draw(t, params);
+    },
+    staticFrame(params) {
+      draw(0, params);
+    },
+    dispose() {
+      try {
+        gl.deleteProgram(program);
+        gl.deleteBuffer(buf);
+      } catch {}
+    },
   };
 }

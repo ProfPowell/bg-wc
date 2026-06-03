@@ -60,7 +60,8 @@ function drawHarlequin(ctx, w, h, c1, c2, cell) {
 }
 
 export function create({ c2d, getColors, host }) {
-  let w = 1, h = 1;
+  let w = 1,
+    h = 1;
 
   function modeOf() {
     return (host.getAttribute('mode') || 'mixed').toLowerCase();
@@ -83,7 +84,7 @@ export function create({ c2d, getColors, host }) {
       return;
     }
 
-    const r = mulberry32((params.seed | 0) || 7);
+    const r = mulberry32(params.seed | 0 || 7);
     const kinds = kindsFor(mode);
     const n = Math.floor(12 + params.density * 60);
     const base = Math.min(w, h) * (0.06 + params.intensity * 0.06);
@@ -107,9 +108,16 @@ export function create({ c2d, getColors, host }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { render(t, params); },
-    staticFrame(params) { render(0, params); },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      render(t, params);
+    },
+    staticFrame(params) {
+      render(0, params);
+    },
     dispose() {},
   };
 }

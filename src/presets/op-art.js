@@ -48,9 +48,15 @@ export function create({ gl, getColors, host }) {
   const buf = fullscreenQuad(gl);
   const aPos = gl.getAttribLocation(program, 'a_pos');
   const u = (n) => gl.getUniformLocation(program, n);
-  const uTime = u('u_time'), uInt = u('u_intensity'), uDen = u('u_density'), uMode = u('u_mode');
-  const uFg = u('u_fg'), uBg = u('u_bg'), uRes = u('u_res');
-  let w = 1, h = 1;
+  const uTime = u('u_time'),
+    uInt = u('u_intensity'),
+    uDen = u('u_density'),
+    uMode = u('u_mode');
+  const uFg = u('u_fg'),
+    uBg = u('u_bg'),
+    uRes = u('u_res');
+  let w = 1,
+    h = 1;
 
   function modeOf() {
     const m = (host.getAttribute('mode') || '').toLowerCase();
@@ -78,9 +84,21 @@ export function create({ gl, getColors, host }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
-    frame(t, params) { draw(t, params); },
-    staticFrame(params) { draw(0, params); },
-    dispose() { try { gl.deleteProgram(program); gl.deleteBuffer(buf); } catch {} },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
+    frame(t, params) {
+      draw(t, params);
+    },
+    staticFrame(params) {
+      draw(0, params);
+    },
+    dispose() {
+      try {
+        gl.deleteProgram(program);
+        gl.deleteBuffer(buf);
+      } catch {}
+    },
   };
 }

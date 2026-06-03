@@ -174,7 +174,7 @@
             <tr><td><code>fit</code></td><td><code>"cover"</code> | <code>"contain"</code> | <code>"stretch"</code></td><td><code>"cover"</code></td><td>How the surface sizes inside the host.</td></tr>
             <tr><td><code>motion</code></td><td><code>"auto"</code> | <code>"reduce"</code> | <code>"force"</code></td><td><code>"auto"</code></td><td><code>auto</code> honors <code>prefers-reduced-motion</code>.</td></tr>
             <tr><td><code>text</code></td><td>string</td><td>&mdash;</td><td>Payload for text presets (crawl / marquee / sinescroll / cascade). Lines split on <code>|</code>. Read fresh each frame.</td></tr>
-            <tr><td><code>mode</code></td><td>string</td><td>&mdash;</td><td>Preset-specific variant selector. <code>mosaic</code>: <code>isometric</code>, <code>flat</code>, <code>sparse</code>, <code>stacked</code>; <code>doodles</code>: family names; <code>fly-through</code>: space-delimited motion&times;profile&times;path&times;unit; <code>explode</code>: <code>radial</code> | <code>cube</code>. Changing it rebuilds css3d scenes.</td></tr>
+            <tr><td><code>mode</code></td><td>string</td><td>&mdash;</td><td>Preset-specific variant selector. <code>mosaic</code>: <code>isometric</code>, <code>flat</code>, <code>sparse</code>, <code>stacked</code>; <code>doodles</code>: family names; <code>fly-through</code>: space-delimited motion&times;profile&times;path&times;unit; <code>explode</code>: <code>radial</code> | <code>cube</code>. Changing it rebuilds css3d scenes. <code>girih</code>: <code>8fold</code>/<code>12fold</code>/<code>6fold</code>; <code>atomic</code>: <code>mixed</code>/<code>boomerangs</code>/<code>starbursts</code>/<code>harlequin</code>; <code>op-art</code>: <code>riley</code>/<code>cafewall</code>/<code>moire</code>/<code>drift</code>.</td></tr>
             <tr><td><code>use-theme</code></td><td>boolean</td><td>unset</td><td>Used by <code>system7</code>; presence enables theme-token coloring instead of hard black/white.</td></tr>
           </tbody>
         </table>
@@ -405,6 +405,11 @@ console.log('PNG ready:', url);</code-block>
                 <td>Drifting Mac windows on 50% stipple. Add <code>use-theme</code> to
                     honor theme tokens; otherwise black-on-white.</td>
                 <td>primary, background (when <code>use-theme</code> set)</td></tr>
+            <tr><td><code>atomic</code></td>
+                <td>Mid-century atomic-age shapes &mdash; boomerangs, kidneys, starbursts.
+                    <code>mode</code>: <code>mixed</code> (default), <code>boomerangs</code>,
+                    <code>starbursts</code>, <code>harlequin</code>.</td>
+                <td>primary, accent, info, background</td></tr>
           </tbody>
         </table>
       </div>
@@ -435,6 +440,26 @@ console.log('PNG ready:', url);</code-block>
                     reassembles. <code>mode</code>: <code>radial</code> (default scatter) |
                     <code>cube</code> (axis-aligned burst). <code>seed</code> fixes the scatter.</td>
                 <td>primary, background, foreground</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Ornamental presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>girih</code></td>
+                <td>Islamic periodic star-polygon strapwork lattice. <code>mode</code>:
+                    <code>8fold</code> (default), <code>12fold</code>, <code>6fold</code>.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>mandala</code></td>
+                <td>Layered concentric, counter-rotating radial symmetry; petal motifs
+                    keyed to ring, colors cycling outward.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>op-art</code></td>
+                <td>Optical illusion with false motion. <code>mode</code>: <code>riley</code>
+                    (default), <code>cafewall</code>, <code>moire</code>, <code>drift</code>.</td>
+                <td>foreground, background</td></tr>
           </tbody>
         </table>
       </div>
