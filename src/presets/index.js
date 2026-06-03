@@ -53,6 +53,12 @@ const REGISTRY = {
   benday: { renderer: 'webgl', group: 'pop', loader: () => import('./benday.js') },
   comic: { renderer: 'webgl', group: 'pop', loader: () => import('./comic.js') },
   deco: { renderer: 'webgl', group: 'pop', loader: () => import('./deco.js') },
+  atomic: { renderer: 'canvas2d', group: 'pop', loader: () => import('./atomic.js') },
+
+  // Ornamental geometry
+  girih: { renderer: 'webgl', group: 'ornamental', loader: () => import('./girih.js') },
+  mandala: { renderer: 'webgl', group: 'ornamental', loader: () => import('./mandala.js') },
+  'op-art': { renderer: 'webgl', group: 'ornamental', loader: () => import('./op-art.js') },
 
   // 80s / 90s — distortion, displays, demoscene
   system7: { renderer: 'canvas2d', group: 'retro', loader: () => import('./system7.js') },
@@ -113,6 +119,7 @@ const GROUP_LABELS = {
   vector: 'Vector',
   text: 'Text',
   pop: 'Pop art',
+  ornamental: 'Ornamental',
   dataviz: 'Dataviz',
   particles: 'Particles',
   dimensional: 'Dimensional / 3D',

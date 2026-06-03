@@ -415,110 +415,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/util/observe.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "observeVisibility",
-          "parameters": [
-            {
-              "name": "host"
-            },
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "observeReducedMotion",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "observeTabVisibility",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "observeVisibility",
-          "declaration": {
-            "name": "observeVisibility",
-            "module": "src/util/observe.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "observeReducedMotion",
-          "declaration": {
-            "name": "observeReducedMotion",
-            "module": "src/util/observe.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "observeTabVisibility",
-          "declaration": {
-            "name": "observeTabVisibility",
-            "module": "src/util/observe.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/util/pause.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "observeBatteryPowerSave",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "mulberry32",
-          "parameters": [
-            {
-              "name": "seed"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "observeBatteryPowerSave",
-          "declaration": {
-            "name": "observeBatteryPowerSave",
-            "module": "src/util/pause.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "mulberry32",
-          "declaration": {
-            "name": "mulberry32",
-            "module": "src/util/pause.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/renderer/canvas2d.js",
       "declarations": [
         {
@@ -844,6 +740,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/asteroids.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/atomic.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors, host }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/atomic.js"
           }
         }
       ]
@@ -1461,6 +1382,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/girih.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ gl, getColors, host }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/girih.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/glitch.js",
       "declarations": [
         {
@@ -1677,6 +1623,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/mandala.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ gl, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/mandala.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/marble.js",
       "declarations": [
         {
@@ -1871,6 +1842,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/noise.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/op-art.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ gl, getColors, host }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/op-art.js"
           }
         }
       ]
@@ -2596,6 +2592,110 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/wordcloud.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/util/observe.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "observeVisibility",
+          "parameters": [
+            {
+              "name": "host"
+            },
+            {
+              "name": "cb"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "observeReducedMotion",
+          "parameters": [
+            {
+              "name": "cb"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "observeTabVisibility",
+          "parameters": [
+            {
+              "name": "cb"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "observeVisibility",
+          "declaration": {
+            "name": "observeVisibility",
+            "module": "src/util/observe.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "observeReducedMotion",
+          "declaration": {
+            "name": "observeReducedMotion",
+            "module": "src/util/observe.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "observeTabVisibility",
+          "declaration": {
+            "name": "observeTabVisibility",
+            "module": "src/util/observe.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/util/pause.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "observeBatteryPowerSave",
+          "parameters": [
+            {
+              "name": "cb"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "mulberry32",
+          "parameters": [
+            {
+              "name": "seed"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "observeBatteryPowerSave",
+          "declaration": {
+            "name": "observeBatteryPowerSave",
+            "module": "src/util/pause.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "mulberry32",
+          "declaration": {
+            "name": "mulberry32",
+            "module": "src/util/pause.js"
           }
         }
       ]

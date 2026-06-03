@@ -49,6 +49,23 @@ const MODE_OPTIONS = {
     { label: 'botanical', value: 'botanical' },
     { label: 'geometric', value: 'geometric' },
   ],
+  girih: [
+    { label: '8-fold', value: '8fold' },
+    { label: '12-fold', value: '12fold' },
+    { label: '6-fold', value: '6fold' },
+  ],
+  atomic: [
+    { label: 'mixed', value: 'mixed' },
+    { label: 'boomerangs', value: 'boomerangs' },
+    { label: 'starbursts', value: 'starbursts' },
+    { label: 'harlequin', value: 'harlequin' },
+  ],
+  'op-art': [
+    { label: 'riley', value: 'riley' },
+    { label: 'cafewall', value: 'cafewall' },
+    { label: 'moire', value: 'moire' },
+    { label: 'drift', value: 'drift' },
+  ],
 };
 
 function makeCard({ name, renderer }) {
