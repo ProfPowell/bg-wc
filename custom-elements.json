@@ -40,35 +40,64 @@
               "kind": "method",
               "name": "presets",
               "static": true
-            },
-            {
-              "kind": "field",
-              "name": "textContent",
-              "default": "` :host { display: block; position: relative; overflow: hidden; isolation: isolate; background: var(--bg-wc-color-bg, var(--gl-wc-color-bg, var(--color-background, transparent))); } :host([hidden]) { display: none; } canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: var(--bg-wc-z-index, var(--gl-wc-z-index, 0)); pointer-events: none; display: block; } .content { position: relative; z-index: 1; } .fallback { position: absolute; inset: 0; z-index: 0; display: none; } .fallback ::slotted(*) { width: 100%; height: 100%; object-fit: cover; display: block; } :host([data-fallback]) .fallback { display: block; } :host([data-fallback]) canvas { display: none; } .stage { position: absolute; inset: 0; z-index: var(--bg-wc-z-index, var(--gl-wc-z-index, 0)); pointer-events: none; overflow: hidden; } :host([data-fallback]) .stage { display: none; } `"
-            },
-            {
-              "kind": "field",
-              "name": "className",
-              "type": {
-                "text": "string"
-              },
-              "default": "'content'"
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "'fallback'"
             }
           ],
           "events": [
             {
-              "name": "t",
+              "name": "bg-wc:ready",
               "type": {
                 "text": "CustomEvent"
-              }
+              },
+              "description": "Preset loaded and first frame rendered. detail: { preset, renderer }."
+            },
+            {
+              "name": "gl-wc:ready",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Deprecated legacy twin of `bg-wc:ready`."
+            },
+            {
+              "name": "bg-wc:error",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Load / init / runtime failure. detail: { phase, error }."
+            },
+            {
+              "name": "gl-wc:error",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Deprecated legacy twin of `bg-wc:error`."
+            },
+            {
+              "name": "bg-wc:preset-changed",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The `preset` attribute changed. detail: { from, to }."
+            },
+            {
+              "name": "gl-wc:preset-changed",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Deprecated legacy twin of `bg-wc:preset-changed`."
+            },
+            {
+              "name": "bg-wc:visibility",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Element entered or left the viewport. detail: { visible }."
+            },
+            {
+              "name": "gl-wc:visibility",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Deprecated legacy twin of `bg-wc:visibility`."
             }
           ],
           "attributes": [
@@ -113,7 +142,17 @@
             "name": "HTMLElement"
           },
           "tagName": "bg-wc",
-          "customElement": true
+          "customElement": true,
+          "cssParts": [
+            {
+              "name": "canvas",
+              "description": "The rendered background canvas (webgl / canvas2d presets)."
+            },
+            {
+              "name": "stage",
+              "description": "The DOM/CSS-3D stage element (css3d presets)."
+            }
+          ]
         },
         {
           "kind": "class",
@@ -269,57 +308,74 @@
                 "name": "BgWc",
                 "module": "src/bg-wc.js"
               }
-            },
-            {
-              "kind": "field",
-              "name": "textContent",
-              "default": "` :host { display: block; position: relative; overflow: hidden; isolation: isolate; background: var(--bg-wc-color-bg, var(--gl-wc-color-bg, var(--color-background, transparent))); } :host([hidden]) { display: none; } canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: var(--bg-wc-z-index, var(--gl-wc-z-index, 0)); pointer-events: none; display: block; } .content { position: relative; z-index: 1; } .fallback { position: absolute; inset: 0; z-index: 0; display: none; } .fallback ::slotted(*) { width: 100%; height: 100%; object-fit: cover; display: block; } :host([data-fallback]) .fallback { display: block; } :host([data-fallback]) canvas { display: none; } .stage { position: absolute; inset: 0; z-index: var(--bg-wc-z-index, var(--gl-wc-z-index, 0)); pointer-events: none; overflow: hidden; } :host([data-fallback]) .stage { display: none; } `",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "className",
-              "type": {
-                "text": "string"
-              },
-              "default": "'content'",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "name",
-              "type": {
-                "text": "string"
-              },
-              "default": "'fallback'",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
             }
           ],
           "events": [
             {
-              "name": "t",
+              "name": "bg-wc:ready",
               "type": {
                 "text": "CustomEvent"
               },
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
+              "description": "Preset loaded and first frame rendered. detail: { preset, renderer }."
+            },
+            {
+              "name": "gl-wc:ready",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Deprecated legacy twin of `bg-wc:ready`."
+            },
+            {
+              "name": "bg-wc:error",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Load / init / runtime failure. detail: { phase, error }."
+            },
+            {
+              "name": "gl-wc:error",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Deprecated legacy twin of `bg-wc:error`."
+            },
+            {
+              "name": "bg-wc:preset-changed",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The `preset` attribute changed. detail: { from, to }."
+            },
+            {
+              "name": "gl-wc:preset-changed",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Deprecated legacy twin of `bg-wc:preset-changed`."
+            },
+            {
+              "name": "bg-wc:visibility",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Element entered or left the viewport. detail: { visible }."
+            },
+            {
+              "name": "gl-wc:visibility",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Deprecated legacy twin of `bg-wc:visibility`."
             }
           ],
           "cssParts": [
             {
               "name": "canvas",
-              "description": "The rendered background canvas element"
+              "description": "The rendered background canvas (webgl / canvas2d presets)."
+            },
+            {
+              "name": "stage",
+              "description": "The DOM/CSS-3D stage element (css3d presets)."
             }
           ]
         }
@@ -715,6 +771,110 @@
           "declaration": {
             "name": "bindQuad",
             "module": "src/renderer/webgl.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/util/observe.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "observeVisibility",
+          "parameters": [
+            {
+              "name": "host"
+            },
+            {
+              "name": "cb"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "observeReducedMotion",
+          "parameters": [
+            {
+              "name": "cb"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "observeTabVisibility",
+          "parameters": [
+            {
+              "name": "cb"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "observeVisibility",
+          "declaration": {
+            "name": "observeVisibility",
+            "module": "src/util/observe.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "observeReducedMotion",
+          "declaration": {
+            "name": "observeReducedMotion",
+            "module": "src/util/observe.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "observeTabVisibility",
+          "declaration": {
+            "name": "observeTabVisibility",
+            "module": "src/util/observe.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/util/pause.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "observeBatteryPowerSave",
+          "parameters": [
+            {
+              "name": "cb"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "mulberry32",
+          "parameters": [
+            {
+              "name": "seed"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "observeBatteryPowerSave",
+          "declaration": {
+            "name": "observeBatteryPowerSave",
+            "module": "src/util/pause.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "mulberry32",
+          "declaration": {
+            "name": "mulberry32",
+            "module": "src/util/pause.js"
           }
         }
       ]
@@ -2592,110 +2752,6 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/wordcloud.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/util/observe.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "observeVisibility",
-          "parameters": [
-            {
-              "name": "host"
-            },
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "observeReducedMotion",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "observeTabVisibility",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "observeVisibility",
-          "declaration": {
-            "name": "observeVisibility",
-            "module": "src/util/observe.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "observeReducedMotion",
-          "declaration": {
-            "name": "observeReducedMotion",
-            "module": "src/util/observe.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "observeTabVisibility",
-          "declaration": {
-            "name": "observeTabVisibility",
-            "module": "src/util/observe.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/util/pause.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "observeBatteryPowerSave",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "mulberry32",
-          "parameters": [
-            {
-              "name": "seed"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "observeBatteryPowerSave",
-          "declaration": {
-            "name": "observeBatteryPowerSave",
-            "module": "src/util/pause.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "mulberry32",
-          "declaration": {
-            "name": "mulberry32",
-            "module": "src/util/pause.js"
           }
         }
       ]

@@ -1,6 +1,6 @@
 {
   "name": "@profpowell/bg-wc",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Theme-aware background web component: animated WebGL & Canvas2D backgrounds behind any HTML content.",
   "license": "MIT",
   "type": "module",
@@ -50,6 +50,7 @@
     "format": "prettier --write \"src/**/*.js\"",
     "format:check": "prettier --check \"src/**/*.js\"",
     "analyze": "cem analyze",
+    "cem:check": "cem analyze && git diff --exit-code custom-elements.json",
     "prepublishOnly": "npm run build && npm run analyze"
   },
   "devDependencies": {
