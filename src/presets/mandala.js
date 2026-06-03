@@ -21,27 +21,41 @@ void main() {
   float r = length(p) * 2.0;
   float a = atan(p.y, p.x);
 
-  float rings = floor(mix(4.0, 10.0, u_density));
+  float rings = floor(mix(4.0, 9.0, u_density));
   float idx = floor(r * rings);
-  float rf = fract(r * rings);
-  float sym = 6.0 + 2.0 * idx;
-  float dir = mod(idx, 2.0) * 2.0 - 1.0;
-  float aa = a + dir * u_time * 0.12;
+  float rf = fract(r * rings);                       // 0..1 across the ring band
+  float sym = 8.0 + 2.0 * idx;                       // petal count grows outward
+  float dir = mod(idx, 2.0) * 2.0 - 1.0;             // alternate rings counter-rotate
+  float aoff = mod(idx, 2.0) * (PI / sym);           // and interleave by half a petal
+  float aa = a + aoff + dir * u_time * 0.10;
   float wedge = (2.0 * PI) / sym;
   float af = abs(mod(aa, wedge) - wedge * 0.5);
+  float t = af / (wedge * 0.5);                      // 0 at petal center .. 1 at edge
 
-  float ringLine = band(rf, 0.05);
-  float petal = band(rf - 0.5, 0.16 + 0.08 * u_intensity)
-              * smoothstep(0.1, 0.7, cos(af * sym * 0.5));
+  // Lotus petal: angularly full at mid-ring, pinching to a point at both ring
+  // edges (wr is the petal's half-width as a function of radius across the band).
+  // Capped below 1 so adjacent petals don't touch — negative space between
+  // petals and rings keeps it ornate rather than a solid tiling.
+  float wr = 0.8 * pow(sin(rf * PI), 0.6);
+  float edge = wr - t;                               // >0 inside the petal
+  float petal = smoothstep(0.0, 0.04, edge);         // filled body
+  float rim = band(edge, 0.05);                      // petal outline
+  float vein = band(t, 0.035) * smoothstep(0.0, 0.5, wr); // central vein
+  float jewel = band(rf - 0.52, 0.06) * band(t, 0.16);    // a gem per petal
+  float ringLine = band(rf, 0.035);                  // thin separator between rings
 
   float m = mod(idx, 3.0);
-  vec3 ringCol = (m < 1.0) ? u_c1 : (m < 2.0) ? u_c2 : u_c3;
+  vec3 petalCol = (m < 1.0) ? u_c1 : (m < 2.0) ? u_c2 : u_c3;
+  vec3 rimCol = (m < 1.0) ? u_c2 : (m < 2.0) ? u_c3 : u_c1;
 
   vec3 col = u_bg;
-  col = mix(col, ringCol, petal);
-  col = mix(col, u_c3, ringLine * 0.5);
-  col = mix(col, u_c2, band(r, 0.08));
-  col = mix(col, u_bg, smoothstep(1.7, 2.4, r));
+  col = mix(col, mix(petalCol, u_bg, 0.45 * (1.0 - wr)), petal); // body, deeper toward tips
+  col = mix(col, u_bg, vein * 0.6);                  // dark vein splits the lobe
+  col = mix(col, rimCol, rim * (0.7 + 0.3 * u_intensity));
+  col = mix(col, u_c2, jewel * 0.9);
+  col = mix(col, u_c3, ringLine * 0.35);
+  col = mix(col, u_c2, band(r, 0.07));               // bright hub
+  col = mix(col, u_bg, smoothstep(1.7, 2.5, r));     // fade at the rim
   gl_FragColor = vec4(col, 1.0);
 }
 `;
