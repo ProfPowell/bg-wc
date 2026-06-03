@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Googie &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Major+Mono+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* 1959 Palm Springs palette on cream */
+      --color-background: #f4ecd8;
+      --color-foreground: #2a2722;
+      --color-primary: #ff5a4d;   /* coral */
+      --color-accent: #2bb7b3;     /* turquoise */
+      --color-info: #f2b53b;       /* mustard */
+      --ink: #2a2722;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--ink); overflow: hidden; }
+    body { font-family: 'Poppins', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    /* soft cream wash so content reads over the scattered shapes */
+    .wash { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(ellipse 58% 52% at 50% 48%, rgba(244,236,216,0.86) 30%, transparent 78%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Major Mono Display', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--ink); text-decoration: none; opacity: 0.7; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    .eyebrow { font-family: 'Major Mono Display', monospace; font-size: 13px; letter-spacing: 0.24em; color: var(--color-primary); opacity: 0.95; margin-bottom: 16px; text-transform: lowercase; }
+    h1 { font-weight: 800; font-size: clamp(64px, 14vw, 230px); letter-spacing: -0.02em; line-height: 0.88; margin: 0; text-transform: uppercase;
+      color: var(--ink);
+      text-shadow: 4px 4px 0 var(--color-accent), 8px 8px 0 rgba(255,90,77,0.35); }
+    .lede { max-width: 560px; margin: 22px auto 0; font-size: clamp(14px, 1vw, 16px); line-height: 1.55; color: rgba(42,39,34,0.78); font-weight: 600; }
+    .lede code { font-family: ui-monospace, monospace; background: rgba(0,0,0,0.06); padding: 2px 7px; border-radius: 4px; }
+
+    .telemetry { position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
+      font-family: 'Major Mono Display', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--color-primary); opacity: 0.9; flex-wrap: wrap; gap: 12px; }
+    .telemetry span { color: var(--ink); opacity: 0.5; padding-right: 6px; }
+
+    .modes { position: absolute; top: 22px; right: 28px; z-index: 12; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; max-width: 60vw; }
+    .modes button { font-family: 'Major Mono Display', monospace; font-size: 11px; letter-spacing: 0.08em; color: var(--ink);
+      background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.18); border-radius: 99px; padding: 6px 13px; cursor: pointer; text-transform: lowercase; }
+    .modes button[aria-pressed="true"] { background: var(--color-primary); border-color: transparent; color: #fff; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <div class="modes" role="group" aria-label="Shape set">
+    <button data-mode="mixed" aria-pressed="true">mixed</button>
+    <button data-mode="boomerangs" aria-pressed="false">boomerangs</button>
+    <button data-mode="starbursts" aria-pressed="false">starbursts</button>
+    <button data-mode="harlequin" aria-pressed="false">harlequin</button>
+  </div>
+
+  <main class="stage">
+    <bg-wc class="bg" id="bg" preset="atomic" mode="mixed" intensity="0.6" density="0.6" speed="0.7"></bg-wc>
+    <div class="wash"></div>
+
+    <div class="content">
+      <div class="eyebrow">// mid-century &middot; 1959</div>
+      <h1>Googie</h1>
+      <p class="lede">
+        Boomerangs, kidney blobs and atomic starbursts scattered across a flat field &mdash;
+        the Palm-Springs-and-formica look. <code>preset="atomic"</code>, seeded so it&rsquo;s
+        reproducible, with a harlequin diamond mode up top.
+      </p>
+    </div>
+
+    <div class="telemetry">
+      <div><span>preset</span>atomic</div>
+      <div><span>render</span>canvas2d</div>
+      <div><span>seed</span>deterministic</div>
+      <div><span>era</span>MCMLIX</div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    const bg = document.getElementById('bg');
+    for (const btn of document.querySelectorAll('.modes button')) {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.modes button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        bg.setAttribute('mode', btn.dataset.mode);
+      });
+    }
+  </script>
+</body>
+</html>

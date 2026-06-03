@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riley &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Major+Mono+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* op-art reads fg/bg as its high-contrast pair */
+      --color-background: #ffffff;
+      --color-foreground: #0a0a0a;
+      --accent: #ff2d6b;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #0a0a0a; color: #0a0a0a; overflow: hidden; }
+    body { font-family: 'Archivo Black', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Major Mono Display', monospace; font-size: 12px; letter-spacing: 0.2em; mix-blend-mode: difference; }
+    .nav a { color: #fff; text-decoration: none; opacity: 0.85; }
+    .nav a:hover { opacity: 1; }
+
+    /* solid panel so type stays legible over the high-frequency pattern */
+    .content { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 6; text-align: center;
+      background: #0a0a0a; color: #fff; padding: clamp(28px, 5vw, 64px) clamp(28px, 6vw, 90px); max-width: min(92vw, 760px);
+      box-shadow: 0 0 0 6px #fff, 0 30px 80px rgba(0,0,0,0.5); }
+    .eyebrow { font-family: 'Major Mono Display', monospace; font-size: 13px; letter-spacing: 0.26em; color: var(--accent); margin-bottom: 14px; text-transform: lowercase; }
+    h1 { font-weight: 400; font-size: clamp(56px, 12vw, 180px); letter-spacing: -0.02em; line-height: 0.9; margin: 0; text-transform: uppercase; color: #fff; }
+    h1 .dot { color: var(--accent); }
+    .lede { max-width: 520px; margin: 18px auto 0; font-family: ui-sans-serif, system-ui, sans-serif; font-weight: 400; font-size: clamp(14px, 1vw, 16px); line-height: 1.55; color: rgba(255,255,255,0.8); }
+    .lede code { font-family: ui-monospace, monospace; background: rgba(255,255,255,0.12); padding: 2px 7px; border-radius: 4px; }
+
+    .modes { position: absolute; top: 22px; right: 28px; z-index: 12; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; max-width: 60vw; }
+    .modes button { font-family: 'Major Mono Display', monospace; font-size: 11px; letter-spacing: 0.08em; color: #fff;
+      background: #0a0a0a; border: 1px solid #0a0a0a; border-radius: 0; padding: 7px 13px; cursor: pointer; text-transform: lowercase; box-shadow: 0 0 0 2px #fff; }
+    .modes button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <div class="modes" role="group" aria-label="Illusion">
+    <button data-mode="riley" aria-pressed="true">riley</button>
+    <button data-mode="cafewall" aria-pressed="false">cafewall</button>
+    <button data-mode="moire" aria-pressed="false">moire</button>
+    <button data-mode="drift" aria-pressed="false">drift</button>
+  </div>
+
+  <main class="stage">
+    <bg-wc class="bg" id="bg" preset="op-art" mode="riley" intensity="0.6" density="0.5" speed="0.5"></bg-wc>
+
+    <div class="content">
+      <div class="eyebrow">// optical illusion &middot; webgl</div>
+      <h1>Op<span class="dot">&middot;</span>Art</h1>
+      <p class="lede">
+        High-contrast patterns that seem to move when they don&rsquo;t &mdash; warped Riley bands,
+        the caf&eacute;-wall illusion, drifting moir&eacute;, peripheral drift. <code>preset="op-art"</code>
+        paints a foreground/background pair; switch the illusion up top.
+      </p>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    const bg = document.getElementById('bg');
+    for (const btn of document.querySelectorAll('.modes button')) {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.modes button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        bg.setAttribute('mode', btn.dataset.mode);
+      });
+    }
+  </script>
+</body>
+</html>
