@@ -11,6 +11,10 @@ const demoPages = existsSync('demos')
       .filter((f) => f.endsWith('.html'))
       .map((f) => `demos/${f}`)
   : [];
+// Only these pages are built into dist-site/ (the deployed Pages site). This is
+// an explicit allow-list — there is no publicDir — so internal-only trees like
+// docs/superpowers/ (specs, plans, reference pens) and docs/border-idea/ stay in
+// the repo but never ship to the public site. Keep it that way.
 const input = Object.fromEntries(
   ['index.html', 'docs/index.html', 'docs/api.html', ...demoPages].map((f) => [
     f.replace(/[/.]/g, '_'),
