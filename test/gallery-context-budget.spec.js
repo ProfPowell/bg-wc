@@ -43,3 +43,28 @@ test('live bg-wc budget holds after cycling through every group', async ({ page 
     expect(mounted, `group ${g} should stay within budget`).toBeLessThanOrEqual(MAX_LIVE);
   }
 });
+
+// Cards late in a group's DOM (the Patterns group ends with scandi/seigaiha)
+// must mount when scrolled to — the lazy-mount budget must prioritise what's at
+// the viewport, not the first cards in document order.
+test('cards at the end of a group mount when scrolled into view', async ({ page }) => {
+  await page.setViewportSize({ width: 1200, height: 800 });
+  await page.goto('/docs/index.html', { waitUntil: 'networkidle' });
+  await showGroup(page, 'pattern');
+  for (const name of ['scandi', 'seigaiha']) {
+    await page.evaluate((n) => {
+      const card = [...document.querySelectorAll('#grid .card')].find(
+        (c) => c.querySelector('.card-meta h4')?.textContent.trim() === n
+      );
+      card?.scrollIntoView({ block: 'center' });
+    }, name);
+    await page.waitForTimeout(700);
+    const mounted = await page.evaluate((n) => {
+      const card = [...document.querySelectorAll('#grid .card')].find(
+        (c) => c.querySelector('.card-meta h4')?.textContent.trim() === n
+      );
+      return !!card?.querySelector('bg-wc');
+    }, name);
+    expect(mounted, `${name} should mount when scrolled into view`).toBe(true);
+  }
+});

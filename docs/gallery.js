@@ -174,12 +174,24 @@ function unmountCard(card) {
   liveCards.delete(card);
 }
 
-// Reconcile the live set toward "the visible cards, in DOM order, capped at
-// MAX_LIVE". Anything live but no longer wanted is unmounted first (freeing
-// contexts) before new ones mount, so we never transiently exceed the budget.
+// Reconcile the live set toward "the MAX_LIVE visible cards nearest the
+// viewport". Ranking by distance (not DOM order) matters when every card sits
+// within the preload band: the cards a visitor scrolls to — including ones at
+// the end of the group, like scandi/seigaiha — must win the budget over earlier
+// cards that happen to be marginally on-screen. Anything live but no longer
+// wanted is unmounted first (freeing contexts) before new ones mount, so we
+// never transiently exceed the budget.
 function reconcile() {
-  const order = [...grid.querySelectorAll('.card')];
-  const desired = order.filter((c) => visible.has(c)).slice(0, MAX_LIVE);
+  const vis = [...grid.querySelectorAll('.card')].filter((c) => visible.has(c));
+  if (vis.length > MAX_LIVE) {
+    const mid = (window.innerHeight || 1) / 2;
+    const distOf = (c) => {
+      const r = c.getBoundingClientRect();
+      return Math.abs((r.top + r.bottom) / 2 - mid);
+    };
+    vis.sort((a, b) => distOf(a) - distOf(b));
+  }
+  const desired = vis.slice(0, MAX_LIVE);
   const desiredSet = new Set(desired);
   for (const card of [...liveCards]) if (!desiredSet.has(card)) unmountCard(card);
   for (const card of desired) mountCard(card);
