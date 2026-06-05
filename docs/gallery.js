@@ -1,7 +1,12 @@
-// Test-site driver: groups presets into tabs and mounts only the active
-// group, so the page never holds more simultaneous WebGL contexts than the
-// browser allows. Switching groups removes the old cards (each <bg-wc>'s
-// disconnectedCallback frees its context) before mounting the new ones.
+// Test-site driver: groups presets into tabs and mounts only the active group.
+// Within a group, each card mounts its <bg-wc> LAZILY — only when its stage is
+// at/near the viewport — and unmounts (freeing the WebGL context) when scrolled
+// away. A hard MAX_LIVE budget caps how many backgrounds run at once. Together
+// this keeps the page well under the browser's ~16 live-WebGL-context limit, so
+// large groups (Patterns has 8 WebGL presets) plus the persistent hero context
+// no longer overflow and leave cards blank. Mounting happens in the
+// IntersectionObserver callback — a frame after the outgoing group's teardown —
+// which also removes the allocate-before-free spike during a group switch.
 
 import 'vanilla-breeze';
 import 'vanilla-breeze/css';
@@ -21,6 +26,14 @@ const tabsHost = document.getElementById('groupTabs');
 const motionSel = document.getElementById('motionSelect');
 
 const groups = listGroups();
+
+// Most live backgrounds allowed at once. Headroom below the browser's ~16
+// live-WebGL-context limit for the persistent hero context and the brief
+// overlap while an outgoing group's contexts are still being reclaimed.
+const MAX_LIVE = 8;
+// Preload distance: a card within this margin of the viewport mounts early so
+// it's already running by the time it scrolls fully into view.
+const ROOT_MARGIN = '300px';
 
 // Presets that take a `mode` attribute expose it as pills on the card so the
 // variants are discoverable. The first option must match the preset's own
@@ -68,6 +81,12 @@ const MODE_OPTIONS = {
   ],
 };
 
+// Per-card state lives here so a card's <bg-wc> can be torn down and rebuilt
+// (as it scrolls in and out) without losing the visitor's slider/mode choices.
+const stateOf = new WeakMap(); // card → { name, stage, attrs, mode, el }
+const visible = new Set(); // cards currently intersecting (incl. preload margin)
+const liveCards = new Set(); // cards whose <bg-wc> is currently mounted
+
 function makeCard({ name, renderer }) {
   const modes = MODE_OPTIONS[name];
   const modesHtml = modes
@@ -81,9 +100,7 @@ function makeCard({ name, renderer }) {
   const card = document.createElement('article');
   card.className = 'card';
   card.innerHTML = `
-    <div class="card-stage">
-      <bg-wc preset="${name}" intensity="0.6" speed="1" density="0.5"></bg-wc>
-    </div>
+    <div class="card-stage"></div>
     <div class="card-meta">
       <h4>${name}</h4>
       <span class="badge ${renderer}">${renderer}</span>
@@ -104,13 +121,21 @@ function makeCard({ name, renderer }) {
       </label>
     </div>
   `;
-  const el = card.querySelector('bg-wc');
-  // Inherit the current page-level motion selection.
-  if (motionSel.value !== 'auto') el.setAttribute('motion', motionSel.value);
+  const state = {
+    name,
+    stage: card.querySelector('.card-stage'),
+    attrs: { intensity: '0.6', speed: '1', density: '0.5' },
+    mode: modes ? modes[0].value : null,
+    el: null,
+  };
+  stateOf.set(card, state);
+
+  // Controls update the persisted state and the live element (if mounted).
   for (const range of card.querySelectorAll('input[type=range]')) {
     const val = range.parentElement.querySelector('.val');
     range.addEventListener('input', () => {
-      el.setAttribute(range.dataset.attr, range.value);
+      state.attrs[range.dataset.attr] = range.value;
+      if (state.el) state.el.setAttribute(range.dataset.attr, range.value);
       val.textContent = parseFloat(range.value).toFixed(2);
     });
   }
@@ -118,27 +143,79 @@ function makeCard({ name, renderer }) {
   for (const pill of pills) {
     pill.addEventListener('click', () => {
       pills.forEach((p) => p.setAttribute('aria-pressed', String(p === pill)));
-      const v = pill.dataset.mode;
-      if (v) el.setAttribute('mode', v);
-      else el.removeAttribute('mode');
+      state.mode = pill.dataset.mode;
+      if (state.el) {
+        if (state.mode) state.el.setAttribute('mode', state.mode);
+        else state.el.removeAttribute('mode');
+      }
     });
   }
   return card;
 }
+
+function mountCard(card) {
+  const state = stateOf.get(card);
+  if (!state || state.el) return;
+  const el = document.createElement('bg-wc');
+  el.setAttribute('preset', state.name);
+  for (const [k, v] of Object.entries(state.attrs)) el.setAttribute(k, v);
+  if (state.mode) el.setAttribute('mode', state.mode);
+  if (motionSel.value !== 'auto') el.setAttribute('motion', motionSel.value);
+  state.stage.appendChild(el);
+  state.el = el;
+  liveCards.add(card);
+}
+
+function unmountCard(card) {
+  const state = stateOf.get(card);
+  if (!state || !state.el) return;
+  state.el.remove(); // disconnectedCallback → loseContext frees the GPU context
+  state.el = null;
+  liveCards.delete(card);
+}
+
+// Reconcile the live set toward "the visible cards, in DOM order, capped at
+// MAX_LIVE". Anything live but no longer wanted is unmounted first (freeing
+// contexts) before new ones mount, so we never transiently exceed the budget.
+function reconcile() {
+  const order = [...grid.querySelectorAll('.card')];
+  const desired = order.filter((c) => visible.has(c)).slice(0, MAX_LIVE);
+  const desiredSet = new Set(desired);
+  for (const card of [...liveCards]) if (!desiredSet.has(card)) unmountCard(card);
+  for (const card of desired) mountCard(card);
+}
+
+const io = new IntersectionObserver(
+  (entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) visible.add(e.target);
+      else visible.delete(e.target);
+    }
+    reconcile();
+  },
+  { root: null, rootMargin: ROOT_MARGIN, threshold: 0 }
+);
 
 function renderGroup(id) {
   for (const btn of tabsHost.querySelectorAll('.group-tab')) {
     btn.classList.toggle('active', btn.dataset.group === id);
     btn.setAttribute('aria-selected', btn.dataset.group === id ? 'true' : 'false');
   }
-  // Removing the old cards first frees their WebGL contexts synchronously
-  // (disconnectedCallback → loseContext) before the new group allocates.
+  // Tear down the outgoing group: stop observing, free every live context, and
+  // drop the cards. The new group's cards mount later (async IO callback), so
+  // old contexts are released before new ones allocate.
+  io.disconnect();
+  for (const card of [...liveCards]) unmountCard(card);
+  visible.clear();
   grid.replaceChildren();
+
   const group = groups.find((g) => g.id === id);
   if (!group) return;
   const frag = document.createDocumentFragment();
-  for (const p of group.presets) frag.appendChild(makeCard(p));
+  const cards = group.presets.map((p) => makeCard(p));
+  for (const card of cards) frag.appendChild(card);
   grid.appendChild(frag);
+  for (const card of cards) io.observe(card);
 }
 
 // Build the group tabs.
@@ -155,6 +232,7 @@ for (const g of groups) {
 
 renderGroup(groups[0].id);
 motionSel.addEventListener('change', () => {
+  // Hero + every live card. Unmounted cards pick it up via state on next mount.
   for (const el of document.querySelectorAll('bg-wc')) el.setAttribute('motion', motionSel.value);
 });
 

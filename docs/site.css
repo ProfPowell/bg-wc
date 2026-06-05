@@ -137,6 +137,15 @@ main { padding: clamp(16px, 4vw, 24px); max-width: 1200px; margin: 0 auto; }
 }
 .card-stage { height: 180px; }
 .card-stage bg-wc { display: block; width: 100%; height: 100%; }
+/* Cards mount their <bg-wc> lazily (only near the viewport) to cap the number
+   of live WebGL contexts on the page. A not-yet-mounted stage shows a faint
+   placeholder so the grid never flashes a bare hole. */
+.card-stage:empty {
+  background:
+    repeating-linear-gradient(45deg,
+      color-mix(in oklab, var(--color-foreground) 4%, transparent) 0 10px,
+      transparent 10px 20px);
+}
 .card-meta {
   padding: 10px 14px;
   display: flex; align-items: center; justify-content: space-between;
