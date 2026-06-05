@@ -40,6 +40,8 @@ const REGISTRY = {
   grain: { renderer: 'webgl', group: 'pattern', loader: () => import('./grain.js') },
   'paper-grain': { renderer: 'webgl', group: 'pattern', loader: () => import('./paper-grain.js') },
   doodles: { renderer: 'canvas2d', group: 'pattern', loader: () => import('./doodles.js') },
+  scandi: { renderer: 'canvas2d', group: 'pattern', loader: () => import('./scandi.js') },
+  seigaiha: { renderer: 'canvas2d', group: 'pattern', loader: () => import('./seigaiha.js') },
 
   // Organic ambient motion
   noise: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./noise.js') },

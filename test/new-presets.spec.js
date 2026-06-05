@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const PRESETS = ['mosaic', 'ribbons', 'source', 'system7', 'supergraphics', 'flowlines', 'paper-grain', 'doodles', 'groove'];
+const PRESETS = ['mosaic', 'ribbons', 'source', 'system7', 'supergraphics', 'flowlines', 'paper-grain', 'doodles', 'groove', 'scandi', 'seigaiha'];
 
 for (const name of PRESETS) {
   test(`preset "${name}" loads and renders to canvas`, async ({ page }) => {
@@ -90,3 +90,27 @@ test('groove renders across density and seed without erroring', async ({ page })
     expect(detail.size, `density=${density} seed=${seed} should paint bytes`).toBeGreaterThan(0);
   }
 });
+
+// scandi + seigaiha: tiled pattern presets that must render across the density
+// range and produce a non-empty snapshot for each seed.
+for (const preset of ['scandi', 'seigaiha']) {
+  test(`${preset} renders across density and seed without erroring`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    for (const [density, seed] of [['0.2', '2'], ['0.6', '11'], ['1', '99']]) {
+      const detail = await page.evaluate(
+        async ([p, d, s]) => {
+          const el = document.getElementById('wc');
+          el.setAttribute('preset', p);
+          el.setAttribute('density', d);
+          el.setAttribute('seed', s);
+          await el.ready;
+          const blob = await el.snapshot();
+          return { fallback: el.hasAttribute('data-fallback'), size: blob.size };
+        },
+        [preset, density, seed]
+      );
+      expect(detail.fallback, `${preset} density=${density} seed=${seed} should not fall back`).toBe(false);
+      expect(detail.size, `${preset} density=${density} seed=${seed} should paint bytes`).toBeGreaterThan(0);
+    }
+  });
+}
