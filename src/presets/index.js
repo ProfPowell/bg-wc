@@ -24,24 +24,26 @@ const REGISTRY = {
   shine: { renderer: 'webgl', group: 'gradient', loader: () => import('./shine.js') },
   conic: { renderer: 'webgl', group: 'gradient', loader: () => import('./conic.js') },
 
-  // Structured / geometric patterns
-  mosaic: { renderer: 'canvas2d', group: 'pattern', loader: () => import('./mosaic.js') },
+  // Structured / geometric shapes
+  mosaic: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./mosaic.js') },
   supergraphics: {
     renderer: 'canvas2d',
-    group: 'pattern',
+    group: 'geometric',
     loader: () => import('./supergraphics.js'),
   },
-  dither: { renderer: 'webgl', group: 'pattern', loader: () => import('./dither.js') },
-  halftone: { renderer: 'webgl', group: 'pattern', loader: () => import('./halftone.js') },
-  warp: { renderer: 'webgl', group: 'pattern', loader: () => import('./warp.js') },
-  topology: { renderer: 'webgl', group: 'pattern', loader: () => import('./topology.js') },
-  cells: { renderer: 'webgl', group: 'pattern', loader: () => import('./cells.js') },
-  kaleidoscope: { renderer: 'webgl', group: 'pattern', loader: () => import('./kaleidoscope.js') },
-  grain: { renderer: 'webgl', group: 'pattern', loader: () => import('./grain.js') },
-  'paper-grain': { renderer: 'webgl', group: 'pattern', loader: () => import('./paper-grain.js') },
-  doodles: { renderer: 'canvas2d', group: 'pattern', loader: () => import('./doodles.js') },
-  scandi: { renderer: 'canvas2d', group: 'pattern', loader: () => import('./scandi.js') },
-  seigaiha: { renderer: 'canvas2d', group: 'pattern', loader: () => import('./seigaiha.js') },
+  warp: { renderer: 'webgl', group: 'geometric', loader: () => import('./warp.js') },
+  topology: { renderer: 'webgl', group: 'geometric', loader: () => import('./topology.js') },
+  cells: { renderer: 'webgl', group: 'geometric', loader: () => import('./cells.js') },
+  kaleidoscope: { renderer: 'webgl', group: 'geometric', loader: () => import('./kaleidoscope.js') },
+  doodles: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./doodles.js') },
+  scandi: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./scandi.js') },
+  seigaiha: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./seigaiha.js') },
+
+  // Overlay textures — grain, dot screens, dither
+  dither: { renderer: 'webgl', group: 'texture', loader: () => import('./dither.js') },
+  halftone: { renderer: 'webgl', group: 'texture', loader: () => import('./halftone.js') },
+  grain: { renderer: 'webgl', group: 'texture', loader: () => import('./grain.js') },
+  'paper-grain': { renderer: 'webgl', group: 'texture', loader: () => import('./paper-grain.js') },
 
   // Organic ambient motion
   noise: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./noise.js') },
@@ -116,7 +118,8 @@ const REGISTRY = {
 // Human-readable group labels, in display order.
 const GROUP_LABELS = {
   gradient: 'Gradients',
-  pattern: 'Patterns',
+  geometric: 'Geometric',
+  texture: 'Texture',
   atmospheric: 'Atmospheric',
   retro: 'Retro',
   vector: 'Vector',

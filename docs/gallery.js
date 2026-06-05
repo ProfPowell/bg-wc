@@ -3,7 +3,7 @@
 // at/near the viewport — and unmounts (freeing the WebGL context) when scrolled
 // away. A hard MAX_LIVE budget caps how many backgrounds run at once. Together
 // this keeps the page well under the browser's ~16 live-WebGL-context limit, so
-// large groups (Patterns has 8 WebGL presets) plus the persistent hero context
+// large groups plus the persistent hero context
 // no longer overflow and leave cards blank. Mounting happens in the
 // IntersectionObserver callback — a frame after the outgoing group's teardown —
 // which also removes the allocate-before-free spike during a group switch.
@@ -27,10 +27,12 @@ const motionSel = document.getElementById('motionSelect');
 
 const groups = listGroups();
 
-// Most live backgrounds allowed at once. Headroom below the browser's ~16
-// live-WebGL-context limit for the persistent hero context and the brief
-// overlap while an outgoing group's contexts are still being reclaimed.
-const MAX_LIVE = 8;
+// Most live WebGL backgrounds allowed at once. Headroom below the browser's
+// ~16 live-WebGL-context limit for the persistent hero context and the brief
+// overlap while an outgoing group's contexts are still being reclaimed. Only
+// WebGL presets count toward this — Canvas2D cards hold no GPU context, so they
+// always mount when visible (and never get starved by the budget).
+const MAX_WEBGL = 8;
 // Preload distance: a card within this margin of the viewport mounts early so
 // it's already running by the time it scrolls fully into view.
 const ROOT_MARGIN = '300px';
@@ -134,6 +136,7 @@ function makeCard({ name, renderer }) {
   `;
   const state = {
     name,
+    renderer,
     stage: card.querySelector('.card-stage'),
     attrs: { intensity: String(def.intensity), speed: String(def.speed), density: String(def.density) },
     mode: modes ? modes[0].value : null,
@@ -185,27 +188,35 @@ function unmountCard(card) {
   liveCards.delete(card);
 }
 
-// Reconcile the live set toward "the MAX_LIVE visible cards nearest the
-// viewport". Ranking by distance (not DOM order) matters when every card sits
-// within the preload band: the cards a visitor scrolls to — including ones at
-// the end of the group, like scandi/seigaiha — must win the budget over earlier
-// cards that happen to be marginally on-screen. Anything live but no longer
-// wanted is unmounted first (freeing contexts) before new ones mount, so we
-// never transiently exceed the budget.
+// Distance from a card to the viewport: 0 if it's on screen, otherwise the gap
+// to the nearest edge. On-screen cards therefore all rank ahead of cards that
+// are only inside the preload margin.
+function viewportDistance(card) {
+  const vh = window.innerHeight || 1;
+  const r = card.getBoundingClientRect();
+  if (r.bottom < 0) return -r.bottom;
+  if (r.top > vh) return r.top - vh;
+  return 0;
+}
+
+// Reconcile the live set. Visible Canvas2D cards always mount (no GPU context to
+// budget). Visible WebGL cards mount nearest-the-viewport first, up to
+// MAX_WEBGL — so whatever a visitor scrolls to wins the budget over cards that
+// are only marginally on-screen, and the page never holds too many shaders.
+// Unwanted live cards are unmounted first (freeing contexts) before new ones
+// mount, so we never transiently exceed the budget.
 function reconcile() {
   const vis = [...grid.querySelectorAll('.card')].filter((c) => visible.has(c));
-  if (vis.length > MAX_LIVE) {
-    const mid = (window.innerHeight || 1) / 2;
-    const distOf = (c) => {
-      const r = c.getBoundingClientRect();
-      return Math.abs((r.top + r.bottom) / 2 - mid);
-    };
-    vis.sort((a, b) => distOf(a) - distOf(b));
+  const desiredSet = new Set();
+  const webgl = [];
+  for (const card of vis) {
+    if (stateOf.get(card).renderer === 'webgl') webgl.push(card);
+    else desiredSet.add(card); // Canvas2D / CSS3D — cheap, always show when visible
   }
-  const desired = vis.slice(0, MAX_LIVE);
-  const desiredSet = new Set(desired);
+  webgl.sort((a, b) => viewportDistance(a) - viewportDistance(b));
+  for (const card of webgl.slice(0, MAX_WEBGL)) desiredSet.add(card);
   for (const card of [...liveCards]) if (!desiredSet.has(card)) unmountCard(card);
-  for (const card of desired) mountCard(card);
+  for (const card of desiredSet) mountCard(card);
 }
 
 const io = new IntersectionObserver(
