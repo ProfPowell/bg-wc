@@ -87,7 +87,18 @@ const stateOf = new WeakMap(); // card → { name, stage, attrs, mode, el }
 const visible = new Set(); // cards currently intersecting (incl. preload margin)
 const liveCards = new Set(); // cards whose <bg-wc> is currently mounted
 
+// Per-preset starting values for the card controls. Most presets look right at
+// the shared defaults below; a few subtle overlay presets (e.g. paper-grain) are
+// intentionally faint and read as blank at intensity 0.6, so the gallery
+// showcases them stronger. This only changes the card's initial slider values —
+// the preset's own attribute defaults are untouched.
+const CARD_DEFAULTS = {
+  'paper-grain': { intensity: 1 },
+};
+const BASE_DEFAULTS = { intensity: 0.6, speed: 1, density: 0.5 };
+
 function makeCard({ name, renderer }) {
+  const def = { ...BASE_DEFAULTS, ...CARD_DEFAULTS[name] };
   const modes = MODE_OPTIONS[name];
   const modesHtml = modes
     ? `<div class="card-modes" role="group" aria-label="${name} mode">${modes
@@ -108,23 +119,23 @@ function makeCard({ name, renderer }) {
     ${modesHtml}
     <div class="card-controls">
       <label><span>intensity</span>
-        <input type="range" min="0" max="1" step="0.05" value="0.6" data-attr="intensity">
-        <span class="val">0.60</span>
+        <input type="range" min="0" max="1" step="0.05" value="${def.intensity}" data-attr="intensity">
+        <span class="val">${def.intensity.toFixed(2)}</span>
       </label>
       <label><span>speed</span>
-        <input type="range" min="0" max="3" step="0.1" value="1" data-attr="speed">
-        <span class="val">1.0</span>
+        <input type="range" min="0" max="3" step="0.1" value="${def.speed}" data-attr="speed">
+        <span class="val">${def.speed.toFixed(1)}</span>
       </label>
       <label><span>density</span>
-        <input type="range" min="0" max="1" step="0.05" value="0.5" data-attr="density">
-        <span class="val">0.50</span>
+        <input type="range" min="0" max="1" step="0.05" value="${def.density}" data-attr="density">
+        <span class="val">${def.density.toFixed(2)}</span>
       </label>
     </div>
   `;
   const state = {
     name,
     stage: card.querySelector('.card-stage'),
-    attrs: { intensity: '0.6', speed: '1', density: '0.5' },
+    attrs: { intensity: String(def.intensity), speed: String(def.speed), density: String(def.density) },
     mode: modes ? modes[0].value : null,
     el: null,
   };

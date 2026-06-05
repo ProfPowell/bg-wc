@@ -68,3 +68,26 @@ test('cards at the end of a group mount when scrolled into view', async ({ page 
     expect(mounted, `${name} should mount when scrolled into view`).toBe(true);
   }
 });
+
+// paper-grain renders correctly but is a deliberately faint overlay; at the
+// card's default intensity it is invisible and reads as "not showing". The
+// gallery showcases such subtle presets at full intensity so the effect is
+// actually visible (the preset's own defaults are unchanged).
+test('paper-grain is showcased at full intensity', async ({ page }) => {
+  await page.setViewportSize({ width: 1200, height: 800 });
+  await page.goto('/docs/index.html', { waitUntil: 'networkidle' });
+  await showGroup(page, 'pattern');
+  await page.evaluate(() => {
+    [...document.querySelectorAll('#grid .card')]
+      .find((c) => c.querySelector('.card-meta h4')?.textContent.trim() === 'paper-grain')
+      ?.scrollIntoView({ block: 'center' });
+  });
+  await page.waitForTimeout(700);
+  const intensity = await page.evaluate(() => {
+    const card = [...document.querySelectorAll('#grid .card')].find(
+      (c) => c.querySelector('.card-meta h4')?.textContent.trim() === 'paper-grain'
+    );
+    return card?.querySelector('bg-wc')?.getAttribute('intensity');
+  });
+  expect(intensity).toBe('1');
+});
