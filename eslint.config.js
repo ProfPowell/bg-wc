@@ -26,6 +26,7 @@ export default [
         matchMedia: 'readonly',
         Image: 'readonly',
         Blob: 'readonly',
+        Path2D: 'readonly',
         WebGLRenderingContext: 'readonly',
         WebGL2RenderingContext: 'readonly',
       },

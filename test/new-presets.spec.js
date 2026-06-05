@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const PRESETS = ['mosaic', 'ribbons', 'source', 'system7', 'supergraphics', 'flowlines', 'paper-grain', 'doodles'];
+const PRESETS = ['mosaic', 'ribbons', 'source', 'system7', 'supergraphics', 'flowlines', 'paper-grain', 'doodles', 'groove'];
 
 for (const name of PRESETS) {
   test(`preset "${name}" loads and renders to canvas`, async ({ page }) => {
@@ -66,5 +66,27 @@ test('doodles honors each `mode` value and defaults to all', async ({ page }) =>
       return !el.hasAttribute('data-fallback');
     }, mode);
     expect(ok, `mode="${mode}" should render`).toBe(true);
+  }
+});
+
+// groove: a seed-driven route generator that should render across the whole
+// density range (framed → tangle) and produce a non-empty snapshot for each.
+test('groove renders across density and seed without erroring', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  for (const [density, seed] of [['0.1', '1'], ['0.5', '7'], ['1', '42']]) {
+    const detail = await page.evaluate(
+      async ([d, s]) => {
+        const el = document.getElementById('wc');
+        el.setAttribute('preset', 'groove');
+        el.setAttribute('density', d);
+        el.setAttribute('seed', s);
+        await el.ready;
+        const blob = await el.snapshot();
+        return { fallback: el.hasAttribute('data-fallback'), size: blob.size };
+      },
+      [density, seed]
+    );
+    expect(detail.fallback, `density=${density} seed=${seed} should not fall back`).toBe(false);
+    expect(detail.size, `density=${density} seed=${seed} should paint bytes`).toBeGreaterThan(0);
   }
 });
