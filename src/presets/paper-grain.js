@@ -29,8 +29,11 @@ void main() {
   n = mix(n, n2, fract(drift));
 
   // Sparse coverage so it reads as an overlay; tint toward the ink color.
+  // intensity drives visibility from barely-there (0.02) up to a clearly grainy
+  // paper at full (0.35) — the top end stays visible even over a light page,
+  // while low intensity keeps the subtle overlay it's designed for.
   float a = abs(n - 0.5) * 2.0;
-  float alpha = smoothstep(0.6, 1.0, a) * mix(0.02, 0.18, u_intensity);
+  float alpha = smoothstep(0.6, 1.0, a) * mix(0.02, 0.35, u_intensity);
   // Blend the speckle between a touch lighter and the ink color for warmth.
   vec3 col = mix(vec3(1.0), u_ink, 0.6);
   gl_FragColor = vec4(col, alpha);
