@@ -116,3 +116,33 @@ test('Patterns is split into Geometric and Texture groups', async ({ page }) => 
   expect(placement.scandi).toBe('Geometric');
   expect(placement.mosaic).toBe('Geometric');
 });
+
+// Faint light-grain overlays (paper-grain, grain) are invisible on a white page
+// theme. The gallery gives those cards a dark stage backdrop so the effect shows
+// regardless of the visitor's theme (preset behaviour is unchanged).
+test('faint overlay cards get a dark stage backdrop', async ({ page }) => {
+  await page.setViewportSize({ width: 1200, height: 800 });
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.goto('/docs/index.html', { waitUntil: 'networkidle' });
+  await showGroup(page, 'texture');
+  const probe = await page.evaluate(() => {
+    const stageBg = (name) => {
+      const card = [...document.querySelectorAll('#grid .card')].find(
+        (c) => c.querySelector('.card-meta h4')?.textContent.trim() === name
+      );
+      const stage = card?.querySelector('.card-stage');
+      const lum = (() => {
+        const m = getComputedStyle(stage).backgroundColor.match(/\d+/g);
+        if (!m) return null;
+        return 0.299 * +m[0] + 0.587 * +m[1] + 0.114 * +m[2];
+      })();
+      return { dark: stage?.classList.contains('stage-dark'), lum };
+    };
+    return { paperGrain: stageBg('paper-grain'), grain: stageBg('grain'), dither: stageBg('dither') };
+  });
+  expect(probe.paperGrain.dark, 'paper-grain stage should be dark-backed').toBe(true);
+  expect(probe.paperGrain.lum, 'paper-grain stage should be visually dark').toBeLessThan(80);
+  expect(probe.grain.dark, 'grain stage should be dark-backed').toBe(true);
+  // Vivid texture presets keep the normal (transparent) stage.
+  expect(probe.dither.dark, 'dither should not be dark-backed').toBe(false);
+});

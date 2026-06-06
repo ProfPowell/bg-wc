@@ -146,6 +146,13 @@ main { padding: clamp(16px, 4vw, 24px); max-width: 1200px; margin: 0 auto; }
       color-mix(in oklab, var(--color-foreground) 4%, transparent) 0 10px,
       transparent 10px 20px);
 }
+/* Faint light-grain overlays (paper-grain, grain) are designed for darker pages
+   and disappear on a light theme; a fixed dark stage backdrop lets the grain
+   read on any theme. Placed after :empty so it wins for an unmounted dark stage. */
+.card-stage.stage-dark,
+.card-stage.stage-dark:empty {
+  background: #181826;
+}
 .card-meta {
   padding: 10px 14px;
   display: flex; align-items: center; justify-content: space-between;

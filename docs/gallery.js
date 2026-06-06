@@ -99,6 +99,11 @@ const CARD_DEFAULTS = {
 };
 const BASE_DEFAULTS = { intensity: 0.6, speed: 1, density: 0.5 };
 
+// Faint light-grain overlays are designed for darker pages and vanish on a white
+// theme. Give their cards a fixed dark stage backdrop so the effect is visible
+// whatever theme the visitor is on. (Gallery-only — the presets are unchanged.)
+const DARK_STAGE = new Set(['paper-grain', 'grain']);
+
 function makeCard({ name, renderer }) {
   const def = { ...BASE_DEFAULTS, ...CARD_DEFAULTS[name] };
   const modes = MODE_OPTIONS[name];
@@ -134,6 +139,7 @@ function makeCard({ name, renderer }) {
       </label>
     </div>
   `;
+  if (DARK_STAGE.has(name)) card.querySelector('.card-stage').classList.add('stage-dark');
   const state = {
     name,
     renderer,
