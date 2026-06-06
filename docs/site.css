@@ -147,11 +147,18 @@ main { padding: clamp(16px, 4vw, 24px); max-width: 1200px; margin: 0 auto; }
       transparent 10px 20px);
 }
 /* Faint light-grain overlays (paper-grain, grain) are designed for darker pages
-   and disappear on a light theme; a fixed dark stage backdrop lets the grain
-   read on any theme. Placed after :empty so it wins for an unmounted dark stage. */
+   and disappear on a light theme. <bg-wc> paints its own --color-background, so
+   a stage backdrop alone is hidden behind the host; override the component's bg
+   (and fg, so the grain ink stays light) to a fixed dark pair. The stage
+   background covers the not-yet-mounted (placeholder) state. Placed after :empty
+   so it wins for an unmounted dark stage. */
 .card-stage.stage-dark,
 .card-stage.stage-dark:empty {
   background: #181826;
+}
+.card-stage.stage-dark bg-wc {
+  --bg-wc-color-bg: #181826;
+  --bg-wc-color-fg: #e8e8f0;
 }
 .card-meta {
   padding: 10px 14px;

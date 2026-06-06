@@ -120,29 +120,49 @@ test('Patterns is split into Geometric and Texture groups', async ({ page }) => 
 // Faint light-grain overlays (paper-grain, grain) are invisible on a white page
 // theme. The gallery gives those cards a dark stage backdrop so the effect shows
 // regardless of the visitor's theme (preset behaviour is unchanged).
-test('faint overlay cards get a dark stage backdrop', async ({ page }) => {
+test('faint overlay cards render on a dark backing on a light theme', async ({ page }) => {
   await page.setViewportSize({ width: 1200, height: 800 });
   await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('/docs/index.html', { waitUntil: 'networkidle' });
   await showGroup(page, 'texture');
-  const probe = await page.evaluate(() => {
-    const stageBg = (name) => {
+
+  const lumOf = (cssColor) => {
+    const m = cssColor.match(/[\d.]+/g);
+    return m ? 0.299 * +m[0] + 0.587 * +m[1] + 0.114 * +m[2] : null;
+  };
+
+  const bgOf = async (name) => {
+    await page.evaluate((n) => {
+      [...document.querySelectorAll('#grid .card')]
+        .find((c) => c.querySelector('.card-meta h4')?.textContent.trim() === n)
+        ?.scrollIntoView({ block: 'center' });
+    }, name);
+    await page.waitForTimeout(700);
+    return page.evaluate((n) => {
       const card = [...document.querySelectorAll('#grid .card')].find(
-        (c) => c.querySelector('.card-meta h4')?.textContent.trim() === name
+        (c) => c.querySelector('.card-meta h4')?.textContent.trim() === n
       );
-      const stage = card?.querySelector('.card-stage');
-      const lum = (() => {
-        const m = getComputedStyle(stage).backgroundColor.match(/\d+/g);
-        if (!m) return null;
-        return 0.299 * +m[0] + 0.587 * +m[1] + 0.114 * +m[2];
-      })();
-      return { dark: stage?.classList.contains('stage-dark'), lum };
-    };
-    return { paperGrain: stageBg('paper-grain'), grain: stageBg('grain'), dither: stageBg('dither') };
-  });
-  expect(probe.paperGrain.dark, 'paper-grain stage should be dark-backed').toBe(true);
-  expect(probe.paperGrain.lum, 'paper-grain stage should be visually dark').toBeLessThan(80);
-  expect(probe.grain.dark, 'grain stage should be dark-backed').toBe(true);
-  // Vivid texture presets keep the normal (transparent) stage.
-  expect(probe.dither.dark, 'dither should not be dark-backed').toBe(false);
+      const el = card?.querySelector('bg-wc');
+      return {
+        mounted: !!el,
+        dark: card?.querySelector('.card-stage')?.classList.contains('stage-dark'),
+        hostBg: el ? getComputedStyle(el).backgroundColor : null,
+      };
+    }, name);
+  };
+
+  // The <bg-wc> host paints its own --color-background; on a light theme that is
+  // white and would hide the faint grain. The card must force a dark backing on
+  // the host itself, not just the stage behind it.
+  const pg = await bgOf('paper-grain');
+  expect(pg.mounted).toBe(true);
+  expect(pg.dark, 'paper-grain stage should be flagged dark').toBe(true);
+  expect(lumOf(pg.hostBg), 'paper-grain host must render on a dark backing').toBeLessThan(80);
+
+  const grain = await bgOf('grain');
+  expect(lumOf(grain.hostBg), 'grain host must render on a dark backing').toBeLessThan(80);
+
+  // Vivid texture presets keep the normal theme background.
+  const dither = await bgOf('dither');
+  expect(dither.dark, 'dither should not be dark-backed').toBe(false);
 });
