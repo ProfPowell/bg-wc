@@ -16,6 +16,11 @@ const MAX_DT_S = 0.1;
 // costs 4×+ the fill, so cap unless the author opts higher.
 const DEFAULT_DPR_CAP = 2;
 
+// Every event is dispatched twice: the canonical `bg-wc:*` and a deprecated
+// `gl-wc:*` twin (from the rename). Flip to false in a future major to drop the
+// legacy twins; kept true through v0.x so existing gl-wc listeners keep working.
+const EMIT_LEGACY_GL_WC = true;
+
 const STYLE = `
 :host {
   display: block;
@@ -334,7 +339,8 @@ class BgWc extends HTMLElement {
       this.dispatchEvent(new CustomEvent(t, { detail, bubbles: false, composed: true }));
     fire(type);
     // Legacy twin: keep gl-wc:* listeners working during deprecation.
-    if (type.startsWith('bg-wc:')) fire('gl-wc:' + type.slice('bg-wc:'.length));
+    if (EMIT_LEGACY_GL_WC && type.startsWith('bg-wc:'))
+      fire('gl-wc:' + type.slice('bg-wc:'.length));
   }
 
   async #loadCurrentPreset(prevName = null) {

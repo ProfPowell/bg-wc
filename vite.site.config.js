@@ -1,4 +1,18 @@
-import { defineConfig } from 'vite';
+import { defineConfig, createLogger } from 'vite';
+
+// vanilla-breeze's CSS ships a sourceMappingURL comment but no .map file, so
+// vite logs a noisy "Failed to load source map for vanilla-breeze.css" on every
+// dev start (and during `npm test`). Drop just that message; pass everything
+// else through.
+const quietLogger = createLogger();
+const baseWarn = quietLogger.warn.bind(quietLogger);
+const baseError = quietLogger.error.bind(quietLogger);
+const isVbSourcemapNoise = (msg) =>
+  typeof msg === 'string' &&
+  msg.includes('source map') &&
+  (msg.includes('vanilla-breeze') || msg.includes('.css.map'));
+quietLogger.warn = (msg, opts) => (isVbSourcemapNoise(msg) ? undefined : baseWarn(msg, opts));
+quietLogger.error = (msg, opts) => (isVbSourcemapNoise(msg) ? undefined : baseError(msg, opts));
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -101,6 +115,7 @@ const vbAssets = {
 export default defineConfig({
   root: '.',
   base: './',
+  customLogger: quietLogger,
   plugins: [pagefindStub, vbAssets],
   build: {
     outDir: 'dist-site',
