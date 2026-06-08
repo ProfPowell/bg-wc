@@ -5,7 +5,8 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss as rgb } from '../renderer/tokens.js';
 
-export function create({ c2d, getColors }) {
+export function create({ c2d, getColors, pxScale }) {
+  const px = pxScale || 1; // scale device-pixel line widths so they aren't thin on hi-DPI
   let w = 1,
     h = 1;
   let rocks = [];
@@ -75,11 +76,11 @@ export function create({ c2d, getColors }) {
     }
     if (glow > 0.05) {
       c2d.strokeStyle = `rgba(${(c1[0] * 255) | 0},${(c1[1] * 255) | 0},${(c1[2] * 255) | 0},${(0.18 * glow).toFixed(3)})`;
-      c2d.lineWidth = 4;
+      c2d.lineWidth = 4 * px;
       c2d.stroke();
     }
     c2d.strokeStyle = rgb(c1);
-    c2d.lineWidth = 1.6;
+    c2d.lineWidth = 1.6 * px;
     c2d.stroke();
   }
 

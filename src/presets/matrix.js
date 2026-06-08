@@ -6,7 +6,8 @@ import { mulberry32 } from '../util/pause.js';
 
 const GLYPHS = 'アイウエオカキクケコサシスセソタチツテトナニヌ0123456789:.=*+-<>';
 
-export function create({ c2d, getColors }) {
+export function create({ c2d, getColors, pxScale }) {
+  const px = pxScale || 1; // keep glyphs the same visual size on hi-DPI
   let w = 1,
     h = 1;
   let cols = 0;
@@ -21,7 +22,7 @@ export function create({ c2d, getColors }) {
     lastDensity = params.density;
     // density → glyph size (denser = smaller glyphs = more columns)
     fontSize = Math.round(22 - params.density * 12);
-    fontSize = Math.max(9, fontSize);
+    fontSize = Math.max(9, fontSize) * px;
     cols = Math.max(1, Math.ceil(w / fontSize));
     drops = new Array(cols);
     for (let i = 0; i < cols; i++) drops[i] = Math.floor(rand() * -(h / fontSize));

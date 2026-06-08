@@ -406,6 +406,7 @@ class BgWc extends HTMLElement {
         css3d: loaded.renderer === 'css3d' ? ctx : null,
         getColors: () => resolveTokens(this, COLOR_MAPPING),
         getParams: () => this.#readParams(),
+        pxScale: this.#computeDpr(),
       });
     } catch (err) {
       this.setAttribute('data-fallback', '');
@@ -541,16 +542,7 @@ class BgWc extends HTMLElement {
       } catch {}
       return;
     }
-    const css = getComputedStyle(this);
-    const pr = (n) => parseFloat(css.getPropertyValue(n));
-    const bgPr = pr('--bg-wc-pixel-ratio');
-    const cssVar = Number.isFinite(bgPr) ? bgPr : pr('--gl-wc-pixel-ratio');
-    const attr = parseFloat(this.getAttribute('pixel-ratio'));
-    const dpr = Number.isFinite(cssVar)
-      ? cssVar
-      : Number.isFinite(attr)
-        ? attr
-        : Math.min(globalThis.devicePixelRatio || 1, DEFAULT_DPR_CAP);
+    const dpr = this.#computeDpr();
     const [W, H] = resizeCanvas(this.#canvas, rect.width, rect.height, dpr);
     if (this.#rendererKind === 'webgl' && this.#ctx) {
       this.#ctx.viewport(0, 0, W, H);
@@ -558,6 +550,23 @@ class BgWc extends HTMLElement {
     try {
       this.#instance?.resize?.(W, H);
     } catch {}
+  }
+
+  // The device-pixel ratio the canvas is sized at: explicit override
+  // (--bg-wc-pixel-ratio / pixel-ratio attr) or capped devicePixelRatio. Forwarded
+  // to presets as `pxScale` so canvas2d presets can keep line widths / glyph sizes
+  // CSS-consistent (multiply device-pixel constants by it) instead of thin on hi-DPI.
+  #computeDpr() {
+    const css = getComputedStyle(this);
+    const pr = (n) => parseFloat(css.getPropertyValue(n));
+    const bgPr = pr('--bg-wc-pixel-ratio');
+    const cssVar = Number.isFinite(bgPr) ? bgPr : pr('--gl-wc-pixel-ratio');
+    const attr = parseFloat(this.getAttribute('pixel-ratio'));
+    return Number.isFinite(cssVar)
+      ? cssVar
+      : Number.isFinite(attr)
+        ? attr
+        : Math.min(globalThis.devicePixelRatio || 1, DEFAULT_DPR_CAP);
   }
 
   #shouldPlay() {

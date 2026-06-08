@@ -6,7 +6,8 @@ import { clearAndFill } from '../renderer/canvas2d.js';
 // Node count cap per quality. O(n²) link search, so keep modest.
 const CAPS = { low: 30, med: 70, high: 120 };
 
-export function create({ c2d, getColors }) {
+export function create({ c2d, getColors, pxScale }) {
+  const px = pxScale || 1;
   let w = 1,
     h = 1;
   let nodes = [];
@@ -56,7 +57,7 @@ export function create({ c2d, getColors }) {
     const fg = `${(c.fg[0] * 255) | 0},${(c.fg[1] * 255) | 0},${(c.fg[2] * 255) | 0}`;
 
     // Lines
-    c2d.lineWidth = 1;
+    c2d.lineWidth = 1 * px;
     for (let i = 0; i < nodes.length; i++) {
       const a = nodes[i];
       for (let j = i + 1; j < nodes.length; j++) {
@@ -81,7 +82,7 @@ export function create({ c2d, getColors }) {
     for (let i = 0; i < nodes.length; i++) {
       const n = nodes[i];
       c2d.beginPath();
-      c2d.arc(n.x * w, n.y * h, 2, 0, Math.PI * 2);
+      c2d.arc(n.x * w, n.y * h, 2 * px, 0, Math.PI * 2);
       c2d.fill();
     }
   }

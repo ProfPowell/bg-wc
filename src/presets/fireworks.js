@@ -6,7 +6,8 @@
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 
-export function create({ c2d, getColors }) {
+export function create({ c2d, getColors, pxScale }) {
+  const px = pxScale || 1; // scale device-pixel line widths so they aren't thin on hi-DPI
   let w = 1,
     h = 1;
   let bursts = [];
@@ -102,17 +103,17 @@ export function create({ c2d, getColors }) {
         cb = (b.color[2] * 255) | 0;
       if (glow > 0.05) {
         c2d.strokeStyle = `rgba(${cr},${cg},${cb},${(alpha * 0.22 * glow).toFixed(3)})`;
-        c2d.lineWidth = 4.5;
+        c2d.lineWidth = 4.5 * px;
         c2d.stroke();
       }
       c2d.strokeStyle = `rgba(${cr},${cg},${cb},${alpha.toFixed(3)})`;
-      c2d.lineWidth = 1.8;
+      c2d.lineWidth = 1.8 * px;
       c2d.stroke();
       // bright core dot early in life
       if (age < 0.3) {
         c2d.fillStyle = `rgba(${(c.fg[0] * 255) | 0},${(c.fg[1] * 255) | 0},${(c.fg[2] * 255) | 0},${((0.3 - age) / 0.3).toFixed(3)})`;
         c2d.beginPath();
-        c2d.arc(cx, cy, 2.5, 0, Math.PI * 2);
+        c2d.arc(cx, cy, 2.5 * px, 0, Math.PI * 2);
         c2d.fill();
       }
     }
@@ -135,7 +136,7 @@ export function create({ c2d, getColors }) {
       const palette = [c.primary, c.accent, c.info];
       const minDim = Math.min(w, h);
       c2d.lineCap = 'round';
-      c2d.lineWidth = 1.8;
+      c2d.lineWidth = 1.8 * px;
       for (let k = 0; k < 6; k++) {
         const cx = r() * w,
           cy = r() * h;

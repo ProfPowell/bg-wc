@@ -4,7 +4,8 @@
 
 import { mulberry32 } from '../util/pause.js';
 
-export function create({ c2d, getColors }) {
+export function create({ c2d, getColors, pxScale }) {
+  const px = pxScale || 1;
   let w = 1,
     h = 1;
   let shapes = [];
@@ -53,7 +54,7 @@ export function create({ c2d, getColors }) {
     const sp = dt;
 
     const palette = [c.primary, c.accent, c.info];
-    c2d.lineWidth = 2;
+    c2d.lineWidth = 2 * px;
     c2d.lineJoin = 'round';
 
     for (const s of shapes) {
@@ -105,7 +106,7 @@ export function create({ c2d, getColors }) {
       c2d.fillStyle = `rgb(${(bg[0] * 255) | 0},${(bg[1] * 255) | 0},${(bg[2] * 255) | 0})`;
       c2d.fillRect(0, 0, w, h);
       const palette = [c.primary, c.accent, c.info];
-      c2d.lineWidth = 2;
+      c2d.lineWidth = 2 * px;
       for (const s of shapes) {
         const col = palette[s.palIdx % palette.length];
         c2d.strokeStyle = `rgb(${(col[0] * 255) | 0},${(col[1] * 255) | 0},${(col[2] * 255) | 0})`;

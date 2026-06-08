@@ -9,7 +9,8 @@
 
 import { clearAndFill } from '../renderer/canvas2d.js';
 
-export function create({ c2d, getColors }) {
+export function create({ c2d, getColors, pxScale }) {
+  const px = pxScale || 1; // scale stroke widths so they aren't thin on hi-DPI
   let w = 1,
     h = 1;
 
@@ -61,7 +62,7 @@ export function create({ c2d, getColors }) {
     function strokeSegs(arr, style, lw) {
       if (!arr.length) return;
       c2d.strokeStyle = style;
-      c2d.lineWidth = lw;
+      c2d.lineWidth = lw * px;
       c2d.beginPath();
       for (let i = 0; i < arr.length; i += 4) {
         c2d.moveTo(arr[i], arr[i + 1]);
@@ -111,7 +112,7 @@ export function create({ c2d, getColors }) {
     const center = proj(0.7, 0.6 - ay);
     if (center[2] > 0) {
       c2d.strokeStyle = `rgb(${pr},${pg},${pb})`;
-      c2d.lineWidth = 1.6;
+      c2d.lineWidth = 1.6 * px;
       c2d.beginPath();
       c2d.arc(center[0], center[1], R * 0.12, 0, Math.PI * 2);
       c2d.stroke();

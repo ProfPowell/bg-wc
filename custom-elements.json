@@ -488,7 +488,7 @@
           "name": "create",
           "parameters": [
             {
-              "name": "{ c2d, getColors }"
+              "name": "{ c2d, getColors, pxScale }"
             }
           ]
         }
@@ -1049,7 +1049,7 @@
           "name": "create",
           "parameters": [
             {
-              "name": "{ c2d, getColors }"
+              "name": "{ c2d, getColors, pxScale }"
             }
           ]
         }
@@ -1490,7 +1490,7 @@
           "name": "create",
           "parameters": [
             {
-              "name": "{ c2d, getColors }"
+              "name": "{ c2d, getColors, pxScale }"
             }
           ]
         }
@@ -1565,7 +1565,7 @@
           "name": "create",
           "parameters": [
             {
-              "name": "{ c2d, getColors }"
+              "name": "{ c2d, getColors, pxScale }"
             }
           ]
         }
@@ -1590,7 +1590,7 @@
           "name": "create",
           "parameters": [
             {
-              "name": "{ c2d, getColors }"
+              "name": "{ c2d, getColors, pxScale }"
             }
           ]
         }
@@ -2390,7 +2390,7 @@
           "name": "create",
           "parameters": [
             {
-              "name": "{ c2d, getColors }"
+              "name": "{ c2d, getColors, pxScale }"
             }
           ]
         }
