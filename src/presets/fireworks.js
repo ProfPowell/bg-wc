@@ -23,12 +23,14 @@ export function create({ c2d, getColors }) {
       const a = (i / spikes) * Math.PI * 2 + rand() * 0.2;
       dirs.push([Math.cos(a), Math.sin(a), 0.7 + rand() * 0.6]); // dir + length factor
     }
+    const color = palette[cycle];
+    cycle = (cycle + 1) % palette.length; // keep the index bounded over long runs
     return {
       x: 0.1 + rand() * 0.8,
       y: 0.1 + rand() * 0.8,
       born: 0,
       life: 0.9 + rand() * 0.8,
-      color: palette[cycle++ % palette.length],
+      color,
       dirs,
     };
   }
@@ -108,7 +110,7 @@ export function create({ c2d, getColors }) {
       c2d.stroke();
       // bright core dot early in life
       if (age < 0.3) {
-        c2d.fillStyle = `rgba(255,255,255,${((0.3 - age) / 0.3).toFixed(3)})`;
+        c2d.fillStyle = `rgba(${(c.fg[0] * 255) | 0},${(c.fg[1] * 255) | 0},${(c.fg[2] * 255) | 0},${((0.3 - age) / 0.3).toFixed(3)})`;
         c2d.beginPath();
         c2d.arc(cx, cy, 2.5, 0, Math.PI * 2);
         c2d.fill();

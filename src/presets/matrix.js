@@ -14,9 +14,11 @@ export function create({ c2d, getColors }) {
   let drops = []; // y pixel position of each column head
   let rand = mulberry32(1);
   let lastSeed = null;
+  let lastDensity = null;
   let lastT = 0;
 
   function rebuild(params) {
+    lastDensity = params.density;
     // density → glyph size (denser = smaller glyphs = more columns)
     fontSize = Math.round(22 - params.density * 12);
     fontSize = Math.max(9, fontSize);
@@ -29,6 +31,9 @@ export function create({ c2d, getColors }) {
     if (params.seed !== lastSeed) {
       rand = mulberry32(params.seed || 1);
       lastSeed = params.seed;
+      rebuild(params);
+    } else if (params.density !== lastDensity) {
+      // Density changed (without a new seed): rebuild columns, keep the stream.
       rebuild(params);
     }
     if (!drops.length) rebuild(params);
@@ -79,7 +84,7 @@ export function create({ c2d, getColors }) {
     resize(nw, nh) {
       w = nw;
       h = nh;
-      rebuild({ density: 0.5, seed: lastSeed || 1 });
+      rebuild({ density: lastDensity ?? 0.5, seed: lastSeed ?? 1 });
     },
     frame(t, params) {
       frame(t, params);

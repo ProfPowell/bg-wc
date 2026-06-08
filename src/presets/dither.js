@@ -11,7 +11,6 @@ uniform float u_intensity;
 uniform float u_density;
 uniform vec3  u_c1;
 uniform vec3  u_c2;
-uniform vec3  u_bg;
 uniform vec2  u_res;
 
 float hash(vec2 p) {
@@ -46,7 +45,6 @@ export function create({ gl, getColors, getParams: _getParams }) {
   const uDen = gl.getUniformLocation(program, 'u_density');
   const uC1 = gl.getUniformLocation(program, 'u_c1');
   const uC2 = gl.getUniformLocation(program, 'u_c2');
-  const uBg = gl.getUniformLocation(program, 'u_bg');
   const uRes = gl.getUniformLocation(program, 'u_res');
 
   let w = 1,
@@ -64,7 +62,6 @@ export function create({ gl, getColors, getParams: _getParams }) {
     gl.uniform1f(uDen, params.density);
     gl.uniform3f(uC1, colors.primary[0], colors.primary[1], colors.primary[2]);
     gl.uniform3f(uC2, colors.accent[0], colors.accent[1], colors.accent[2]);
-    gl.uniform3f(uBg, colors.bg[0], colors.bg[1], colors.bg[2]);
     gl.uniform2f(uRes, w, h);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }

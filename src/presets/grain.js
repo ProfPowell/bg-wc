@@ -5,6 +5,10 @@
 //
 // Unlike `noise`, the output is monochrome speckle with low coverage — a
 // dust/grain layer, not a two-tone cloud.
+//
+// Intentionally theme-independent: grain is neutral monochrome film dust, so it
+// does NOT consume getColors(). For a theme-tinted grain that follows the
+// foreground ink, use `paper-grain`.
 
 import { QUAD_VS, createProgram, fullscreenQuad, bindQuad } from '../renderer/webgl.js';
 
