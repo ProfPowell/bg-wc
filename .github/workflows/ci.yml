@@ -42,6 +42,9 @@ jobs:
       - name: Build library
         run: npm run build
 
+      - name: Pack-install smoke (subpath exports resolve from the tarball)
+        run: node scripts/pack-smoke.mjs
+
       - name: Build site
         run: npm run build:site
 
