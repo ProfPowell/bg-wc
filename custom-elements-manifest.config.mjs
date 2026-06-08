@@ -1,5 +1,5 @@
-// Tag names the manifest should describe (canonical + deprecated alias).
-const TAGS = ['bg-wc', 'gl-wc'];
+// Tag names the manifest should describe.
+const TAGS = ['bg-wc'];
 
 // DOM-construction artifacts the analyzer picks up from the constructor (it sees
 // `el.className = …`, `slot.name = …`, etc. on local vars) and reports as public
@@ -16,23 +16,20 @@ const NOISE_MEMBERS = new Set([
   'tagName',
 ]);
 
-// The element dispatches every event in both the canonical `bg-wc:` namespace and
-// a legacy `gl-wc:` twin (see #emit). The analyzer can't see these dynamic
-// strings — it only guesses a bogus `t` — so declare them explicitly.
+// The element dispatches events in the `bg-wc:` namespace (see #emit). The
+// analyzer can't see these dynamic strings — it only guesses a bogus `t` — so
+// declare them explicitly.
 const BASE_EVENTS = [
   ['ready', 'Preset loaded and first frame rendered. detail: { preset, renderer }.'],
   ['error', 'Load / init / runtime failure. detail: { phase, error }.'],
   ['preset-changed', 'The `preset` attribute changed. detail: { from, to }.'],
   ['visibility', 'Element entered or left the viewport. detail: { visible }.'],
 ];
-const EVENTS = BASE_EVENTS.flatMap(([name, description]) => [
-  { name: `bg-wc:${name}`, type: { text: 'CustomEvent' }, description },
-  {
-    name: `gl-wc:${name}`,
-    type: { text: 'CustomEvent' },
-    description: `Deprecated legacy twin of \`bg-wc:${name}\`.`,
-  },
-]);
+const EVENTS = BASE_EVENTS.map(([name, description]) => ({
+  name: `bg-wc:${name}`,
+  type: { text: 'CustomEvent' },
+  description,
+}));
 
 const CSS_PARTS = [
   { name: 'canvas', description: 'The rendered background canvas (webgl / canvas2d presets).' },
@@ -66,7 +63,7 @@ function stripMembers() {
 }
 
 // Declare the real public events (replacing the analyzer's bogus `t`) and the
-// shadow parts, on both the canonical element and the alias.
+// shadow parts on the element.
 function declareApi() {
   return {
     name: 'declare-api',

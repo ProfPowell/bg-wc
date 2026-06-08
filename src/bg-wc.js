@@ -1,5 +1,5 @@
-// <bg-wc> — theme-aware graphics-layer web component (canonical; <gl-wc> is a deprecated alias, inlined below).
-// See spec.md for the full design.
+// <bg-wc> — theme-aware graphics-layer web component.
+// See docs/superpowers/specs/ for design notes; the preset contract lives in src/presets/index.js.
 
 import { loadPreset, listPresets } from './presets/index.js';
 import { createGLContext } from './renderer/webgl.js';
@@ -16,18 +16,13 @@ const MAX_DT_S = 0.1;
 // costs 4×+ the fill, so cap unless the author opts higher.
 const DEFAULT_DPR_CAP = 2;
 
-// Every event is dispatched twice: the canonical `bg-wc:*` and a deprecated
-// `gl-wc:*` twin (from the rename). Flip to false in a future major to drop the
-// legacy twins; kept true through v0.x so existing gl-wc listeners keep working.
-const EMIT_LEGACY_GL_WC = true;
-
 const STYLE = `
 :host {
   display: block;
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  background: var(--bg-wc-color-bg, var(--gl-wc-color-bg, var(--color-background, transparent)));
+  background: var(--bg-wc-color-bg, var(--color-background, transparent));
 }
 :host([hidden]) { display: none; }
 canvas {
@@ -35,7 +30,7 @@ canvas {
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: var(--bg-wc-z-index, var(--gl-wc-z-index, 0));
+  z-index: var(--bg-wc-z-index, 0);
   pointer-events: none;
   display: block;
 }
@@ -60,7 +55,7 @@ canvas {
 .stage {
   position: absolute;
   inset: 0;
-  z-index: var(--bg-wc-z-index, var(--gl-wc-z-index, 0));
+  z-index: var(--bg-wc-z-index, 0);
   pointer-events: none;
   overflow: hidden;
 }
@@ -69,13 +64,13 @@ canvas {
 
 // Authors can override any of these via component-namespaced CSS vars.
 const COLOR_MAPPING = {
-  primary: { token: '--color-primary', override: ['--bg-wc-color-1', '--gl-wc-color-1'] },
-  accent: { token: '--color-accent', override: ['--bg-wc-color-2', '--gl-wc-color-2'] },
-  info: { token: '--color-info', override: ['--bg-wc-color-3', '--gl-wc-color-3'] },
-  bg: { token: '--color-background', override: ['--bg-wc-color-bg', '--gl-wc-color-bg'] },
+  primary: { token: '--color-primary', override: ['--bg-wc-color-1'] },
+  accent: { token: '--color-accent', override: ['--bg-wc-color-2'] },
+  info: { token: '--color-info', override: ['--bg-wc-color-3'] },
+  bg: { token: '--color-background', override: ['--bg-wc-color-bg'] },
   fg: {
     token: ['--color-foreground', '--color-text'],
-    override: ['--bg-wc-color-fg', '--gl-wc-color-fg'],
+    override: ['--bg-wc-color-fg'],
   },
   success: { token: '--color-success', override: null },
   warning: { token: '--color-warning', override: null },
@@ -335,12 +330,7 @@ class BgWc extends HTMLElement {
   }
 
   #emit(type, detail) {
-    const fire = (t) =>
-      this.dispatchEvent(new CustomEvent(t, { detail, bubbles: false, composed: true }));
-    fire(type);
-    // Legacy twin: keep gl-wc:* listeners working during deprecation.
-    if (EMIT_LEGACY_GL_WC && type.startsWith('bg-wc:'))
-      fire('gl-wc:' + type.slice('bg-wc:'.length));
+    this.dispatchEvent(new CustomEvent(type, { detail, bubbles: false, composed: true }));
   }
 
   async #loadCurrentPreset(prevName = null) {
@@ -494,13 +484,9 @@ class BgWc extends HTMLElement {
       return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : def;
     };
     const css = getComputedStyle(this);
-    // Read --bg-wc-<suffix>, falling back to legacy --gl-wc-<suffix>.
     const cssVar = (suffix) => {
-      for (const prefix of ['--bg-wc-', '--gl-wc-']) {
-        const v = parseFloat(css.getPropertyValue(prefix + suffix));
-        if (Number.isFinite(v)) return v;
-      }
-      return null;
+      const v = parseFloat(css.getPropertyValue('--bg-wc-' + suffix));
+      return Number.isFinite(v) ? v : null;
     };
     return {
       palette: this.getAttribute('palette') || 'theme',
@@ -567,9 +553,7 @@ class BgWc extends HTMLElement {
   // CSS-consistent (multiply device-pixel constants by it) instead of thin on hi-DPI.
   #computeDpr() {
     const css = getComputedStyle(this);
-    const pr = (n) => parseFloat(css.getPropertyValue(n));
-    const bgPr = pr('--bg-wc-pixel-ratio');
-    const cssVar = Number.isFinite(bgPr) ? bgPr : pr('--gl-wc-pixel-ratio');
+    const cssVar = parseFloat(css.getPropertyValue('--bg-wc-pixel-ratio'));
     const attr = parseFloat(this.getAttribute('pixel-ratio'));
     return Number.isFinite(cssVar)
       ? cssVar
@@ -652,25 +636,6 @@ if (typeof customElements !== 'undefined' && !customElements.get('bg-wc')) {
   customElements.define('bg-wc', BgWc);
 }
 
-// Deprecated <gl-wc> alias: a subclass that warns once on first connect, so
-// existing markup keeps working through the rename. Inlined (not a separate
-// module) to register synchronously alongside <bg-wc> without a circular import.
-let warnedGlWc = false;
-class GlWcAlias extends BgWc {
-  connectedCallback() {
-    if (!warnedGlWc) {
-      warnedGlWc = true;
-      console.warn(
-        '<gl-wc> is deprecated and will be removed in a future major. Use <bg-wc> instead.'
-      );
-    }
-    super.connectedCallback?.();
-  }
-}
-if (typeof customElements !== 'undefined' && !customElements.get('gl-wc')) {
-  customElements.define('gl-wc', GlWcAlias);
-}
-
-export { BgWc, GlWcAlias };
+export { BgWc };
 export { listPresets };
 export default BgWc;

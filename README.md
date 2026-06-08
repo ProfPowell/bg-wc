@@ -119,11 +119,15 @@ npm run dev   # serves the gallery + demos
 
 ## Migrating from gl-wc
 
-The package was previously `@profpowell/gl-wc`; the old tag
-(`<gl-wc>`), binder attributes (`data-bg-*`), CSS variables
-(`--gl-wc-*`), and events (`gl-wc:*`) still work as deprecated aliases
-and emit a one-time console warning. The deprecated aliases ship
-through the `0.x` series; planning to remove them in `1.0`.
+The package was previously `@profpowell/gl-wc`. The legacy aliases have
+been **removed** — if you're upgrading, rename:
+
+| Old (gl-wc)                       | New (bg-wc)                                 |
+| --------------------------------- | ------------------------------------------- |
+| `<gl-wc>` element                 | `<bg-wc>`                                    |
+| `data-bg` / `data-bg-*` attrs     | `data-background` / `data-background-*`      |
+| `--gl-wc-*` CSS variables         | `--bg-wc-*`                                  |
+| `gl-wc:*` event listeners         | `bg-wc:*`                                    |
 
 ## License
 

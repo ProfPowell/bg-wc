@@ -8,7 +8,7 @@ test('fg read falls back to --color-text when --color-foreground is unset', asyn
     return window.readTokenString(
       host,
       ['--color-foreground', '--color-text'],
-      ['--bg-wc-color-fg', '--gl-wc-color-fg']
+      ['--bg-wc-color-fg']
     );
   });
   expect(value).toBe('rgb(10, 20, 30)');
@@ -23,7 +23,7 @@ test('fg read prefers --color-foreground when both are set', async ({ page }) =>
     return window.readTokenString(
       host,
       ['--color-foreground', '--color-text'],
-      ['--bg-wc-color-fg', '--gl-wc-color-fg']
+      ['--bg-wc-color-fg']
     );
   });
   expect(value).toBe('rgb(1, 2, 3)');
@@ -70,24 +70,18 @@ test('cssToRgba resolves light-dark() per color-scheme (vanilla-breeze light mod
   expect(lum(r.dark)).toBeGreaterThan(2.4); // light in dark scheme
 });
 
-test('readTokenString prefers --bg-wc override, falls back to --gl-wc', async ({ page }) => {
+test('readTokenString prefers the --bg-wc override, else the token', async ({ page }) => {
   await page.goto('/test/tokens-page.html');
   const r = await page.evaluate(() => {
     const host = document.createElement('div');
-    host.style.setProperty('--gl-wc-color-1', 'rgb(10, 20, 30)');
     document.body.appendChild(host);
-    const legacyOnly = window.readTokenString(host, '--color-primary', [
-      '--bg-wc-color-1',
-      '--gl-wc-color-1',
-    ]);
+    host.style.setProperty('--color-primary', 'rgb(7, 8, 9)');
+    const fromToken = window.readTokenString(host, '--color-primary', ['--bg-wc-color-1']);
     host.style.setProperty('--bg-wc-color-1', 'rgb(40, 50, 60)');
-    const canonical = window.readTokenString(host, '--color-primary', [
-      '--bg-wc-color-1',
-      '--gl-wc-color-1',
-    ]);
+    const overridden = window.readTokenString(host, '--color-primary', ['--bg-wc-color-1']);
     host.remove();
-    return { legacyOnly, canonical };
+    return { fromToken, overridden };
   });
-  expect(r.legacyOnly).toBe('rgb(10, 20, 30)');
-  expect(r.canonical).toBe('rgb(40, 50, 60)');
+  expect(r.fromToken).toBe('rgb(7, 8, 9)'); // no override → token value
+  expect(r.overridden).toBe('rgb(40, 50, 60)'); // --bg-wc-color-1 wins
 });

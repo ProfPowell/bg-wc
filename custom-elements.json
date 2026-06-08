@@ -51,25 +51,11 @@
               "description": "Preset loaded and first frame rendered. detail: { preset, renderer }."
             },
             {
-              "name": "gl-wc:ready",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Deprecated legacy twin of `bg-wc:ready`."
-            },
-            {
               "name": "bg-wc:error",
               "type": {
                 "text": "CustomEvent"
               },
               "description": "Load / init / runtime failure. detail: { phase, error }."
-            },
-            {
-              "name": "gl-wc:error",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Deprecated legacy twin of `bg-wc:error`."
             },
             {
               "name": "bg-wc:preset-changed",
@@ -79,25 +65,11 @@
               "description": "The `preset` attribute changed. detail: { from, to }."
             },
             {
-              "name": "gl-wc:preset-changed",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Deprecated legacy twin of `bg-wc:preset-changed`."
-            },
-            {
               "name": "bg-wc:visibility",
               "type": {
                 "text": "CustomEvent"
               },
               "description": "Element entered or left the viewport. detail: { visible }."
-            },
-            {
-              "name": "gl-wc:visibility",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Deprecated legacy twin of `bg-wc:visibility`."
             }
           ],
           "attributes": [
@@ -156,238 +128,6 @@
               "description": "The DOM/CSS-3D stage element (css3d presets)."
             }
           ]
-        },
-        {
-          "kind": "class",
-          "description": "",
-          "name": "GlWcAlias",
-          "superclass": {
-            "name": "BgWc",
-            "module": "src/bg-wc.js"
-          },
-          "tagName": "gl-wc",
-          "customElement": true,
-          "attributes": [
-            {
-              "name": "preset",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "palette",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "intensity",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "speed",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "density",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "seed",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "paused",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "pixel-ratio",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "quality",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "fit",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "motion",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "mode",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "name": "power-save",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            }
-          ],
-          "members": [
-            {
-              "kind": "field",
-              "name": "ready",
-              "readonly": true,
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "preset",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "paused",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "pause",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "resume",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "snapshot",
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "presets",
-              "static": true,
-              "inheritedFrom": {
-                "name": "BgWc",
-                "module": "src/bg-wc.js"
-              }
-            }
-          ],
-          "events": [
-            {
-              "name": "bg-wc:ready",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Preset loaded and first frame rendered. detail: { preset, renderer }."
-            },
-            {
-              "name": "gl-wc:ready",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Deprecated legacy twin of `bg-wc:ready`."
-            },
-            {
-              "name": "bg-wc:error",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Load / init / runtime failure. detail: { phase, error }."
-            },
-            {
-              "name": "gl-wc:error",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Deprecated legacy twin of `bg-wc:error`."
-            },
-            {
-              "name": "bg-wc:preset-changed",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The `preset` attribute changed. detail: { from, to }."
-            },
-            {
-              "name": "gl-wc:preset-changed",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Deprecated legacy twin of `bg-wc:preset-changed`."
-            },
-            {
-              "name": "bg-wc:visibility",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Element entered or left the viewport. detail: { visible }."
-            },
-            {
-              "name": "gl-wc:visibility",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Deprecated legacy twin of `bg-wc:visibility`."
-            }
-          ],
-          "cssParts": [
-            {
-              "name": "canvas",
-              "description": "The rendered background canvas (webgl / canvas2d presets)."
-            },
-            {
-              "name": "stage",
-              "description": "The DOM/CSS-3D stage element (css3d presets)."
-            }
-          ]
         }
       ],
       "exports": [
@@ -400,26 +140,10 @@
           }
         },
         {
-          "kind": "custom-element-definition",
-          "name": "gl-wc",
-          "declaration": {
-            "name": "GlWcAlias",
-            "module": "src/bg-wc.js"
-          }
-        },
-        {
           "kind": "js",
           "name": "BgWc",
           "declaration": {
             "name": "BgWc",
-            "module": "src/bg-wc.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "GlWcAlias",
-          "declaration": {
-            "name": "GlWcAlias",
             "module": "src/bg-wc.js"
           }
         },

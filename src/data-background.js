@@ -1,5 +1,5 @@
 // Opt-in: bind <bg-wc> backgrounds to arbitrary elements via the
-// data-background attribute (canonical) or the deprecated data-bg alias.
+// data-background attribute.
 //
 //   <section data-background="dither" data-background-intensity="0.7">
 //     <h1>Hero content stays in the light DOM.</h1>
@@ -14,19 +14,16 @@
 //
 // Param keys mirror bg-wc attributes (kebab-case): data-background-intensity,
 // data-background-speed, data-background-color-{1,2,3,bg,fg} (→ --bg-wc-color-*).
-// The legacy data-bg / data-bg-* forms still work and warn once.
 
 import './bg-wc.js';
 
 const STYLE_ID = '__bg-wc-data-background-style';
 const STYLE = `
-[data-background]:not([data-background-skip]),
-[data-bg]:not([data-bg-skip]) {
+[data-background]:not([data-background-skip]) {
   position: relative;
   isolation: isolate;
 }
-[data-background]:not([data-background-skip]) > bg-wc[data-bg-element],
-[data-bg]:not([data-bg-skip]) > bg-wc[data-bg-element] {
+[data-background]:not([data-background-skip]) > bg-wc[data-bg-element] {
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -36,7 +33,6 @@ const STYLE = `
 `;
 
 const BOUND = new WeakSet();
-let warnedLegacy = false;
 
 function ensureStyle() {
   if (typeof document === 'undefined') return;
@@ -54,7 +50,7 @@ function camelToKebab(tail) {
   return t.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
 }
 
-// Resolve the preset name + the dataset namespace ('background' or legacy 'bg').
+// Resolve the preset name from the data-background attribute.
 function resolve(el) {
   if (el.hasAttribute?.('data-background') && !el.hasAttribute('data-background-skip')) {
     return {
@@ -62,15 +58,6 @@ function resolve(el) {
       ns: 'background',
       skipKey: 'backgroundSkip',
     };
-  }
-  if (el.hasAttribute?.('data-bg') && !el.hasAttribute('data-bg-skip')) {
-    if (!warnedLegacy) {
-      warnedLegacy = true;
-      console.warn(
-        'data-bg is deprecated and will be removed in a future major. Use data-background instead.'
-      );
-    }
-    return { preset: el.getAttribute('data-bg'), ns: 'bg', skipKey: 'bgSkip' };
   }
   return null;
 }
@@ -86,7 +73,7 @@ function bindOne(el) {
   w.setAttribute('preset', info.preset);
 
   // Map data-<ns>-* → attribute or --bg-wc-color-* CSS var.
-  const nsKey = info.ns; // 'background' | 'bg'
+  const nsKey = info.ns; // 'background'
   for (const key of Object.keys(el.dataset)) {
     if (key === nsKey || key === info.skipKey) continue;
     if (!key.startsWith(nsKey)) continue;
@@ -107,8 +94,8 @@ function bindOne(el) {
 function scanAndBind(root) {
   if (!root) return;
   if (root.nodeType !== 1 && root.nodeType !== 9 && root.nodeType !== 11) return;
-  if (root.matches?.('[data-background], [data-bg]')) bindOne(root);
-  root.querySelectorAll?.('[data-background], [data-bg]').forEach(bindOne);
+  if (root.matches?.('[data-background]')) bindOne(root);
+  root.querySelectorAll?.('[data-background]').forEach(bindOne);
 }
 
 let observer = null;
