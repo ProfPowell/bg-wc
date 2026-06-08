@@ -79,10 +79,22 @@ function declareApi() {
   };
 }
 
+// Module order in the analyzer's output follows filesystem read order, which
+// differs between OSes (macOS vs CI's Linux) — making `cem:check` flake. Sort
+// modules by path so the manifest is byte-identical everywhere.
+function sortModules() {
+  return {
+    name: 'sort-modules',
+    packageLinkPhase({ customElementsManifest }) {
+      customElementsManifest.modules?.sort((a, b) => a.path.localeCompare(b.path, 'en'));
+    },
+  };
+}
+
 export default {
   globs: ['src/**/*.js'],
   exclude: ['src/**/*.test.js'],
   outdir: '.',
   litelement: false,
-  plugins: [stripMembers(), declareApi()],
+  plugins: [stripMembers(), declareApi(), sortModules()],
 };
