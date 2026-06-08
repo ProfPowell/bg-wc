@@ -504,7 +504,10 @@ class BgWc extends HTMLElement {
       quality: this.getAttribute('quality') || 'med',
       fit: this.getAttribute('fit') || 'cover',
       // Free-text payload for text presets (crawl / marquee / …). Read fresh
-      // each frame, so changing it needs no re-init. Lines split on "|".
+      // each frame, so changing it needs no re-init. Lines split on "|". Presets
+      // that tokenize it (e.g. source) cache against the last value internally
+      // to avoid re-parsing every frame — the host always hands over the raw
+      // string regardless.
       text: this.getAttribute('text') || '',
     };
   }
