@@ -5,7 +5,9 @@
 // Perf: all front-facing segments are batched into one path and all
 // back-facing into another, so the whole globe is ~4 stroke() calls per
 // frame (plus the equator and dish), not one per segment. No shadowBlur —
-// a wider translucent pass fakes the phosphor glow far more cheaply.
+// a wider translucent pass fakes the phosphor glow far more cheaply. The
+// ~900 projected points and the segment accumulators are pooled/reused across
+// frames so a steady globe allocates nothing per frame.
 
 import { clearAndFill } from '../renderer/canvas2d.js';
 
@@ -14,9 +16,33 @@ export function create({ c2d, getColors, pxScale }) {
   let w = 1,
     h = 1;
 
+  // Reused per-frame buffers. The point pool hands out [x,y,z] arrays that are
+  // consumed (copied into the flat segment lists) within the same frame, so a
+  // single frame-reset is enough; the pool grows to the frame's point count
+  // once, then is reused.
+  const ptPool = [];
+  let ptN = 0;
+  function getPt(x, y, z) {
+    let a = ptPool[ptN];
+    if (!a) a = ptPool[ptN] = [0, 0, 0];
+    a[0] = x;
+    a[1] = y;
+    a[2] = z;
+    ptN++;
+    return a;
+  }
+  const front = []; // flat [x0,y0,x1,y1, …]
+  const back = [];
+  const ef = [];
+  const eb = [];
+  const pts = [];
+
   function frame(t, params) {
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
+    ptN = 0;
+    front.length = 0;
+    back.length = 0;
 
     const cx = w / 2,
       cy = h / 2;
@@ -45,16 +71,13 @@ export function create({ c2d, getColors, pxScale }) {
       const z1 = -x * say + z * cay;
       const y2 = y * cax - z1 * sax;
       const z2 = y * sax + z1 * cax;
-      return [cx + x1 * R, cy + y2 * R, z2];
+      return getPt(cx + x1 * R, cy + y2 * R, z2);
     }
 
-    // Accumulate segments split by depth, then stroke each batch once.
-    const front = []; // flat [x0,y0,x1,y1, …]
-    const back = [];
-    function addLine(pts) {
-      for (let i = 1; i < pts.length; i++) {
-        const a = pts[i - 1],
-          b = pts[i];
+    function addLine(p) {
+      for (let i = 1; i < p.length; i++) {
+        const a = p[i - 1],
+          b = p[i];
         const arr = (a[2] + b[2]) * 0.5 > 0 ? front : back;
         arr.push(a[0], a[1], b[0], b[1]);
       }
@@ -76,13 +99,13 @@ export function create({ c2d, getColors, pxScale }) {
       seg = 40;
     for (let i = 1; i < latN; i++) {
       const theta = (Math.PI * i) / latN;
-      const pts = [];
+      pts.length = 0;
       for (let s = 0; s <= seg; s++) pts.push(proj(theta, (s / seg) * Math.PI * 2));
       addLine(pts);
     }
     for (let j = 0; j < lonN; j++) {
       const phi = (Math.PI * 2 * j) / lonN;
-      const pts = [];
+      pts.length = 0;
       for (let s = 0; s <= seg; s++) pts.push(proj((s / seg) * Math.PI, phi));
       addLine(pts);
     }
@@ -95,10 +118,10 @@ export function create({ c2d, getColors, pxScale }) {
 
     // Equatorial trench — a bold accent ring, batched front/back too.
     {
-      const pts = [];
+      pts.length = 0;
       for (let s = 0; s <= seg; s++) pts.push(proj(Math.PI / 2 + 0.04, (s / seg) * Math.PI * 2));
-      const ef = [],
-        eb = [];
+      ef.length = 0;
+      eb.length = 0;
       for (let i = 1; i < pts.length; i++) {
         const a = pts[i - 1],
           b = pts[i];
@@ -130,6 +153,9 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0.6, params);
     },
-    dispose() {},
+    dispose() {
+      ptPool.length = 0;
+      front.length = back.length = ef.length = eb.length = pts.length = 0;
+    },
   };
 }
