@@ -35,19 +35,20 @@ into real-looking pages.
 
 ## Preset highlights
 
-A handful of the 60+ presets. Each adapts to whatever theme tokens you
-set.
+A handful of the 70+ presets, grouped into a dozen families (Gradients,
+Geometric, Texture, Atmospheric, Retro, Vector, Pop art, Ornamental, and
+more). Each adapts to whatever theme tokens you set.
 
 | Name             | Renderer | Notes                                                   |
 | ---------------- | -------- | ------------------------------------------------------- |
 | `mesh-gradient`  | WebGL    | Soft blobs in primary / accent / info colors.           |
 | `aurora`         | WebGL    | Drifting aurora bands; the canonical "ambient" preset.  |
 | `mosaic`         | Canvas2D | Squares; four modes via `mode` attribute (see below).   |
-| `ribbons`        | Canvas2D | Stacked Bezier ribbons with crisp top-edge strokes.     |
+| `groove`         | Canvas2D | 70s looping rainbow-stripe routes that draw on and spiral.|
+| `scandi`         | Canvas2D | Scandinavian geometric grid of arcs + floral motifs.    |
+| `seigaiha`       | Canvas2D | Japanese overlapping-circle "wave" (fish-scale) pattern.|
 | `supergraphics`  | Canvas2D | Mural-scale curved bands (Sea Ranch / Stauffacher).     |
-| `flowlines`      | Canvas2D | Thin streamlines through a slow vector field.           |
 | `source`         | Canvas2D | Faded HTML source listing; pass `text` to override.     |
-| `system7`        | Canvas2D | Classic Mac windows on 50% stipple.                     |
 | `matrix`         | Canvas2D | Falling digital rain; pass `text` to override glyphs.   |
 | `confetti`       | Canvas2D | Continuous drop using the full semantic palette.        |
 
@@ -58,6 +59,8 @@ set.
 `preset` `palette` `intensity` (0–1) `speed` (0–5) `density` (0–1)
 `seed` (int) `paused` `pixel-ratio` `quality` (`low|med|high`)
 `fit` (`cover|contain|stretch`) `motion` (`auto|reduce|force`)
+`power-save` (`off` to keep animating on a low battery — defaults to
+throttling when the device reports power-save)
 
 Some presets read additional attributes from the host: `mosaic` reads
 `mode` (`isometric` | `flat` | `sparse` | `stacked` | `blocks`);
