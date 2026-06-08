@@ -52,18 +52,58 @@ bd close <id>         # Complete work
 
 ## Build & Test
 
-_Add your build and test commands here_
-
 ```bash
-# Example:
-# npm install
-# npm test
+npm install
+npm run dev          # vite dev server for the product site/gallery (docs/)
+npm run build        # library build → dist/ (preserveModules; one chunk per preset)
+npm run build:site   # product site + demos → dist-site/ (deployed to GitHub Pages)
+npm test             # Playwright browser suite (test/*.spec.js)
+npm run test:node    # node:test units (SSR import, battery power-save)
+npm run lint         # eslint src/
+npm run format:check # prettier --check
+npm run analyze      # regenerate custom-elements.json (cem)
+npm run cem:check    # cem analyze + fail if custom-elements.json drifted
 ```
+
+CI (`.github/workflows/ci.yml`) runs lint, format:check, cem:check, the node
+units, both builds, and the Playwright suite on Node 20 + 22. `cem:check` only
+works because the manifest modules are sorted (see
+`custom-elements-manifest.config.mjs`) so output is identical across OSes.
 
 ## Architecture Overview
 
-_Add a brief overview of your project architecture_
+- **`src/bg-wc.js`** — the `<bg-wc>` custom element (and the deprecated `<gl-wc>`
+  alias). Owns the lifecycle: canvas/context creation per renderer kind, the rAF
+  loop (`#tick`), attribute/param reading (`#readParams`), theme token resolution,
+  visibility/reduced-motion/battery gating, and fallback handling.
+- **`src/presets/index.js`** — the preset **registry** (`name → { renderer,
+  group, loader }`) plus `listPresets`/`listGroups`. The file header documents the
+  **preset contract** (`create(ctx)` → `{ resize, frame, staticFrame, dispose }`,
+  the params catalog, and the time-scaling rule). Each preset is one file in
+  `src/presets/` lazy-loaded via dynamic `import()`.
+- **`src/renderer/`** — thin context wrappers: `webgl.js` (program/quad helpers),
+  `canvas2d.js`, `css3d.js`, and `tokens.js` (CSS var → RGBA tuple resolver +
+  `rgbCss`/`rgbaCss` helpers + the LRU color cache).
+- **`src/util/`** — `observe.js` (visibility / reduced-motion / tab-visibility),
+  `pause.js` (battery power-save + `mulberry32` PRNG).
+- **`docs/`** — the product site: `gallery.js` drives the preset gallery,
+  `site.css` styles it, `api.html` is the API reference.
+
+**First-class constraint — the WebGL context cap.** Browsers allow only ~16 live
+WebGL contexts per page. Presets are grouped (`group` in the registry) and the
+gallery lazy-mounts cards by viewport visibility with a hard live-WebGL budget
+(`MAX_WEBGL` in `docs/gallery.js`) so a page never overflows the cap and drops
+contexts. Any UI that shows many presets at once must respect this.
 
 ## Conventions & Patterns
 
-_Add your project-specific conventions here_
+- **Adding a preset:** one `REGISTRY` entry in `src/presets/index.js` + one
+  `src/presets/<name>.js` implementing the contract in that file's header.
+- **Colors come from the theme** via `getColors()` — never hardcode a palette.
+  Read it every frame so runtime theme changes apply.
+- **`t` is pre-scaled by `speed`** before it reaches `frame()`; never multiply
+  motion by `params.speed` again.
+- **Layout is seeded** with `mulberry32(params.seed)` for deterministic,
+  reproducible output.
+- Run `cem:check` after changing any `src/` exports — the manifest is committed
+  and gated in CI.
