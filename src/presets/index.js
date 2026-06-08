@@ -1,5 +1,51 @@
+// =============================================================================
+// PRESET CONTRACT
+// =============================================================================
+// A preset is a module with a single named export `create(ctx)` returning an
+// instance. <bg-wc> calls it once per preset load (see bg-wc.js #loadPreset).
+//
+// ctx (provided by <bg-wc>):
+//   host        — the <bg-wc> element.
+//   canvas      — the <canvas> (webgl & canvas2d presets); null for css3d.
+//   gl          — WebGLRenderingContext   (webgl presets only, else null).
+//   c2d         — CanvasRenderingContext2D (canvas2d presets only, else null).
+//   css3d       — CSS-3D stage helper      (css3d presets only, else null).
+//   getColors() — theme palette as RGBA tuples in [0..1]: { primary, accent,
+//                 info, success, warning, error, bg, fg }. Call it EVERY frame —
+//                 the theme can change at runtime.
+//   getParams() — snapshot of the live params (same shape passed to frame()).
+//
+// instance (returned by create):
+//   resize(W, H)        — REQUIRED. W/H are DEVICE pixels (already × dpr); the
+//                         drawing context is NOT pre-scaled, so size everything
+//                         relative to W/H to stay resolution-independent.
+//   frame(t, params)    — REQUIRED for motion. Draw one animated frame; called
+//                         each rAF tick. `t` is elapsed seconds ALREADY scaled
+//                         by params.speed — see TIME RULE.
+//   staticFrame(params) — RECOMMENDED. Draw one still frame (prefers-reduced-
+//                         motion and paused). Presets without it surface the
+//                         reduced-motion fallback instead of a frozen image.
+//   dispose()           — OPTIONAL. Release GPU programs / buffers / state.
+//   setPlaying(on)      — css3d only: start/stop CSS animation.
+//
+// params (from attributes / CSS vars; read fresh each frame):
+//   intensity  0..1  (default 0.5)  effect / palette strength
+//   speed      0..5  (default 1)    motion rate — see TIME RULE
+//   density    0..1  (default 0.5)  element count / scale
+//   seed       int   (default 0)    deterministic layout seed
+//   quality    'low' | 'med' | 'high'      (default 'med')
+//   fit        'cover' | 'contain' | …      (default 'cover')
+//   palette    string (default 'theme')
+//   text       string  free text for text presets (lines split on '|')
+//
+// TIME RULE: `t` is already multiplied by params.speed before it reaches
+// frame(). Drive motion from `t` (or a derived dt = t - lastT); do NOT multiply
+// motion by params.speed again — that applies speed twice (speed²). See gl-wc-ant.
+//
+// Adding a preset = one REGISTRY entry below + one src/presets/<name>.js file.
+// =============================================================================
+
 // Preset registry. Names → { renderer, group, loader }.
-// Adding a preset is one entry here + one file.
 //
 // `group` categorizes presets for catalog UIs. It also lets a page show
 // one group at a time so it never instantiates more simultaneous WebGL
