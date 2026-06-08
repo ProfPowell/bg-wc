@@ -113,7 +113,13 @@ test('changing mode on a canvas preset does NOT re-init (mosaic unaffected)', as
   expect(ok).toBe(true);
 });
 
-const FLY_MODES = ['', 'ring straight cube', 'corridor helix sphere', 'hex wave pyramid', 'tube straight card'];
+const FLY_MODES = [
+  '',
+  'ring straight cube',
+  'corridor helix sphere',
+  'hex wave pyramid',
+  'tube straight card',
+];
 
 for (const mode of FLY_MODES) {
   test(`fly-through renders for mode="${mode}"`, async ({ page }) => {
@@ -125,7 +131,9 @@ for (const mode of FLY_MODES) {
       el.setAttribute('preset', 'fly-through');
       await el.ready;
       const scene = el.shadowRoot.querySelector('.scene');
-      return !el.hasAttribute('data-fallback') && scene && scene.querySelectorAll('.ring').length > 0;
+      return (
+        !el.hasAttribute('data-fallback') && scene && scene.querySelectorAll('.ring').length > 0
+      );
     }, mode);
     expect(ok, `mode="${mode}" should render rings`).toBe(true);
   });
@@ -154,7 +162,9 @@ for (const mode of ['', 'radial', 'cube']) {
       else el.removeAttribute('mode');
       el.setAttribute('preset', 'explode');
       await el.ready;
-      return !el.hasAttribute('data-fallback') && el.shadowRoot.querySelectorAll('.particle').length > 0;
+      return (
+        !el.hasAttribute('data-fallback') && el.shadowRoot.querySelectorAll('.particle').length > 0
+      );
     }, mode);
     expect(ok, `mode="${mode}" should render particles`).toBe(true);
   });
@@ -163,13 +173,18 @@ for (const mode of ['', 'radial', 'cube']) {
 test('explode is registered as a css3d preset', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
   const meta = await page.evaluate(() =>
-    customElements.get('bg-wc').presets().find((p) => p.name === 'explode')
+    customElements
+      .get('bg-wc')
+      .presets()
+      .find((p) => p.name === 'explode')
   );
   expect(meta.renderer).toBe('css3d');
   expect(meta.group).toBe('dimensional');
 });
 
-test('switching from a css3d preset back to a canvas preset tears down the stage', async ({ page }) => {
+test('switching from a css3d preset back to a canvas preset tears down the stage', async ({
+  page,
+}) => {
   await page.goto('/test/new-presets-page.html');
   const result = await page.evaluate(async () => {
     const el = document.getElementById('wc');
@@ -216,14 +231,15 @@ test('explode under reduced motion freezes a mid-burst (non-degenerate) pose', a
   expect(result.particles).toBeGreaterThan(0);
 });
 
-test('fly-through defaults to the orbit motion; mode "fly" switches to fly-through', async ({ page }) => {
+test('fly-through defaults to the orbit motion; mode "fly" switches to fly-through', async ({
+  page,
+}) => {
   await page.goto('/test/new-presets-page.html');
   const anims = await page.evaluate(async () => {
     const el = document.getElementById('wc');
     el.setAttribute('preset', 'fly-through');
     await el.ready;
-    const sceneAnim = () =>
-      getComputedStyle(el.shadowRoot.querySelector('.scene')).animationName;
+    const sceneAnim = () => getComputedStyle(el.shadowRoot.querySelector('.scene')).animationName;
     const orbit = sceneAnim();
     el.setAttribute('mode', 'ring straight cube fly');
     await el.ready;

@@ -11,7 +11,9 @@ const MAX_WEBGL = 8;
 
 async function showGroup(page, re) {
   await page.evaluate((r) => {
-    const btn = [...document.querySelectorAll('.group-tab')].find((b) => new RegExp(r, 'i').test(b.textContent));
+    const btn = [...document.querySelectorAll('.group-tab')].find((b) =>
+      new RegExp(r, 'i').test(b.textContent)
+    );
     btn?.click();
   }, re);
   // Let the IntersectionObserver settle and cards mount.
@@ -31,14 +33,18 @@ const webglMounted = (page) =>
 test('live WebGL context budget holds across every group', async ({ page }) => {
   await page.setViewportSize({ width: 1000, height: 700 });
   await page.goto('/docs/index.html', { waitUntil: 'networkidle' });
-  const ids = await page.evaluate(() => [...document.querySelectorAll('.group-tab')].map((b) => b.dataset.group));
+  const ids = await page.evaluate(() =>
+    [...document.querySelectorAll('.group-tab')].map((b) => b.dataset.group)
+  );
   for (const g of ids) {
     // Match the tab by its data-group id to avoid label/regex collisions.
     await page.evaluate((id) => {
       [...document.querySelectorAll('.group-tab')].find((b) => b.dataset.group === id)?.click();
     }, g);
     await page.waitForTimeout(600);
-    expect(await webglMounted(page), `group ${g} exceeds the WebGL budget`).toBeLessThanOrEqual(MAX_WEBGL);
+    expect(await webglMounted(page), `group ${g} exceeds the WebGL budget`).toBeLessThanOrEqual(
+      MAX_WEBGL
+    );
   }
 });
 
@@ -95,7 +101,9 @@ test('paper-grain is showcased at full intensity', async ({ page }) => {
 test('Patterns is split into Geometric and Texture groups', async ({ page }) => {
   await page.goto('/docs/index.html', { waitUntil: 'networkidle' });
   const tabs = await page.evaluate(() =>
-    [...document.querySelectorAll('.group-tab')].map((b) => b.textContent.replace(/\s*\d+\s*$/, '').trim())
+    [...document.querySelectorAll('.group-tab')].map((b) =>
+      b.textContent.replace(/\s*\d+\s*$/, '').trim()
+    )
   );
   expect(tabs).toContain('Geometric');
   expect(tabs).toContain('Texture');
@@ -105,12 +113,18 @@ test('Patterns is split into Geometric and Texture groups', async ({ page }) => 
     const groupOf = (name) => {
       for (const b of document.querySelectorAll('.group-tab')) {
         b.click();
-        const here = [...document.querySelectorAll('#grid .card h4')].some((h) => h.textContent.trim() === name);
+        const here = [...document.querySelectorAll('#grid .card h4')].some(
+          (h) => h.textContent.trim() === name
+        );
         if (here) return b.textContent.replace(/\s*\d+\s*$/, '').trim();
       }
       return null;
     };
-    return { paperGrain: groupOf('paper-grain'), scandi: groupOf('scandi'), mosaic: groupOf('mosaic') };
+    return {
+      paperGrain: groupOf('paper-grain'),
+      scandi: groupOf('scandi'),
+      mosaic: groupOf('mosaic'),
+    };
   });
   expect(placement.paperGrain).toBe('Texture');
   expect(placement.scandi).toBe('Geometric');

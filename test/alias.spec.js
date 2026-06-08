@@ -30,8 +30,12 @@ test('canonical bg-wc:ready also fires a legacy gl-wc:ready twin', async ({ page
   // Attach listeners before the module script fires so we don't miss the events.
   // exposeFunction bridges the browser-side signal back to the Node side.
   const eventSeen = { bg: false, gl: false };
-  await page.exposeFunction('__onBgReady', () => { eventSeen.bg = true; });
-  await page.exposeFunction('__onGlReady', () => { eventSeen.gl = true; });
+  await page.exposeFunction('__onBgReady', () => {
+    eventSeen.bg = true;
+  });
+  await page.exposeFunction('__onGlReady', () => {
+    eventSeen.gl = true;
+  });
   await page.addInitScript(() => {
     // Run after the DOM is parsed but before any deferred/module scripts execute.
     window.addEventListener('DOMContentLoaded', () => {

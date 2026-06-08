@@ -1,6 +1,18 @@
 import { test, expect } from '@playwright/test';
 
-const PRESETS = ['mosaic', 'ribbons', 'source', 'system7', 'supergraphics', 'flowlines', 'paper-grain', 'doodles', 'groove', 'scandi', 'seigaiha'];
+const PRESETS = [
+  'mosaic',
+  'ribbons',
+  'source',
+  'system7',
+  'supergraphics',
+  'flowlines',
+  'paper-grain',
+  'doodles',
+  'groove',
+  'scandi',
+  'seigaiha',
+];
 
 for (const name of PRESETS) {
   test(`preset "${name}" loads and renders to canvas`, async ({ page }) => {
@@ -79,7 +91,11 @@ test('doodles honors each `mode` value and defaults to all', async ({ page }) =>
 // density range (framed → tangle) and produce a non-empty snapshot for each.
 test('groove renders across density and seed without erroring', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
-  for (const [density, seed] of [['0.1', '1'], ['0.5', '7'], ['1', '42']]) {
+  for (const [density, seed] of [
+    ['0.1', '1'],
+    ['0.5', '7'],
+    ['1', '42'],
+  ]) {
     const detail = await page.evaluate(
       async ([d, s]) => {
         const el = document.getElementById('wc');
@@ -102,7 +118,11 @@ test('groove renders across density and seed without erroring', async ({ page })
 for (const preset of ['scandi', 'seigaiha']) {
   test(`${preset} renders across density and seed without erroring`, async ({ page }) => {
     await page.goto('/test/new-presets-page.html');
-    for (const [density, seed] of [['0.2', '2'], ['0.6', '11'], ['1', '99']]) {
+    for (const [density, seed] of [
+      ['0.2', '2'],
+      ['0.6', '11'],
+      ['1', '99'],
+    ]) {
       const detail = await page.evaluate(
         async ([p, d, s]) => {
           const el = document.getElementById('wc');
@@ -115,8 +135,14 @@ for (const preset of ['scandi', 'seigaiha']) {
         },
         [preset, density, seed]
       );
-      expect(detail.fallback, `${preset} density=${density} seed=${seed} should not fall back`).toBe(false);
-      expect(detail.size, `${preset} density=${density} seed=${seed} should paint bytes`).toBeGreaterThan(0);
+      expect(
+        detail.fallback,
+        `${preset} density=${density} seed=${seed} should not fall back`
+      ).toBe(false);
+      expect(
+        detail.size,
+        `${preset} density=${density} seed=${seed} should paint bytes`
+      ).toBeGreaterThan(0);
     }
   });
 }

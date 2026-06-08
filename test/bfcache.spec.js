@@ -29,9 +29,9 @@ test('recovers rendering after a WebGL context loss + bfcache restore', async ({
   });
   await page.waitForTimeout(150);
   // Lost context puts the element into its fallback (canvas hidden) state.
-  expect(await page.evaluate(() => document.getElementById('wc').hasAttribute('data-fallback'))).toBe(
-    true
-  );
+  expect(
+    await page.evaluate(() => document.getElementById('wc').hasAttribute('data-fallback'))
+  ).toBe(true);
 
   // Simulate the bfcache restore.
   await page.evaluate(() => {
@@ -41,8 +41,8 @@ test('recovers rendering after a WebGL context loss + bfcache restore', async ({
   await page.evaluate(() => document.getElementById('wc').ready);
   await page.waitForTimeout(150);
 
-  expect(await page.evaluate(() => document.getElementById('wc').hasAttribute('data-fallback'))).toBe(
-    false
-  );
+  expect(
+    await page.evaluate(() => document.getElementById('wc').hasAttribute('data-fallback'))
+  ).toBe(false);
   expect(await heroHasInk(page)).toBe(true);
 });

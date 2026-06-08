@@ -31,7 +31,10 @@ for (const mode of ['', '8fold', '12fold', '6fold']) {
 test('girih is registered in the ornamental group', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
   const meta = await page.evaluate(() =>
-    customElements.get('bg-wc').presets().find((p) => p.name === 'girih')
+    customElements
+      .get('bg-wc')
+      .presets()
+      .find((p) => p.name === 'girih')
   );
   expect(meta.renderer).toBe('webgl');
   expect(meta.group).toBe('ornamental');
@@ -46,7 +49,10 @@ test('mandala renders to canvas', async ({ page }) => {
 test('mandala is registered in the ornamental group', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
   const meta = await page.evaluate(() =>
-    customElements.get('bg-wc').presets().find((p) => p.name === 'mandala')
+    customElements
+      .get('bg-wc')
+      .presets()
+      .find((p) => p.name === 'mandala')
   );
   expect(meta.renderer).toBe('webgl');
   expect(meta.group).toBe('ornamental');
@@ -63,7 +69,10 @@ for (const mode of ['', 'mixed', 'boomerangs', 'starbursts', 'harlequin']) {
 test('atomic is registered in the pop group', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
   const meta = await page.evaluate(() =>
-    customElements.get('bg-wc').presets().find((p) => p.name === 'atomic')
+    customElements
+      .get('bg-wc')
+      .presets()
+      .find((p) => p.name === 'atomic')
   );
   expect(meta.renderer).toBe('canvas2d');
   expect(meta.group).toBe('pop');
@@ -80,13 +89,18 @@ for (const mode of ['', 'riley', 'cafewall', 'moire', 'drift']) {
 test('op-art is registered in the ornamental group', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
   const meta = await page.evaluate(() =>
-    customElements.get('bg-wc').presets().find((p) => p.name === 'op-art')
+    customElements
+      .get('bg-wc')
+      .presets()
+      .find((p) => p.name === 'op-art')
   );
   expect(meta.renderer).toBe('webgl');
   expect(meta.group).toBe('ornamental');
 });
 
-test('ornamental presets show a static frame under reduced motion (no fallback)', async ({ page }) => {
+test('ornamental presets show a static frame under reduced motion (no fallback)', async ({
+  page,
+}) => {
   await page.goto('/test/new-presets-page.html');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   for (const preset of ['girih', 'mandala', 'atomic', 'op-art']) {

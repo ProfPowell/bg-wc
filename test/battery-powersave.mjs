@@ -16,8 +16,12 @@ function fakeBattery() {
   return {
     level: 1,
     charging: true,
-    addEventListener: () => { added += 1; },
-    removeEventListener: () => { removed += 1; },
+    addEventListener: () => {
+      added += 1;
+    },
+    removeEventListener: () => {
+      removed += 1;
+    },
     counts: () => ({ added, removed }),
   };
 }
@@ -25,7 +29,12 @@ function fakeBattery() {
 test('aborting before getBattery resolves attaches no listeners', async () => {
   const battery = fakeBattery();
   let resolve;
-  setNavigator({ getBattery: () => new Promise((r) => { resolve = r; }) });
+  setNavigator({
+    getBattery: () =>
+      new Promise((r) => {
+        resolve = r;
+      }),
+  });
   const ctrl = new AbortController();
   const p = observeBatteryPowerSave(() => {}, ctrl.signal);
   ctrl.abort();

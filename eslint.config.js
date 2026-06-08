@@ -11,7 +11,9 @@ export default [
         document: 'readonly',
         customElements: 'readonly',
         HTMLElement: 'readonly',
+        HTMLCanvasElement: 'readonly',
         CustomEvent: 'readonly',
+        PageTransitionEvent: 'readonly',
         IntersectionObserver: 'readonly',
         ResizeObserver: 'readonly',
         MutationObserver: 'readonly',
@@ -39,6 +41,6 @@ export default [
     },
   },
   {
-    ignores: ['dist/', 'dist-site/', 'node_modules/', 'docs/', 'demos/', 'test/'],
+    ignores: ['dist/', 'dist-site/', 'node_modules/', 'docs/', 'demos/'],
   },
 ];
