@@ -12,6 +12,11 @@ const DEFAULTS = {
   '--color-error': '#ef4444',
 };
 
+// Parsed-color cache, capped so a long-lived SPA cycling through many dynamic
+// colors can't grow it without bound. Map insertion order gives a cheap LRU:
+// hits are re-inserted (most-recently-used last) and the oldest key is evicted
+// at the cap.
+const CACHE_CAP = 128;
 const cache = new Map();
 let probeCtx = null;
 let probeEl = null;
@@ -47,7 +52,11 @@ export function parseColor(str) {
     return parseColor(resolveViaDom(key));
   }
   const hit = cache.get(key);
-  if (hit) return hit;
+  if (hit) {
+    cache.delete(key); // re-insert to mark most-recently-used
+    cache.set(key, hit);
+    return hit;
+  }
   if (!probeCtx) {
     probeCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
   }
@@ -65,6 +74,7 @@ export function parseColor(str) {
   probeCtx.fillRect(0, 0, 1, 1);
   const d = probeCtx.getImageData(0, 0, 1, 1).data;
   const rgba = [d[0] / 255, d[1] / 255, d[2] / 255, d[3] / 255];
+  if (cache.size >= CACHE_CAP) cache.delete(cache.keys().next().value);
   cache.set(key, rgba);
   return rgba;
 }
