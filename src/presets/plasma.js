@@ -34,4 +34,11 @@ void main() {
 }
 `;
 
-export const create = makeShaderPreset(FS, ['u_time', 'u_intensity', 'u_density', 'u_c1', 'u_c2', 'u_c3']);
+export const create = makeShaderPreset(FS, [
+  'u_time',
+  'u_intensity',
+  'u_density',
+  'u_c1',
+  'u_c2',
+  'u_c3',
+]);
