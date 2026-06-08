@@ -1,5 +1,6 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
+import { rgbaCss as rgb } from '../renderer/tokens.js';
 
 const DEFAULT_LISTING = `<!doctype html>
 <html lang="en">
@@ -171,10 +172,6 @@ export function create({ c2d, getColors }) {
   let lastT = 0;
   let flickers = [];
   let flickerAcc = 0;
-
-  function rgb(v, a) {
-    return `rgba(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0},${a})`;
-  }
 
   function colorFor(tokType, c) {
     return tokType === 'tag'

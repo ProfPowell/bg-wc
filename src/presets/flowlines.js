@@ -1,5 +1,6 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
+import { rgbaCss as rgb } from '../renderer/tokens.js';
 
 // Thin parallel curves traced through a slow-evolving 2D vector field —
 // the streamline / contour-flow aesthetic (think Cerence AI hero, fluid-
@@ -17,10 +18,6 @@ export function create({ c2d, getColors }) {
     h = 0;
   let lastSeed = -1;
   let lineSeeds = [];
-
-  function rgb(v, a) {
-    return `rgba(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0},${a})`;
-  }
 
   function lineCount(params) {
     return Math.max(

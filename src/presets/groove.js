@@ -1,5 +1,6 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
+import { rgbaCss as rgb } from '../renderer/tokens.js';
 
 // 70s "groovy pipe" routes: bundles of parallel theme-colored stripes that run
 // as one continuous path, take rounded corners and tight U-turns, and end by
@@ -18,10 +19,6 @@ const DRAW_S = 4.5; // seconds to draw the bundle fully on
 const HOLD_S = 4.0; // seconds held fully drawn
 const OUT_S = 3.5; // seconds to retract
 const GAP_S = 0.4; // empty beat before redrawing
-
-function rgb(v, a) {
-  return `rgba(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0},${a})`;
-}
 
 // Mix a color toward white / black. amt in [0..1].
 function lighten(c, amt) {

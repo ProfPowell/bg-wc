@@ -4,6 +4,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors }) {
   let w = 1,
@@ -78,7 +79,7 @@ export function create({ c2d, getColors }) {
         const radius = (i + rand()) * (maxR / 6);
         const ring = palette[i % palette.length];
         const a = 1 - radius / (maxR * 1.25);
-        c2d.strokeStyle = `rgba(${(ring[0] * 255) | 0},${(ring[1] * 255) | 0},${(ring[2] * 255) | 0},${(a * 0.85).toFixed(3)})`;
+        c2d.strokeStyle = rgbaCss(ring, (a * 0.85).toFixed(3));
         c2d.beginPath();
         c2d.arc(cx, cy, radius, 0, Math.PI * 2);
         c2d.stroke();

@@ -6,7 +6,7 @@
 export function rgbCss(c) {
   return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`;
 }
-export function rgbaCss(c, a) {
+export function rgbaCss(c, a = 1) {
   return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
 }
 

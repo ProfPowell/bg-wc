@@ -1,5 +1,6 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
+import { rgbaCss as rgb } from '../renderer/tokens.js';
 
 const HARD_BLACK = [0, 0, 0, 1];
 const HARD_WHITE = [1, 1, 1, 1];
@@ -16,10 +17,6 @@ export function create({ host, c2d, getColors }) {
   let stipplePattern = null;
   let stippleKey = null;
   let lastT = 0;
-
-  function rgb(v, a = 1) {
-    return `rgba(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0},${a})`;
-  }
 
   function palette() {
     const useTheme = host.hasAttribute('use-theme');

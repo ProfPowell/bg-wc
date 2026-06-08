@@ -1,12 +1,9 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss as rgb } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors }) {
   let w = 0,
     h = 0;
-
-  function rgb(v, a) {
-    return `rgba(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0},${a})`;
-  }
 
   function ribbonCount(params) {
     return Math.max(3, Math.min(8, Math.round(3 + params.density * 5)));

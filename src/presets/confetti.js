@@ -3,6 +3,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbCss } from '../renderer/tokens.js';
 
 const CAPS = { low: 80, med: 220, high: 500 };
 
@@ -32,11 +33,11 @@ export function create({ c2d, getColors }) {
 
   function buildPalette(c) {
     return [
-      `rgb(${(c.primary[0] * 255) | 0},${(c.primary[1] * 255) | 0},${(c.primary[2] * 255) | 0})`,
-      `rgb(${(c.accent[0] * 255) | 0},${(c.accent[1] * 255) | 0},${(c.accent[2] * 255) | 0})`,
-      `rgb(${(c.success[0] * 255) | 0},${(c.success[1] * 255) | 0},${(c.success[2] * 255) | 0})`,
-      `rgb(${(c.warning[0] * 255) | 0},${(c.warning[1] * 255) | 0},${(c.warning[2] * 255) | 0})`,
-      `rgb(${(c.error[0] * 255) | 0},${(c.error[1] * 255) | 0},${(c.error[2] * 255) | 0})`,
+      rgbCss(c.primary),
+      rgbCss(c.accent),
+      rgbCss(c.success),
+      rgbCss(c.warning),
+      rgbCss(c.error),
     ];
   }
 

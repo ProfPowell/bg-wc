@@ -2,6 +2,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbCss } from '../renderer/tokens.js';
 
 const CAPS = { low: 150, med: 500, high: 1500 };
 
@@ -43,11 +44,11 @@ export function create({ c2d, getColors }) {
     }
     if (palette === 'mono') {
       const fg = colors.fg;
-      return `rgb(${(fg[0] * 255) | 0},${(fg[1] * 255) | 0},${(fg[2] * 255) | 0})`;
+      return rgbCss(fg);
     }
     // theme — cycle through primary/accent/info
     const slot = p.hue < 0.34 ? colors.primary : p.hue < 0.67 ? colors.accent : colors.info;
-    return `rgb(${(slot[0] * 255) | 0},${(slot[1] * 255) | 0},${(slot[2] * 255) | 0})`;
+    return rgbCss(slot);
   }
 
   function frame(t, params) {

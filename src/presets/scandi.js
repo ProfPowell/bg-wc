@@ -1,5 +1,6 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
+import { rgbaCss as rgb } from '../renderer/tokens.js';
 
 // Scandinavian / Bauhaus geometric grid: a seed-driven tiling of arc primitives
 // (dots, half- and quarter-discs, leaves, squares) with a few curated floral
@@ -15,9 +16,6 @@ const PRIMITIVES = ['dot', 'half', 'quarter', 'leaf', 'square'];
 
 function mix(a, b, t) {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
-}
-function rgb(v, a = 1) {
-  return `rgba(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0},${a})`;
 }
 
 // Build the pastel palette: each theme role softened toward bg (or fg if bg is

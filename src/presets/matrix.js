@@ -3,6 +3,7 @@
 // glyph is drawn bright. The 90s hacker aesthetic. Canvas2D.
 
 import { mulberry32 } from '../util/pause.js';
+import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 
 const GLYPHS = 'アイウエオカキクケコサシスセソタチツテトナニヌ0123456789:.=*+-<>';
 
@@ -48,7 +49,7 @@ export function create({ c2d, getColors, pxScale }) {
     // theme bg is transparent, since trails need something to fade into).
     const bg = c.bg[3] > 0.01 ? c.bg : [0.02, 0.04, 0.02, 1];
     c2d.globalCompositeOperation = 'source-over';
-    c2d.fillStyle = `rgba(${(bg[0] * 255) | 0},${(bg[1] * 255) | 0},${(bg[2] * 255) | 0},0.10)`;
+    c2d.fillStyle = rgbaCss(bg, 0.1);
     c2d.fillRect(0, 0, w, h);
 
     const dt = Math.max(0, Math.min(0.1, t - lastT));
@@ -57,7 +58,7 @@ export function create({ c2d, getColors, pxScale }) {
     const head = c.fg || [0.8, 1, 0.8, 1];
     const trail = c.primary;
     const headStyle = `rgb(${Math.min(255, head[0] * 255 + 80) | 0},${Math.min(255, head[1] * 255 + 80) | 0},${Math.min(255, head[2] * 255 + 80) | 0})`;
-    const trailStyle = `rgb(${(trail[0] * 255) | 0},${(trail[1] * 255) | 0},${(trail[2] * 255) | 0})`;
+    const trailStyle = rgbCss(trail);
 
     c2d.font = `${fontSize}px ui-monospace, monospace`;
     c2d.textBaseline = 'top';
@@ -96,13 +97,13 @@ export function create({ c2d, getColors, pxScale }) {
       ensure(params);
       const c = getColors();
       const bg = c.bg[3] > 0.01 ? c.bg : [0.02, 0.04, 0.02, 1];
-      c2d.fillStyle = `rgb(${(bg[0] * 255) | 0},${(bg[1] * 255) | 0},${(bg[2] * 255) | 0})`;
+      c2d.fillStyle = rgbCss(bg);
       c2d.fillRect(0, 0, w, h);
       const r = mulberry32(params.seed || 1);
       const trail = c.primary;
       c2d.font = `${fontSize}px ui-monospace, monospace`;
       c2d.textBaseline = 'top';
-      c2d.fillStyle = `rgb(${(trail[0] * 255) | 0},${(trail[1] * 255) | 0},${(trail[2] * 255) | 0})`;
+      c2d.fillStyle = rgbCss(trail);
       for (let i = 0; i < cols; i++) {
         const tail = 3 + ((r() * 12) | 0);
         const head = (r() * (h / fontSize)) | 0;

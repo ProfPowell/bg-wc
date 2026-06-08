@@ -1,5 +1,6 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
+import { rgbaCss as rgb } from '../renderer/tokens.js';
 
 const ACCENT_TILE_THRESHOLD = 0.85;
 
@@ -117,10 +118,6 @@ export function create({ host, c2d, getColors }) {
     ) {
       rebuild(params);
     }
-  }
-
-  function rgb(v, a = 1) {
-    return `rgba(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0},${a})`;
   }
 
   function drawIso(t, params, c) {

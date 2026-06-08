@@ -3,6 +3,7 @@
 // bg fill each frame makes the wake. Retro group.
 
 import { mulberry32 } from '../util/pause.js';
+import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
@@ -46,7 +47,7 @@ export function create({ c2d, getColors, pxScale }) {
     // Trailing wake: translucent fill (fall back to near-black if transparent).
     const bg = c.bg[3] > 0.01 ? c.bg : [0.02, 0.02, 0.05, 1];
     c2d.globalCompositeOperation = 'source-over';
-    c2d.fillStyle = `rgba(${(bg[0] * 255) | 0},${(bg[1] * 255) | 0},${(bg[2] * 255) | 0},0.08)`;
+    c2d.fillStyle = rgbaCss(bg, 0.08);
     c2d.fillRect(0, 0, w, h);
 
     const dt = Math.max(0, Math.min(0.1, t - lastT));
@@ -78,7 +79,7 @@ export function create({ c2d, getColors, pxScale }) {
       }
       // Color cycles slowly through the theme tints.
       const col = palette[(s.palIdx + Math.floor(t * 0.2)) % palette.length];
-      c2d.strokeStyle = `rgb(${(col[0] * 255) | 0},${(col[1] * 255) | 0},${(col[2] * 255) | 0})`;
+      c2d.strokeStyle = rgbCss(col);
       c2d.beginPath();
       for (let i = 0; i < s.pts.length; i++) {
         const p = s.pts[i];
@@ -103,13 +104,13 @@ export function create({ c2d, getColors, pxScale }) {
       ensure(params);
       const c = getColors();
       const bg = c.bg[3] > 0.01 ? c.bg : [0.02, 0.02, 0.05, 1];
-      c2d.fillStyle = `rgb(${(bg[0] * 255) | 0},${(bg[1] * 255) | 0},${(bg[2] * 255) | 0})`;
+      c2d.fillStyle = rgbCss(bg);
       c2d.fillRect(0, 0, w, h);
       const palette = [c.primary, c.accent, c.info];
       c2d.lineWidth = 2 * px;
       for (const s of shapes) {
         const col = palette[s.palIdx % palette.length];
-        c2d.strokeStyle = `rgb(${(col[0] * 255) | 0},${(col[1] * 255) | 0},${(col[2] * 255) | 0})`;
+        c2d.strokeStyle = rgbCss(col);
         c2d.beginPath();
         for (let i = 0; i < s.pts.length; i++) {
           const p = s.pts[i];

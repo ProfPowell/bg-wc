@@ -1,4 +1,5 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbCss as rgb } from '../renderer/tokens.js';
 
 // Mural-scale curved bands in the Barbara Stauffacher Solomon / Sea Ranch
 // supergraphics tradition: thick solid-color stripes with dramatic curves,
@@ -24,10 +25,6 @@ const PERSONALITIES = [
 export function create({ c2d, getColors }) {
   let w = 0,
     h = 0;
-
-  function rgb(v) {
-    return `rgb(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0})`;
-  }
 
   function bandCount(params) {
     return Math.max(

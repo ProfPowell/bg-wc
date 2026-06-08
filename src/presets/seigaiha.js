@@ -1,4 +1,5 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss as rgb } from '../renderer/tokens.js';
 
 // Seigaiha (青海波) — the Japanese "blue ocean wave" pattern: a hex-packed field
 // of overlapping concentric-ring discs ("bullseyes"), painted back-to-front so
@@ -11,10 +12,6 @@ import { clearAndFill } from '../renderer/canvas2d.js';
 const RIPPLE_AMP = 0.18; // how strongly inner rings breathe
 const RIPPLE_W = 0.9; // ripple temporal frequency
 const RIPPLE_K = 0.0016; // spatial frequency (per device px) → travelling wave
-
-function rgb(v, a = 1) {
-  return `rgba(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0},${a})`;
-}
 
 export function create({ c2d, getColors }) {
   let w = 0;

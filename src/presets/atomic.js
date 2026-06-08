@@ -5,10 +5,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
-
-function rgb(c) {
-  return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`;
-}
+import { rgbCss as rgb } from '../renderer/tokens.js';
 
 function drawBoomerang(ctx, size, color) {
   ctx.strokeStyle = color;
