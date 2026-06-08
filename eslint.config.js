@@ -25,6 +25,7 @@ export default [
         requestAnimationFrame: 'readonly',
         cancelAnimationFrame: 'readonly',
         AbortController: 'readonly',
+        URL: 'readonly',
         getComputedStyle: 'readonly',
         matchMedia: 'readonly',
         Image: 'readonly',

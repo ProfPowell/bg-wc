@@ -53,3 +53,21 @@ jobs:
 
       - name: Test
         run: npm test
+
+  # Per-preset visual baselines run in the pinned Playwright container so pixels
+  # match the committed baselines exactly (generated with the same image via
+  # scripts/update-visual-baselines.sh). Kept out of the matrix job above, whose
+  # ubuntu-latest renderer would not match the baselines.
+  visual:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.60.0-jammy
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Visual regression
+        run: npm run test:visual
