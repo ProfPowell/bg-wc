@@ -9,11 +9,12 @@ import { mulberry32 } from '../util/pause.js';
 
 const MIN_LINES = 6;
 const MAX_LINES = 24;
-const STEP_PX = 3;        // integration step along x
+const STEP_PX = 3; // integration step along x
 const FIELD_T_SCALE = 0.08; // how fast the field morphs
 
 export function create({ c2d, getColors }) {
-  let w = 0, h = 0;
+  let w = 0,
+    h = 0;
   let lastSeed = -1;
   let lineSeeds = [];
 
@@ -97,9 +98,16 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
     frame,
-    staticFrame(params) { frame(0, params); },
-    dispose() { lineSeeds = []; },
+    staticFrame(params) {
+      frame(0, params);
+    },
+    dispose() {
+      lineSeeds = [];
+    },
   };
 }

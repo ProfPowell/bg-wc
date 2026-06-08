@@ -381,10 +381,7 @@ class BgWc extends HTMLElement {
         layer = ctx.stage;
       } else {
         layer = this.#makeCanvas();
-        ctx =
-          loaded.renderer === 'webgl'
-            ? createGLContext(layer)
-            : createC2DContext(layer);
+        ctx = loaded.renderer === 'webgl' ? createGLContext(layer) : createC2DContext(layer);
         if (!ctx) throw new Error(`${loaded.renderer} context unavailable`);
       }
     } catch (err) {

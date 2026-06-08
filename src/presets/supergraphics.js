@@ -14,15 +14,16 @@ const PHASE_DRIFT_PER_S = 0.18; // slow morph; host already speed-scales t
 // Per-band "personalities" — amplitude / frequency / cross-viewport tilt.
 // Cycled by index so increasing density adds bands with new character.
 const PERSONALITIES = [
-  { amp: 0.25, freq: 0.6, tilt: 0.0 },    // long gentle wave
-  { amp: 0.22, freq: 1.3, tilt: 0.35 },   // tilts up across the viewport
-  { amp: 0.20, freq: 0.8, tilt: -0.32 },  // tilts down
-  { amp: 0.24, freq: 1.7, tilt: 0.08 },   // tighter zigzag
-  { amp: 0.18, freq: 0.4, tilt: 0.22 },   // gentle tilt up
+  { amp: 0.25, freq: 0.6, tilt: 0.0 }, // long gentle wave
+  { amp: 0.22, freq: 1.3, tilt: 0.35 }, // tilts up across the viewport
+  { amp: 0.2, freq: 0.8, tilt: -0.32 }, // tilts down
+  { amp: 0.24, freq: 1.7, tilt: 0.08 }, // tighter zigzag
+  { amp: 0.18, freq: 0.4, tilt: 0.22 }, // gentle tilt up
 ];
 
 export function create({ c2d, getColors }) {
-  let w = 0, h = 0;
+  let w = 0,
+    h = 0;
 
   function rgb(v) {
     return `rgb(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0})`;
@@ -75,9 +76,14 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
     frame,
-    staticFrame(params) { frame(0, params); },
+    staticFrame(params) {
+      frame(0, params);
+    },
     dispose() {},
   };
 }

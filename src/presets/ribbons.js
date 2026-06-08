@@ -1,7 +1,8 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 
 export function create({ c2d, getColors }) {
-  let w = 0, h = 0;
+  let w = 0,
+    h = 0;
 
   function rgb(v, a) {
     return `rgba(${(v[0] * 255) | 0},${(v[1] * 255) | 0},${(v[2] * 255) | 0},${a})`;
@@ -57,9 +58,14 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
     frame,
-    staticFrame(params) { frame(0, params); },
+    staticFrame(params) {
+      frame(0, params);
+    },
     dispose() {},
   };
 }

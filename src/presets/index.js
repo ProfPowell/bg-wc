@@ -80,7 +80,11 @@ const REGISTRY = {
   warp: { renderer: 'webgl', group: 'geometric', loader: () => import('./warp.js') },
   topology: { renderer: 'webgl', group: 'geometric', loader: () => import('./topology.js') },
   cells: { renderer: 'webgl', group: 'geometric', loader: () => import('./cells.js') },
-  kaleidoscope: { renderer: 'webgl', group: 'geometric', loader: () => import('./kaleidoscope.js') },
+  kaleidoscope: {
+    renderer: 'webgl',
+    group: 'geometric',
+    loader: () => import('./kaleidoscope.js'),
+  },
   doodles: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./doodles.js') },
   scandi: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./scandi.js') },
   seigaiha: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./seigaiha.js') },
@@ -149,7 +153,11 @@ const REGISTRY = {
   tetris: { renderer: 'canvas2d', group: 'particles', loader: () => import('./tetris.js') },
 
   // Dimensional / CSS-3D scenes
-  'fly-through': { renderer: 'css3d', group: 'dimensional', loader: () => import('./fly-through.js') },
+  'fly-through': {
+    renderer: 'css3d',
+    group: 'dimensional',
+    loader: () => import('./fly-through.js'),
+  },
   explode: { renderer: 'css3d', group: 'dimensional', loader: () => import('./explode.js') },
 
   // Animated charts — busy data backgrounds

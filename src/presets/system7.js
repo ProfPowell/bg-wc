@@ -8,9 +8,11 @@ const MAX_WINDOWS = 8;
 const STIPPLE_TILE = 4; // pattern tile size in CSS px
 
 export function create({ host, c2d, getColors }) {
-  let w = 0, h = 0;
+  let w = 0,
+    h = 0;
   let windows = [];
-  let lastSeed = -1, lastDensity = -1;
+  let lastSeed = -1,
+    lastDensity = -1;
   let stipplePattern = null;
   let stippleKey = null;
   let lastT = 0;
@@ -23,7 +25,7 @@ export function create({ host, c2d, getColors }) {
     const useTheme = host.hasAttribute('use-theme');
     if (!useTheme) return { page: HARD_WHITE, chrome: HARD_BLACK };
     const c = getColors();
-    const page = (c.bg && c.bg[3] > 0.01) ? c.bg : HARD_WHITE;
+    const page = c.bg && c.bg[3] > 0.01 ? c.bg : HARD_WHITE;
     const chrome = c.fg || HARD_BLACK;
     return { page, chrome };
   }
@@ -50,14 +52,22 @@ export function create({ host, c2d, getColors }) {
         }
       }
     } else if (dens === 0.25) {
-      [[0, 0], [2, 1], [1, 2], [3, 3]].forEach(([x, y]) => pctx.fillRect(x, y, 1, 1));
+      [
+        [0, 0],
+        [2, 1],
+        [1, 2],
+        [3, 3],
+      ].forEach(([x, y]) => pctx.fillRect(x, y, 1, 1));
     } else {
       for (let y = 0; y < STIPPLE_TILE; y++) {
         for (let x = 0; x < STIPPLE_TILE; x++) {
           if (((x + y) & 1) === 1) pctx.fillRect(x, y, 1, 1);
         }
       }
-      [[0, 0], [2, 2]].forEach(([x, y]) => pctx.fillRect(x, y, 1, 1));
+      [
+        [0, 0],
+        [2, 2],
+      ].forEach(([x, y]) => pctx.fillRect(x, y, 1, 1));
     }
     stipplePattern = c2d.createPattern(pc, 'repeat');
     stippleKey = key;
@@ -69,7 +79,10 @@ export function create({ host, c2d, getColors }) {
     if (seed === lastSeed && params.density === lastDensity && windows.length > 0) return;
     lastSeed = seed;
     lastDensity = params.density;
-    const count = Math.max(MIN_WINDOWS, Math.min(MAX_WINDOWS, Math.round(MIN_WINDOWS + params.density * (MAX_WINDOWS - MIN_WINDOWS))));
+    const count = Math.max(
+      MIN_WINDOWS,
+      Math.min(MAX_WINDOWS, Math.round(MIN_WINDOWS + params.density * (MAX_WINDOWS - MIN_WINDOWS)))
+    );
     const rng = mulberry32(seed || 1);
     windows = [];
     for (let i = 0; i < count; i++) {
@@ -145,7 +158,10 @@ export function create({ host, c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
     frame,
     staticFrame(params) {
       ensureWindows(params);

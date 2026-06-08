@@ -30,6 +30,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Format check
+        run: npm run format:check
+
       - name: Custom-elements manifest is up to date
         run: npm run cem:check
 

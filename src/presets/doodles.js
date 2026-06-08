@@ -25,12 +25,25 @@ function star() {
 }
 function arrow() {
   return [
-    [[0.1, 0.5], [0.85, 0.5]],
-    [[0.6, 0.3], [0.88, 0.5], [0.6, 0.7]],
+    [
+      [0.1, 0.5],
+      [0.85, 0.5],
+    ],
+    [
+      [0.6, 0.3],
+      [0.88, 0.5],
+      [0.6, 0.7],
+    ],
   ];
 }
 function check() {
-  return [[[0.2, 0.55], [0.42, 0.78], [0.82, 0.25]]];
+  return [
+    [
+      [0.2, 0.55],
+      [0.42, 0.78],
+      [0.82, 0.25],
+    ],
+  ];
 }
 function heart() {
   const p = [];
@@ -44,30 +57,69 @@ function heart() {
 }
 function sprig() {
   return [
-    [[0.5, 0.95], [0.5, 0.08]],
-    [[0.5, 0.62], [0.28, 0.46]],
-    [[0.5, 0.5], [0.72, 0.34]],
-    [[0.5, 0.38], [0.3, 0.24]],
+    [
+      [0.5, 0.95],
+      [0.5, 0.08],
+    ],
+    [
+      [0.5, 0.62],
+      [0.28, 0.46],
+    ],
+    [
+      [0.5, 0.5],
+      [0.72, 0.34],
+    ],
+    [
+      [0.5, 0.38],
+      [0.3, 0.24],
+    ],
   ];
 }
 function box() {
-  return [[[0.2, 0.2], [0.8, 0.2], [0.8, 0.8], [0.2, 0.8], [0.2, 0.2]]];
+  return [
+    [
+      [0.2, 0.2],
+      [0.8, 0.2],
+      [0.8, 0.8],
+      [0.2, 0.8],
+      [0.2, 0.2],
+    ],
+  ];
 }
 function triangle() {
-  return [[[0.5, 0.15], [0.85, 0.82], [0.15, 0.82], [0.5, 0.15]]];
+  return [
+    [
+      [0.5, 0.15],
+      [0.85, 0.82],
+      [0.15, 0.82],
+      [0.5, 0.15],
+    ],
+  ];
 }
 function divider() {
   return [
-    [[0.08, 0.5], [0.92, 0.5]],
-    [[0.08, 0.42], [0.08, 0.58]],
-    [[0.92, 0.42], [0.92, 0.58]],
+    [
+      [0.08, 0.5],
+      [0.92, 0.5],
+    ],
+    [
+      [0.08, 0.42],
+      [0.08, 0.58],
+    ],
+    [
+      [0.92, 0.42],
+      [0.92, 0.58],
+    ],
   ];
 }
 function dottedUnderline() {
   const strokes = [];
   for (let i = 0; i < 5; i++) {
     const x = 0.08 + i * 0.19;
-    strokes.push([[x, 0.55], [x + 0.1, 0.55]]);
+    strokes.push([
+      [x, 0.55],
+      [x + 0.1, 0.55],
+    ]);
   }
   return strokes;
 }
@@ -84,13 +136,32 @@ function sparkle() {
 function banner() {
   // Ribbon with swallowtail notches at both ends.
   return [
-    [[0.1, 0.38], [0.9, 0.38], [0.82, 0.5], [0.9, 0.62], [0.1, 0.62], [0.18, 0.5], [0.1, 0.38]],
+    [
+      [0.1, 0.38],
+      [0.9, 0.38],
+      [0.82, 0.5],
+      [0.9, 0.62],
+      [0.1, 0.62],
+      [0.18, 0.5],
+      [0.1, 0.38],
+    ],
   ];
 }
 function leaf() {
   return [
-    [[0.5, 0.95], [0.68, 0.66], [0.6, 0.32], [0.5, 0.06], [0.4, 0.32], [0.32, 0.66], [0.5, 0.95]],
-    [[0.5, 0.88], [0.5, 0.16]], // midrib
+    [
+      [0.5, 0.95],
+      [0.68, 0.66],
+      [0.6, 0.32],
+      [0.5, 0.06],
+      [0.4, 0.32],
+      [0.32, 0.66],
+      [0.5, 0.95],
+    ],
+    [
+      [0.5, 0.88],
+      [0.5, 0.16],
+    ], // midrib
   ];
 }
 function vine() {
@@ -99,7 +170,17 @@ function vine() {
     const t = i / 16;
     main.push([0.5 + 0.22 * Math.sin(t * Math.PI * 2.2), 0.92 - t * 0.84]);
   }
-  return [main, [[0.5, 0.62], [0.28, 0.52]], [[0.5, 0.38], [0.72, 0.28]]];
+  return [
+    main,
+    [
+      [0.5, 0.62],
+      [0.28, 0.52],
+    ],
+    [
+      [0.5, 0.38],
+      [0.72, 0.28],
+    ],
+  ];
 }
 function circle() {
   const pts = [];
@@ -111,7 +192,11 @@ function circle() {
 }
 function dotCluster() {
   // Three small dots, each a short closed loop so it reveals quickly as a dot.
-  return [[0.35, 0.4], [0.6, 0.55], [0.45, 0.7]].map(([cx, cy]) => {
+  return [
+    [0.35, 0.4],
+    [0.6, 0.55],
+    [0.45, 0.7],
+  ].map(([cx, cy]) => {
     const pts = [];
     for (let i = 0; i <= 8; i++) {
       const a = (i * Math.PI * 2) / 8;
@@ -315,7 +400,10 @@ export function create({ host, c2d, getColors }) {
       rand = r; // marginPoint/spawn use module-closure `rand`
       c2d.clearRect(0, 0, w, h);
       instances = [];
-      const n = Math.max(2, Math.round((CAPS[params.quality] || CAPS.med) * (0.4 + params.density)));
+      const n = Math.max(
+        2,
+        Math.round((CAPS[params.quality] || CAPS.med) * (0.4 + params.density))
+      );
       const pool = activePool();
       for (let i = 0; i < n; i++) {
         spawn(0, pool, color);

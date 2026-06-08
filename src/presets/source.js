@@ -161,7 +161,8 @@ function tokenize(line) {
 }
 
 export function create({ c2d, getColors }) {
-  let w = 0, h = 0;
+  let w = 0,
+    h = 0;
   let lines = null;
   let lastText = null;
   let lastSeed = -1;
@@ -176,21 +177,21 @@ export function create({ c2d, getColors }) {
   }
 
   function colorFor(tokType, c) {
-    return tokType === 'tag' ? c.primary
-      : tokType === 'attr' ? c.accent
-      : tokType === 'string' ? c.info
-      : c.fg;
+    return tokType === 'tag'
+      ? c.primary
+      : tokType === 'attr'
+        ? c.accent
+        : tokType === 'string'
+          ? c.info
+          : c.fg;
   }
 
   function alphaFor(tokType) {
-    return tokType === 'tag' ? 0.4
-      : tokType === 'attr' ? 0.45
-      : tokType === 'string' ? 0.45
-      : 0.25;
+    return tokType === 'tag' ? 0.4 : tokType === 'attr' ? 0.45 : tokType === 'string' ? 0.45 : 0.25;
   }
 
   function ensure(params) {
-    const text = (params.text && params.text.length > 0) ? params.text : DEFAULT_LISTING;
+    const text = params.text && params.text.length > 0 ? params.text : DEFAULT_LISTING;
     if (text !== lastText) {
       lastText = text;
       lines = text.split('\n').map(tokenize);
@@ -223,7 +224,7 @@ export function create({ c2d, getColors }) {
     c2d.textBaseline = 'top';
 
     const totalH = lines.length * lineH;
-    const offY = -((scroll) % totalH);
+    const offY = -(scroll % totalH);
 
     flickerAcc += dt;
     const flickerRate = 0.4 + params.intensity * 2.0;
@@ -250,7 +251,9 @@ export function create({ c2d, getColors }) {
           const tok = lines[i][ti];
           const flick = flickers.find((f) => f.li === i && f.ti === ti);
           const baseAlpha = alphaFor(tok.type);
-          const a = flick ? Math.min(1, baseAlpha + FLICKER_BOOST * (flick.ttl / FLICKER_TTL)) : baseAlpha;
+          const a = flick
+            ? Math.min(1, baseAlpha + FLICKER_BOOST * (flick.ttl / FLICKER_TTL))
+            : baseAlpha;
           c2d.fillStyle = rgb(colorFor(tok.type, c), a);
           c2d.fillText(tok.text, x, y);
           x += c2d.measureText(tok.text).width;
@@ -260,7 +263,10 @@ export function create({ c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
     frame,
     staticFrame(params) {
       ensure(params);

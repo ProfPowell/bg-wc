@@ -4,8 +4,11 @@ import { mulberry32 } from '../util/pause.js';
 const ACCENT_TILE_THRESHOLD = 0.85;
 
 export function create({ host, c2d, getColors }) {
-  let w = 0, h = 0;
-  let lastSeed = -1, lastMode = '', lastDensity = -1;
+  let w = 0,
+    h = 0;
+  let lastSeed = -1,
+    lastMode = '',
+    lastDensity = -1;
   let state = null;
   let lastT = 0;
 
@@ -46,7 +49,13 @@ export function create({ host, c2d, getColors }) {
       const pulses = [];
       const pulseCount = Math.max(2, Math.floor(2 + density * 6));
       for (let i = 0; i < pulseCount; i++) {
-        pulses.push({ next: rng() * 4, ttl: 0, cx: 0, cy: 0, color: rng() < 0.5 ? 'primary' : 'accent' });
+        pulses.push({
+          next: rng() * 4,
+          ttl: 0,
+          cx: 0,
+          cy: 0,
+          color: rng() < 0.5 ? 'primary' : 'accent',
+        });
       }
       state = { mode, step, pulses, rng };
     } else if (mode === 'stacked') {
@@ -66,8 +75,8 @@ export function create({ host, c2d, getColors }) {
       // three shade levels. Every cell breathes at its own rate; a diagonal
       // wave periodically brightens a sweeping strip so the eye sees motion
       // without the composition changing.
-      const cols = Math.max(8, Math.floor(10 + density * 8));   // 10-18
-      const rows = Math.max(6, Math.floor(7 + density * 5));    // 7-12
+      const cols = Math.max(8, Math.floor(10 + density * 8)); // 10-18
+      const rows = Math.max(6, Math.floor(7 + density * 5)); // 7-12
       const cells = [];
       for (let r = 0; r < rows; r++) {
         for (let col = 0; col < cols; col++) {
@@ -165,10 +174,12 @@ export function create({ host, c2d, getColors }) {
     c2d.lineWidth = 1;
     c2d.beginPath();
     for (let x = step; x < w; x += step) {
-      c2d.moveTo(x, 0); c2d.lineTo(x, h);
+      c2d.moveTo(x, 0);
+      c2d.lineTo(x, h);
     }
     for (let y = step; y < h; y += step) {
-      c2d.moveTo(0, y); c2d.lineTo(w, y);
+      c2d.moveTo(0, y);
+      c2d.lineTo(w, y);
     }
     c2d.stroke();
     for (const p of state.pulses) {
@@ -189,7 +200,7 @@ export function create({ host, c2d, getColors }) {
   }
 
   function drawStacked(t, params, c) {
-    const bw = w / state.stacks.length * 0.7;
+    const bw = (w / state.stacks.length) * 0.7;
     const bh = bw;
     for (const s of state.stacks) {
       const cycle = ((t + s.phase) * 0.4) % (s.height + 1.5);
@@ -252,9 +263,14 @@ export function create({ host, c2d, getColors }) {
   }
 
   return {
-    resize(nw, nh) { w = nw; h = nh; },
+    resize(nw, nh) {
+      w = nw;
+      h = nh;
+    },
     frame,
-    staticFrame(params) { frame(0, params); },
+    staticFrame(params) {
+      frame(0, params);
+    },
     dispose() {
       state = null;
     },
