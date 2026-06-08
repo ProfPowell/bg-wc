@@ -1,17 +1,23 @@
 // Battery-aware power-save hook. Resolves to a disposer.
 // If the Battery API is unavailable, returns a no-op disposer and never invokes cb.
-export async function observeBatteryPowerSave(cb) {
-  if (!navigator.getBattery) return () => {};
+// Pass an AbortSignal to cancel: if it aborts before getBattery() resolves no
+// listeners are attached; if it aborts after, they're removed — so a caller that
+// tears down during the async gap can't leak listeners.
+export async function observeBatteryPowerSave(cb, signal) {
+  if (!navigator.getBattery || signal?.aborted) return () => {};
   try {
     const battery = await navigator.getBattery();
+    if (signal?.aborted) return () => {};
     const handler = () => cb(battery.level < 0.2 && !battery.charging);
     battery.addEventListener('levelchange', handler);
     battery.addEventListener('chargingchange', handler);
     handler();
-    return () => {
+    const dispose = () => {
       battery.removeEventListener('levelchange', handler);
       battery.removeEventListener('chargingchange', handler);
     };
+    signal?.addEventListener('abort', dispose, { once: true });
+    return dispose;
   } catch {
     return () => {};
   }

@@ -33,8 +33,8 @@ jobs:
       - name: Custom-elements manifest is up to date
         run: npm run cem:check
 
-      - name: SSR import smoke
-        run: npm run test:ssr
+      - name: Node unit tests (SSR import, battery power-save)
+        run: npm run test:node
 
       - name: Build library
         run: npm run build

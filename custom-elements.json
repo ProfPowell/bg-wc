@@ -136,6 +136,9 @@
             },
             {
               "name": "mode"
+            },
+            {
+              "name": "power-save"
             }
           ],
           "superclass": {
@@ -244,6 +247,13 @@
             },
             {
               "name": "mode",
+              "inheritedFrom": {
+                "name": "BgWc",
+                "module": "src/bg-wc.js"
+              }
+            },
+            {
+              "name": "power-save",
               "inheritedFrom": {
                 "name": "BgWc",
                 "module": "src/bg-wc.js"
@@ -2799,6 +2809,9 @@
           "parameters": [
             {
               "name": "cb"
+            },
+            {
+              "name": "signal"
             }
           ]
         },

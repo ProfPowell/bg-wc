@@ -22,6 +22,7 @@ export default [
         clearTimeout: 'readonly',
         requestAnimationFrame: 'readonly',
         cancelAnimationFrame: 'readonly',
+        AbortController: 'readonly',
         getComputedStyle: 'readonly',
         matchMedia: 'readonly',
         Image: 'readonly',

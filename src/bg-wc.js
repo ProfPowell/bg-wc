@@ -85,6 +85,7 @@ class BgWc extends HTMLElement {
       'fit',
       'motion',
       'mode',
+      'power-save',
     ];
   }
 
@@ -104,6 +105,7 @@ class BgWc extends HTMLElement {
   #docVisible = !document.hidden;
   #reducedMotion = false;
   #powerSave = false;
+  #powerSaveCtrl = null;
   #loadingToken = 0;
   #internals = null;
 
@@ -229,12 +231,7 @@ class BgWc extends HTMLElement {
     this.#reducedMotion = rm.matches();
     this.#cleanups.push(rm.dispose);
 
-    if (this.getAttribute('power-save') !== 'off') {
-      observeBatteryPowerSave((p) => {
-        this.#powerSave = p;
-        this.#evalPlay();
-      }).then((d) => this.#cleanups.push(d));
-    }
+    if (this.getAttribute('power-save') !== 'off') this.#bindPowerSave();
 
     // Back/forward-cache restore: while the page was frozen the browser may have
     // dropped our WebGL context, and `webglcontextrestored` is not reliably
@@ -266,6 +263,7 @@ class BgWc extends HTMLElement {
       } catch {}
     }
     this.#cleanups.length = 0;
+    this.#unbindPowerSave();
     this.#disposeInstance();
   }
 
@@ -286,11 +284,40 @@ class BgWc extends HTMLElement {
       // rebuild. Canvas presets read them per frame and need no re-init — pass
       // the current preset name as prevName so no spurious preset-changed fires.
       if (this.#rendererKind === 'css3d') this.#loadCurrentPreset(this.preset);
+    } else if (name === 'power-save') {
+      // Runtime-toggleable: 'off' stops watching the battery (and clears the
+      // power-save brake); any other value (re)starts the observer.
+      if (newV === 'off') this.#unbindPowerSave();
+      else this.#bindPowerSave();
+      this.#evalPlay();
     }
     // intensity/speed/seed/palette/quality are read fresh each frame.
   }
 
   // --- Internals -------------------------------------------------------------
+
+  // Battery power-save observer. The AbortController is the teardown handle:
+  // aborting it disposes the battery listeners even if getBattery() is still
+  // pending, so disconnecting (or toggling power-save off) never leaks.
+  #bindPowerSave() {
+    if (this.#powerSaveCtrl) return;
+    const ctrl = new AbortController();
+    this.#powerSaveCtrl = ctrl;
+    observeBatteryPowerSave((p) => {
+      this.#powerSave = p;
+      this.#evalPlay();
+    }, ctrl.signal).then((dispose) => {
+      // Aborted before getBattery() resolved → dispose now (the signal's abort
+      // listener wasn't attached in that window).
+      if (ctrl.signal.aborted) dispose();
+    });
+  }
+
+  #unbindPowerSave() {
+    this.#powerSaveCtrl?.abort();
+    this.#powerSaveCtrl = null;
+    this.#powerSave = false;
+  }
 
   #emit(type, detail) {
     const fire = (t) =>
