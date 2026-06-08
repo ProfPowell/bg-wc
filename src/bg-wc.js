@@ -567,7 +567,6 @@ class BgWc extends HTMLElement {
   }
 
   #tick = (nowMs) => {
-    this.#rafId = requestAnimationFrame(this.#tick);
     const params = this.#readParams();
     const dt = Math.min(0.1, (nowMs - this.#lastTickMs) / 1000);
     this.#lastTickMs = nowMs;
@@ -579,11 +578,16 @@ class BgWc extends HTMLElement {
     try {
       this.#instance?.frame?.(this.#timeS, params);
     } catch (err) {
-      cancelAnimationFrame(this.#rafId);
+      // Stop the loop and do NOT reschedule — surface the failure instead of
+      // firing more frames on a broken instance.
       this.#rafId = 0;
       this.setAttribute('data-fallback', '');
       this.#emit('bg-wc:error', { phase: 'runtime', error: err });
+      return;
     }
+    // Schedule the next frame only after this one succeeded, so an error path
+    // can't leave a frame already enqueued against a disposed instance.
+    this.#rafId = requestAnimationFrame(this.#tick);
   };
 }
 
