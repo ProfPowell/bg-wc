@@ -9,6 +9,13 @@ import { resolveTokens } from './renderer/tokens.js';
 import { observeVisibility, observeReducedMotion, observeTabVisibility } from './util/observe.js';
 import { observeBatteryPowerSave } from './util/pause.js';
 
+// Clamp the per-frame delta so a long pause (background tab, breakpoint) can't
+// jump animations forward by a huge step on the next frame.
+const MAX_DT_S = 0.1;
+// Default devicePixelRatio ceiling — rendering above 2× rarely helps visibly but
+// costs 4×+ the fill, so cap unless the author opts higher.
+const DEFAULT_DPR_CAP = 2;
+
 const STYLE = `
 :host {
   display: block;
@@ -543,7 +550,7 @@ class BgWc extends HTMLElement {
       ? cssVar
       : Number.isFinite(attr)
         ? attr
-        : Math.min(globalThis.devicePixelRatio || 1, 2);
+        : Math.min(globalThis.devicePixelRatio || 1, DEFAULT_DPR_CAP);
     const [W, H] = resizeCanvas(this.#canvas, rect.width, rect.height, dpr);
     if (this.#rendererKind === 'webgl' && this.#ctx) {
       this.#ctx.viewport(0, 0, W, H);
@@ -595,7 +602,7 @@ class BgWc extends HTMLElement {
 
   #tick = (nowMs) => {
     const params = this.#readParams();
-    const dt = Math.min(0.1, (nowMs - this.#lastTickMs) / 1000);
+    const dt = Math.min(MAX_DT_S, (nowMs - this.#lastTickMs) / 1000);
     this.#lastTickMs = nowMs;
     // Time is speed-scaled here so every preset gets `speed` for free via
     // its `t` argument (and any `dt = t - lastT` it derives). Presets MUST

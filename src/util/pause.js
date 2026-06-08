@@ -1,3 +1,6 @@
+// Below this charge level (and not charging) we treat the device as power-saving.
+const LOW_BATTERY_THRESHOLD = 0.2;
+
 // Battery-aware power-save hook. Resolves to a disposer.
 // If the Battery API is unavailable, returns a no-op disposer and never invokes cb.
 // Pass an AbortSignal to cancel: if it aborts before getBattery() resolves no
@@ -8,7 +11,7 @@ export async function observeBatteryPowerSave(cb, signal) {
   try {
     const battery = await navigator.getBattery();
     if (signal?.aborted) return () => {};
-    const handler = () => cb(battery.level < 0.2 && !battery.charging);
+    const handler = () => cb(battery.level < LOW_BATTERY_THRESHOLD && !battery.charging);
     battery.addEventListener('levelchange', handler);
     battery.addEventListener('chargingchange', handler);
     handler();

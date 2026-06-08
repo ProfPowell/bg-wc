@@ -1,6 +1,10 @@
+// Start animating slightly before the element scrolls into view (and keep going
+// slightly past) so motion is already running when it's visible.
+const VISIBILITY_ROOT_MARGIN = '200px';
+
 export function observeVisibility(host, cb) {
   const io = new IntersectionObserver((entries) => cb(entries[0].isIntersecting), {
-    rootMargin: '200px',
+    rootMargin: VISIBILITY_ROOT_MARGIN,
   });
   io.observe(host);
   return () => io.disconnect();
