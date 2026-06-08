@@ -1,6 +1,6 @@
 {
   "name": "@profpowell/bg-wc",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Theme-aware background web component: animated WebGL & Canvas2D backgrounds behind any HTML content.",
   "license": "MIT",
   "type": "module",
