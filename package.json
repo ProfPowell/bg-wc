@@ -45,6 +45,7 @@
     "preview": "vite preview --config vite.site.config.js",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
+    "test:ssr": "node --test test/ssr-import.mjs",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write \"src/**/*.js\"",

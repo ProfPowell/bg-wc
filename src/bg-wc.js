@@ -591,7 +591,9 @@ class BgWc extends HTMLElement {
   };
 }
 
-if (!customElements.get('bg-wc')) {
+// Guard registration so importing this module in a non-browser / SSR context
+// (no customElements registry) doesn't throw at load.
+if (typeof customElements !== 'undefined' && !customElements.get('bg-wc')) {
   customElements.define('bg-wc', BgWc);
 }
 
@@ -610,7 +612,7 @@ class GlWcAlias extends BgWc {
     super.connectedCallback?.();
   }
 }
-if (!customElements.get('gl-wc')) {
+if (typeof customElements !== 'undefined' && !customElements.get('gl-wc')) {
   customElements.define('gl-wc', GlWcAlias);
 }
 
