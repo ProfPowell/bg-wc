@@ -90,7 +90,8 @@ export function create({ c2d, getColors }) {
       frame(t, params);
     },
     staticFrame(params) {
-      // Single still: scatter glyph columns at random heights.
+      // Custom still (can't delegate to frame(0): drops start above the canvas,
+      // so t=0 is blank). Scatter glyph columns at random heights with trails.
       ensure(params);
       const c = getColors();
       const bg = c.bg[3] > 0.01 ? c.bg : [0.02, 0.04, 0.02, 1];

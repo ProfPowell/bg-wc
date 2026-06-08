@@ -127,7 +127,8 @@ export function create({ c2d, getColors }) {
       frame(t, params);
     },
     staticFrame(params) {
-      // A scatter of mid-life bursts for the still frame.
+      // Custom still (can't delegate to frame(0): bursts spawn over time, so t=0
+      // has none). Draw a scatter of mid-life bursts.
       const c = getColors();
       const r = mulberry32(params.seed || 1);
       clearAndFill(c2d, w, h, c.bg);

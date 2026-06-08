@@ -203,7 +203,8 @@ export function create({ c2d, getColors }) {
       frame(t, params);
     },
     staticFrame(params) {
-      // Single still — pre-fill the lower half with random colored cells.
+      // Custom still (can't delegate to frame(0): the board starts empty and
+      // fills as pieces drop). Pre-fill the lower half with random cells.
       const c = getColors();
       const pal = palette(c);
       const r = mulberry32(params.seed || 1);

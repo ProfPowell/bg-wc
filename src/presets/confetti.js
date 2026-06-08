@@ -92,7 +92,8 @@ export function create({ c2d, getColors }) {
       frame(t, params);
     },
     staticFrame(params) {
-      // single burst snapshot — fill once with a fixed scatter
+      // Custom still (can't delegate to frame(0): confetti falls in over time,
+      // so t=0 is nearly empty). Fill once with a fixed scatter.
       const c = getColors();
       const palette = buildPalette(c);
       clearAndFill(c2d, w, h, c.bg);
