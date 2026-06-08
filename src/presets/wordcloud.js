@@ -5,6 +5,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss as rgba } from '../renderer/tokens.js';
 
 const DEFAULT =
   'bg-wc|webgl|canvas|shader|theme|tokens|preset|gradient|aurora|plasma|vector|retro|pixels|noise|motion|render|frame|glow|particles|dataviz|surface|ambient';
@@ -32,10 +33,6 @@ export function create({ c2d, getColors }) {
       tint: i % 3,
     }));
     lastKey = `${params.seed}|${params.text}`;
-  }
-
-  function rgba(c, a) {
-    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
   }
 
   function frame(t, params) {

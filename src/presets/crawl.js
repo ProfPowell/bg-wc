@@ -3,6 +3,7 @@
 // copy with the `text` attribute. Text group.
 
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss as rgb } from '../renderer/tokens.js';
 
 const DEFAULT =
   'A long time ago|in a codebase|far, far away…||bg-wc renders|text in the|graphics layer.';
@@ -12,10 +13,6 @@ export function create({ c2d, getColors }) {
     h = 1;
   let scroll = 0;
   let lastT = 0;
-
-  function rgb(c, a) {
-    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
-  }
 
   function frame(t, params) {
     const c = getColors();

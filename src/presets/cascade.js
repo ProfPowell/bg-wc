@@ -3,16 +3,13 @@
 // the word with `text`. Text group.
 
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbCss as rgb } from '../renderer/tokens.js';
 
 const DEFAULT = 'BG·WC';
 
 export function create({ c2d, getColors }) {
   let w = 1,
     h = 1;
-
-  function rgb(c) {
-    return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`;
-  }
 
   // Bounce-out easing toward a settled value of 1.
   function bounce(x) {

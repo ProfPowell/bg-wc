@@ -3,14 +3,11 @@
 // the rosette continuously re-forms. Vector group.
 
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss as rgb } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors }) {
   let w = 1,
     h = 1;
-
-  function rgb(c, a) {
-    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
-  }
 
   function frame(t, params) {
     const c = getColors();

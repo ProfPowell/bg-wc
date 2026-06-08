@@ -1,6 +1,15 @@
 // VB token resolver. CSS var string → RGBA tuple (0..1) via canvas2d round-trip.
 // No build-time coupling, no dependency. Cached per input string.
 
+// CSS color strings from a [0..1] RGB(A) tuple. Centralizes the assembly that
+// canvas2d presets used to each re-implement. Components match (channels floored).
+export function rgbCss(c) {
+  return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`;
+}
+export function rgbaCss(c, a) {
+  return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
+}
+
 const DEFAULTS = {
   '--color-background': 'transparent',
   '--color-foreground': '#1a1a1a',

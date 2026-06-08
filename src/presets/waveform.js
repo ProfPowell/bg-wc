@@ -4,6 +4,7 @@
 // Dataviz group.
 
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss as rgba } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors }) {
   let w = 1,
@@ -11,9 +12,6 @@ export function create({ c2d, getColors }) {
 
   function hash(x) {
     return (Math.sin(x * 127.1) * 43758.5453) % 1;
-  }
-  function rgba(c, a) {
-    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
   }
 
   function frame(t, params) {

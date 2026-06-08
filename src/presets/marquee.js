@@ -3,6 +3,7 @@
 // Set the string with the `text` attribute. Text group.
 
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbCss as rgb } from '../renderer/tokens.js';
 
 const DEFAULT = 'BG·WC ★ VANILLA BREEZE ★ ';
 
@@ -12,9 +13,6 @@ export function create({ c2d, getColors }) {
   let offset = 0;
   let lastT = 0;
 
-  function rgb(c) {
-    return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`;
-  }
   function colorFor(palette, i, c) {
     if (palette === 'rainbow') return `hsl(${(i * 32) % 360},85%,62%)`;
     if (palette === 'mono') return rgb(c.fg);

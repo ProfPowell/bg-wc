@@ -2534,6 +2534,27 @@
       "declarations": [
         {
           "kind": "function",
+          "name": "rgbCss",
+          "parameters": [
+            {
+              "name": "c"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "rgbaCss",
+          "parameters": [
+            {
+              "name": "c"
+            },
+            {
+              "name": "a"
+            }
+          ]
+        },
+        {
+          "kind": "function",
           "name": "parseColor",
           "parameters": [
             {
@@ -2579,6 +2600,22 @@
         }
       ],
       "exports": [
+        {
+          "kind": "js",
+          "name": "rgbCss",
+          "declaration": {
+            "name": "rgbCss",
+            "module": "src/renderer/tokens.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "rgbaCss",
+          "declaration": {
+            "name": "rgbaCss",
+            "module": "src/renderer/tokens.js"
+          }
+        },
         {
           "kind": "js",
           "name": "parseColor",

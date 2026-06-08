@@ -3,6 +3,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbCss as rgb } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors }) {
   let w = 1,
@@ -40,10 +41,6 @@ export function create({ c2d, getColors }) {
   function ensure(params) {
     const key = `${params.seed}|${params.density}`;
     if (!rocks.length || key !== lastKey) rebuild(params);
-  }
-
-  function rgb(c) {
-    return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`;
   }
 
   function frame(t, params) {

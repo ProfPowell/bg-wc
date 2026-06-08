@@ -3,6 +3,7 @@
 // cycling as it goes. Set the string with `text`. Text group.
 
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbCss as rgb } from '../renderer/tokens.js';
 
 const DEFAULT = 'GREETINGS FROM GL-WC ★ READS THE THEME ★ SCROLLS FOREVER ★    ';
 
@@ -11,10 +12,6 @@ export function create({ c2d, getColors }) {
     h = 1;
   let offset = 0;
   let lastT = 0;
-
-  function rgb(c) {
-    return `rgb(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0})`;
-  }
 
   function frame(t, params) {
     const c = getColors();

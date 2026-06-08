@@ -3,6 +3,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss as rgba } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors }) {
   let w = 1,
@@ -15,10 +16,6 @@ export function create({ c2d, getColors }) {
     rand = mulberry32(params.seed || 1);
     seeds = Array.from({ length: 16 }, () => rand() * 6.28);
     lastSeed = params.seed;
-  }
-
-  function rgba(c, a) {
-    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
   }
 
   function frame(t, params) {

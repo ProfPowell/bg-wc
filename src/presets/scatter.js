@@ -4,6 +4,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss as rgba } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors }) {
   let w = 1,
@@ -36,10 +37,6 @@ export function create({ c2d, getColors }) {
       };
     }
     lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function rgba(c, a) {
-    return `rgba(${(c[0] * 255) | 0},${(c[1] * 255) | 0},${(c[2] * 255) | 0},${a})`;
   }
 
   function glyph(shape, x, y, s) {
