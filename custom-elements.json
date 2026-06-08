@@ -534,13 +534,8 @@
       "path": "src/presets/aurora.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -559,13 +554,8 @@
       "path": "src/presets/benday.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -584,13 +574,8 @@
       "path": "src/presets/bliss.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -634,13 +619,8 @@
       "path": "src/presets/caustics.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -659,13 +639,8 @@
       "path": "src/presets/cells.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -684,13 +659,8 @@
       "path": "src/presets/comic.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -734,13 +704,8 @@
       "path": "src/presets/conic.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -759,13 +724,8 @@
       "path": "src/presets/copperbars.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -809,13 +769,8 @@
       "path": "src/presets/crt.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -859,13 +814,8 @@
       "path": "src/presets/deco.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -884,13 +834,8 @@
       "path": "src/presets/dither.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors, getParams: _getParams }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1120,13 +1065,8 @@
       "path": "src/presets/gameboy.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1170,13 +1110,8 @@
       "path": "src/presets/glitch.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1245,13 +1180,8 @@
       "path": "src/presets/halftone.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1361,13 +1291,8 @@
       "path": "src/presets/kaleidoscope.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1386,13 +1311,8 @@
       "path": "src/presets/lava.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1411,13 +1331,8 @@
       "path": "src/presets/mandala.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1436,13 +1351,8 @@
       "path": "src/presets/marble.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1511,13 +1421,8 @@
       "path": "src/presets/mesh-gradient.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1611,13 +1516,8 @@
       "path": "src/presets/noise.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1711,13 +1611,8 @@
       "path": "src/presets/plasma.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1761,13 +1656,8 @@
       "path": "src/presets/rainbow.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -1886,13 +1776,8 @@
       "path": "src/presets/shine.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -2061,13 +1946,8 @@
       "path": "src/presets/synthwave.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -2111,13 +1991,8 @@
       "path": "src/presets/tempest.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -2161,13 +2036,8 @@
       "path": "src/presets/topology.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -2211,13 +2081,8 @@
       "path": "src/presets/trench.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -2236,13 +2101,8 @@
       "path": "src/presets/tunnel.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -2286,13 +2146,8 @@
       "path": "src/presets/vhs.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -2311,13 +2166,8 @@
       "path": "src/presets/warp.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -2361,13 +2211,8 @@
       "path": "src/presets/waves.js",
       "declarations": [
         {
-          "kind": "function",
-          "name": "create",
-          "parameters": [
-            {
-              "name": "{ gl, getColors }"
-            }
-          ]
+          "kind": "variable",
+          "name": "create"
         }
       ],
       "exports": [
@@ -2524,6 +2369,46 @@
           "declaration": {
             "name": "createCSS3DContext",
             "module": "src/renderer/css3d.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/renderer/shader-preset.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "makeShaderPreset",
+          "parameters": [
+            {
+              "name": "FS"
+            },
+            {
+              "name": "uniformNames"
+            }
+          ]
+        },
+        {
+          "kind": "variable",
+          "name": "w",
+          "type": {
+            "text": "number"
+          },
+          "default": "1"
+        },
+        {
+          "kind": "variable",
+          "name": "c"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "makeShaderPreset",
+          "declaration": {
+            "name": "makeShaderPreset",
+            "module": "src/renderer/shader-preset.js"
           }
         }
       ]

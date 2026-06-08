@@ -1,7 +1,7 @@
 // dither — animated gradient between two theme colors, ordered-dither look.
 // WebGL2 / WebGL1 compatible (GLSL ES 1.00 syntax).
 
-import { QUAD_VS, createProgram, fullscreenQuad, bindQuad } from '../renderer/webgl.js';
+import { makeShaderPreset } from '../renderer/shader-preset.js';
 
 const FS = `
 precision mediump float;
@@ -36,52 +36,4 @@ void main() {
 }
 `;
 
-export function create({ gl, getColors, getParams: _getParams }) {
-  const program = createProgram(gl, QUAD_VS, FS);
-  const buf = fullscreenQuad(gl);
-  const aPos = gl.getAttribLocation(program, 'a_pos');
-  const uTime = gl.getUniformLocation(program, 'u_time');
-  const uInt = gl.getUniformLocation(program, 'u_intensity');
-  const uDen = gl.getUniformLocation(program, 'u_density');
-  const uC1 = gl.getUniformLocation(program, 'u_c1');
-  const uC2 = gl.getUniformLocation(program, 'u_c2');
-  const uRes = gl.getUniformLocation(program, 'u_res');
-
-  let w = 1,
-    h = 1;
-
-  function draw(t, params) {
-    const colors = getColors();
-    gl.viewport(0, 0, w, h);
-    gl.clearColor(0, 0, 0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(program);
-    bindQuad(gl, buf, aPos);
-    gl.uniform1f(uTime, t);
-    gl.uniform1f(uInt, params.intensity);
-    gl.uniform1f(uDen, params.density);
-    gl.uniform3f(uC1, colors.primary[0], colors.primary[1], colors.primary[2]);
-    gl.uniform3f(uC2, colors.accent[0], colors.accent[1], colors.accent[2]);
-    gl.uniform2f(uRes, w, h);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-  }
-
-  return {
-    resize(nw, nh) {
-      w = nw;
-      h = nh;
-    },
-    frame(t, params) {
-      draw(t, params);
-    },
-    staticFrame(params) {
-      draw(0, params);
-    },
-    dispose() {
-      try {
-        gl.deleteProgram(program);
-        gl.deleteBuffer(buf);
-      } catch {}
-    },
-  };
-}
+export const create = makeShaderPreset(FS, ['u_time', 'u_intensity', 'u_density', 'u_c1', 'u_c2', 'u_res']);
