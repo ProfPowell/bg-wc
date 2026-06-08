@@ -4,6 +4,9 @@
   "description": "Theme-aware background web component: animated WebGL & Canvas2D backgrounds behind any HTML content.",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "main": "dist/bg-wc.js",
   "module": "dist/bg-wc.js",
   "exports": {

@@ -8,6 +8,7 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     minify: false,
+    sourcemap: true,
     lib: {
       entry: {
         'bg-wc': 'src/bg-wc.js',
