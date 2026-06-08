@@ -36,20 +36,26 @@ test('mosaic honors each `mode` value without erroring', async ({ page }) => {
 
 // Smoke-level: confirms toggling use-theme produces a render with bytes.
 // Real chrome-color assertions come in Task 5 when system7 is implemented.
-test('system7 honors use-theme toggle', async ({ page }) => {
+test('system7 use-theme toggle changes the rendered pixels', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
   const detail = await page.evaluate(async () => {
+    const bytes = async (el) => new Uint8Array(await (await el.snapshot()).arrayBuffer());
     const el = document.getElementById('wc');
     el.setAttribute('preset', 'system7');
+    el.setAttribute('speed', '0'); // freeze time so only the theme can change pixels
     await el.ready;
-    const blob1 = await el.snapshot();
+    await new Promise((r) => requestAnimationFrame(r));
+    const b1 = await bytes(el);
     el.setAttribute('use-theme', '');
     await new Promise((r) => requestAnimationFrame(r));
-    const blob2 = await el.snapshot();
-    return { size1: blob1.size, size2: blob2.size };
+    await new Promise((r) => requestAnimationFrame(r));
+    const b2 = await bytes(el);
+    const identical = b1.length === b2.length && b1.every((v, i) => v === b2[i]);
+    return { size1: b1.length, size2: b2.length, identical };
   });
   expect(detail.size1).toBeGreaterThan(0);
   expect(detail.size2).toBeGreaterThan(0);
+  expect(detail.identical, 'use-theme should change the rendered pixels').toBe(false);
 });
 
 // doodles: every `mode` family value loads and renders without error, and an
