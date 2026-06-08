@@ -285,6 +285,9 @@ class BgWc extends HTMLElement {
       this.#updateFallbackVisibility();
       this.#evalPlay();
     } else if (name === 'pixel-ratio' || name === 'fit') {
+      // `fit` is advisory: the host does not crop/letterbox the canvas itself —
+      // it's forwarded via params (default 'cover') for presets to honor. We
+      // re-resize so a preset that reads `fit` re-lays-out on change.
       this.#resize();
     } else if (name === 'mode' || name === 'density') {
       // css3d builds its scene from these at create-time, so a change requires a
@@ -590,7 +593,10 @@ class BgWc extends HTMLElement {
     }
     if (play) {
       if (!this.#rafId) {
-        this.#lastTickMs = performance.now();
+        // 0 = sentinel: the first #tick seeds lastTickMs from the rAF timestamp
+        // and runs at dt=0, so the time base is purely rAF (no spike from mixing
+        // performance.now() here with rAF nowMs in #tick).
+        this.#lastTickMs = 0;
         this.#rafId = requestAnimationFrame(this.#tick);
       }
     } else {
@@ -611,7 +617,7 @@ class BgWc extends HTMLElement {
 
   #tick = (nowMs) => {
     const params = this.#readParams();
-    const dt = Math.min(MAX_DT_S, (nowMs - this.#lastTickMs) / 1000);
+    const dt = this.#lastTickMs === 0 ? 0 : Math.min(MAX_DT_S, (nowMs - this.#lastTickMs) / 1000);
     this.#lastTickMs = nowMs;
     // Time is speed-scaled here so every preset gets `speed` for free via
     // its `t` argument (and any `dt = t - lastT` it derives). Presets MUST

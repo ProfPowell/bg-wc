@@ -18,6 +18,9 @@ export function compileShader(gl, type, src) {
   if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
     const info = gl.getShaderInfoLog(s) || 'unknown';
     gl.deleteShader(s);
+    // Echo the GL log so the cause is visible in the console, not only wrapped
+    // inside the host's runtime-error event.
+    console.error('bg-wc: shader compile failed\n' + info);
     throw new Error('Shader compile failed: ' + info);
   }
   return s;
@@ -36,6 +39,7 @@ export function createProgram(gl, vsSrc, fsSrc) {
   if (!ok) {
     const info = gl.getProgramInfoLog(p) || 'unknown';
     gl.deleteProgram(p);
+    console.error('bg-wc: program link failed\n' + info);
     throw new Error('Program link failed: ' + info);
   }
   return p;
