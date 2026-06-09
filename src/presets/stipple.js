@@ -20,6 +20,7 @@ export function create({ c2d, getColors, host }) {
   let h = 0;
   let base = null; // { key, canvas }
   let sim = null; // { key, items, verts, rng }
+  let lastT = 0;
 
   function fieldCanvas(params, palKey, pal) {
     const key = `${params.seed | 0}|${params.density}|${palKey}|${w}x${h}`;
@@ -66,6 +67,10 @@ export function create({ c2d, getColors, host }) {
     const palKey = pal.join(',');
     clearAndFill(c2d, w, h, c.bg);
 
+    const dt = Math.max(0, Math.min(0.1, t - lastT));
+    lastT = t;
+    const f = dt * 60; // normalize step to a 60fps reference so motion is speed-aware + framerate-independent
+
     if (mode === 'field') {
       c2d.drawImage(fieldCanvas(params, palKey, pal), 0, 0);
       const rng = mulberry32((params.seed | 0 || 1) ^ ((t * 2) | 0));
@@ -82,9 +87,10 @@ export function create({ c2d, getColors, host }) {
     for (const p of s.items) {
       if (mode === 'contour') {
         const a = flowAngle(p.x, p.y, t);
-        p.x += Math.cos(a) * 1.3;
-        p.y += Math.sin(a) * 1.3;
-        if (--p.life <= 0 || p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
+        p.x += Math.cos(a) * 1.3 * f;
+        p.y += Math.sin(a) * 1.3 * f;
+        p.life -= f;
+        if (p.life <= 0 || p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
           p.x = s.rng() * w;
           p.y = s.rng() * h;
           p.life = 60 + ((s.rng() * 120) | 0);
@@ -96,16 +102,18 @@ export function create({ c2d, getColors, host }) {
         for (const v of s.verts) {
           const dx = p.x - v[0];
           const dy = p.y - v[1];
-          const d2 = dx * dx + dy * dy + 600;
+          const d2 = dx * dx + dy * dy + 600; // +600 softens force near a vortex center (avoids singularity)
           near = Math.min(near, d2);
-          vx += (-dy / d2) * v[2] * 2600;
+          vx += (-dy / d2) * v[2] * 2600; // 2600 = vortex strength
           vy += (dx / d2) * v[2] * 2600;
         }
         const ang = Math.atan2(vy, vx);
         const sp = Math.min(2.2, Math.hypot(vx, vy));
-        p.x += Math.cos(ang) * sp;
-        p.y += Math.sin(ang) * sp;
-        if (--p.life <= 0 || near < 900 || p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
+        p.x += Math.cos(ang) * sp * f;
+        p.y += Math.sin(ang) * sp * f;
+        p.life -= f;
+        if (p.life <= 0 || near < 900 || p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
+          // near < 900: respawn before a particle collapses into a vortex (the +600/2600/900 trio defines the stable orbit band)
           p.x = s.rng() * w;
           p.y = s.rng() * h;
           p.life = 120 + ((s.rng() * 180) | 0);
