@@ -13,3 +13,6 @@ test-results/
 .dolt/
 *.db
 .beads-credential-key
+
+# Visual brainstorm companion (transient mockups)
+.superpowers/
