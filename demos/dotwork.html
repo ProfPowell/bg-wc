@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dotwork &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #160d08;   /* deep earth night */
+      --color-foreground: #f5ece0;
+      --color-primary: #d2603a;      /* terracotta */
+      --color-accent: #e0a83e;       /* ochre */
+      --color-info: #3aa6b0;         /* turquoise */
+      --color-success: #c7452f;      /* deep red */
+      --color-warning: #e8c07a;      /* sand */
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Marcellus', Georgia, serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .vignette { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(ellipse 64% 60% at 50% 50%, transparent 28%, rgba(22,13,8,0.88) 100%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.24em; color: var(--color-accent); opacity: 0.92; margin-bottom: 18px; text-transform: lowercase; }
+    h1 { font-weight: 400; font-size: clamp(64px, 13vw, 220px); letter-spacing: 0.04em; line-height: 0.95; margin: 0; text-transform: uppercase;
+      background: linear-gradient(180deg, #fff 0%, var(--color-accent) 60%, var(--color-primary) 120%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 6px 30px rgba(210,96,58,0.4)); }
+    .lede { max-width: 560px; margin: 22px auto 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.55; color: rgba(245,236,224,0.82); }
+    .lede code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(255,255,255,0.08); padding: 2px 7px; border-radius: 4px; }
+
+    .telemetry { position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
+      font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--color-accent); opacity: 0.82; flex-wrap: wrap; gap: 12px; }
+    .telemetry span { color: var(--color-foreground); opacity: 0.5; padding-right: 6px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="dotwork" mode="rings" intensity="0.65" density="0.7" speed="0.6"></bg-wc>
+    <div class="vignette"></div>
+
+    <div class="content">
+      <div class="eyebrow">// concentric dot fields &middot; canvas2d</div>
+      <h1>Dotwork</h1>
+      <p class="lede">
+        Rings of hand-placed dots radiating from scattered centers, each rosette turning
+        slowly and cycling your palette as it grows. <code>preset="dotwork"</code> &mdash;
+        a pointillist field inspired by dot-painting technique, calm behind content.
+      </p>
+    </div>
+
+    <div class="telemetry">
+      <div><span>preset</span>dotwork</div>
+      <div><span>render</span>canvas2d</div>
+      <div><span>mode</span>rings</div>
+      <div><span>palette</span>theme</div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
