@@ -80,9 +80,10 @@ export function doubleSpiral(c2d, cx, cy, opts) {
 // Single Archimedean whorl traced in dots (fingerprint / cloud swirl).
 export function whorl(c2d, cx, cy, opts) {
   const { turns, b, dotR, baseCss, highlight, phase = 0, dir = 1 } = opts;
-  const steps = Math.round(turns * 40);
+  const STEP = 40; // dots per turn — couples step count and angle increment
+  const steps = Math.round(turns * STEP);
   for (let k = 0; k < steps; k++) {
-    const th = (k / 40) * Math.PI * 2;
+    const th = (k / STEP) * Math.PI * 2;
     const rad = b * th;
     const a = th * dir + phase * dir;
     dotCircle(
