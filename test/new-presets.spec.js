@@ -14,6 +14,7 @@ const PRESETS = [
   'seigaiha',
   'dotwork',
   'stipple',
+  'tapestry',
 ];
 
 for (const name of PRESETS) {
@@ -181,5 +182,30 @@ test('stipple honors each `mode` value and paints bytes', async ({ page }) => {
     }, mode);
     expect(detail.fallback, `mode="${mode}" should not fall back`).toBe(false);
     expect(detail.size, `mode="${mode}" should paint bytes`).toBeGreaterThan(0);
+  }
+});
+
+// tapestry: dense composite backdrop must render across density/seed and paint.
+test('tapestry renders across density and seed without erroring', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  for (const [density, seed] of [
+    ['0.2', '2'],
+    ['0.6', '11'],
+    ['1', '99'],
+  ]) {
+    const detail = await page.evaluate(
+      async ([d, s]) => {
+        const el = document.getElementById('wc');
+        el.setAttribute('preset', 'tapestry');
+        el.setAttribute('density', d);
+        el.setAttribute('seed', s);
+        await el.ready;
+        const blob = await el.snapshot();
+        return { fallback: el.hasAttribute('data-fallback'), size: blob.size };
+      },
+      [density, seed]
+    );
+    expect(detail.fallback, `density=${density} seed=${seed} should not fall back`).toBe(false);
+    expect(detail.size, `density=${density} seed=${seed} should paint bytes`).toBeGreaterThan(0);
   }
 });
