@@ -12,6 +12,7 @@ const PRESETS = [
   'groove',
   'scandi',
   'seigaiha',
+  'dotwork',
 ];
 
 for (const name of PRESETS) {
@@ -146,3 +147,19 @@ for (const preset of ['scandi', 'seigaiha']) {
     }
   });
 }
+
+// dotwork: every radial-structure mode loads and renders without falling back.
+test('dotwork honors each `mode` value without erroring', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  for (const mode of ['rings', 'spiral', 'double', 'whorl', 'waterholes', '']) {
+    const ok = await page.evaluate(async (m) => {
+      const el = document.getElementById('wc');
+      if (m) el.setAttribute('mode', m);
+      else el.removeAttribute('mode');
+      el.setAttribute('preset', 'dotwork');
+      await el.ready;
+      return !el.hasAttribute('data-fallback');
+    }, mode);
+    expect(ok, `mode="${mode}" should render`).toBe(true);
+  }
+});

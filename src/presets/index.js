@@ -114,6 +114,8 @@ const REGISTRY = {
   girih: { renderer: 'webgl', group: 'ornamental', loader: () => import('./girih.js') },
   mandala: { renderer: 'webgl', group: 'ornamental', loader: () => import('./mandala.js') },
   'op-art': { renderer: 'webgl', group: 'ornamental', loader: () => import('./op-art.js') },
+  // Dot-art — Aboriginal / pointillist dotwork
+  dotwork: { renderer: 'canvas2d', group: 'ornamental', loader: () => import('./dotwork.js') },
 
   // 80s / 90s — distortion, displays, demoscene
   system7: { renderer: 'canvas2d', group: 'retro', loader: () => import('./system7.js') },
