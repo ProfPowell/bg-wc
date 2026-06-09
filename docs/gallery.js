@@ -81,6 +81,18 @@ const MODE_OPTIONS = {
     { label: 'moire', value: 'moire' },
     { label: 'drift', value: 'drift' },
   ],
+  dotwork: [
+    { label: 'rings', value: 'rings' },
+    { label: 'spiral', value: 'spiral' },
+    { label: 'double', value: 'double' },
+    { label: 'whorl', value: 'whorl' },
+    { label: 'waterholes', value: 'waterholes' },
+  ],
+  stipple: [
+    { label: 'field', value: 'field' },
+    { label: 'contour', value: 'contour' },
+    { label: 'vortex', value: 'vortex' },
+  ],
 };
 
 // Per-card state lives here so a card's <bg-wc> can be torn down and rebuilt
@@ -96,6 +108,8 @@ const liveCards = new Set(); // cards whose <bg-wc> is currently mounted
 // the preset's own attribute defaults are untouched.
 const CARD_DEFAULTS = {
   'paper-grain': { intensity: 1 },
+  dotwork: { density: 0.7 },
+  tapestry: { density: 0.7 },
 };
 const BASE_DEFAULTS = { intensity: 0.6, speed: 1, density: 0.5 };
 
@@ -144,7 +158,11 @@ function makeCard({ name, renderer }) {
     name,
     renderer,
     stage: card.querySelector('.card-stage'),
-    attrs: { intensity: String(def.intensity), speed: String(def.speed), density: String(def.density) },
+    attrs: {
+      intensity: String(def.intensity),
+      speed: String(def.speed),
+      density: String(def.density),
+    },
     mode: modes ? modes[0].value : null,
     el: null,
   };
