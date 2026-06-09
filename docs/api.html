@@ -174,7 +174,7 @@
             <tr><td><code>fit</code></td><td><code>"cover"</code> | <code>"contain"</code> | <code>"stretch"</code></td><td><code>"cover"</code></td><td>How the surface sizes inside the host.</td></tr>
             <tr><td><code>motion</code></td><td><code>"auto"</code> | <code>"reduce"</code> | <code>"force"</code></td><td><code>"auto"</code></td><td><code>auto</code> honors <code>prefers-reduced-motion</code>.</td></tr>
             <tr><td><code>text</code></td><td>string</td><td>&mdash;</td><td>Payload for text presets (crawl / marquee / sinescroll / cascade / source / wordcloud). Lines split on <code>|</code>. <code>source</code> treats the value as literal code and splits on newlines instead. Read fresh each frame.</td></tr>
-            <tr><td><code>mode</code></td><td>string</td><td>&mdash;</td><td>Preset-specific variant selector. <code>mosaic</code>: <code>isometric</code>, <code>flat</code>, <code>sparse</code>, <code>stacked</code>; <code>doodles</code>: family names; <code>fly-through</code>: space-delimited motion&times;profile&times;path&times;unit; <code>explode</code>: <code>radial</code> | <code>cube</code>. Changing it rebuilds css3d scenes. <code>girih</code>: <code>8fold</code>/<code>12fold</code>/<code>6fold</code>; <code>atomic</code>: <code>mixed</code>/<code>boomerangs</code>/<code>starbursts</code>/<code>harlequin</code>; <code>op-art</code>: <code>riley</code>/<code>cafewall</code>/<code>moire</code>/<code>drift</code>.</td></tr>
+            <tr><td><code>mode</code></td><td>string</td><td>&mdash;</td><td>Preset-specific variant selector. <code>mosaic</code>: <code>isometric</code>, <code>flat</code>, <code>sparse</code>, <code>stacked</code>; <code>doodles</code>: family names; <code>fly-through</code>: space-delimited motion&times;profile&times;path&times;unit; <code>explode</code>: <code>radial</code> | <code>cube</code>. Changing it rebuilds css3d scenes. <code>girih</code>: <code>8fold</code>/<code>12fold</code>/<code>6fold</code>; <code>atomic</code>: <code>mixed</code>/<code>boomerangs</code>/<code>starbursts</code>/<code>harlequin</code>; <code>op-art</code>: <code>riley</code>/<code>cafewall</code>/<code>moire</code>/<code>drift</code>. <code>dotwork</code>: <code>rings</code>/<code>spiral</code>/<code>double</code>/<code>whorl</code>/<code>waterholes</code>; <code>stipple</code>: <code>field</code>/<code>contour</code>/<code>vortex</code>.</td></tr>
             <tr><td><code>use-theme</code></td><td>boolean</td><td>unset</td><td>Used by <code>system7</code>; presence enables theme-token coloring instead of hard black/white.</td></tr>
           </tbody>
         </table>
@@ -410,6 +410,11 @@ console.log('PNG ready:', url);</code-block>
                     <code>mode</code>: <code>mixed</code> (default), <code>boomerangs</code>,
                     <code>starbursts</code>, <code>harlequin</code>.</td>
                 <td>primary, accent, info, background</td></tr>
+            <tr><td><code>stipple</code></td>
+                <td>Pointillist dot fields. <code>mode</code>: <code>field</code> (default
+                    graded stipple), <code>contour</code> (dots trace a flow field),
+                    <code>vortex</code> (swirling, respawning).</td>
+                <td>primary, accent, background</td></tr>
           </tbody>
         </table>
       </div>
@@ -460,6 +465,16 @@ console.log('PNG ready:', url);</code-block>
                 <td>Optical illusion with false motion. <code>mode</code>: <code>riley</code>
                     (default), <code>cafewall</code>, <code>moire</code>, <code>drift</code>.</td>
                 <td>foreground, background</td></tr>
+            <tr><td><code>dotwork</code></td>
+                <td>Aboriginal/pointillist dot structures &mdash; concentric rosettes, spirals,
+                    whorls, songline waterholes. <code>mode</code>: <code>rings</code> (default),
+                    <code>spiral</code>, <code>double</code>, <code>whorl</code>,
+                    <code>waterholes</code>.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>tapestry</code></td>
+                <td>Dense dot-art composite &mdash; a stippled field packed with rosettes and
+                    whorls; a rich backdrop for layered content.</td>
+                <td>primary, accent, background</td></tr>
           </tbody>
         </table>
       </div>

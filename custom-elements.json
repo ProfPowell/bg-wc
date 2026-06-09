@@ -205,6 +205,216 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/_dots.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "mix",
+          "parameters": [
+            {
+              "name": "a"
+            },
+            {
+              "name": "b"
+            },
+            {
+              "name": "t"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "buildDotPalette",
+          "parameters": [
+            {
+              "name": "c"
+            },
+            {
+              "name": "intensity"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "dotCircle",
+          "parameters": [
+            {
+              "name": "c2d"
+            },
+            {
+              "name": "x"
+            },
+            {
+              "name": "y"
+            },
+            {
+              "name": "r"
+            },
+            {
+              "name": "css"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "concentricRings",
+          "parameters": [
+            {
+              "name": "c2d"
+            },
+            {
+              "name": "cx"
+            },
+            {
+              "name": "cy"
+            },
+            {
+              "name": "opts"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "phyllotaxis",
+          "parameters": [
+            {
+              "name": "c2d"
+            },
+            {
+              "name": "cx"
+            },
+            {
+              "name": "cy"
+            },
+            {
+              "name": "opts"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "doubleSpiral",
+          "parameters": [
+            {
+              "name": "c2d"
+            },
+            {
+              "name": "cx"
+            },
+            {
+              "name": "cy"
+            },
+            {
+              "name": "opts"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "whorl",
+          "parameters": [
+            {
+              "name": "c2d"
+            },
+            {
+              "name": "cx"
+            },
+            {
+              "name": "cy"
+            },
+            {
+              "name": "opts"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "stippleField",
+          "parameters": [
+            {
+              "name": "c2d"
+            },
+            {
+              "name": "w"
+            },
+            {
+              "name": "h"
+            },
+            {
+              "name": "opts"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "mix",
+          "declaration": {
+            "name": "mix",
+            "module": "src/presets/_dots.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "buildDotPalette",
+          "declaration": {
+            "name": "buildDotPalette",
+            "module": "src/presets/_dots.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "dotCircle",
+          "declaration": {
+            "name": "dotCircle",
+            "module": "src/presets/_dots.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "concentricRings",
+          "declaration": {
+            "name": "concentricRings",
+            "module": "src/presets/_dots.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "phyllotaxis",
+          "declaration": {
+            "name": "phyllotaxis",
+            "module": "src/presets/_dots.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "doubleSpiral",
+          "declaration": {
+            "name": "doubleSpiral",
+            "module": "src/presets/_dots.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "whorl",
+          "declaration": {
+            "name": "whorl",
+            "module": "src/presets/_dots.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "stippleField",
+          "declaration": {
+            "name": "stippleField",
+            "module": "src/presets/_dots.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/asteroids.js",
       "declarations": [
         {
@@ -680,6 +890,39 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/doodles.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/dotwork.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors, host }"
+            }
+          ]
+        },
+        {
+          "kind": "variable",
+          "name": "dotR"
+        },
+        {
+          "kind": "variable",
+          "name": "phase"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/dotwork.js"
           }
         }
       ]
@@ -1642,6 +1885,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/stipple.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors, host }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/stipple.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/supergraphics.js",
       "declarations": [
         {
@@ -1706,6 +1974,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/system7.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/tapestry.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/tapestry.js"
           }
         }
       ]

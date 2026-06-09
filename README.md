@@ -64,6 +64,8 @@ throttling when the device reports power-save)
 
 Some presets read additional attributes from the host: `mosaic` reads
 `mode` (`isometric` | `flat` | `sparse` | `stacked` | `blocks`);
+`dotwork` reads `mode` (`rings` | `spiral` | `double` | `whorl` | `waterholes`);
+`stipple` reads `mode` (`field` | `contour` | `vortex`);
 `system7` reads `use-theme` (boolean — when present, sources colors
 from theme tokens instead of hard black-on-white). `mosaic`, `source`,
 and a few others accept `text` to override default content.
