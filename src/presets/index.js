@@ -94,6 +94,7 @@ const REGISTRY = {
   halftone: { renderer: 'webgl', group: 'texture', loader: () => import('./halftone.js') },
   grain: { renderer: 'webgl', group: 'texture', loader: () => import('./grain.js') },
   'paper-grain': { renderer: 'webgl', group: 'texture', loader: () => import('./paper-grain.js') },
+  stipple: { renderer: 'canvas2d', group: 'texture', loader: () => import('./stipple.js') },
 
   // Organic ambient motion
   noise: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./noise.js') },

@@ -13,6 +13,7 @@ const PRESETS = [
   'scandi',
   'seigaiha',
   'dotwork',
+  'stipple',
 ];
 
 for (const name of PRESETS) {
@@ -161,5 +162,24 @@ test('dotwork honors each `mode` value without erroring', async ({ page }) => {
       return !el.hasAttribute('data-fallback');
     }, mode);
     expect(ok, `mode="${mode}" should render`).toBe(true);
+  }
+});
+
+// stipple: each field mode renders, paints bytes, and never falls back.
+test('stipple honors each `mode` value and paints bytes', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  for (const mode of ['field', 'contour', 'vortex', '']) {
+    const detail = await page.evaluate(async (m) => {
+      const el = document.getElementById('wc');
+      if (m) el.setAttribute('mode', m);
+      else el.removeAttribute('mode');
+      el.setAttribute('preset', 'stipple');
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob.size };
+    }, mode);
+    expect(detail.fallback, `mode="${mode}" should not fall back`).toBe(false);
+    expect(detail.size, `mode="${mode}" should paint bytes`).toBeGreaterThan(0);
   }
 });
