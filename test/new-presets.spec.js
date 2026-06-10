@@ -216,3 +216,21 @@ test('tapestry renders across density and seed without erroring', async ({ page 
     expect(detail.size, `density=${density} seed=${seed} should paint bytes`).toBeGreaterThan(0);
   }
 });
+
+// Japanese + print round: each preset must not fall back (catches WebGL shader
+// compile failures the generic canvas-size test would miss) and must paint.
+for (const name of ['sumi-e', 'kintsugi', 'ukiyo-e', 'sakura', 'risograph', 'plotter', 'linocut']) {
+  test(`${name} does not fall back and paints bytes`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const detail = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob ? blob.size : 0 };
+    }, name);
+    expect(detail.fallback, `${name} should not fall back`).toBe(false);
+    expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
+  });
+}
