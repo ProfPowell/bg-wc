@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Emergence &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #05060c;
+      --color-foreground: #e8eaff;
+      --color-primary: #5b6cff;      /* signal */
+      --color-accent: #ff4d9d;       /* spike */
+      --color-info: #38e6d0;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Sora', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(90deg, rgba(5,6,12,0.94) 0%, rgba(5,6,12,0.6) 42%, transparent 78%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: clamp(28px, 7vw, 120px); top: 50%; transform: translateY(-50%); z-index: 6; max-width: 620px; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--color-info); border: 1px solid rgba(56,230,208,0.35); border-radius: 999px; padding: 6px 14px; margin-bottom: 26px; }
+    .badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--color-info); box-shadow: 0 0 12px var(--color-info); }
+    h1 { font-weight: 800; font-size: clamp(48px, 8.5vw, 132px); line-height: 0.95; letter-spacing: -0.03em; margin: 0; }
+    h1 em { font-style: normal; color: var(--color-accent); }
+    .lede { margin: 26px 0 0; font-size: clamp(16px, 1.35vw, 21px); line-height: 1.6; color: rgba(232,234,255,0.78); max-width: 520px; }
+    .lede code { font-family: 'JetBrains Mono', monospace; font-size: 0.84em; background: rgba(91,108,255,0.18); color: #cdd4ff; padding: 2px 7px; border-radius: 4px; }
+    .stats { display: flex; gap: 40px; margin-top: 40px; }
+    .stats div { display: flex; flex-direction: column; }
+    .stats b { font-size: clamp(26px, 3vw, 40px); font-weight: 800; color: var(--color-foreground); }
+    .stats span { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(232,234,255,0.5); margin-top: 4px; }
+
+    .telemetry { position: absolute; bottom: 28px; right: clamp(28px, 6vw, 80px); z-index: 6; text-align: right;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: rgba(232,234,255,0.5); line-height: 1.8; }
+    .telemetry b { color: var(--color-accent); font-weight: 400; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="slime-mold" intensity="0.7" density="0.6" speed="1"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="content">
+      <span class="badge"><i></i> distributed&nbsp;systems</span>
+      <h1>Intelligence<br>without a <em>center</em>.</h1>
+      <p class="lede">
+        Thousands of agents, three sensors each, one shared chemical trail. No
+        coordinator &mdash; the network is the computation. Live Physarum on
+        <code>preset="slime-mold"</code>.
+      </p>
+      <div class="stats">
+        <div><b>16k</b><span>agents</span></div>
+        <div><b>1</b><span>shared field</span></div>
+        <div><b>0</b><span>coordinators</span></div>
+      </div>
+    </div>
+
+    <div class="telemetry">
+      <div>preset &middot; <b>slime-mold</b></div>
+      <div>render &middot; <b>webgl &middot; vtf deposit</b></div>
+      <div>palette &middot; <b>theme</b></div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
