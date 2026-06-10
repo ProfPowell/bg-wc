@@ -677,8 +677,24 @@ addEventListener('scroll', () =&gt; {
 
   </main>
 
-  <footer>
-    <p>MIT &middot; <a href="https://github.com/ProfPowell/bg-wc">ProfPowell/bg-wc</a> &middot; <a href="./index.html">Gallery</a> &middot; <a href="../demos/">Demos</a></p>
+  <!-- Canonical VB-ecosystem footer — see docs/superpowers/specs/2026-06-10-vb-site-footer-pattern-design.md -->
+  <footer class="minimal">
+    <a href="./index.html">
+      <brand-mark data-stack>
+        &lt;bg-wc&gt;
+        <em>Theme-aware animated backgrounds for any element</em>
+      </brand-mark>
+    </a>
+    <site-legal>
+      <span>&copy; 2026 Thomas A. Powell</span>
+      <span>MIT License</span>
+      <span>Part of the <a href="https://vanilla-breeze.com">Vanilla Breeze</a> ecosystem</span>
+    </site-legal>
+    <nav aria-label="Footer links">
+      <a href="https://github.com/ProfPowell/bg-wc">
+        <icon-wc name="github" size="sm"></icon-wc> GitHub
+      </a>
+    </nav>
   </footer>
 
   <!-- Single docs entry module: registers vanilla-breeze + the code-block

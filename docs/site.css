@@ -220,13 +220,9 @@ main { padding: clamp(16px, 4vw, 24px); max-width: 1200px; margin: 0 auto; }
 }
 .snippet .muted { opacity: 0.65; font-size: 13px; margin-top: 8px; }
 
-footer {
-  text-align: center; padding: 32px;
-  opacity: 0.6; font-size: 13px;
-  border-top: 1px solid var(--color-border);
-  margin-top: 48px;
-}
-footer a { color: var(--color-primary); }
+/* Footer chrome comes entirely from vanilla-breeze's footer.minimal recipe
+   (see docs/superpowers/specs/2026-06-10-vb-site-footer-pattern-design.md).
+   No unlayered footer rules here — they would override VB's layered styles. */
 
 /* ============================================================
    API reference page (docs/api.html) layout — carried over from

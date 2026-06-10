@@ -41,8 +41,6 @@
     .bw-card .meta .name { font-weight: 600; font-size: 16px; }
     .bw-card .meta .desc { font-size: 13px; opacity: 0.6; font-family: ui-monospace, monospace; }
 
-    footer { text-align: center; padding: 32px; opacity: 0.5; font-size: 13px; border-top: 1px solid var(--border); margin-top: 64px; }
-    footer a { color: var(--accent); }
   </style>
 </head>
 <body>
@@ -429,8 +427,24 @@
     </div>
   </main>
 
-  <footer>
-    <p>MIT &middot; <a href="https://github.com/ProfPowell/bg-wc">ProfPowell/bg-wc</a></p>
+  <!-- Canonical VB-ecosystem footer — see docs/superpowers/specs/2026-06-10-vb-site-footer-pattern-design.md -->
+  <footer class="minimal">
+    <a href="../docs/index.html">
+      <brand-mark data-stack>
+        &lt;bg-wc&gt;
+        <em>Theme-aware animated backgrounds for any element</em>
+      </brand-mark>
+    </a>
+    <site-legal>
+      <span>&copy; 2026 Thomas A. Powell</span>
+      <span>MIT License</span>
+      <span>Part of the <a href="https://vanilla-breeze.com">Vanilla Breeze</a> ecosystem</span>
+    </site-legal>
+    <nav aria-label="Footer links">
+      <a href="https://github.com/ProfPowell/bg-wc">
+        <icon-wc name="github" size="sm"></icon-wc> GitHub
+      </a>
+    </nav>
   </footer>
   <script type="module" src="./demos-hub.js"></script>
 </body>
