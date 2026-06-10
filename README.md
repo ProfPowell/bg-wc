@@ -35,9 +35,10 @@ into real-looking pages.
 
 ## Preset highlights
 
-A handful of the 80+ presets, grouped into fourteen families (Gradients,
+A handful of the 100+ presets, grouped into seventeen families (Gradients,
 Geometric, Texture, Atmospheric, Retro, Vector, Pop art, Ornamental,
-Japanese, Print art, and more). Each adapts to whatever theme tokens you set.
+Japanese, Print art, Classic, Science, Tech, and more). Each adapts to
+whatever theme tokens you set.
 
 | Name             | Renderer | Notes                                                   |
 | ---------------- | -------- | ------------------------------------------------------- |
@@ -51,6 +52,10 @@ Japanese, Print art, and more). Each adapts to whatever theme tokens you set.
 | `kintsugi`       | Canvas2D | Gold crack veins growing across a dark slab.            |
 | `risograph`      | WebGL    | Two-ink riso overprint with misregistration and grain.  |
 | `supergraphics`  | Canvas2D | Mural-scale curved bands (Sea Ranch / Stauffacher).     |
+| `bauhaus`        | Canvas2D | Bauhaus poster forms recomposing on staggered cycles.   |
+| `reaction-diffusion` | WebGL | Gray-Scott patterns (spots / stripes / coral) on FBOs. |
+| `slime-mold`     | WebGL    | Physarum agents weaving chemical-trail networks.        |
+| `gyroid`         | WebGL    | Raymarched gyroid minimal surface, rim/key lit.         |
 | `source`         | Canvas2D | Faded HTML source listing; pass `text` to override.     |
 | `matrix`         | Canvas2D | Falling digital rain; pass `text` to override glyphs.   |
 | `confetti`       | Canvas2D | Continuous drop using the full semantic palette.        |

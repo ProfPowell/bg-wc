@@ -147,15 +147,24 @@ const REGISTRY = {
     group: 'science',
     loader: () => import('./phyllotaxis.js'),
   },
+  boids: { renderer: 'canvas2d', group: 'science', loader: () => import('./boids.js') },
+  helix: { renderer: 'canvas2d', group: 'science', loader: () => import('./helix.js') },
+  mycelium: { renderer: 'canvas2d', group: 'science', loader: () => import('./mycelium.js') },
   'reaction-diffusion': {
     renderer: 'webgl',
     group: 'science',
     loader: () => import('./reaction-diffusion.js'),
   },
+  chladni: { renderer: 'webgl', group: 'science', loader: () => import('./chladni.js') },
+  'slime-mold': { renderer: 'webgl', group: 'science', loader: () => import('./slime-mold.js') },
 
   // Tech — engineering / sci-fi instrument aesthetics
   circuit: { renderer: 'canvas2d', group: 'tech', loader: () => import('./circuit.js') },
+  blueprint: { renderer: 'canvas2d', group: 'tech', loader: () => import('./blueprint.js') },
+  radar: { renderer: 'canvas2d', group: 'tech', loader: () => import('./radar.js') },
   gyroid: { renderer: 'webgl', group: 'tech', loader: () => import('./gyroid.js') },
+  lidar: { renderer: 'webgl', group: 'tech', loader: () => import('./lidar.js') },
+  oscilloscope: { renderer: 'webgl', group: 'tech', loader: () => import('./oscilloscope.js') },
 
   // 80s / 90s — distortion, displays, demoscene
   system7: { renderer: 'canvas2d', group: 'retro', loader: () => import('./system7.js') },
@@ -184,6 +193,7 @@ const REGISTRY = {
   marquee: { renderer: 'canvas2d', group: 'text', loader: () => import('./marquee.js') },
   sinescroll: { renderer: 'canvas2d', group: 'text', loader: () => import('./sinescroll.js') },
   cascade: { renderer: 'canvas2d', group: 'text', loader: () => import('./cascade.js') },
+  bootlog: { renderer: 'canvas2d', group: 'text', loader: () => import('./bootlog.js') },
 
   // Canvas2D particle systems
   stars: { renderer: 'canvas2d', group: 'particles', loader: () => import('./stars.js') },
