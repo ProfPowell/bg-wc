@@ -12,8 +12,17 @@ const PRESETS = listPresets().map((p) => p.name);
 // Presets that advance internal state per frame() call (not from the frozen `t`),
 // so they never settle to a stable still. They still get the load/fallback check,
 // just not a pixel baseline. reaction-diffusion steps its Gray-Scott sim every
-// frame regardless of `t`, so its field keeps evolving even at speed=0.
-const NO_SNAPSHOT = new Set(['particles', 'reaction-diffusion']);
+// frame regardless of `t`; the phase-3/4 sims (flocking, accumulation buffers,
+// growth) likewise advance per frame, so none settle to a stable still.
+const NO_SNAPSHOT = new Set([
+  'particles',
+  'reaction-diffusion',
+  'boids',
+  'mycelium',
+  'slime-mold',
+  'oscilloscope',
+  'radar',
+]);
 
 test.describe('visual', () => {
   for (const name of PRESETS) {

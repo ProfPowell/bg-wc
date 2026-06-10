@@ -35,6 +35,16 @@ const PRESETS = [
   'delaunay',
   'moire',
   'hilbert',
+  'boids',
+  'helix',
+  'mycelium',
+  'chladni',
+  'slime-mold',
+  'blueprint',
+  'radar',
+  'lidar',
+  'oscilloscope',
+  'bootlog',
 ];
 
 for (const name of PRESETS) {
@@ -364,3 +374,48 @@ for (const preset of ['delaunay', 'hilbert']) {
     }
   });
 }
+
+// Preset-families phase 3 + 4 (science + tech fill-out): canvas2d and WebGL
+// (chladni/slime-mold/lidar/oscilloscope) presets must not fall back and paint.
+// Catches shader compile / FBO / VTF failures the generic canvas-size test misses.
+for (const name of [
+  'boids',
+  'helix',
+  'mycelium',
+  'chladni',
+  'slime-mold',
+  'blueprint',
+  'radar',
+  'lidar',
+  'oscilloscope',
+  'bootlog',
+]) {
+  test(`${name} does not fall back and paints bytes`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const detail = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob ? blob.size : 0 };
+    }, name);
+    expect(detail.fallback, `${name} should not fall back`).toBe(false);
+    expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
+  });
+}
+
+// bootlog: the `text` override (split on '|') must render without falling back.
+test('bootlog honors the text override', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const ok = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    el.setAttribute('preset', 'bootlog');
+    el.setAttribute('text', 'init foo|mount bar|start baz');
+    await el.ready;
+    await new Promise((r) => requestAnimationFrame(r));
+    return !el.hasAttribute('data-fallback');
+  });
+  expect(ok).toBe(true);
+});
