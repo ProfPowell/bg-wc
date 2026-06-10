@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lattice &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #0b0c0f;
+      --color-foreground: #eef1f5;
+      --color-primary: #8a93a6;      /* brushed steel */
+      --color-accent: #ff6a2b;       /* sinter orange */
+      --color-info: #5fd0ff;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Archivo', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(180deg, rgba(11,12,15,0.7) 0%, transparent 30%, transparent 64%, rgba(11,12,15,0.92) 100%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+
+    .rule { position: absolute; top: 24px; right: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-accent); opacity: 0.85; }
+
+    .content { position: absolute; left: 0; right: 0; bottom: clamp(60px, 12vh, 140px); z-index: 6; padding: 0 clamp(28px, 6vw, 90px); }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.24em; color: var(--color-info); text-transform: uppercase; margin-bottom: 14px; }
+    h1 { font-weight: 900; font-size: clamp(60px, 14vw, 230px); line-height: 0.86; letter-spacing: -0.02em; margin: 0; text-transform: uppercase; }
+    h1 span { color: transparent; -webkit-text-stroke: 2px var(--color-primary); }
+    .lede { max-width: 540px; margin: 22px 0 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.55; color: rgba(238,241,245,0.78); }
+    .lede code { font-family: 'Space Mono', monospace; font-size: 0.84em; background: rgba(255,106,43,0.14); color: var(--color-accent); padding: 2px 7px; border-radius: 4px; }
+
+    .telemetry { position: absolute; bottom: 26px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 90px);
+      font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--color-info); opacity: 0.8; flex-wrap: wrap; gap: 12px; }
+    .telemetry span { color: var(--color-foreground); opacity: 0.45; padding-right: 6px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <div class="rule">TPMS &middot; triply periodic</div>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="gyroid" intensity="0.7" density="0.5" speed="0.8" quality="high"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="content">
+      <div class="eyebrow">advanced manufacturing</div>
+      <h1>Lat<span>tice</span></h1>
+      <p class="lede">
+        Minimal-surface infill: maximum stiffness, minimum mass. A raymarched gyroid
+        on <code>preset="gyroid"</code>, lit with two theme colors as key and rim.
+      </p>
+    </div>
+
+    <div class="telemetry">
+      <div><span>preset</span>gyroid</div>
+      <div><span>march</span>72 steps</div>
+      <div><span>render</span>webgl &middot; raymarch</div>
+      <div><span>palette</span>theme</div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
