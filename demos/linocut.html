@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Linocut &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #e8dcc4;   /* warm paper */
+      --color-foreground: #1a1612;   /* carve black */
+      --color-primary: #1a1612;
+      --color-accent: #c8502e;       /* persimmon */
+      --color-info: #4f5d4a;         /* moss */
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Alfa Slab One', serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .vignette { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(ellipse 66% 62% at 50% 50%, transparent 32%, rgba(232,220,196,0.86) 100%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.24em; color: var(--color-accent); opacity: 0.92; margin-bottom: 18px; text-transform: lowercase; }
+    h1 { font-weight: 400; font-size: clamp(58px, 12vw, 200px); letter-spacing: 0.02em; line-height: 0.95; margin: 0; text-transform: uppercase; color: var(--color-foreground);
+      text-shadow: 4px 4px 0 var(--color-accent); }
+    .lede { max-width: 560px; margin: 24px auto 0; font-family: 'Space Mono', monospace; font-size: clamp(14px, 1.1vw, 17px); line-height: 1.6; color: rgba(26,22,18,0.82); }
+    .lede code { font-size: 0.9em; background: rgba(26,22,18,0.08); padding: 2px 7px; border-radius: 4px; }
+
+    .telemetry { position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
+      font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--color-accent); opacity: 0.85; flex-wrap: wrap; gap: 12px; }
+    .telemetry span { color: var(--color-foreground); opacity: 0.5; padding-right: 6px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="linocut" intensity="0.75" density="0.5" speed="0.5"></bg-wc>
+    <div class="vignette"></div>
+
+    <div class="content">
+      <div class="eyebrow">// carved &amp; rolled &middot; canvas2d</div>
+      <h1>Linocut</h1>
+      <p class="lede">
+        Bold shapes cut from the block, gouge marks left showing, rolling past
+        like the cylinder never stopped. <code>preset="linocut"</code> &mdash;
+        relief printing in your theme's inks.
+      </p>
+    </div>
+
+    <div class="telemetry">
+      <div><span>preset</span>linocut</div>
+      <div><span>render</span>canvas2d</div>
+      <div><span>motion</span>cylinder roll</div>
+      <div><span>palette</span>theme</div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
