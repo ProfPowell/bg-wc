@@ -48,14 +48,15 @@ test('live WebGL context budget holds across every group', async ({ page }) => {
   }
 });
 
-// Cards late in a group's DOM (the Geometric group ends with scandi/seigaiha)
-// must mount when scrolled to — the lazy-mount budget must prioritise what's at
-// the viewport, not the first cards in document order.
+// Cards late in a group's DOM (the Geometric group ends with doodles/scandi;
+// seigaiha moved to the Japanese group in the 2026-06-09 round) must mount when
+// scrolled to — the lazy-mount budget must prioritise what's at the viewport,
+// not the first cards in document order.
 test('cards at the end of a group mount when scrolled into view', async ({ page }) => {
   await page.setViewportSize({ width: 1200, height: 800 });
   await page.goto('/docs/index.html', { waitUntil: 'networkidle' });
   await showGroup(page, 'geometric');
-  for (const name of ['scandi', 'seigaiha']) {
+  for (const name of ['doodles', 'scandi']) {
     await page.evaluate((n) => {
       const card = [...document.querySelectorAll('#grid .card')].find(
         (c) => c.querySelector('.card-meta h4')?.textContent.trim() === n

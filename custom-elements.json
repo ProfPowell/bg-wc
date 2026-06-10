@@ -1275,6 +1275,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/kintsugi.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/kintsugi.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/lava.js",
       "declarations": [
         {
@@ -1289,6 +1314,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/lava.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/linocut.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/linocut.js"
           }
         }
       ]
@@ -1595,6 +1645,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/plotter.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/plotter.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/pulse.js",
       "declarations": [
         {
@@ -1659,6 +1734,56 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/ribbons.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/risograph.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ gl, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/risograph.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/sakura.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/sakura.js"
           }
         }
       ]
@@ -1910,6 +2035,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/sumi-e.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ gl, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/sumi-e.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/supergraphics.js",
       "declarations": [
         {
@@ -2129,6 +2279,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/tunnel.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/ukiyo-e.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/ukiyo-e.js"
           }
         }
       ]

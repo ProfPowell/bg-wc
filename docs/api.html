@@ -478,6 +478,53 @@ console.log('PNG ready:', url);</code-block>
           </tbody>
         </table>
       </div>
+      <h3>Japanese presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>seigaiha</code></td>
+                <td>Overlapping scalloped wave-fan tiling &mdash; the classic blue-ocean
+                    pattern.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>sumi-e</code></td>
+                <td>Ink-wash blooms diffusing into paper &mdash; bokashi bleed and
+                    granulation on staggered grow/fade cycles.</td>
+                <td>foreground, primary, background</td></tr>
+            <tr><td><code>kintsugi</code></td>
+                <td>Gold crack veins growing, branching, and shimmering across a dark
+                    slab; the network reseeds each cycle.</td>
+                <td>warning, accent, background</td></tr>
+            <tr><td><code>ukiyo-e</code></td>
+                <td>Woodblock-print waves &mdash; flat-color parallax layers with outlined
+                    crests and curling foam claws under a bokashi sky.</td>
+                <td>primary, info, foreground, background</td></tr>
+            <tr><td><code>sakura</code></td>
+                <td>Cherry petals tumbling through three depth layers on gusting wind.</td>
+                <td>primary, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Print art presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>risograph</code></td>
+                <td>Two-ink riso overprint &mdash; misregistered blobs and bars multiplying
+                    into a third color, with heavy per-ink grain and dropouts.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>plotter</code></td>
+                <td>Pen-plotter art drawing itself &mdash; flow fields, hatched discs, and
+                    contour stacks revealed stroke by stroke with a visible pen head.</td>
+                <td>foreground, primary, background</td></tr>
+            <tr><td><code>linocut</code></td>
+                <td>Carved-block shapes with rough edges and gouge marks, rolling slowly
+                    like a print cylinder.</td>
+                <td>primary, accent, foreground, background</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <!-- 9. Reduced motion ------------------------------------- -->
@@ -524,8 +571,9 @@ for (const { id, label, presets } of listGroups()) {
   console.log(label, presets.map(p =&gt; p.name));
 }
 // Gradients   ['mesh-gradient','waves','plasma','rainbow','shine']
-// Geometric   ['mosaic','supergraphics','warp','topology','cells','kaleidoscope','doodles','scandi','seigaiha']
+// Geometric   ['mosaic','supergraphics','warp','topology','cells','kaleidoscope','doodles','scandi']
 // Texture     ['dither','halftone','grain','paper-grain']
+// Japanese    ['seigaiha','sumi-e','kintsugi','ukiyo-e','sakura']
 // …</code-block>
     </section>
 

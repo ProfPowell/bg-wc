@@ -35,9 +35,9 @@ into real-looking pages.
 
 ## Preset highlights
 
-A handful of the 70+ presets, grouped into a dozen families (Gradients,
-Geometric, Texture, Atmospheric, Retro, Vector, Pop art, Ornamental, and
-more). Each adapts to whatever theme tokens you set.
+A handful of the 80+ presets, grouped into fourteen families (Gradients,
+Geometric, Texture, Atmospheric, Retro, Vector, Pop art, Ornamental,
+Japanese, Print art, and more). Each adapts to whatever theme tokens you set.
 
 | Name             | Renderer | Notes                                                   |
 | ---------------- | -------- | ------------------------------------------------------- |
@@ -47,6 +47,9 @@ more). Each adapts to whatever theme tokens you set.
 | `groove`         | Canvas2D | 70s looping rainbow-stripe routes that draw on and spiral.|
 | `scandi`         | Canvas2D | Scandinavian geometric grid of arcs + floral motifs.    |
 | `seigaiha`       | Canvas2D | Japanese overlapping-circle "wave" (fish-scale) pattern.|
+| `sumi-e`         | WebGL    | Ink-wash blooms bleeding into paper, bokashi edges.     |
+| `kintsugi`       | Canvas2D | Gold crack veins growing across a dark slab.            |
+| `risograph`      | WebGL    | Two-ink riso overprint with misregistration and grain.  |
 | `supergraphics`  | Canvas2D | Mural-scale curved bands (Sea Ranch / Stauffacher).     |
 | `source`         | Canvas2D | Faded HTML source listing; pass `text` to override.     |
 | `matrix`         | Canvas2D | Falling digital rain; pass `text` to override glyphs.   |
