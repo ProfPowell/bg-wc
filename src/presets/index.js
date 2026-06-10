@@ -87,6 +87,7 @@ const REGISTRY = {
   },
   doodles: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./doodles.js') },
   scandi: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./scandi.js') },
+  truchet: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./truchet.js') },
 
   // Overlay textures — grain, dot screens, dither
   dither: { renderer: 'webgl', group: 'texture', loader: () => import('./dither.js') },
@@ -129,6 +130,25 @@ const REGISTRY = {
   risograph: { renderer: 'webgl', group: 'print', loader: () => import('./risograph.js') },
   plotter: { renderer: 'canvas2d', group: 'print', loader: () => import('./plotter.js') },
   linocut: { renderer: 'canvas2d', group: 'print', loader: () => import('./linocut.js') },
+
+  // Classic — design-history styles (Bauhaus, Morris, damask, …)
+  bauhaus: { renderer: 'canvas2d', group: 'classic', loader: () => import('./bauhaus.js') },
+
+  // Science — biological / physical simulation aesthetics
+  phyllotaxis: {
+    renderer: 'canvas2d',
+    group: 'science',
+    loader: () => import('./phyllotaxis.js'),
+  },
+  'reaction-diffusion': {
+    renderer: 'webgl',
+    group: 'science',
+    loader: () => import('./reaction-diffusion.js'),
+  },
+
+  // Tech — engineering / sci-fi instrument aesthetics
+  circuit: { renderer: 'canvas2d', group: 'tech', loader: () => import('./circuit.js') },
+  gyroid: { renderer: 'webgl', group: 'tech', loader: () => import('./gyroid.js') },
 
   // 80s / 90s — distortion, displays, demoscene
   system7: { renderer: 'canvas2d', group: 'retro', loader: () => import('./system7.js') },
@@ -197,6 +217,9 @@ const GROUP_LABELS = {
   ornamental: 'Ornamental',
   japanese: 'Japanese',
   print: 'Print art',
+  classic: 'Classic',
+  science: 'Science',
+  tech: 'Tech',
   dataviz: 'Dataviz',
   particles: 'Particles',
   dimensional: 'Dimensional / 3D',
