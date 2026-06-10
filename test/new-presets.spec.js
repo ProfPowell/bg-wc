@@ -28,6 +28,13 @@ const PRESETS = [
   'circuit',
   'reaction-diffusion',
   'gyroid',
+  'de-stijl',
+  'meander',
+  'damask',
+  'morris',
+  'delaunay',
+  'moire',
+  'hilbert',
 ];
 
 for (const name of PRESETS) {
@@ -304,3 +311,56 @@ test('reaction-diffusion renders each density regime', async ({ page }) => {
     expect(detail.size, `density=${density} should paint bytes`).toBeGreaterThan(0);
   }
 });
+
+// Preset-families phase 2 (classic + geometric fill-out): canvas2d and WebGL
+// (damask, moire) presets must not fall back and must paint bytes.
+for (const name of ['de-stijl', 'meander', 'damask', 'morris', 'delaunay', 'moire', 'hilbert']) {
+  test(`${name} does not fall back and paints bytes`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const detail = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob ? blob.size : 0 };
+    }, name);
+    expect(detail.fallback, `${name} should not fall back`).toBe(false);
+    expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
+  });
+}
+
+// delaunay + hilbert: seed/density-driven layouts that must render across the
+// range without falling back (delaunay runs Bowyer–Watson; hilbert scales order).
+for (const preset of ['delaunay', 'hilbert']) {
+  test(`${preset} renders across density and seed without erroring`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    for (const [density, seed] of [
+      ['0.1', '3'],
+      ['0.5', '17'],
+      ['1', '88'],
+    ]) {
+      const detail = await page.evaluate(
+        async ([p, d, s]) => {
+          const el = document.getElementById('wc');
+          el.setAttribute('preset', p);
+          el.setAttribute('density', d);
+          el.setAttribute('seed', s);
+          await el.ready;
+          await new Promise((r) => requestAnimationFrame(r));
+          const blob = await el.snapshot();
+          return { fallback: el.hasAttribute('data-fallback'), size: blob.size };
+        },
+        [preset, density, seed]
+      );
+      expect(
+        detail.fallback,
+        `${preset} density=${density} seed=${seed} should not fall back`
+      ).toBe(false);
+      expect(
+        detail.size,
+        `${preset} density=${density} seed=${seed} should paint bytes`
+      ).toBeGreaterThan(0);
+    }
+  });
+}

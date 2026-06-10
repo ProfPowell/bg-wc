@@ -770,6 +770,26 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/damask.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/damask.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/dashboard.js",
       "declarations": [
         {
@@ -795,6 +815,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/de-stijl.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/de-stijl.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/deco.js",
       "declarations": [
         {
@@ -809,6 +854,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/deco.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/delaunay.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/delaunay.js"
           }
         }
       ]
@@ -1239,6 +1309,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/hilbert.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/hilbert.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/incoming.js",
       "declarations": [
         {
@@ -1510,6 +1605,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/meander.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/meander.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/mesh-gradient.js",
       "declarations": [
         {
@@ -1524,6 +1644,51 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/mesh-gradient.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/moire.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/moire.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/morris.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/morris.js"
           }
         }
       ]

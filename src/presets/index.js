@@ -88,6 +88,9 @@ const REGISTRY = {
   doodles: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./doodles.js') },
   scandi: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./scandi.js') },
   truchet: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./truchet.js') },
+  delaunay: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./delaunay.js') },
+  hilbert: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./hilbert.js') },
+  moire: { renderer: 'webgl', group: 'geometric', loader: () => import('./moire.js') },
 
   // Overlay textures — grain, dot screens, dither
   dither: { renderer: 'webgl', group: 'texture', loader: () => import('./dither.js') },
@@ -133,6 +136,10 @@ const REGISTRY = {
 
   // Classic — design-history styles (Bauhaus, Morris, damask, …)
   bauhaus: { renderer: 'canvas2d', group: 'classic', loader: () => import('./bauhaus.js') },
+  damask: { renderer: 'webgl', group: 'classic', loader: () => import('./damask.js') },
+  'de-stijl': { renderer: 'canvas2d', group: 'classic', loader: () => import('./de-stijl.js') },
+  meander: { renderer: 'canvas2d', group: 'classic', loader: () => import('./meander.js') },
+  morris: { renderer: 'canvas2d', group: 'classic', loader: () => import('./morris.js') },
 
   // Science — biological / physical simulation aesthetics
   phyllotaxis: {
