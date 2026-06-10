@@ -485,6 +485,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/bauhaus.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/bauhaus.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/benday.js",
       "declarations": [
         {
@@ -584,6 +609,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/cells.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/circuit.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/circuit.js"
           }
         }
       ]
@@ -1144,6 +1194,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/gyroid.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ gl, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/gyroid.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/halftone.js",
       "declarations": [
         {
@@ -1625,6 +1700,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/phyllotaxis.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/phyllotaxis.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/plasma.js",
       "declarations": [
         {
@@ -1709,6 +1809,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/rainbow.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/reaction-diffusion.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ gl, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/reaction-diffusion.js"
           }
         }
       ]
@@ -2265,6 +2390,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/truchet.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors, host }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/truchet.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/tunnel.js",
       "declarations": [
         {
@@ -2799,6 +2949,25 @@
               "name": "loc"
             }
           ]
+        },
+        {
+          "kind": "function",
+          "name": "createPingPong",
+          "parameters": [
+            {
+              "name": "gl"
+            },
+            {
+              "name": "width"
+            },
+            {
+              "name": "height"
+            },
+            {
+              "name": "opts",
+              "default": "{}"
+            }
+          ]
         }
       ],
       "exports": [
@@ -2847,6 +3016,14 @@
           "name": "bindQuad",
           "declaration": {
             "name": "bindQuad",
+            "module": "src/renderer/webgl.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "createPingPong",
+          "declaration": {
+            "name": "createPingPong",
             "module": "src/renderer/webgl.js"
           }
         }

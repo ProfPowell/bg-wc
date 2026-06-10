@@ -93,6 +93,11 @@ const MODE_OPTIONS = {
     { label: 'contour', value: 'contour' },
     { label: 'vortex', value: 'vortex' },
   ],
+  truchet: [
+    { label: 'arcs', value: 'arcs' },
+    { label: 'diagonals', value: 'diagonals' },
+    { label: 'wedges', value: 'wedges' },
+  ],
 };
 
 // Per-card state lives here so a card's <bg-wc> can be torn down and rebuilt

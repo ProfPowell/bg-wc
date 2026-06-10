@@ -68,3 +68,86 @@ export function bindQuad(gl, buf, loc) {
   gl.enableVertexAttribArray(loc);
   gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
 }
+
+// -----------------------------------------------------------------------------
+// Ping-pong framebuffers — shared by stateful simulation presets (reaction-
+// diffusion, slime-mold, oscilloscope persistence). Two textures + their FBOs;
+// each step reads `src()` and renders into `bindDst()`, then `swap()`. Prefers a
+// renderable half-float format on WebGL2 (EXT_color_buffer_float) for headroom,
+// and degrades to RGBA8 (UNSIGNED_BYTE) so it still runs on WebGL1 / hosts
+// without float-renderable framebuffers. Textures start empty — seed the field
+// with a render pass (uploading half-float pixel data is awkward; rendering is
+// not). `dispose()` deletes both textures and both framebuffers.
+export function createPingPong(gl, width, height, opts = {}) {
+  const isGL2 =
+    typeof WebGL2RenderingContext !== 'undefined' && gl instanceof WebGL2RenderingContext;
+  const wantFloat = opts.float !== false;
+  const wrap = opts.wrap || gl.CLAMP_TO_EDGE;
+  const filter = opts.filter || gl.NEAREST;
+
+  // Pick the best renderable format available.
+  let internalFormat = gl.RGBA;
+  let type = gl.UNSIGNED_BYTE;
+  let float = false;
+  if (wantFloat && isGL2 && gl.getExtension('EXT_color_buffer_float')) {
+    internalFormat = gl.RGBA16F;
+    type = gl.HALF_FLOAT;
+    float = true;
+  }
+
+  function makeTex() {
+    const tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, width, height, 0, gl.RGBA, type, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap);
+    return tex;
+  }
+  function makeFbo(tex) {
+    const fbo = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    return fbo;
+  }
+
+  let textures = [makeTex(), makeTex()];
+  let fbos = [makeFbo(textures[0]), makeFbo(textures[1])];
+
+  // If a float framebuffer came back incomplete, fall back to byte and rebuild.
+  if (float && gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+    for (const t of textures) gl.deleteTexture(t);
+    for (const f of fbos) gl.deleteFramebuffer(f);
+    internalFormat = gl.RGBA;
+    type = gl.UNSIGNED_BYTE;
+    float = false;
+    textures = [makeTex(), makeTex()];
+    fbos = [makeFbo(textures[0]), makeFbo(textures[1])];
+  }
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+  let cur = 0;
+  return {
+    width,
+    height,
+    float,
+    src() {
+      return textures[cur];
+    },
+    // Bind the off (write) target and set the viewport to the buffer size.
+    bindDst() {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbos[cur ^ 1]);
+      gl.viewport(0, 0, width, height);
+    },
+    swap() {
+      cur ^= 1;
+    },
+    dispose() {
+      for (const t of textures) gl.deleteTexture(t);
+      for (const f of fbos) gl.deleteFramebuffer(f);
+      textures = [];
+      fbos = [];
+    },
+  };
+}

@@ -22,6 +22,12 @@ const PRESETS = [
   'risograph',
   'plotter',
   'linocut',
+  'truchet',
+  'bauhaus',
+  'phyllotaxis',
+  'circuit',
+  'reaction-diffusion',
+  'gyroid',
 ];
 
 for (const name of PRESETS) {
@@ -234,3 +240,67 @@ for (const name of ['sumi-e', 'kintsugi', 'ukiyo-e', 'sakura', 'risograph', 'plo
     expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
   });
 }
+
+// Preset-families phase 1 (classic / geometric / science / tech): every preset —
+// canvas2d and WebGL (reaction-diffusion exercises the ping-pong FBO helper,
+// gyroid the raymarch shader) — must not fall back and must paint bytes.
+for (const name of [
+  'truchet',
+  'bauhaus',
+  'phyllotaxis',
+  'circuit',
+  'reaction-diffusion',
+  'gyroid',
+]) {
+  test(`${name} does not fall back and paints bytes`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const detail = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob ? blob.size : 0 };
+    }, name);
+    expect(detail.fallback, `${name} should not fall back`).toBe(false);
+    expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
+  });
+}
+
+// truchet: each tiling mode loads, renders across density/seed, never falls back.
+test('truchet honors each `mode` value and paints bytes', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  for (const mode of ['arcs', 'diagonals', 'wedges', '']) {
+    const detail = await page.evaluate(async (m) => {
+      const el = document.getElementById('wc');
+      if (m) el.setAttribute('mode', m);
+      else el.removeAttribute('mode');
+      el.setAttribute('preset', 'truchet');
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob.size };
+    }, mode);
+    expect(detail.fallback, `mode="${mode}" should not fall back`).toBe(false);
+    expect(detail.size, `mode="${mode}" should paint bytes`).toBeGreaterThan(0);
+  }
+});
+
+// reaction-diffusion: each density regime (spots/stripes/coral/waves) must
+// settle into a painted field via staticFrame without falling back.
+test('reaction-diffusion renders each density regime', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  for (const density of ['0.1', '0.4', '0.6', '0.9']) {
+    const detail = await page.evaluate(async (d) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', 'reaction-diffusion');
+      el.setAttribute('density', d);
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob.size };
+    }, density);
+    expect(detail.fallback, `density=${density} should not fall back`).toBe(false);
+    expect(detail.size, `density=${density} should paint bytes`).toBeGreaterThan(0);
+  }
+});
