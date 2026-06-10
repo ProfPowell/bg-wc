@@ -87,7 +87,6 @@ const REGISTRY = {
   },
   doodles: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./doodles.js') },
   scandi: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./scandi.js') },
-  seigaiha: { renderer: 'canvas2d', group: 'geometric', loader: () => import('./seigaiha.js') },
 
   // Overlay textures — grain, dot screens, dither
   dither: { renderer: 'webgl', group: 'texture', loader: () => import('./dither.js') },
@@ -118,6 +117,18 @@ const REGISTRY = {
   // Dot-art — Aboriginal / pointillist dotwork
   dotwork: { renderer: 'canvas2d', group: 'ornamental', loader: () => import('./dotwork.js') },
   tapestry: { renderer: 'canvas2d', group: 'ornamental', loader: () => import('./tapestry.js') },
+
+  // Japanese — ink, pattern, season
+  seigaiha: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./seigaiha.js') },
+  'sumi-e': { renderer: 'webgl', group: 'japanese', loader: () => import('./sumi-e.js') },
+  kintsugi: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./kintsugi.js') },
+  'ukiyo-e': { renderer: 'canvas2d', group: 'japanese', loader: () => import('./ukiyo-e.js') },
+  sakura: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./sakura.js') },
+
+  // Print art — riso overprint, pen plots, relief cuts
+  risograph: { renderer: 'webgl', group: 'print', loader: () => import('./risograph.js') },
+  plotter: { renderer: 'canvas2d', group: 'print', loader: () => import('./plotter.js') },
+  linocut: { renderer: 'canvas2d', group: 'print', loader: () => import('./linocut.js') },
 
   // 80s / 90s — distortion, displays, demoscene
   system7: { renderer: 'canvas2d', group: 'retro', loader: () => import('./system7.js') },
@@ -184,6 +195,8 @@ const GROUP_LABELS = {
   text: 'Text',
   pop: 'Pop art',
   ornamental: 'Ornamental',
+  japanese: 'Japanese',
+  print: 'Print art',
   dataviz: 'Dataviz',
   particles: 'Particles',
   dimensional: 'Dimensional / 3D',

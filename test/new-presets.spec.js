@@ -15,6 +15,13 @@ const PRESETS = [
   'dotwork',
   'stipple',
   'tapestry',
+  'sumi-e',
+  'kintsugi',
+  'ukiyo-e',
+  'sakura',
+  'risograph',
+  'plotter',
+  'linocut',
 ];
 
 for (const name of PRESETS) {
