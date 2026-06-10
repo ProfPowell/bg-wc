@@ -19,20 +19,34 @@ function smoothstep(e0, e1, x) {
   return u * u * (3 - 2 * u);
 }
 
-// Momentum random walk with recursive branching; pushes polylines into `out`.
-function growVein(rng, x, y, ang, len, step, depth, out) {
+// Momentum random walk with recursive branching; pushes veins into `out`.
+// Cracks run mostly straight with occasional sharp kinks (fracture lines, not
+// noodles). `birth` (0..1) is when a vein starts revealing, so branches only
+// appear once the parent crack has reached their junction.
+function growVein(rng, x, y, ang, len, step, depth, out, birth) {
   const pts = [[x, y]];
   for (let i = 0; i < len; i++) {
-    ang += (rng() - 0.5) * 0.55;
+    ang += rng() < 0.08 ? (rng() < 0.5 ? -1 : 1) * (0.4 + rng() * 0.5) : (rng() - 0.5) * 0.16;
     x += Math.cos(ang) * step;
     y += Math.sin(ang) * step;
     pts.push([x, y]);
-    if (depth > 0 && rng() < 0.045) {
+    if (depth > 0 && rng() < 0.03) {
       const turn = (rng() < 0.5 ? 1 : -1) * (0.5 + rng() * 0.6);
-      growVein(rng, x, y, ang + turn, Math.round(len * 0.45), step * 0.85, depth - 1, out);
+      const childBirth = Math.min(0.8, birth + ((i + 1) / len) * 0.5);
+      growVein(
+        rng,
+        x,
+        y,
+        ang + turn,
+        Math.round(len * 0.5),
+        step * 0.85,
+        depth - 1,
+        out,
+        childBirth
+      );
     }
   }
-  out.push(pts);
+  out.push({ pts, birth });
 }
 
 export function create({ c2d, getColors }) {
@@ -46,7 +60,7 @@ export function create({ c2d, getColors }) {
     if (cache && cache.key === key) return cache;
     const rng = mulberry32(((params.seed | 0 || 1) ^ (cycleIdx * 0x9e3779b9)) >>> 0);
     const segs = SEGS[params.quality] || SEGS.med;
-    const count = Math.max(2, Math.round(2 + params.density * 7));
+    const count = Math.max(2, Math.round(2 + params.density * 5));
     const s = Math.min(w, h);
     const veins = [];
     for (let i = 0; i < count; i++) {
@@ -55,7 +69,7 @@ export function create({ c2d, getColors }) {
       const x = side === 0 ? u * w : side === 1 ? w : side === 2 ? u * w : 0;
       const y = side === 0 ? 0 : side === 1 ? u * h : side === 2 ? h : u * h;
       const ang = Math.atan2(h / 2 - y, w / 2 - x) + (rng() - 0.5) * 0.8;
-      growVein(rng, x, y, ang, segs, s * 0.016, 2, veins);
+      growVein(rng, x, y, ang, segs, s * 0.016, 2, veins, 0);
     }
     cache = { key, veins };
     return cache;
@@ -99,9 +113,9 @@ export function create({ c2d, getColors }) {
     c2d.lineJoin = 'round';
     c2d.lineCap = 'round';
     for (let i = 0; i < n; i++) {
-      const pts = veins[i];
-      const vr = Math.min(1, Math.max(0, reveal * 1.3 - (i / Math.max(1, n)) * 0.3));
-      const upto = Math.max(2, Math.round(pts.length * vr));
+      const { pts, birth } = veins[i];
+      const vr = Math.min(1, Math.max(0, (reveal * 1.15 - birth) / 0.6));
+      const upto = Math.round(pts.length * vr);
       if (upto < 2) continue;
 
       // glow → mid → core passes
@@ -119,14 +133,16 @@ export function create({ c2d, getColors }) {
         c2d.stroke();
       }
 
-      // Traveling highlight pulse along the revealed vein.
-      const pos = (t * 0.08 + i * 0.37) % 1;
-      const k = Math.min(upto - 1, Math.round(pos * (upto - 1)));
-      const [px, py] = pts[k];
-      c2d.beginPath();
-      c2d.arc(px, py, s * 0.006, 0, Math.PI * 2);
-      c2d.fillStyle = rgbaCss(goldHi, 0.8 * fadeA * params.intensity);
-      c2d.fill();
+      // Traveling highlight pulse along the revealed vein (subtle, fully grown only).
+      if (vr >= 1) {
+        const pos = (t * 0.05 + i * 0.37) % 1;
+        const k = Math.min(upto - 1, Math.round(pos * (upto - 1)));
+        const [px, py] = pts[k];
+        c2d.beginPath();
+        c2d.arc(px, py, s * 0.0035, 0, Math.PI * 2);
+        c2d.fillStyle = rgbaCss(goldHi, 0.55 * fadeA * params.intensity);
+        c2d.fill();
+      }
     }
   }
 

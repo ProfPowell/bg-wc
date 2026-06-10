@@ -43,20 +43,22 @@ void main() {
   vec2 px = v_uv * u_res;
 
   float sc = mix(2.2, 5.0, u_density); // shape scale
-  float cov = mix(0.62, 0.46, u_intensity); // lower threshold = more ink
+  // Ink covers where fbm < cov; fbm clusters tightly around 0.5, so coverage
+  // is steered just below the mean: ~15% ink at intensity 0 up to ~50% at 1.
+  float cov = mix(0.42, 0.50, u_intensity);
 
-  // Layer A: blobs, drifting right.
+  // Layer A: blobs, drifting right. Tight smoothstep = crisp stencil edges.
   vec2 offA = vec2(u_time * 0.012 + u_seed, sin(u_time * 0.05) * 0.004 + u_seed);
-  float inkA = smoothstep(cov + 0.03, cov - 0.03, fbm3(uv * sc + offA));
+  float inkA = smoothstep(cov + 0.012, cov - 0.012, fbm3(uv * sc + offA));
 
   // Layer B: warped diagonal bars, misregistration wobble.
   vec2 offB = vec2(-u_time * 0.009, u_time * 0.006) + vec2(u_seed * 1.7)
             + vec2(0.013 * sin(u_time * 0.07), 0.011 * cos(u_time * 0.05));
   float warp = fbm3(uv * sc * 0.7 + offB) * 1.4;
   float bars = fract((uv.x + uv.y) * sc * 0.9 + warp);
-  float bw = mix(0.10, 0.30, u_intensity);
-  float inkB = smoothstep(bw, bw - 0.05, abs(bars - 0.5))
-             * smoothstep(cov + 0.10, cov - 0.10, fbm3(uv * sc * 0.5 - offB));
+  float bw = mix(0.08, 0.22, u_intensity);
+  float inkB = smoothstep(bw, bw - 0.03, abs(bars - 0.5))
+             * smoothstep(cov + 0.06, cov - 0.06, fbm3(uv * sc * 0.5 - offB));
 
   // Per-ink grain + dropouts (the riso texture).
   inkA *= mix(1.0, 0.72 + 0.28 * hash(px * 0.7 + vec2(1.3)), u_grain);

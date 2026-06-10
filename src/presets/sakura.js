@@ -16,10 +16,19 @@ function mix(a, b, t) {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
 }
 
-// Time-varying gust strength, 0..~1, with occasional surges.
-function gust(t) {
-  const g = Math.sin(t * 0.13) + Math.sin(t * 0.071 + 2.0);
-  return Math.max(0, g) * g * 0.25;
+// Gust model: wind velocity is (1 + sin(a·t + p))² — non-negative, surging
+// periodically. Drift uses the CLOSED-FORM INTEGRAL of that velocity so the
+// horizontal rate stays bounded no matter how long `t` runs (multiplying a
+// gust level by absolute `t` would accelerate without bound).
+function gustInt(t, a, p) {
+  return 1.5 * t - (2 / a) * Math.cos(a * t + p) - Math.sin(2 * (a * t + p)) / (4 * a);
+}
+
+// Instantaneous gust strength 0..~1 for petal lean/flutter.
+function gustNow(t) {
+  const v1 = (1 + Math.sin(0.09 * t + 1.3)) ** 2;
+  const v2 = (1 + Math.sin(0.053 * t + 4.1)) ** 2;
+  return (v1 + v2) / 8;
 }
 
 export function create({ c2d, getColors }) {
@@ -70,12 +79,13 @@ export function create({ c2d, getColors }) {
     const s = Math.min(w, h);
     clearAndFill(c2d, w, h, c.bg);
 
-    const g = gust(t);
+    const g = gustNow(t);
+    const driftBase = 0.004 * gustInt(t, 0.09, 1.3) + 0.003 * gustInt(t, 0.053, 4.1);
     const base = [c.primary[0], c.primary[1], c.primary[2]];
     for (const p of petals) {
       const depthF = 0.4 + p.depth * 0.3;
       const y = ((p.y0 + t * p.vy) % 1.15) * h * 1.15 - h * 0.075;
-      const drift = t * (0.005 + g * 0.06) * depthF;
+      const drift = driftBase * depthF;
       const sway = Math.sin(t * p.swayF + p.swayPh) * p.swayAmp;
       const x = (((p.x0 + drift + sway) % 1.2) + 1.2) % 1.2;
       const rot = Math.sin(t * p.spinF + p.spinPh) * 1.2 + g * 0.8;

@@ -139,13 +139,17 @@ export function create({ c2d, getColors }) {
       c2d.lineWidth = Math.max(1, s * 0.0035);
       c2d.strokeStyle = outlineCss;
       c2d.stroke();
-      c2d.fillStyle = foam;
-      for (let k = 0; k <= STEPS; k += 2) {
+      // Irregular foam beads: size, spacing, and alpha all vary so the crest
+      // reads as froth, not a string of pearls.
+      for (let k = 0; k <= STEPS; k++) {
         const u = k / STEPS;
+        const jit = Math.sin(u * 53.7 + li * 7.1) * Math.sin(u * 17.3 + li * 2.9);
+        if (jit < -0.25) continue; // gaps in the froth
         const y = baseY + waveY(L, u + scroll) * amp;
-        const r = s * 0.005 * (1 + 0.6 * Math.sin(u * 40 + li * 3));
+        const r = s * 0.0042 * (0.45 + Math.abs(jit));
+        c2d.fillStyle = rgbaCss([c.fg[0], c.fg[1], c.fg[2]], 0.35 + 0.55 * Math.abs(jit));
         c2d.beginPath();
-        c2d.arc(u * w, y - r * 0.4, Math.max(0.5, r), 0, Math.PI * 2);
+        c2d.arc(u * w + jit * s * 0.004, y - r * 0.5, Math.max(0.5, r), 0, Math.PI * 2);
         c2d.fill();
       }
 
