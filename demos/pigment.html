@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pigment &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #f6f3ec;   /* cold-press paper */
+      --color-foreground: #2c2620;
+      --color-primary: #2f5d8a;      /* ultramarine */
+      --color-accent: #b6443c;       /* alizarin */
+      --color-info: #2e7d72;         /* viridian */
+      --color-warning: #d99a2b;      /* yellow ochre */
+      --color-success: #5a7c3f;      /* sap green */
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Fraunces', Georgia, serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; right: clamp(24px, 7vw, 120px); top: 50%; transform: translateY(-50%); z-index: 6; max-width: 520px; text-align: right; }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.26em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 16px; }
+    h1 { font-weight: 700; font-size: clamp(52px, 8.5vw, 124px); line-height: 0.95; letter-spacing: -0.02em; margin: 0; color: var(--color-foreground); }
+    h1 em { font-style: italic; font-weight: 500; color: var(--color-primary); }
+    .lede { margin: 22px 0 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.6; color: rgba(44,38,32,0.78); }
+    .lede code { font-family: 'Space Mono', monospace; font-size: 0.8em; background: rgba(47,93,138,0.1); color: var(--color-primary); padding: 2px 7px; border-radius: 4px; }
+    .swatches { margin-top: 28px; display: flex; gap: 10px; justify-content: flex-end; }
+    .swatches i { width: 30px; height: 30px; border-radius: 50%; display: inline-block; border: 2px solid rgba(44,38,32,0.18); }
+
+    .telemetry { position: absolute; bottom: 26px; left: 32px; z-index: 6;
+      font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: rgba(44,38,32,0.55); line-height: 1.9; }
+    .telemetry b { color: var(--color-accent); font-weight: 400; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="watercolor" intensity="0.7" density="0.6" speed="0.8"></bg-wc>
+
+    <div class="content">
+      <div class="eyebrow">small-batch colour &middot; est. 1979</div>
+      <h1>Honest<br><em>pigment</em>.</h1>
+      <p class="lede">
+        Stone-ground watercolours that bloom wet-on-wet, granulate at the edge,
+        and glaze true. The page you're reading is the paint:
+        <code>preset="watercolor"</code>, washing live from the theme.
+      </p>
+      <div class="swatches">
+        <i style="background:#2f5d8a"></i><i style="background:#b6443c"></i>
+        <i style="background:#2e7d72"></i><i style="background:#d99a2b"></i>
+        <i style="background:#5a7c3f"></i>
+      </div>
+    </div>
+
+    <div class="telemetry">
+      <div>preset &middot; <b>watercolor</b></div>
+      <div>edge &middot; <b>granulated</b> &middot; glaze &middot; <b>multiplicative</b></div>
+      <div>render &middot; <b>webgl</b></div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sanctum &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #100d14;   /* nave dark */
+      --color-foreground: #efe9dc;
+      --color-primary: #3a4f9e;      /* cobalt glass */
+      --color-accent: #b3322e;       /* ruby glass */
+      --color-info: #2e7e6e;         /* emerald */
+      --color-warning: #d9a33c;      /* amber */
+      --color-success: #57793f;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Cormorant Garamond', Georgia, serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(ellipse 62% 62% at 50% 46%, rgba(16,13,20,0.25) 0%, rgba(16,13,20,0.88) 100%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.34em; color: var(--color-warning); text-transform: uppercase; margin-bottom: 20px; opacity: 0.9; }
+    h1 { font-weight: 600; font-size: clamp(58px, 12vw, 190px); letter-spacing: 0.04em; line-height: 0.95; margin: 0; text-transform: uppercase;
+      background: linear-gradient(175deg, #fff8ea 10%, var(--color-warning) 70%, #8a5e1c 120%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 6px 34px rgba(217,163,60,0.28)); }
+    .lede { max-width: 540px; margin: 24px auto 0; font-size: clamp(17px, 1.4vw, 22px); line-height: 1.55; color: rgba(239,233,220,0.85); font-style: italic; }
+    .lede code { font-family: 'Space Mono', monospace; font-style: normal; font-size: 0.78em; background: rgba(217,163,60,0.14); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
+    .season { margin-top: 30px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: rgba(239,233,220,0.6); text-transform: uppercase; }
+    .season b { color: var(--color-foreground); font-weight: 400; }
+
+    .telemetry { position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
+      font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--color-warning); opacity: 0.8; flex-wrap: wrap; gap: 12px; }
+    .telemetry span { color: var(--color-foreground); opacity: 0.45; padding-right: 6px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="stained-glass" intensity="0.75" density="0.6" speed="0.7"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="content">
+      <div class="eyebrow">vespers &middot; by candlelight</div>
+      <h1>Sanctum</h1>
+      <p class="lede">
+        An ensemble for early music, sung under glass. The light moves so the
+        windows do &mdash; <code>preset="stained-glass"</code>, panes cut fresh
+        from your theme each visit.
+      </p>
+      <div class="season"><b>Season XII</b> &middot; nave &amp; transept &middot; winter programme</div>
+    </div>
+
+    <div class="telemetry">
+      <div><span>preset</span>stained-glass</div>
+      <div><span>panes</span>voronoi &middot; seeded</div>
+      <div><span>render</span>webgl</div>
+      <div><span>palette</span>theme</div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
