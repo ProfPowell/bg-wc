@@ -128,6 +128,7 @@ const REGISTRY = {
   kintsugi: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./kintsugi.js') },
   'ukiyo-e': { renderer: 'canvas2d', group: 'japanese', loader: () => import('./ukiyo-e.js') },
   sakura: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./sakura.js') },
+  origami: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./origami.js') },
 
   // Print art — riso overprint, pen plots, relief cuts
   risograph: { renderer: 'webgl', group: 'print', loader: () => import('./risograph.js') },
@@ -140,6 +141,18 @@ const REGISTRY = {
   'de-stijl': { renderer: 'canvas2d', group: 'classic', loader: () => import('./de-stijl.js') },
   meander: { renderer: 'canvas2d', group: 'classic', loader: () => import('./meander.js') },
   morris: { renderer: 'canvas2d', group: 'classic', loader: () => import('./morris.js') },
+  'stained-glass': {
+    renderer: 'webgl',
+    group: 'classic',
+    loader: () => import('./stained-glass.js'),
+  },
+  swiss: { renderer: 'canvas2d', group: 'classic', loader: () => import('./swiss.js') },
+
+  // Art — movement-level fine-art homages
+  mobile: { renderer: 'canvas2d', group: 'art', loader: () => import('./mobile.js') },
+
+  // Kitsch — roadside / craft / nostalgia Americana
+  'neon-sign': { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./neon-sign.js') },
 
   // Science — biological / physical simulation aesthetics
   phyllotaxis: {
@@ -165,6 +178,7 @@ const REGISTRY = {
   gyroid: { renderer: 'webgl', group: 'tech', loader: () => import('./gyroid.js') },
   lidar: { renderer: 'webgl', group: 'tech', loader: () => import('./lidar.js') },
   oscilloscope: { renderer: 'webgl', group: 'tech', loader: () => import('./oscilloscope.js') },
+  swarm: { renderer: 'canvas2d', group: 'tech', loader: () => import('./swarm.js') },
 
   // 80s / 90s — distortion, displays, demoscene
   system7: { renderer: 'canvas2d', group: 'retro', loader: () => import('./system7.js') },
@@ -235,6 +249,8 @@ const GROUP_LABELS = {
   japanese: 'Japanese',
   print: 'Print art',
   classic: 'Classic',
+  art: 'Art',
+  kitsch: 'Kitsch',
   science: 'Science',
   tech: 'Tech',
   dataviz: 'Dataviz',

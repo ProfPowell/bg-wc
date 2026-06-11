@@ -3,11 +3,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { listGroups, listPresets } from '../src/presets/index.js';
 
-test('japanese group contains the five japanese presets', () => {
+test('japanese group contains the six japanese presets', () => {
   const g = listGroups().find((x) => x.id === 'japanese');
   assert.ok(g, 'japanese group exists');
   assert.deepEqual(g.presets.map((p) => p.name).sort(), [
     'kintsugi',
+    'origami',
     'sakura',
     'seigaiha',
     'sumi-e',

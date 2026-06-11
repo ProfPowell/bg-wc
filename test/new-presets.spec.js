@@ -35,6 +35,12 @@ const PRESETS = [
   'delaunay',
   'moire',
   'hilbert',
+  'swarm',
+  'mobile',
+  'stained-glass',
+  'swiss',
+  'neon-sign',
+  'origami',
   'boids',
   'helix',
   'mycelium',
@@ -419,3 +425,39 @@ test('bootlog honors the text override', async ({ page }) => {
   });
   expect(ok).toBe(true);
 });
+
+// Preset wave 2, phase 1 (swarm/mobile/stained-glass/swiss/neon-sign/origami):
+// must not fall back and must paint (stained-glass exercises the Voronoi
+// uniform-array shader; the rest are canvas2d).
+for (const name of ['swarm', 'mobile', 'stained-glass', 'swiss', 'neon-sign', 'origami']) {
+  test(`${name} does not fall back and paints bytes`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const detail = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob ? blob.size : 0 };
+    }, name);
+    expect(detail.fallback, `${name} should not fall back`).toBe(false);
+    expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
+  });
+}
+
+// swarm + neon-sign accept a `text` override (lines split on '|').
+for (const name of ['swarm', 'neon-sign']) {
+  test(`${name} honors the text override`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const ok = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      el.setAttribute('text', 'HI|BG WC');
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      return !el.hasAttribute('data-fallback');
+    }, name);
+    expect(ok).toBe(true);
+  });
+}
