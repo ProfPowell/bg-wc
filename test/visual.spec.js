@@ -22,6 +22,7 @@ const NO_SNAPSHOT = new Set([
   'slime-mold',
   'oscilloscope',
   'radar',
+  'drip',
 ]);
 
 test.describe('visual', () => {

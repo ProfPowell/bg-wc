@@ -162,7 +162,12 @@ const REGISTRY = {
   swiss: { renderer: 'canvas2d', group: 'classic', loader: () => import('./swiss.js') },
 
   // Art — movement-level fine-art homages
+  colorfield: { renderer: 'webgl', group: 'art', loader: () => import('./colorfield.js') },
+  cutouts: { renderer: 'canvas2d', group: 'art', loader: () => import('./cutouts.js') },
+  drip: { renderer: 'canvas2d', group: 'art', loader: () => import('./drip.js') },
+  graffiti: { renderer: 'canvas2d', group: 'art', loader: () => import('./graffiti.js') },
   mobile: { renderer: 'canvas2d', group: 'art', loader: () => import('./mobile.js') },
+  watercolor: { renderer: 'webgl', group: 'art', loader: () => import('./watercolor.js') },
 
   // Kitsch — roadside / craft / nostalgia Americana
   'neon-sign': { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./neon-sign.js') },
