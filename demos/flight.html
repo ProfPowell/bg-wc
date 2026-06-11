@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flight &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;500;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #050810;   /* night sky */
+      --color-foreground: #e9f0ff;
+      --color-primary: #2e64ff;      /* drone halo */
+      --color-accent: #9fd4ff;       /* drone core */
+      --color-info: #58e0c0;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Manrope', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(180deg, rgba(5,8,16,0.5) 0%, transparent 30%, transparent 60%, rgba(5,8,16,0.95) 100%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: 0; right: 0; bottom: clamp(40px, 9vh, 110px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.28em; color: var(--color-info); text-transform: uppercase; margin-bottom: 14px; }
+    h1 { font-weight: 800; font-size: clamp(34px, 5.2vw, 76px); letter-spacing: -0.02em; line-height: 1.02; margin: 0; }
+    h1 em { font-style: normal; color: var(--color-accent); }
+    .lede { max-width: 600px; margin: 16px auto 0; font-size: clamp(15px, 1.2vw, 19px); line-height: 1.6; color: rgba(233,240,255,0.75); font-weight: 300; }
+    .lede code { font-family: 'JetBrains Mono', monospace; font-size: 0.84em; background: rgba(46,100,255,0.2); color: #bcd0ff; padding: 2px 7px; border-radius: 4px; }
+    .cta { margin-top: 24px; }
+    .cta a { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
+      padding: 13px 26px; border-radius: 999px; background: var(--color-accent); color: #061021; font-weight: 700; }
+
+    .telemetry { position: absolute; top: 24px; right: 32px; z-index: 6; text-align: right;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: rgba(233,240,255,0.5); line-height: 1.9; }
+    .telemetry b { color: var(--color-info); font-weight: 400; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <!-- The fleet spells the brand between formations: text lines cycle on '|'. -->
+    <bg-wc class="bg" preset="swarm" text="FLIGHT|WOW" intensity="0.75" density="0.7" speed="1.1"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="content">
+      <div class="eyebrow">drone light shows &middot; 800-craft fleet</div>
+      <h1>The sky is our <em>canvas</em>.</h1>
+      <p class="lede">
+        Eight hundred drones easing between formations &mdash; rings, lattices,
+        and your message spelled overhead. <code>preset="swarm"</code> with
+        <code>text="FLIGHT|WOW"</code>; every slot a damped spring.
+      </p>
+      <div class="cta"><a href="#">Book a show</a></div>
+    </div>
+
+    <div class="telemetry">
+      <div>preset &middot; <b>swarm</b></div>
+      <div>formations &middot; <b>scatter / ring / lattice / text</b></div>
+      <div>render &middot; <b>canvas2d</b></div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>

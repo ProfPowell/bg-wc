@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nightline &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;600;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #070a14;   /* wet asphalt night */
+      --color-foreground: #e6ecff;
+      --color-primary: #4256c8;      /* sodium-blue glow */
+      --color-accent: #ff3d81;       /* neon magenta */
+      --color-info: #ffd166;         /* window amber */
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Sora', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(90deg, rgba(7,10,20,0.92) 0%, rgba(7,10,20,0.55) 40%, transparent 75%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: clamp(28px, 7vw, 110px); top: 50%; transform: translateY(-50%); z-index: 6; max-width: 560px; }
+    .live { display: inline-flex; align-items: center; gap: 9px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--color-accent); border: 1px solid rgba(255,61,129,0.4); border-radius: 999px; padding: 6px 14px; margin-bottom: 24px; }
+    .live i { width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 10px var(--color-accent); }
+    h1 { font-weight: 800; font-size: clamp(46px, 8vw, 120px); line-height: 0.95; letter-spacing: -0.03em; margin: 0; }
+    h1 span { color: var(--color-accent); }
+    .lede { margin: 24px 0 0; font-size: clamp(15px, 1.3vw, 20px); line-height: 1.65; color: rgba(230,236,255,0.75); font-weight: 300; max-width: 480px; }
+    .lede code { font-family: 'IBM Plex Mono', monospace; font-size: 0.84em; background: rgba(66,86,200,0.22); color: #c2cdff; padding: 2px 7px; border-radius: 4px; }
+    .sched { margin-top: 34px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 2.1; letter-spacing: 0.08em; color: rgba(230,236,255,0.6); }
+    .sched b { color: var(--color-info); font-weight: 400; padding-right: 14px; }
+
+    .telemetry { position: absolute; bottom: 26px; right: 32px; z-index: 6; text-align: right;
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: rgba(230,236,255,0.5); line-height: 1.9; }
+    .telemetry b { color: var(--color-accent); font-weight: 400; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="neon-city" intensity="0.75" density="0.6" speed="1"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="content">
+      <span class="live"><i></i> on air</span>
+      <h1>Night<span>line</span><br>99.1 FM</h1>
+      <p class="lede">
+        Slow songs for fast cities. Broadcasting from the 40th floor over a
+        town that never dries &mdash; <code>preset="neon-city"</code>, every
+        window and its reflection straight from the theme.
+      </p>
+      <div class="sched">
+        <div><b>00:00</b> The Graveyard Groove</div>
+        <div><b>02:00</b> Rain Delay &middot; ambient hour</div>
+        <div><b>04:00</b> First Train Home</div>
+      </div>
+    </div>
+
+    <div class="telemetry">
+      <div>preset &middot; <b>neon-city</b></div>
+      <div>street &middot; <b>mirrored + rippled</b></div>
+      <div>render &middot; <b>webgl</b></div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
