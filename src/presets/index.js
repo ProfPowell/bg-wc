@@ -136,9 +136,22 @@ const REGISTRY = {
   linocut: { renderer: 'canvas2d', group: 'print', loader: () => import('./linocut.js') },
 
   // Classic — design-history styles (Bauhaus, Morris, damask, …)
+  alchemy: { renderer: 'canvas2d', group: 'classic', loader: () => import('./alchemy.js') },
   bauhaus: { renderer: 'canvas2d', group: 'classic', loader: () => import('./bauhaus.js') },
+  cave: { renderer: 'canvas2d', group: 'classic', loader: () => import('./cave.js') },
+  clockwork: { renderer: 'canvas2d', group: 'classic', loader: () => import('./clockwork.js') },
   damask: { renderer: 'webgl', group: 'classic', loader: () => import('./damask.js') },
   'de-stijl': { renderer: 'canvas2d', group: 'classic', loader: () => import('./de-stijl.js') },
+  hieroglyph: {
+    renderer: 'canvas2d',
+    group: 'classic',
+    loader: () => import('./hieroglyph.js'),
+  },
+  illuminated: {
+    renderer: 'canvas2d',
+    group: 'classic',
+    loader: () => import('./illuminated.js'),
+  },
   meander: { renderer: 'canvas2d', group: 'classic', loader: () => import('./meander.js') },
   morris: { renderer: 'canvas2d', group: 'classic', loader: () => import('./morris.js') },
   'stained-glass': {
@@ -153,6 +166,7 @@ const REGISTRY = {
 
   // Kitsch — roadside / craft / nostalgia Americana
   'neon-sign': { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./neon-sign.js') },
+  quilt: { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./quilt.js') },
 
   // Science — biological / physical simulation aesthetics
   phyllotaxis: {
