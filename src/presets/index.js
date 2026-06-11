@@ -106,6 +106,8 @@ const REGISTRY = {
   caustics: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./caustics.js') },
   tunnel: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./tunnel.js') },
   marble: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./marble.js') },
+  nebula: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./nebula.js') },
+  summit: { renderer: 'canvas2d', group: 'atmospheric', loader: () => import('./summit.js') },
 
   // Pop art / deco
   benday: { renderer: 'webgl', group: 'pop', loader: () => import('./benday.js') },
@@ -170,7 +172,11 @@ const REGISTRY = {
   watercolor: { renderer: 'webgl', group: 'art', loader: () => import('./watercolor.js') },
 
   // Kitsch — roadside / craft / nostalgia Americana
+  crochet: { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./crochet.js') },
+  disco: { renderer: 'webgl', group: 'kitsch', loader: () => import('./disco.js') },
+  domino: { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./domino.js') },
   'neon-sign': { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./neon-sign.js') },
+  pegboard: { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./pegboard.js') },
   quilt: { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./quilt.js') },
 
   // Science — biological / physical simulation aesthetics
@@ -188,6 +194,7 @@ const REGISTRY = {
     loader: () => import('./reaction-diffusion.js'),
   },
   chladni: { renderer: 'webgl', group: 'science', loader: () => import('./chladni.js') },
+  orbital: { renderer: 'canvas2d', group: 'science', loader: () => import('./orbital.js') },
   'slime-mold': { renderer: 'webgl', group: 'science', loader: () => import('./slime-mold.js') },
 
   // Tech — engineering / sci-fi instrument aesthetics
@@ -197,6 +204,8 @@ const REGISTRY = {
   gyroid: { renderer: 'webgl', group: 'tech', loader: () => import('./gyroid.js') },
   lidar: { renderer: 'webgl', group: 'tech', loader: () => import('./lidar.js') },
   oscilloscope: { renderer: 'webgl', group: 'tech', loader: () => import('./oscilloscope.js') },
+  hologram: { renderer: 'webgl', group: 'tech', loader: () => import('./hologram.js') },
+  'neon-city': { renderer: 'webgl', group: 'tech', loader: () => import('./neon-city.js') },
   swarm: { renderer: 'canvas2d', group: 'tech', loader: () => import('./swarm.js') },
 
   // 80s / 90s — distortion, displays, demoscene
@@ -236,6 +245,7 @@ const REGISTRY = {
   particles: { renderer: 'canvas2d', group: 'particles', loader: () => import('./particles.js') },
   pulse: { renderer: 'canvas2d', group: 'particles', loader: () => import('./pulse.js') },
   tetris: { renderer: 'canvas2d', group: 'particles', loader: () => import('./tetris.js') },
+  lanterns: { renderer: 'canvas2d', group: 'particles', loader: () => import('./lanterns.js') },
 
   // Dimensional / CSS-3D scenes
   'fly-through': {

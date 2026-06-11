@@ -35,10 +35,10 @@ into real-looking pages.
 
 ## Preset highlights
 
-A handful of the 100+ presets, grouped into seventeen families (Gradients,
+A handful of the 130+ presets, grouped into nineteen families (Gradients,
 Geometric, Texture, Atmospheric, Retro, Vector, Pop art, Ornamental,
-Japanese, Print art, Classic, Science, Tech, and more). Each adapts to
-whatever theme tokens you set.
+Japanese, Print art, Classic, Art, Kitsch, Science, Tech, and more). Each
+adapts to whatever theme tokens you set.
 
 | Name             | Renderer | Notes                                                   |
 | ---------------- | -------- | ------------------------------------------------------- |
@@ -56,6 +56,10 @@ whatever theme tokens you set.
 | `reaction-diffusion` | WebGL | Gray-Scott patterns (spots / stripes / coral) on FBOs. |
 | `slime-mold`     | WebGL    | Physarum agents weaving chemical-trail networks.        |
 | `gyroid`         | WebGL    | Raymarched gyroid minimal surface, rim/key lit.         |
+| `stained-glass`  | WebGL    | Voronoi panes + lead cames with a drifting light bloom. |
+| `swarm`          | Canvas2D | Drone-show formations; pass `text` to spell words.      |
+| `watercolor`     | WebGL    | Wet-on-wet blooms with granulated edge pigment.         |
+| `clockwork`      | Canvas2D | Ratio-locked gear train with a ticking escapement.      |
 | `source`         | Canvas2D | Faded HTML source listing; pass `text` to override.     |
 | `matrix`         | Canvas2D | Falling digital rain; pass `text` to override glyphs.   |
 | `confetti`       | Canvas2D | Continuous drop using the full semantic palette.        |
