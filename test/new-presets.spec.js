@@ -499,3 +499,33 @@ for (const name of ['drip', 'colorfield', 'cutouts', 'graffiti', 'watercolor']) 
     expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
   });
 }
+
+// Preset wave 2, phase 4 (futuristic + kitsch + remainder; hologram/nebula/
+// neon-city/disco are WebGL): must not fall back and must paint bytes.
+for (const name of [
+  'hologram',
+  'nebula',
+  'neon-city',
+  'disco',
+  'orbital',
+  'pegboard',
+  'crochet',
+  'domino',
+  'summit',
+  'lanterns',
+]) {
+  test(`${name} does not fall back and paints bytes`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const detail = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob ? blob.size : 0 };
+    }, name);
+    expect(detail.fallback, `${name} should not fall back`).toBe(false);
+    expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
+  });
+}

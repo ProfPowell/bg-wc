@@ -940,6 +940,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/crochet.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/crochet.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/crt.js",
       "declarations": [
         {
@@ -1100,6 +1125,26 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/disco.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/disco.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/dither.js",
       "declarations": [
         {
@@ -1114,6 +1159,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/dither.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/domino.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/domino.js"
           }
         }
       ]
@@ -1649,6 +1719,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/hologram.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ gl, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/hologram.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/illuminated.js",
       "declarations": [
         {
@@ -1804,6 +1899,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/kintsugi.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/lanterns.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/lanterns.js"
           }
         }
       ]
@@ -2160,6 +2280,46 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/nebula.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/nebula.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/neon-city.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/neon-city.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/neon-sign.js",
       "declarations": [
         {
@@ -2249,6 +2409,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/op-art.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/orbital.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/orbital.js"
           }
         }
       ]
@@ -2349,6 +2534,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/particles.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/pegboard.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/pegboard.js"
           }
         }
       ]
@@ -2934,6 +3144,31 @@
           "declaration": {
             "name": "create",
             "module": "src/presets/sumi-e.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/presets/summit.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/summit.js"
           }
         }
       ]
