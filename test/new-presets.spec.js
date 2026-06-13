@@ -648,3 +648,22 @@ test('palms honors each mode', async ({ page }) => {
     expect(ok, `palms mode=${mode}`).toBe(true);
   }
 });
+
+// Preset wave 3, phase 4 (exotica: barkcloth/lanai — both canvas2d): must not
+// fall back and must paint bytes.
+for (const name of ['barkcloth', 'lanai']) {
+  test(`${name} does not fall back and paints bytes`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const detail = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob ? blob.size : 0 };
+    }, name);
+    expect(detail.fallback, `${name} should not fall back`).toBe(false);
+    expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
+  });
+}

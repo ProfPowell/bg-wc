@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Kaufmann &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #ece4d7;   /* terrazzo deck */
+      --color-foreground: #25303a;
+      --color-info: #1fb0c4;         /* pool teal */
+      --color-accent: #ef6a52;       /* coral */
+      --color-warning: #f3b13a;      /* sun gold */
+      --color-primary: #8fb7d6;      /* desert sky */
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Poppins', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(180deg, transparent 55%, rgba(236,228,215,0.72) 100%); }
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+    .content { position: absolute; left: 0; right: 0; bottom: clamp(34px, 9vh, 90px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 12px; }
+    h1 { font-weight: 800; font-size: clamp(40px, 7vw, 96px); line-height: 0.96; letter-spacing: -0.02em; margin: 0; }
+    h1 span { color: var(--color-info); }
+    .lede { max-width: 480px; margin: 14px auto 0; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.6; color: rgba(37,48,58,0.78); font-weight: 300; }
+    .lede code { font-family: 'Space Mono', monospace; font-size: 0.82em; background: rgba(31,176,196,0.16); color: #11707e; padding: 2px 7px; border-radius: 4px; }
+    .cta { margin-top: 22px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .cta a { text-decoration: none; padding: 13px 24px; border-radius: 999px; background: var(--color-info); color: #06343a; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <main class="stage">
+    <bg-wc class="bg" preset="lanai" intensity="0.7" density="0.55" speed="1"></bg-wc>
+    <div class="scrim"></div>
+    <div class="content">
+      <div class="eyebrow">desert modernism &middot; book the house</div>
+      <h1>The <span>Kaufmann</span> House</h1>
+      <p class="lede">
+        Five bedrooms, one perfect kidney pool. The poolside behind this card is
+        <code>preset="lanai"</code> &mdash; caustics, stepping stones, and palm
+        shadows on the deck.
+      </p>
+      <div class="cta"><a href="#">Check dates</a></div>
+    </div>
+  </main>
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bali Hai &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #efe6cf;   /* unbleached cloth */
+      --color-foreground: #34301f;
+      --color-success: #6f8f4e;      /* avocado */
+      --color-warning: #d39a32;      /* mustard */
+      --color-accent: #c4572b;       /* burnt orange */
+      --color-info: #2f8f86;         /* teal */
+      --color-primary: #8a6a3a;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Sansita Swashed', cursive; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .panel { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 6; width: min(86vw, 560px);
+      background: rgba(239,230,207,0.86); backdrop-filter: blur(2px); border: 3px solid var(--color-accent); border-radius: 4px;
+      padding: clamp(28px, 5vw, 56px); text-align: center; box-shadow: 0 24px 60px rgba(52,48,31,0.2); }
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
+    .nav a:hover { opacity: 1; }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.28em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 14px; }
+    h1 { font-weight: 700; font-size: clamp(46px, 8vw, 96px); line-height: 0.95; margin: 0; color: var(--color-info); }
+    .lede { margin: 16px auto 0; max-width: 380px; font-family: 'Space Mono', monospace; font-size: 13px; line-height: 1.7; color: rgba(52,48,31,0.8); }
+    .lede code { background: rgba(111,143,78,0.18); color: var(--color-success); padding: 2px 7px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <main class="stage">
+    <bg-wc class="bg" preset="barkcloth" intensity="0.7" density="0.5" speed="1"></bg-wc>
+    <div class="panel">
+      <div class="eyebrow">aloha wear &middot; since 1954</div>
+      <h1>Bali Hai</h1>
+      <p class="lede">
+        Hand-blocked aloha shirts cut from genuine barkcloth. The bolt behind
+        this label is <code>preset="barkcloth"</code> &mdash; monstera, hibiscus,
+        and fronds, drifting like it's on the line.
+      </p>
+    </div>
+  </main>
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
