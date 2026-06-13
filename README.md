@@ -35,10 +35,10 @@ into real-looking pages.
 
 ## Preset highlights
 
-A handful of the 130+ presets, grouped into nineteen families (Gradients,
+A handful of the 140+ presets, grouped into twenty-one families (Gradients,
 Geometric, Texture, Atmospheric, Retro, Vector, Pop art, Ornamental,
-Japanese, Print art, Classic, Art, Kitsch, Science, Tech, and more). Each
-adapts to whatever theme tokens you set.
+Japanese, Print art, Classic, Art, Kitsch, Science, Tech, Nature, Lounge,
+and more). Each adapts to whatever theme tokens you set.
 
 | Name             | Renderer | Notes                                                   |
 | ---------------- | -------- | ------------------------------------------------------- |
@@ -53,6 +53,10 @@ adapts to whatever theme tokens you set.
 | `risograph`      | WebGL    | Two-ink riso overprint with misregistration and grain.  |
 | `supergraphics`  | Canvas2D | Mural-scale curved bands (Sea Ranch / Stauffacher).     |
 | `bauhaus`        | Canvas2D | Bauhaus poster forms recomposing on staggered cycles.   |
+| `equalizer`      | Canvas2D | 80s graphic-EQ LED bars with peak-hold; bars/mirror/dots.|
+| `tiki`           | Canvas2D | Torch-lit tiki bar — flickering totems at night.        |
+| `komorebi`       | WebGL    | Dappled afternoon sunlight drifting through leaves.     |
+| `palms`          | Canvas2D | Palms swaying at sunset; silhouette / lit modes.        |
 | `reaction-diffusion` | WebGL | Gray-Scott patterns (spots / stripes / coral) on FBOs. |
 | `slime-mold`     | WebGL    | Physarum agents weaving chemical-trail networks.        |
 | `gyroid`         | WebGL    | Raymarched gyroid minimal surface, rim/key lit.         |

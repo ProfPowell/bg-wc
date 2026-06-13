@@ -216,7 +216,9 @@ const REGISTRY = {
   reeds: { renderer: 'canvas2d', group: 'nature', loader: () => import('./reeds.js') },
 
   // Lounge — mid-century exotica / leisure design
+  barkcloth: { renderer: 'canvas2d', group: 'lounge', loader: () => import('./barkcloth.js') },
   breezeblock: { renderer: 'canvas2d', group: 'lounge', loader: () => import('./breezeblock.js') },
+  lanai: { renderer: 'canvas2d', group: 'lounge', loader: () => import('./lanai.js') },
   tiki: { renderer: 'canvas2d', group: 'lounge', loader: () => import('./tiki.js') },
 
   // 80s / 90s — distortion, displays, demoscene
