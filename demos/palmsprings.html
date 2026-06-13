@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palm Springs &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #f7e9da;
+      --color-foreground: #2a2230;
+      --color-primary: #c9a06a;
+      --color-accent: #e8553f;
+      --color-warning: #f5b73f;
+      --color-info: #1f9fb0;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Poppins', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(180deg, rgba(247,233,218,0.2) 0%, transparent 40%, rgba(247,233,218,0.7) 100%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+
+    .panel { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 6; width: min(86vw, 640px);
+      background: rgba(247,233,218,0.82); backdrop-filter: blur(2px); border-radius: 2px; padding: clamp(28px, 5vw, 60px);
+      box-shadow: 0 30px 80px rgba(42,34,48,0.22); text-align: center; }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 16px; }
+    h1 { font-weight: 800; font-size: clamp(38px, 6.5vw, 86px); line-height: 0.96; letter-spacing: -0.02em; margin: 0; text-transform: uppercase; }
+    h1 span { color: var(--color-accent); }
+    .lede { margin: 18px auto 0; max-width: 440px; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.6; color: rgba(42,34,48,0.72); font-weight: 300; }
+    .lede code { font-family: 'Space Mono', monospace; font-size: 0.8em; background: rgba(31,159,176,0.14); color: var(--color-info); padding: 2px 7px; border-radius: 4px; }
+    .cta { margin-top: 26px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .cta a { text-decoration: none; padding: 13px 24px; border-radius: 999px; background: var(--color-accent); color: #fff; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="breezeblock" mode="mixed" intensity="0.7" density="0.55" speed="1"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="panel">
+      <div class="eyebrow">desert modernism &middot; for sale</div>
+      <h1>The <span>Sunbeam</span> Residence</h1>
+      <p class="lede">
+        Post-and-beam, original breeze-block screen, kidney pool. The wall it's
+        named for is right behind this card &mdash; <code>preset="breezeblock"</code>,
+        afternoon light raking through.
+      </p>
+      <div class="cta"><a href="#">Request a tour</a></div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>

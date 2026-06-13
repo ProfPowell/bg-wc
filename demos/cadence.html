@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cadence &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #15131c;
+      --color-foreground: #e7e3f0;
+      --color-primary: #6b7bd6;
+      --color-accent: #ff7a18;
+      --color-warning: #ff8c1a;
+      --color-info: #58c7d8;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Space Grotesk', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(180deg, rgba(21,19,28,0.92) 0%, transparent 38%, transparent 60%, rgba(21,19,28,0.94) 100%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+
+    .head { position: absolute; top: 34px; left: 0; right: 0; z-index: 6; text-align: center; }
+    .head h1 { font-weight: 700; font-size: clamp(30px, 5vw, 60px); letter-spacing: -0.02em; margin: 0; }
+    .head .sub { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.34em; color: var(--color-warning); text-transform: uppercase; margin-top: 8px; }
+
+    .foot { position: absolute; bottom: 30px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 7vw, 120px); flex-wrap: wrap; gap: 16px;
+      font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em; color: rgba(231,227,240,0.6); }
+    .foot b { color: var(--color-info); font-weight: 400; }
+    .lede { position: absolute; left: 0; right: 0; bottom: 86px; z-index: 6; text-align: center; font-family: 'Space Mono', monospace;
+      font-size: 12.5px; letter-spacing: 0.06em; color: rgba(231,227,240,0.5); }
+    .lede code { background: rgba(255,140,26,0.16); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="nixie" intensity="0.85" density="0.6" speed="1"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="head">
+      <h1>Cadence Labs</h1>
+      <div class="sub">frequency standard &middot; model 1019</div>
+    </div>
+
+    <div class="lede">events counted since last reset &mdash; <code>preset="nixie"</code>, or pass <code>text</code> to pin a reading</div>
+
+    <div class="foot">
+      <div>gate &middot; <b>1.000 s</b></div>
+      <div>ref &middot; <b>10 MHz OCXO</b></div>
+      <div>drift &middot; <b>&plusmn;2 ppb</b></div>
+      <div>temp &middot; <b>21.4&deg;C</b></div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>

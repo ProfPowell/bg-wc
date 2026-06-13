@@ -208,7 +208,15 @@ const REGISTRY = {
   'neon-city': { renderer: 'webgl', group: 'tech', loader: () => import('./neon-city.js') },
   swarm: { renderer: 'canvas2d', group: 'tech', loader: () => import('./swarm.js') },
 
+  // Nature — illustrative living scenes
+  reeds: { renderer: 'canvas2d', group: 'nature', loader: () => import('./reeds.js') },
+
+  // Lounge — mid-century exotica / leisure design
+  breezeblock: { renderer: 'canvas2d', group: 'lounge', loader: () => import('./breezeblock.js') },
+  tiki: { renderer: 'canvas2d', group: 'lounge', loader: () => import('./tiki.js') },
+
   // 80s / 90s — distortion, displays, demoscene
+  equalizer: { renderer: 'canvas2d', group: 'retro', loader: () => import('./equalizer.js') },
   system7: { renderer: 'canvas2d', group: 'retro', loader: () => import('./system7.js') },
   glitch: { renderer: 'webgl', group: 'retro', loader: () => import('./glitch.js') },
   vhs: { renderer: 'webgl', group: 'retro', loader: () => import('./vhs.js') },
@@ -256,6 +264,7 @@ const REGISTRY = {
   explode: { renderer: 'css3d', group: 'dimensional', loader: () => import('./explode.js') },
 
   // Animated charts — busy data backgrounds
+  nixie: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./nixie.js') },
   trades: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./trades.js') },
   dashboard: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./dashboard.js') },
   vectormap: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./vectormap.js') },
@@ -282,6 +291,8 @@ const GROUP_LABELS = {
   kitsch: 'Kitsch',
   science: 'Science',
   tech: 'Tech',
+  nature: 'Nature',
+  lounge: 'Lounge',
   dataviz: 'Dataviz',
   particles: 'Particles',
   dimensional: 'Dimensional / 3D',

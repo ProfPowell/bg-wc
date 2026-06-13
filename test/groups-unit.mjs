@@ -26,3 +26,15 @@ test('seigaiha moved out of geometric', () => {
   const p = listPresets().find((x) => x.name === 'seigaiha');
   assert.equal(p.group, 'japanese');
 });
+
+test('nature group exists with reeds', () => {
+  const g = listGroups().find((x) => x.id === 'nature');
+  assert.ok(g, 'nature group exists');
+  assert.ok(g.presets.some((p) => p.name === 'reeds'));
+});
+
+test('lounge group exists with tiki', () => {
+  const g = listGroups().find((x) => x.id === 'lounge');
+  assert.ok(g, 'lounge group exists');
+  assert.ok(g.presets.some((p) => p.name === 'tiki'));
+});
