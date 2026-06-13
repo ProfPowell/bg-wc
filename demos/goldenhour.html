@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Golden Hour &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #1c2a18;   /* deep leaf shade */
+      --color-foreground: #f3eee0;
+      --color-primary: #3f6b35;
+      --color-success: #4d7a3a;      /* leaf green */
+      --color-warning: #f2d27a;      /* sunlight */
+      --color-accent: #f0a64e;       /* warm rim */
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Cormorant Garamond', Georgia, serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 35%, rgba(28,42,24,0.6) 100%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-warning); text-transform: lowercase; margin-bottom: 18px; opacity: 0.9; }
+    h1 { font-weight: 500; font-size: clamp(52px, 11vw, 170px); line-height: 0.98; letter-spacing: 0.01em; margin: 0; font-style: italic;
+      text-shadow: 0 4px 40px rgba(0,0,0,0.4); }
+    .lede { max-width: 480px; margin: 18px auto 0; font-size: clamp(16px, 1.35vw, 21px); line-height: 1.6; color: rgba(243,238,224,0.85); }
+    .lede code { font-family: 'Space Mono', monospace; font-style: normal; font-size: 0.74em; background: rgba(242,210,122,0.16); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="komorebi" intensity="0.7" density="0.55" speed="1"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="content">
+      <div class="eyebrow">a journal for slow mornings</div>
+      <h1>Golden Hour</h1>
+      <p class="lede">
+        Five minutes, a window, and the light coming through the leaves. This
+        page is lit by <code>preset="komorebi"</code> &mdash; sunflecks drifting
+        as the canopy stirs.
+      </p>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
