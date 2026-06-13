@@ -30,7 +30,11 @@ test('seigaiha moved out of geometric', () => {
 test('nature group exists with reeds', () => {
   const g = listGroups().find((x) => x.id === 'nature');
   assert.ok(g, 'nature group exists');
-  assert.ok(g.presets.some((p) => p.name === 'reeds'));
+  for (const n of ['reeds', 'migration', 'komorebi', 'palms'])
+    assert.ok(
+      g.presets.some((p) => p.name === n),
+      `nature has ${n}`
+    );
 });
 
 test('lounge group exists with tiki', () => {
