@@ -204,6 +204,7 @@ const REGISTRY = {
   gyroid: { renderer: 'webgl', group: 'tech', loader: () => import('./gyroid.js') },
   lidar: { renderer: 'webgl', group: 'tech', loader: () => import('./lidar.js') },
   oscilloscope: { renderer: 'webgl', group: 'tech', loader: () => import('./oscilloscope.js') },
+  spectrum: { renderer: 'webgl', group: 'tech', loader: () => import('./spectrum.js') },
   hologram: { renderer: 'webgl', group: 'tech', loader: () => import('./hologram.js') },
   'neon-city': { renderer: 'webgl', group: 'tech', loader: () => import('./neon-city.js') },
   swarm: { renderer: 'canvas2d', group: 'tech', loader: () => import('./swarm.js') },
@@ -217,6 +218,7 @@ const REGISTRY = {
 
   // 80s / 90s — distortion, displays, demoscene
   equalizer: { renderer: 'canvas2d', group: 'retro', loader: () => import('./equalizer.js') },
+  vumeter: { renderer: 'canvas2d', group: 'retro', loader: () => import('./vumeter.js') },
   system7: { renderer: 'canvas2d', group: 'retro', loader: () => import('./system7.js') },
   glitch: { renderer: 'webgl', group: 'retro', loader: () => import('./glitch.js') },
   vhs: { renderer: 'webgl', group: 'retro', loader: () => import('./vhs.js') },
@@ -264,7 +266,9 @@ const REGISTRY = {
   explode: { renderer: 'css3d', group: 'dimensional', loader: () => import('./explode.js') },
 
   // Animated charts — busy data backgrounds
+  ledticker: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./ledticker.js') },
   nixie: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./nixie.js') },
+  splitflap: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./splitflap.js') },
   trades: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./trades.js') },
   dashboard: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./dashboard.js') },
   vectormap: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./vectormap.js') },
