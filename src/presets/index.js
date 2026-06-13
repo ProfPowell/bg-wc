@@ -210,6 +210,9 @@ const REGISTRY = {
   swarm: { renderer: 'canvas2d', group: 'tech', loader: () => import('./swarm.js') },
 
   // Nature — illustrative living scenes
+  komorebi: { renderer: 'webgl', group: 'nature', loader: () => import('./komorebi.js') },
+  migration: { renderer: 'canvas2d', group: 'nature', loader: () => import('./migration.js') },
+  palms: { renderer: 'canvas2d', group: 'nature', loader: () => import('./palms.js') },
   reeds: { renderer: 'canvas2d', group: 'nature', loader: () => import('./reeds.js') },
 
   // Lounge — mid-century exotica / leisure design

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flyway &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #f3ead9;   /* hazy autumn light */
+      --color-foreground: #2b2620;
+      --color-primary: #6a8c84;
+      --color-info: #5f978f;         /* teal sky top */
+      --color-warning: #d79a3f;      /* gold mid */
+      --color-accent: #c2607e;       /* dusk rose */
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Fraunces', Georgia, serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(180deg, transparent 40%, rgba(243,234,217,0.55) 100%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: 0; right: 0; bottom: clamp(40px, 11vh, 120px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 14px; }
+    h1 { font-weight: 500; font-size: clamp(48px, 9vw, 130px); line-height: 0.96; letter-spacing: -0.01em; margin: 0; }
+    h1 em { font-style: italic; color: var(--color-warning); }
+    .lede { max-width: 520px; margin: 18px auto 0; font-size: clamp(16px, 1.3vw, 21px); line-height: 1.6; color: rgba(43,38,32,0.8); }
+    .lede code { font-family: 'Space Mono', monospace; font-size: 0.78em; background: rgba(106,140,132,0.18); color: var(--color-primary); padding: 2px 7px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="migration" intensity="0.6" density="0.6" speed="1"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="content">
+      <div class="eyebrow">audubon society &middot; fall count</div>
+      <h1>The <em>flyway</em> is open.</h1>
+      <p class="lede">
+        Half a million birds pass overhead this month. Look up &mdash; the skeins
+        crossing this sky are <code>preset="migration"</code>, drifting on the
+        autumn gradient.
+      </p>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>

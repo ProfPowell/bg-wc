@@ -109,6 +109,10 @@ const MODE_OPTIONS = {
     { label: 'circle', value: 'circle' },
     { label: 'leaf', value: 'leaf' },
   ],
+  palms: [
+    { label: 'silhouette', value: 'silhouette' },
+    { label: 'lit', value: 'lit' },
+  ],
 };
 
 // Per-card state lives here so a card's <bg-wc> can be torn down and rebuilt
