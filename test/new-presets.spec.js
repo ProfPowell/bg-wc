@@ -578,3 +578,38 @@ test('nixie honors the text override', async ({ page }) => {
   });
   expect(ok).toBe(true);
 });
+
+// Preset wave 3, phase 2 (vumeter/spectrum/splitflap/ledticker; spectrum is
+// WebGL): must not fall back and must paint bytes.
+for (const name of ['vumeter', 'spectrum', 'splitflap', 'ledticker']) {
+  test(`${name} does not fall back and paints bytes`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const detail = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob ? blob.size : 0 };
+    }, name);
+    expect(detail.fallback, `${name} should not fall back`).toBe(false);
+    expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
+  });
+}
+
+// splitflap + ledticker take a `text` override (lines split on '|').
+for (const name of ['splitflap', 'ledticker']) {
+  test(`${name} honors the text override`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const ok = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      el.setAttribute('text', 'BG WC|HELLO');
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      return !el.hasAttribute('data-fallback');
+    }, name);
+    expect(ok, name).toBe(true);
+  });
+}

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Departures &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #14141a;   /* station board housing */
+      --color-foreground: #f1efe6;   /* flap cards */
+      --color-primary: #3b3f52;
+      --color-warning: #e7d9a6;      /* warm card tint */
+      --color-accent: #d8a43c;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Archivo', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(180deg, rgba(20,20,26,0.5) 0%, transparent 22%, transparent 64%, rgba(20,20,26,0.88) 100%); }
+
+    .nav { position: absolute; top: 22px; left: 30px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
+    .nav a:hover { opacity: 1; }
+
+    .head { position: absolute; top: 26px; left: 0; right: 0; z-index: 6; text-align: center; }
+    .head h1 { font-weight: 900; font-size: clamp(26px, 4.6vw, 52px); letter-spacing: 0.12em; margin: 0; text-transform: uppercase; }
+    .head .clock { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.3em; color: var(--color-accent); margin-top: 6px; }
+
+    .foot { position: absolute; bottom: 24px; left: 0; right: 0; z-index: 6; text-align: center;
+      font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: rgba(241,239,230,0.6); }
+    .foot code { background: rgba(216,164,60,0.18); color: var(--color-accent); padding: 2px 7px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="splitflap" text="DEPARTURES|PLATFORM 4|ON TIME|ALL ABOARD" intensity="0.7" density="0.6" speed="1"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="head">
+      <h1>Union Station</h1>
+      <div class="clock">14:07 &middot; track board live</div>
+    </div>
+
+    <div class="foot">
+      the board is a single <code>preset="splitflap"</code> &mdash; pass <code>text</code> to set the rows
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>

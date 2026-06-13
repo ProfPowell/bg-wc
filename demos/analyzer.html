@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analyzer &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #060810;
+      --color-foreground: #e8ecf6;
+      --color-primary: #2f5bd0;
+      --color-accent: #d23a86;
+      --color-warning: #f6c23a;
+      --color-info: #38c9d8;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Space Grotesk', system-ui, sans-serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(90deg, rgba(6,8,16,0.92) 0%, rgba(6,8,16,0.4) 44%, transparent 78%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: clamp(28px, 7vw, 110px); top: 50%; transform: translateY(-50%); z-index: 6; max-width: 540px; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--color-info); border: 1px solid rgba(56,201,216,0.4); border-radius: 999px; padding: 6px 14px; margin-bottom: 24px; }
+    .badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--color-info); box-shadow: 0 0 12px var(--color-info); }
+    h1 { font-weight: 700; font-size: clamp(40px, 7vw, 104px); line-height: 0.98; letter-spacing: -0.03em; margin: 0; }
+    h1 em { font-style: normal; color: var(--color-accent); }
+    .lede { margin: 22px 0 0; font-size: clamp(15px, 1.25vw, 19px); line-height: 1.6; color: rgba(232,236,246,0.78); max-width: 460px; }
+    .lede code { font-family: 'JetBrains Mono', monospace; font-size: 0.84em; background: rgba(47,91,208,0.22); color: #b9c8ff; padding: 2px 7px; border-radius: 4px; }
+    .stats { display: flex; gap: 38px; margin-top: 36px; font-family: 'JetBrains Mono', monospace; }
+    .stats b { display: block; font-size: clamp(22px, 2.6vw, 34px); font-weight: 700; }
+    .stats span { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(232,236,246,0.5); margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="spectrum" intensity="0.75" density="0.7" speed="1" quality="high"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="content">
+      <span class="badge"><i></i> capturing</span>
+      <h1>Listen in<br><em>the frequency</em> domain.</h1>
+      <p class="lede">
+        Real-time FFT over a streaming spectrogram. The whole console is one
+        <code>preset="spectrum"</code> &mdash; bars up top, waterfall scrolling
+        below, every band straight from your theme ramp.
+      </p>
+      <div class="stats">
+        <div><b>1/24</b><span>octave</span></div>
+        <div><b>96 kHz</b><span>sample rate</span></div>
+        <div><b>-120 dB</b><span>noise floor</span></div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
