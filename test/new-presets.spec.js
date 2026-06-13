@@ -529,3 +529,52 @@ for (const name of [
     expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
   });
 }
+
+// Preset wave 3, phase 1 (equalizer/tiki/reeds/nixie/breezeblock — all
+// canvas2d): must not fall back and must paint bytes.
+for (const name of ['equalizer', 'tiki', 'reeds', 'nixie', 'breezeblock']) {
+  test(`${name} does not fall back and paints bytes`, async ({ page }) => {
+    await page.goto('/test/new-presets-page.html');
+    const detail = await page.evaluate(async (n) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('preset', n);
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      await new Promise((r) => requestAnimationFrame(r));
+      const blob = await el.snapshot();
+      return { fallback: el.hasAttribute('data-fallback'), size: blob ? blob.size : 0 };
+    }, name);
+    expect(detail.fallback, `${name} should not fall back`).toBe(false);
+    expect(detail.size, `${name} should paint bytes`).toBeGreaterThan(0);
+  });
+}
+
+// equalizer mode pills + breezeblock motif modes load without falling back.
+test('equalizer honors each mode', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  for (const mode of ['bars', 'mirror', 'dots']) {
+    const ok = await page.evaluate(async (m) => {
+      const el = document.getElementById('wc');
+      el.setAttribute('mode', m);
+      el.setAttribute('preset', 'equalizer');
+      await el.ready;
+      await new Promise((r) => requestAnimationFrame(r));
+      return !el.hasAttribute('data-fallback');
+    }, mode);
+    expect(ok, `equalizer mode=${mode}`).toBe(true);
+  }
+});
+
+// nixie text override (digits only) renders without falling back.
+test('nixie honors the text override', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const ok = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    el.setAttribute('preset', 'nixie');
+    el.setAttribute('text', '42 07');
+    await el.ready;
+    await new Promise((r) => requestAnimationFrame(r));
+    return !el.hasAttribute('data-fallback');
+  });
+  expect(ok).toBe(true);
+});

@@ -98,6 +98,17 @@ const MODE_OPTIONS = {
     { label: 'diagonals', value: 'diagonals' },
     { label: 'wedges', value: 'wedges' },
   ],
+  equalizer: [
+    { label: 'bars', value: 'bars' },
+    { label: 'mirror', value: 'mirror' },
+    { label: 'dots', value: 'dots' },
+  ],
+  breezeblock: [
+    { label: 'mixed', value: 'mixed' },
+    { label: 'hourglass', value: 'hourglass' },
+    { label: 'circle', value: 'circle' },
+    { label: 'leaf', value: 'leaf' },
+  ],
 };
 
 // Per-card state lives here so a card's <bg-wc> can be torn down and rebuilt
