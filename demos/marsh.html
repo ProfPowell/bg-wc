@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marsh &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #f3f1e6;
+      --color-foreground: #2f3a2c;
+      --color-primary: #5f7a4a;
+      --color-success: #7a934f;
+      --color-info: #93a86a;
+      --color-warning: #b8893f;
+      --color-accent: #c2562f;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Fraunces', Georgia, serif; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(180deg, rgba(243,241,230,0.55) 0%, transparent 45%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: clamp(28px, 8vw, 130px); top: clamp(80px, 20vh, 200px); z-index: 6; max-width: 520px; }
+    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.28em; color: var(--color-warning); text-transform: uppercase; margin-bottom: 16px; }
+    h1 { font-weight: 500; font-size: clamp(44px, 8vw, 104px); line-height: 1.0; letter-spacing: -0.01em; margin: 0; }
+    h1 em { font-style: italic; color: var(--color-primary); }
+    .lede { margin: 20px 0 0; font-size: clamp(16px, 1.3vw, 21px); line-height: 1.6; color: rgba(47,58,44,0.78); max-width: 440px; }
+    .lede code { font-family: 'Space Mono', monospace; font-size: 0.78em; background: rgba(95,122,74,0.14); color: var(--color-primary); padding: 2px 7px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="reeds" intensity="0.55" density="0.6" speed="0.9"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="content">
+      <div class="eyebrow">the wetlands trust</div>
+      <h1>Leave it<br><em>wild</em>.</h1>
+      <p class="lede">
+        Forty hectares of restored marsh, and every blade of it moves. The reed
+        bed behind this page is <code>preset="reeds"</code> &mdash; wind gusts
+        roll through left to right, just like the real thing.
+      </p>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>

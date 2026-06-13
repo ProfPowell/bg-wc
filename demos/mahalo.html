@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mahalo &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #120e1a;
+      --color-foreground: #f6ecd8;
+      --color-primary: #3a2d63;
+      --color-accent: #ff5a3c;
+      --color-warning: #ffb24a;
+      --color-info: #36c9a0;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Space Mono', monospace; min-height: 100vh; }
+    .stage { position: relative; width: 100vw; height: 100vh; }
+    bg-wc.bg { position: absolute; inset: 0; }
+    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(ellipse 60% 55% at 50% 42%, rgba(18,14,26,0.2) 0%, rgba(18,14,26,0.82) 100%); }
+
+    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-size: 12px; letter-spacing: 0.2em; }
+    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
+    .nav a:hover { opacity: 1; }
+
+    .content { position: absolute; left: 0; right: 0; top: 46%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    .eyebrow { font-size: 12px; letter-spacing: 0.34em; color: var(--color-warning); text-transform: uppercase; margin-bottom: 14px; opacity: 0.92; }
+    h1 { font-family: 'Pacifico', cursive; font-weight: 400; font-size: clamp(56px, 12vw, 168px); line-height: 0.95; margin: 0;
+      color: var(--color-foreground); text-shadow: 0 4px 30px rgba(255,90,60,0.4); }
+    .lede { max-width: 480px; margin: 14px auto 0; font-size: clamp(14px, 1.2vw, 18px); line-height: 1.6; color: rgba(246,236,216,0.82); }
+    .lede code { font-size: 0.82em; background: rgba(255,178,74,0.16); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
+
+    .menu { position: absolute; bottom: 30px; left: 0; right: 0; z-index: 6; display: flex; justify-content: center; gap: clamp(20px, 5vw, 64px); flex-wrap: wrap;
+      font-size: 12px; letter-spacing: 0.12em; }
+    .menu div { text-align: center; color: rgba(246,236,216,0.82); }
+    .menu b { display: block; color: var(--color-warning); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+
+  <main class="stage">
+    <bg-wc class="bg" preset="tiki" intensity="0.85" density="0.6" speed="1"></bg-wc>
+    <div class="scrim"></div>
+
+    <div class="content">
+      <div class="eyebrow">est. 1958 &middot; open till the tiki gods say stop</div>
+      <h1>Mahalo</h1>
+      <p class="lede">
+        Rum, fire, and ukulele since the Eisenhower administration. The torches
+        out front run on <code>preset="tiki"</code> &mdash; they flicker whether
+        or not you've had the Volcano Bowl.
+      </p>
+    </div>
+
+    <div class="menu">
+      <div><b>Zombie</b>three rums, don't ask</div>
+      <div><b>Painkiller</b>coconut &middot; nutmeg</div>
+      <div><b>Volcano Bowl</b>for two (or one)</div>
+      <div><b>Blue Lagoon</b>curaçao &middot; lime</div>
+    </div>
+  </main>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
