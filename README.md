@@ -44,7 +44,7 @@ and more). Each adapts to whatever theme tokens you set.
 | ---------------- | -------- | ------------------------------------------------------- |
 | `mesh-gradient`  | WebGL    | Soft blobs in primary / accent / info colors.           |
 | `aurora`         | WebGL    | Drifting aurora bands; the canonical "ambient" preset.  |
-| `mosaic`         | Canvas2D | Squares; four modes via `mode` attribute (see below).   |
+| `mosaic`         | Canvas2D | Squares; five modes via `mode` attribute (see below).   |
 | `groove`         | Canvas2D | 70s looping rainbow-stripe routes that draw on and spiral.|
 | `scandi`         | Canvas2D | Scandinavian geometric grid of arcs + floral motifs.    |
 | `seigaiha`       | Canvas2D | Japanese overlapping-circle "wave" (fish-scale) pattern.|
@@ -65,7 +65,7 @@ and more). Each adapts to whatever theme tokens you set.
 | `watercolor`     | WebGL    | Wet-on-wet blooms with granulated edge pigment.         |
 | `clockwork`      | Canvas2D | Ratio-locked gear train with a ticking escapement.      |
 | `source`         | Canvas2D | Faded HTML source listing; pass `text` to override.     |
-| `matrix`         | Canvas2D | Falling digital rain; pass `text` to override glyphs.   |
+| `matrix`         | Canvas2D | Falling digital rain in theme greens.                   |
 | `confetti`       | Canvas2D | Continuous drop using the full semantic palette.        |
 
 [**Full preset catalog →**](https://profpowell.github.io/bg-wc/docs/api.html#presets)
@@ -83,8 +83,9 @@ Some presets read additional attributes from the host: `mosaic` reads
 `dotwork` reads `mode` (`rings` | `spiral` | `double` | `whorl` | `waterholes`);
 `stipple` reads `mode` (`field` | `contour` | `vortex`);
 `system7` reads `use-theme` (boolean — when present, sources colors
-from theme tokens instead of hard black-on-white). `mosaic`, `source`,
-and a few others accept `text` to override default content.
+from theme tokens instead of hard black-on-white). The text presets —
+`crawl`, `marquee`, `sinescroll`, `cascade`, `source`, `wordcloud`, and
+`bootlog` — accept `text` to override default content.
 
 [**Full API reference →**](https://profpowell.github.io/bg-wc/docs/api.html)
 

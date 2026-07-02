@@ -174,7 +174,7 @@
             <tr><td><code>fit</code></td><td><code>"cover"</code> | <code>"contain"</code> | <code>"stretch"</code></td><td><code>"cover"</code></td><td>How the surface sizes inside the host.</td></tr>
             <tr><td><code>motion</code></td><td><code>"auto"</code> | <code>"reduce"</code> | <code>"force"</code></td><td><code>"auto"</code></td><td><code>auto</code> honors <code>prefers-reduced-motion</code>.</td></tr>
             <tr><td><code>text</code></td><td>string</td><td>&mdash;</td><td>Payload for text presets (crawl / marquee / sinescroll / cascade / source / wordcloud). Lines split on <code>|</code>. <code>source</code> treats the value as literal code and splits on newlines instead. Read fresh each frame.</td></tr>
-            <tr><td><code>mode</code></td><td>string</td><td>&mdash;</td><td>Preset-specific variant selector. <code>mosaic</code>: <code>isometric</code>, <code>flat</code>, <code>sparse</code>, <code>stacked</code>; <code>doodles</code>: family names; <code>fly-through</code>: space-delimited motion&times;profile&times;path&times;unit; <code>explode</code>: <code>radial</code> | <code>cube</code>. Changing it rebuilds css3d scenes. <code>girih</code>: <code>8fold</code>/<code>12fold</code>/<code>6fold</code>; <code>atomic</code>: <code>mixed</code>/<code>boomerangs</code>/<code>starbursts</code>/<code>harlequin</code>; <code>op-art</code>: <code>riley</code>/<code>cafewall</code>/<code>moire</code>/<code>drift</code>. <code>dotwork</code>: <code>rings</code>/<code>spiral</code>/<code>double</code>/<code>whorl</code>/<code>waterholes</code>; <code>stipple</code>: <code>field</code>/<code>contour</code>/<code>vortex</code>.</td></tr>
+            <tr><td><code>mode</code></td><td>string</td><td>&mdash;</td><td>Preset-specific variant selector. <code>mosaic</code>: <code>isometric</code>, <code>flat</code>, <code>sparse</code>, <code>stacked</code>, <code>blocks</code>; <code>doodles</code>: family names; <code>fly-through</code>: space-delimited motion&times;profile&times;path&times;unit; <code>explode</code>: <code>radial</code> | <code>cube</code>. Changing it rebuilds css3d scenes. <code>girih</code>: <code>8fold</code>/<code>12fold</code>/<code>6fold</code>; <code>atomic</code>: <code>mixed</code>/<code>boomerangs</code>/<code>starbursts</code>/<code>harlequin</code>; <code>op-art</code>: <code>riley</code>/<code>cafewall</code>/<code>moire</code>/<code>drift</code>. <code>dotwork</code>: <code>rings</code>/<code>spiral</code>/<code>double</code>/<code>whorl</code>/<code>waterholes</code>; <code>stipple</code>: <code>field</code>/<code>contour</code>/<code>vortex</code>.</td></tr>
             <tr><td><code>use-theme</code></td><td>boolean</td><td>unset</td><td>Used by <code>system7</code>; presence enables theme-token coloring instead of hard black/white.</td></tr>
           </tbody>
         </table>
@@ -322,6 +322,8 @@ console.log('PNG ready:', url);</code-block>
             <tr><td><code>comic</code></td><td>Pop-art radial action burst + shock rings</td><td>primary, accent, info</td></tr>
             <tr><td><code>deco</code></td><td>Art-deco sunburst rays (Nagel / Gatsby)</td><td>primary, accent, info, background</td></tr>
             <tr><td><code>bliss</code></td><td>Windows-XP hills, sky, drifting clouds</td><td>primary, info, background</td></tr>
+            <tr><td><code>moire</code></td><td>Two interfering ring fields drifting soft moir&eacute; bands (theme duotone)</td><td>primary, accent, background</td></tr>
+            <tr><td><code>paper-grain</code></td><td>Warm paper-fiber speckle, slow drift; blend over content</td><td>foreground (ink tint)</td></tr>
           </tbody>
         </table>
       </div>
@@ -341,7 +343,7 @@ console.log('PNG ready:', url);</code-block>
         </table>
       </div>
       <h3>Text presets (Canvas2D)</h3>
-      <p>Type as the background. Set the copy with the <code>text</code> attribute; all honor <code>palette="rainbow|theme|mono"</code>.</p>
+      <p>Type as the background. Set the copy with the <code>text</code> attribute; all but <code>bootlog</code> honor <code>palette="rainbow|theme|mono"</code>.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
@@ -350,6 +352,7 @@ console.log('PNG ready:', url);</code-block>
             <tr><td><code>marquee</code></td><td>Scrolling vector ticker (outline type)</td><td>primary, accent, info, foreground</td></tr>
             <tr><td><code>sinescroll</code></td><td>Demoscene sine-wave scroller</td><td>primary, accent, info, foreground</td></tr>
             <tr><td><code>cascade</code></td><td>Letters drop &amp; bounce in, hold, loop</td><td>primary, accent, info, foreground</td></tr>
+            <tr><td><code>bootlog</code></td><td>Scrolling boot / kernel log with [ OK ] and rare [FAIL] markers</td><td>success, error, foreground, background</td></tr>
           </tbody>
         </table>
       </div>
@@ -392,7 +395,8 @@ console.log('PNG ready:', url);</code-block>
           <tbody>
             <tr><td><code>mosaic</code></td>
                 <td>Refined squares. <code>mode</code>: <code>isometric</code> (default),
-                    <code>flat</code>, <code>sparse</code>, <code>stacked</code>.</td>
+                    <code>flat</code>, <code>sparse</code>, <code>stacked</code>,
+                    <code>blocks</code>.</td>
                 <td>primary, accent, background</td></tr>
             <tr><td><code>ribbons</code></td>
                 <td>Bezier wave ribbons with crisp top-edge strokes.</td>
@@ -415,6 +419,41 @@ console.log('PNG ready:', url);</code-block>
                     graded stipple), <code>contour</code> (dots trace a flow field),
                     <code>vortex</code> (swirling, respawning).</td>
                 <td>primary, accent, background</td></tr>
+            <tr><td><code>flowlines</code></td>
+                <td>Thin streamlines fanning and converging through a slow-evolving
+                    flow field.</td>
+                <td>primary, background</td></tr>
+            <tr><td><code>supergraphics</code></td>
+                <td>Mural-scale curved bands &mdash; thick hard-edged stripes
+                    overlapping back-to-front (Sea Ranch supergraphics).</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>doodles</code></td>
+                <td>Hand-drawn marginalia sketching themselves in at the page edges,
+                    holding, then fading. <code>mode</code>: space/comma list of
+                    <code>planner</code>, <code>botanical</code>, <code>geometric</code>
+                    families (default all three).</td>
+                <td>foreground</td></tr>
+            <tr><td><code>scandi</code></td>
+                <td>Scandinavian grid of arc primitives and floral motifs in
+                    pastel-softened theme roles; tiles cross-fade slowly.</td>
+                <td>primary, accent, info, success, warning, background</td></tr>
+            <tr><td><code>truchet</code></td>
+                <td>Quarter-arc Truchet tiles flipped by a sweeping diagonal wavefront.
+                    <code>mode</code>: <code>arcs</code> (default), <code>diagonals</code>,
+                    <code>wedges</code>.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>delaunay</code></td>
+                <td>Seeded triangulated mesh rippling on small point orbits; flat
+                    theme-mixed facets.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>hilbert</code></td>
+                <td>Hilbert space-filling curve tracing itself &mdash; a bright head
+                    draws the trail, then the curve dissolves and redraws.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>groove</code></td>
+                <td>70s groovy stripe bundles snaking through rounded turns to a
+                    bullseye target; draw on, hold, retract.</td>
+                <td>primary, accent, info, background</td></tr>
           </tbody>
         </table>
       </div>
@@ -525,6 +564,103 @@ console.log('PNG ready:', url);</code-block>
           </tbody>
         </table>
       </div>
+      <h3>Classic presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>bauhaus</code></td>
+                <td>Grid composition of primary geometric forms (circles, arcs,
+                    triangles, bars) at full saturation; cells slide into place and
+                    recompose on staggered cycles.</td>
+                <td>primary, accent, info, success, warning, error</td></tr>
+            <tr><td><code>damask</code></td>
+                <td>Procedural damask tile &mdash; mirrored flourish motif under a slow
+                    diagonal specular sheen.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>de-stijl</code></td>
+                <td>Mondrian composition from recursive seeded splits; rule lines
+                    periodically redraw, coloured cells cross-fade.</td>
+                <td>primary, accent, info, foreground, background</td></tr>
+            <tr><td><code>meander</code></td>
+                <td>Greek-key fret rows scrolling in alternating directions with
+                    per-row parallax.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>morris</code></td>
+                <td>Morris-style wallpaper &mdash; mirrored acanthus/vine tiles that draw
+                    themselves on, then breathe; pastel-softened theme roles.</td>
+                <td>primary, accent, info, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Science presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>phyllotaxis</code></td>
+                <td>Golden-angle spiral (Vogel model) &mdash; dots emitted from the
+                    centre age outward, colour cycling by ring band.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>boids</code></td>
+                <td>Reynolds flocking &mdash; tapered streaks steered by separation /
+                    alignment / cohesion, coloured by speed.</td>
+                <td>primary, foreground, background</td></tr>
+            <tr><td><code>helix</code></td>
+                <td>DNA-style double helix &mdash; depth-sorted strands and base-pair
+                    rungs scrolling along the axis.</td>
+                <td>primary, accent, foreground, background</td></tr>
+            <tr><td><code>mycelium</code></td>
+                <td>Branching filament growth accumulating into a network; restarts
+                    with a fresh palette rotation when coverage saturates.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>reaction-diffusion</code></td>
+                <td>Gray-Scott reaction-diffusion; <code>density</code> selects a
+                    spots / stripes / coral / waves regime.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>chladni</code></td>
+                <td>Vibrating Chladni plate &mdash; sand gathers on nodal lines as the
+                    mode pair cross-fades.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>slime-mold</code></td>
+                <td>Physarum agents depositing and chasing a diffusing trail (needs
+                    renderable float textures; degrades to a frozen field).</td>
+                <td>primary, accent, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Tech presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>circuit</code></td>
+                <td>PCB traces routed on a 45&deg; grid with pads, vias, and IC
+                    footprints; bright signal pulses travel the traces.</td>
+                <td>primary, accent, foreground, background</td></tr>
+            <tr><td><code>blueprint</code></td>
+                <td>Drafting on blue grid paper &mdash; outlines, centrelines, and
+                    dimension lines draw on, hold, then fade.</td>
+                <td>primary, info, foreground, background</td></tr>
+            <tr><td><code>radar</code></td>
+                <td>PPI radar scope &mdash; rotating sweep with phosphor persistence;
+                    seeded blips flare and fade.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>gyroid</code></td>
+                <td>Raymarched gyroid minimal surface slowly rotating through the
+                    lattice, lit with two theme colours against a bg fog.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>lidar</code></td>
+                <td>Terrain point cloud revealed by a scanning plane; points flare on
+                    the scan line and stay dimly lit behind it.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>oscilloscope</code></td>
+                <td>Lissajous / waveform traces with glowing phosphor-persistence
+                    trails.</td>
+                <td>primary, accent, info, background</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <!-- 9. Reduced motion ------------------------------------- -->
@@ -535,11 +671,12 @@ console.log('PNG ready:', url);</code-block>
         path as <code>motion="reduce"</code> on the element:
       </p>
       <ol class="ordered">
-        <li>If the <code>fallback</code> slot has content &rarr; show the slot, hide the canvas.</li>
-        <li>Else if the preset declares a <code>staticFrame()</code> method &rarr; render one frame at <code>time=0, seed=seed</code>, then halt the RAF loop.</li>
-        <li>Else &rarr; hide the canvas and let the host's CSS background show through.</li>
+        <li>If nothing is renderable (no preset loaded, a failed load, or a lost context) &rarr; show the <code>fallback</code> slot, regardless of motion settings.</li>
+        <li>Else if the preset is css3d &rarr; keep the paused scene visible; the slot never swaps in.</li>
+        <li>Else if the preset declares a <code>staticFrame()</code> method &rarr; render one still frame and halt the RAF loop. The static frame wins even when the <code>fallback</code> slot has content.</li>
+        <li>Else &rarr; hide the canvas and show the <code>fallback</code> slot.</li>
       </ol>
-      <p>All shipped presets implement <code>staticFrame()</code>.</p>
+      <p>Every canvas preset ships <code>staticFrame()</code>; css3d presets show their paused scene instead.</p>
     </section>
 
     <!-- 10. Performance --------------------------------------- -->
@@ -570,10 +707,9 @@ console.log('PNG ready:', url);</code-block>
 for (const { id, label, presets } of listGroups()) {
   console.log(label, presets.map(p =&gt; p.name));
 }
-// Gradients   ['mesh-gradient','waves','plasma','rainbow','shine']
-// Geometric   ['mosaic','supergraphics','warp','topology','cells','kaleidoscope','doodles','scandi']
-// Texture     ['dither','halftone','grain','paper-grain']
-// Japanese    ['seigaiha','sumi-e','kintsugi','ukiyo-e','sakura']
+// Gradients   ['ribbons','flowlines','mesh-gradient','waves','plasma','rainbow','shine','conic']
+// Geometric   ['mosaic','supergraphics','warp','topology','cells','kaleidoscope','doodles','scandi', /* … */]
+// Texture     ['dither','halftone','grain','paper-grain','stipple']
 // …</code-block>
     </section>
 
