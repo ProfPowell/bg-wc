@@ -40,7 +40,7 @@ test.describe('demos smoke', () => {
           literal: document.querySelectorAll('bg-wc:not([data-bg-element])').length,
           collapsed,
           unbound,
-          hscroll: document.documentElement.scrollWidth > innerWidth + 1,
+          hscroll: document.documentElement.scrollWidth > window.innerWidth + 1,
         };
       });
       expect(r.hosts + r.literal, 'page must have at least one background').toBeGreaterThan(0);
