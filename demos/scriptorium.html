@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Spectral:wght@300&display=swap" rel="stylesheet">
   <style>
+    /* Page palette + flavor only. Layout comes from vanilla-breeze's
+       data-layout attributes; the animated layers from data-background.
+       These rules are unlayered, so they win over VB's cascade layers. */
     :root {
       --color-background: #f2e8d5;  /* vellum */
       --color-foreground: #2b2118;  /* iron gall ink */
@@ -15,63 +18,65 @@
       --color-accent: #a67c00;      /* gold leaf */
       --color-info: #274e5e;        /* lapis */
     }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; background: var(--color-background); color: var(--color-foreground); }
-    body { font-family: 'Spectral', Georgia, serif; }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: 'Spectral', Georgia, serif; }
 
     body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
     body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
     body > nav a:hover { opacity: 1; }
 
-    /* Each room is a plain <section>; the data-background attribute injects
-       the animated layer behind it, so the markup carries no scaffolding. */
-    section { min-height: 100vh; display: flex; align-items: center; padding: clamp(28px, 6vw, 90px); }
-
     /* The placard: an hgroup holds the eyebrow, heading, and lede per spec. */
-    hgroup { max-width: 520px; margin: 0; background: rgba(242,232,213,0.82); padding: 30px 34px; border: 1px solid rgba(43,33,24,0.25); }
+    hgroup { max-width: 520px; background: rgba(242,232,213,0.82); padding: 30px 34px; border: 1px solid rgba(43,33,24,0.25); }
     hgroup > p:first-child { font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-primary); margin: 0 0 10px; }
     h1, h2 { font-family: 'Cormorant Garamond', serif; font-weight: 700; margin: 0 0 12px; }
     h1 { font-size: clamp(46px, 8vw, 104px); line-height: 0.95; }
     h2 { font-size: clamp(30px, 4vw, 52px); }
-    p { margin: 0; line-height: 1.7; font-weight: 300; }
+    hgroup p { margin: 0; line-height: 1.7; font-weight: 300; color: var(--color-foreground); }
+    h1, h2 { overflow-wrap: normal; }
     code { font-family: ui-monospace, monospace; font-size: 0.8em; background: rgba(43,33,24,0.08); padding: 2px 8px; border-radius: 3px; }
   </style>
 </head>
 <body>
   <nav><a href="./index.html">&larr; bg-wc demos</a></nav>
 
-  <section data-background="illuminated" data-background-intensity="0.6" data-background-seed="8" data-background-speed="0.7">
-    <hgroup>
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="xl"
+           data-background="illuminated" data-background-intensity="0.6" data-background-seed="8" data-background-speed="0.7">
+    <hgroup data-layout-principal>
       <p>Rare books &amp; manuscripts</p>
       <h1>The Scriptorium</h1>
       <p>Four rooms of things written down before writing was cheap. Margins illuminated by <code>data-background="illuminated"</code>.</p>
     </hgroup>
   </section>
 
-  <section data-background="hieroglyph" data-background-intensity="0.55" data-background-seed="14" data-background-speed="0.8">
-    <hgroup>
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="xl"
+           data-background="hieroglyph" data-background-intensity="0.55" data-background-seed="14" data-background-speed="0.8">
+    <hgroup data-layout-principal>
       <p>Room I &middot; Antiquities</p>
       <h2>Before the Alphabet</h2>
       <p>A cartouche wall of borrowed gods and administrative grain counts. <code>data-background="hieroglyph"</code></p>
     </hgroup>
   </section>
 
-  <section data-background="alchemy" data-background-intensity="0.6" data-background-seed="21" data-background-speed="0.8">
-    <hgroup>
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="xl"
+           data-background="alchemy" data-background-intensity="0.6" data-background-seed="21" data-background-speed="0.8">
+    <hgroup data-layout-principal>
       <p>Room II &middot; The laboratory</p>
       <h2>Solve et Coagula</h2>
       <p>Sigils, retorts, and the periodic table&rsquo;s eccentric grandparents. <code>data-background="alchemy"</code></p>
     </hgroup>
   </section>
 
-  <section data-background="cave" data-background-intensity="0.65" data-background-seed="5" data-background-speed="0.7">
-    <hgroup>
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="xl"
+           data-background="cave" data-background-intensity="0.65" data-background-seed="5" data-background-speed="0.7">
+    <hgroup data-layout-principal>
       <p>Room III &middot; Origins</p>
       <h2>First Marks</h2>
       <p>Ochre hands and running aurochs &mdash; the oldest backgrounds we know of. <code>data-background="cave"</code></p>
     </hgroup>
   </section>
 
-  <script type="module" src="../src/data-background.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>
