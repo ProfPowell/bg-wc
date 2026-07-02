@@ -27,7 +27,7 @@ the light DOM (accessible) and renders above the canvas/stage.
 ## Why it exists
 
 Hand-wiring `ctx.fillText`/shaders per project is repetitive and rarely
-theme-aware or reduced-motion-correct. `<bg-wc>` packages 60+ themeable
+theme-aware or reduced-motion-correct. `<bg-wc>` packages 100+ themeable
 background presets behind one tag, each adapting to whatever color tokens are in
 scope, with motion, visibility, battery, and accessibility handling built in.
 
@@ -35,7 +35,8 @@ scope, with motion, visibility, battery, and accessibility handling built in.
 
 - **`src/bg-wc.js`** — the custom element. Owns the lifecycle, the rAF loop,
   attribute reflection, the fallback slot, and the renderer dispatch. Registers
-  `<bg-wc>` plus a deprecated `<gl-wc>` alias (warn-once subclass).
+  `<bg-wc>` only — the legacy `<gl-wc>` alias was removed (see the README
+  migration table; `test/legacy-removed.spec.js` guards it).
 - **`src/renderer/`** — three renderer kinds:
   - `webgl.js` — fullscreen-quad fragment-shader presets.
   - `canvas2d.js` — 2D drawing presets.

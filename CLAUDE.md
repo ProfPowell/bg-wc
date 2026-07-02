@@ -57,23 +57,26 @@ npm install
 npm run dev          # vite dev server for the product site/gallery (docs/)
 npm run build        # library build → dist/ (preserveModules; one chunk per preset)
 npm run build:site   # product site + demos → dist-site/ (deployed to GitHub Pages)
-npm test             # Playwright browser suite (test/*.spec.js)
-npm run test:node    # node:test units (SSR import, battery power-save)
-npm run lint         # eslint src/
+npm test             # Playwright browser suite (test/*.spec.js, main project)
+npm run test:visual  # per-preset pixel baselines (regenerate in the CI container)
+npm run test:node    # node:test units (test/*.mjs: SSR import, battery, registry)
+npm run test:pack    # build + npm-pack smoke (exports map / files resolution)
+npm run lint         # eslint src/ test/
 npm run format:check # prettier --check
 npm run analyze      # regenerate custom-elements.json (cem)
 npm run cem:check    # cem analyze + fail if custom-elements.json drifted
 ```
 
 CI (`.github/workflows/ci.yml`) runs lint, format:check, cem:check, the node
-units, both builds, and the Playwright suite on Node 20 + 22. `cem:check` only
+units, both builds, pack-smoke, and the Playwright suite on Node 20 + 22, plus
+the visual project in the pinned Playwright container. `cem:check` only
 works because the manifest modules are sorted (see
 `custom-elements-manifest.config.mjs`) so output is identical across OSes.
 
 ## Architecture Overview
 
-- **`src/bg-wc.js`** — the `<bg-wc>` custom element (and the deprecated `<gl-wc>`
-  alias). Owns the lifecycle: canvas/context creation per renderer kind, the rAF
+- **`src/bg-wc.js`** — the `<bg-wc>` custom element (the legacy `<gl-wc>` alias
+  is removed). Owns the lifecycle: canvas/context creation per renderer kind, the rAF
   loop (`#tick`), attribute/param reading (`#readParams`), theme token resolution,
   visibility/reduced-motion/battery gating, and fallback handling.
 - **`src/presets/index.js`** — the preset **registry** (`name → { renderer,
