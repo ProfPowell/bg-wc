@@ -1,0 +1,3 @@
+# bd exports one JSON line per issue; parallel sessions only append/update
+# independent lines, so line-union is the correct merge.
+.beads/issues.jsonl merge=union
