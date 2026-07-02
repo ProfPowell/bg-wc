@@ -114,6 +114,10 @@ class BgWc extends HTMLElement {
   #powerSave = false;
   #powerSaveCtrl = null;
   #loadingToken = 0;
+  // True between webglcontextlost and webglcontextrestored (or the next
+  // dispose): gates #shouldPlay/#updateFallbackVisibility so nothing renders
+  // to, or unhides, a dead context.
+  #ctxLost = false;
   #internals = null;
 
   constructor() {
@@ -259,6 +263,11 @@ class BgWc extends HTMLElement {
   }
 
   disconnectedCallback() {
+    // Invalidate any in-flight #loadCurrentPreset: its import() may settle
+    // after removal, and without this it would create a fresh WebGL context
+    // (burning one of the ~16 slots) and restart the rAF loop on a detached
+    // element. connectedCallback reloads on reconnect.
+    this.#loadingToken++;
     cancelAnimationFrame(this.#rafId);
     this.#rafId = 0;
     try {
@@ -340,7 +349,10 @@ class BgWc extends HTMLElement {
       // rendering, free the GL context, surface the fallback slot, and
       // settle `ready` so callers awaiting it don't hang. Skip
       // #updateFallbackVisibility — there's no instance to render, so we
-      // always want the fallback visible here.
+      // always want the fallback visible here. Bump the token so an
+      // in-flight load for the previous preset can't land afterwards and
+      // resurrect rendering on an element whose preset is now null.
+      this.#loadingToken++;
       cancelAnimationFrame(this.#rafId);
       this.#rafId = 0;
       this.#disposeInstance();
@@ -360,9 +372,7 @@ class BgWc extends HTMLElement {
       loaded = await loadPreset(name);
     } catch (err) {
       if (token !== this.#loadingToken) return;
-      this.setAttribute('data-fallback', '');
-      this.#emit('bg-wc:error', { phase: 'load', error: err });
-      this.#readyResolve();
+      this.#failLoad('load', err);
       return;
     }
     if (token !== this.#loadingToken) return;
@@ -384,9 +394,7 @@ class BgWc extends HTMLElement {
         if (!ctx) throw new Error(`${loaded.renderer} context unavailable`);
       }
     } catch (err) {
-      this.setAttribute('data-fallback', '');
-      this.#emit('bg-wc:error', { phase: 'init', error: err });
-      this.#readyResolve();
+      this.#failLoad('init', err);
       return;
     }
     this.#canvas.replaceWith(layer);
@@ -408,10 +416,7 @@ class BgWc extends HTMLElement {
         pxScale: this.#computeDpr(),
       });
     } catch (err) {
-      this.setAttribute('data-fallback', '');
-      this.#emit('bg-wc:error', { phase: 'init', error: err });
-      this.#disposeInstance();
-      this.#readyResolve();
+      this.#failLoad('init', err);
       return;
     }
 
@@ -437,6 +442,20 @@ class BgWc extends HTMLElement {
     this.#evalPlay();
   }
 
+  // Every #loadCurrentPreset failure must leave the element fully inert:
+  // rAF cancelled (a previous instance may still be looping — or, after
+  // #disposeInstance ran, #tick would spin empty forever), instance disposed
+  // so a later #updateFallbackVisibility can't resurface it, fallback shown,
+  // and `ready` settled so awaiters don't hang.
+  #failLoad(phase, err) {
+    cancelAnimationFrame(this.#rafId);
+    this.#rafId = 0;
+    this.#disposeInstance();
+    this.setAttribute('data-fallback', '');
+    this.#emit('bg-wc:error', { phase, error: err });
+    this.#readyResolve();
+  }
+
   #bindContextLossHandlers() {
     if (this.#rendererKind !== 'webgl') return;
     this.#canvas.addEventListener('webglcontextlost', this.#onCtxLost);
@@ -444,12 +463,14 @@ class BgWc extends HTMLElement {
   }
   #onCtxLost = (e) => {
     e.preventDefault();
+    this.#ctxLost = true;
     cancelAnimationFrame(this.#rafId);
     this.#rafId = 0;
     this.setAttribute('data-fallback', '');
     this.#emit('bg-wc:error', { phase: 'runtime', error: new Error('webgl context lost') });
   };
   #onCtxRestored = () => {
+    this.#ctxLost = false;
     this.removeAttribute('data-fallback');
     this.#loadCurrentPreset(this.preset);
   };
@@ -476,6 +497,8 @@ class BgWc extends HTMLElement {
     this.#instance = null;
     this.#ctx = null;
     this.#rendererKind = null;
+    // The lost context (if any) went with the instance; a new mount starts clean.
+    this.#ctxLost = false;
   }
 
   #readParams() {
@@ -513,6 +536,12 @@ class BgWc extends HTMLElement {
   }
 
   #updateFallbackVisibility() {
+    // Nothing renderable (no preset yet, a failed load, or a lost context):
+    // the fallback slot is all there is — keep it up regardless of `motion`.
+    if (!this.#instance || this.#ctxLost) {
+      this.setAttribute('data-fallback', '');
+      return;
+    }
     if (this.#rendererKind === 'css3d') {
       // The paused scene is itself the static representation; never swap to the
       // fallback slot for css3d (even under reduced motion).
@@ -564,6 +593,7 @@ class BgWc extends HTMLElement {
 
   #shouldPlay() {
     if (!this.#instance) return false;
+    if (this.#ctxLost) return false;
     if (this.paused) return false;
     if (!this.#visible) return false;
     if (!this.#docVisible) return false;
