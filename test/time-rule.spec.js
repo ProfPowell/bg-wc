@@ -7,7 +7,7 @@ import { test, expect } from '@playwright/test';
 // call, runs 2x faster at 120 Hz, and ignores or double-applies `speed`);
 // advancing t still produces motion.
 
-const PRESETS = ['particles', 'asteroids', 'network', 'rain'];
+const PRESETS = ['particles', 'asteroids', 'network', 'rain', 'fireflies'];
 
 for (const name of PRESETS) {
   test(`${name}: motion derives from t, not from call count`, async ({ page }) => {

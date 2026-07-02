@@ -43,10 +43,11 @@ test('lounge group exists with tiki', () => {
   assert.ok(g.presets.some((p) => p.name === 'tiki'));
 });
 
-test('particles group gained rain (2026-07-01 gap wave)', () => {
+test('particles group gained rain and fireflies (2026-07-01 gap wave)', () => {
   const g = listGroups().find((x) => x.id === 'particles');
-  assert.ok(
-    g.presets.some((p) => p.name === 'rain'),
-    'particles has rain'
-  );
+  for (const n of ['rain', 'fireflies'])
+    assert.ok(
+      g.presets.some((p) => p.name === n),
+      `particles has ${n}`
+    );
 });
