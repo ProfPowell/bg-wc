@@ -21,54 +21,58 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Cormorant Garamond', Georgia, serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .vignette { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    weave-stage { display: block; position: relative; width: 100vw; height: 100vh; }
+    weave-vignette { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse 60% 56% at 50% 50%, transparent 22%, rgba(10,18,48,0.9) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
-    .nav a:hover { opacity: 1; }
+    body > nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    body > nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
+    body > nav a:hover { opacity: 1; }
 
-    .content { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
-    .eyebrow { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.24em; color: var(--color-accent); opacity: 0.92; margin-bottom: 18px; text-transform: lowercase; }
+    weave-content { display: block; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    weave-eyebrow { display: block; font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.24em; color: var(--color-accent); opacity: 0.92; margin-bottom: 18px; text-transform: lowercase; }
     h1 { font-weight: 700; font-size: clamp(64px, 13vw, 220px); letter-spacing: 0.02em; line-height: 0.95; margin: 0; text-transform: uppercase;
       background: linear-gradient(180deg, #fff 0%, var(--color-info) 55%, var(--color-error) 120%);
       -webkit-background-clip: text; background-clip: text; color: transparent;
       filter: drop-shadow(0 6px 34px rgba(72,202,228,0.4)); }
-    .lede { max-width: 580px; margin: 22px auto 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.55; color: rgba(255,255,255,0.82); }
-    .lede code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(255,255,255,0.10); padding: 2px 7px; border-radius: 4px; }
+    weave-content p { max-width: 580px; margin: 22px auto 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.55; color: rgba(255,255,255,0.82); }
+    code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(255,255,255,0.10); padding: 2px 7px; border-radius: 4px; }
 
-    .telemetry { position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
+    weave-telemetry { display: flex; position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
       font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--color-accent); opacity: 0.82; flex-wrap: wrap; gap: 12px; }
-    .telemetry span { color: var(--color-foreground); opacity: 0.5; padding-right: 6px; }
+    weave-reading { display: block; }
+    weave-reading small { color: var(--color-foreground); opacity: 0.5; padding-right: 6px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="tapestry" intensity="0.7" density="0.75" speed="0.5"></bg-wc>
-    <div class="vignette"></div>
+  <main>
+    <weave-stage data-background="tapestry" data-background-intensity="0.7" data-background-density="0.75" data-background-speed="0.5">
+      <weave-vignette></weave-vignette>
 
-    <div class="content">
-      <div class="eyebrow">// dense dot composite &middot; canvas2d</div>
-      <h1>Tapestry</h1>
-      <p class="lede">
-        A pointillist field packed edge to edge with dot rosettes and whorls in every
-        palette color &mdash; a dense, woven backdrop that page content layers over.
-        <code>preset="tapestry"</code>, built from the full theme palette.
-      </p>
-    </div>
+      <weave-content>
+        <weave-eyebrow>// dense dot composite &middot; canvas2d</weave-eyebrow>
+        <h1>Tapestry</h1>
+        <p>
+          A pointillist field packed edge to edge with dot rosettes and whorls in every
+          palette color &mdash; a dense, woven backdrop that page content layers over.
+          <code>preset="tapestry"</code>, built from the full theme palette.
+        </p>
+      </weave-content>
 
-    <div class="telemetry">
-      <div><span>preset</span>tapestry</div>
-      <div><span>render</span>canvas2d</div>
-      <div><span>layers</span>field + rings + whorls</div>
-      <div><span>palette</span>theme</div>
-    </div>
+      <weave-telemetry>
+        <weave-reading><small>preset</small>tapestry</weave-reading>
+        <weave-reading><small>render</small>canvas2d</weave-reading>
+        <weave-reading><small>layers</small>field + rings + whorls</weave-reading>
+        <weave-reading><small>palette</small>theme</weave-reading>
+      </weave-telemetry>
+    </weave-stage>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

@@ -19,24 +19,24 @@
     html, body { margin: 0; padding: 0; background: #000; color: #fff; overflow: hidden; }
     body { font-family: 'Press Start 2P', monospace; min-height: 100vh; }
 
-    .cab { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-    bg-wc.tube { position: absolute; inset: 0; z-index: 0; }
-    bg-wc.fx   { position: absolute; inset: 0; z-index: 1; }  /* fireballs over the tube */
+    main { position: relative; display: grid; width: 100vw; height: 100vh; overflow: hidden; }
+    cabinet-tube { display: block; grid-area: 1 / 1; z-index: 0; }
+    cabinet-fx   { display: block; grid-area: 1 / 1; z-index: 1; }  /* fireballs over the tube */
 
-    .vig { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    cabinet-vignette { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse at center, transparent 45%, rgba(4,0,12,0.75) 100%); }
-    .scan { position: absolute; inset: 0; z-index: 5; pointer-events: none;
+    cabinet-scanlines { display: block; position: absolute; inset: 0; z-index: 5; pointer-events: none;
       background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0,0,0,0.28) 3px 4px);
       mix-blend-mode: multiply; }
 
     /* Extruded rainbow vector title — stacked colored shadows fake the
        layered-vector extrusion of the TEMPEST logo. */
-    .title-wrap {
-      position: absolute; inset: 0; z-index: 4;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cabinet-title {
+      display: flex; position: absolute; inset: 0; z-index: 4;
+      flex-direction: column; align-items: center; justify-content: center;
       text-align: center; pointer-events: none;
     }
-    .vector-title {
+    cabinet-title h1 {
       font-family: 'Audiowide', 'Press Start 2P', sans-serif;
       font-size: clamp(40px, 11vw, 150px);
       letter-spacing: 0.06em;
@@ -49,7 +49,7 @@
         0 8px 0 #4fff5a, 0 10px 0 #2bd4ff, 0 12px 0 #6a5cff,
         0 14px 0 #b44bff, 0 18px 28px rgba(0,0,0,0.6);
     }
-    .vector-title span {
+    title-letter {
       display: inline-block;
       animation: drop 0.7s cubic-bezier(.2,1.4,.4,1) backwards;
       animation-delay: calc(var(--i) * 0.12s);
@@ -61,10 +61,11 @@
       100% { transform: translateY(0) scaleY(1); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .vector-title span { animation: none; }
+      title-letter { animation: none; }
     }
 
-    .subtitle {
+    cabinet-subtitle {
+      display: block;
       margin-top: 28px;
       font-family: 'Press Start 2P', monospace;
       font-size: clamp(10px, 1.4vw, 15px);
@@ -74,7 +75,8 @@
       animation-delay: 1s; animation-fill-mode: backwards;
     }
     @keyframes blink { 50% { opacity: 0.2; } }
-    .copyright {
+    cabinet-copyright {
+      display: block;
       margin-top: 18px;
       font-family: 'Press Start 2P', monospace;
       font-size: clamp(8px, 1vw, 11px);
@@ -83,46 +85,49 @@
     }
 
     /* Coin-op HUD */
-    .hud {
-      position: absolute; inset: 0; z-index: 6; pointer-events: none;
+    cabinet-hud {
+      display: block; position: absolute; inset: 0; z-index: 6; pointer-events: none;
       font-family: 'Press Start 2P', monospace; font-size: clamp(9px, 1.3vw, 14px);
       color: #fff; text-shadow: 0 0 6px rgba(0,0,0,0.8);
     }
-    .hud .tl { position: absolute; top: 26px; left: 28px; color: var(--color-info); line-height: 2; }
-    .hud .tr { position: absolute; top: 26px; right: 28px; text-align: right; color: var(--color-accent); line-height: 2; }
-    .hud .bc { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: var(--color-info); letter-spacing: 0.16em; }
+    hud-corner[data-pos="tl"] { display: block; position: absolute; top: 26px; left: 28px; color: var(--color-info); line-height: 2; }
+    hud-corner[data-pos="tr"] { display: block; position: absolute; top: 26px; right: 28px; text-align: right; color: var(--color-accent); line-height: 2; }
+    hud-corner[data-pos="bc"] { display: block; position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: var(--color-info); letter-spacing: 0.16em; }
 
-    .nav { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); z-index: 8; pointer-events: auto; }
-    .nav a { color: var(--color-accent); text-decoration: none; font-size: 9px; letter-spacing: 0.18em; opacity: 0.75; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); z-index: 8; pointer-events: auto; }
+    nav a { color: var(--color-accent); text-decoration: none; font-size: 9px; letter-spacing: 0.18em; opacity: 0.75; }
+    nav a:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <main class="cab">
-    <bg-wc class="tube" preset="tempest" intensity="0.7" density="0.5" speed="0.9"></bg-wc>
-    <bg-wc class="fx" preset="fireworks" intensity="0.7" density="0.5" speed="1"
-           style="--bg-wc-color-bg: transparent;"></bg-wc>
+  <main>
+    <cabinet-tube data-background="tempest" data-background-intensity="0.7" data-background-density="0.5" data-background-speed="0.9"></cabinet-tube>
+    <cabinet-fx data-background="fireworks" data-background-intensity="0.7" data-background-density="0.5" data-background-speed="1"
+                data-background-color-bg="transparent"></cabinet-fx>
 
-    <div class="vig"></div>
+    <cabinet-vignette></cabinet-vignette>
 
-    <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+    <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-    <div class="title-wrap">
-      <h1 class="vector-title" aria-label="BG-WC">
-        <span style="--i:0">B</span><span style="--i:1">G</span><span style="--i:2">&middot;</span><span style="--i:3">W</span><span style="--i:4">C</span>
+    <cabinet-title>
+      <h1 aria-label="BG-WC">
+        <title-letter style="--i:0">B</title-letter><title-letter style="--i:1">G</title-letter><title-letter style="--i:2">&middot;</title-letter><title-letter style="--i:3">W</title-letter><title-letter style="--i:4">C</title-letter>
       </h1>
-      <div class="subtitle">INSERT COIN &middot; SHOOT FIREBALLS</div>
-      <div class="copyright">&copy; MMXXVI PROFPOWELL</div>
-    </div>
+      <cabinet-subtitle>INSERT COIN &middot; SHOOT FIREBALLS</cabinet-subtitle>
+      <cabinet-copyright>&copy; MMXXVI PROFPOWELL</cabinet-copyright>
+    </cabinet-title>
 
-    <div class="hud">
-      <div class="tl">SCORE<br>013440</div>
-      <div class="tr">HI 113440 AAA<br>WAVE 05</div>
-      <div class="bc">1 COIN 1 PLAY</div>
-    </div>
+    <cabinet-hud>
+      <hud-corner data-pos="tl">SCORE<br>013440</hud-corner>
+      <hud-corner data-pos="tr">HI 113440 AAA<br>WAVE 05</hud-corner>
+      <hud-corner data-pos="bc">1 COIN 1 PLAY</hud-corner>
+    </cabinet-hud>
 
-    <div class="scan"></div>
+    <cabinet-scanlines></cabinet-scanlines>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

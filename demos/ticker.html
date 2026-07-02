@@ -18,41 +18,42 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'DM Sans', system-ui, sans-serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    marquee-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, rgba(11,10,7,0.82) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    nav a:hover { opacity: 1; }
 
-    .content { position: absolute; left: 0; right: 0; top: clamp(70px, 18vh, 180px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
-    .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 14px; }
+    marquee-content { display: block; position: absolute; left: 0; right: 0; top: clamp(70px, 18vh, 180px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    marquee-eyebrow { display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 14px; }
     h1 { font-weight: 700; font-size: clamp(40px, 8vw, 120px); line-height: 0.95; letter-spacing: -0.02em; margin: 0;
       color: var(--color-foreground); text-shadow: 0 0 26px rgba(255,174,46,0.35); }
-    .lede { max-width: 480px; margin: 16px auto 0; font-size: clamp(14px, 1.2vw, 18px); line-height: 1.6; color: rgba(244,236,217,0.78); font-family: 'JetBrains Mono', monospace; }
-    .lede code { font-size: 0.86em; background: rgba(255,174,46,0.16); color: var(--color-accent); padding: 2px 7px; border-radius: 4px; }
+    marquee-content p { max-width: 480px; margin: 16px auto 0; font-size: clamp(14px, 1.2vw, 18px); line-height: 1.6; color: rgba(244,236,217,0.78); font-family: 'JetBrains Mono', monospace; }
+    marquee-content p code { font-size: 0.86em; background: rgba(255,174,46,0.16); color: var(--color-accent); padding: 2px 7px; border-radius: 4px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="ledticker" text="NOW SHOWING — THE LATE LATE SHOW — DOORS 9PM — TWO DRINK MINIMUM" intensity="0.85" density="0.5" speed="1"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="ledticker" data-background-text="NOW SHOWING — THE LATE LATE SHOW — DOORS 9PM — TWO DRINK MINIMUM" data-background-intensity="0.85" data-background-density="0.5" data-background-speed="1">
+    <marquee-scrim></marquee-scrim>
 
-    <div class="content">
-      <div class="eyebrow">the marquee &middot; downtown</div>
+    <marquee-content>
+      <marquee-eyebrow>the marquee &middot; downtown</marquee-eyebrow>
       <h1>Tonight,<br>only.</h1>
-      <p class="lede">
+      <p>
         The headline scrolls on the board behind &mdash;
         <code>preset="ledticker"</code> with your own <code>text</code>, lit dot
         by lit dot in amber.
       </p>
-    </div>
+    </marquee-content>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

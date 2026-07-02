@@ -20,97 +20,100 @@
     html, body { margin: 0; padding: 0; overflow: hidden; }
     body { font-family: 'Inter', "Segoe UI", Tahoma, sans-serif; min-height: 100vh; background: #2a6dd6; }
 
-    .screen { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-    bg-wc.wallpaper { position: absolute; inset: 0; z-index: 0; }
+    main { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
 
     /* desktop icons */
-    .icons { position: absolute; top: 18px; left: 16px; z-index: 2; display: flex; flex-direction: column; gap: 22px; }
-    .icon { width: 76px; text-align: center; color: #fff; font-size: 12px; text-shadow: 0 1px 3px rgba(0,0,0,0.7); cursor: default; }
-    .icon .glyph { width: 42px; height: 42px; margin: 0 auto 6px; border-radius: 8px;
+    icon-tray { display: flex; position: absolute; top: 18px; left: 16px; z-index: 2; flex-direction: column; gap: 22px; }
+    desktop-icon { display: block; width: 76px; text-align: center; color: #fff; font-size: 12px; text-shadow: 0 1px 3px rgba(0,0,0,0.7); cursor: default; }
+    icon-glyph { display: grid; width: 42px; height: 42px; margin: 0 auto 6px; border-radius: 8px;
       background: linear-gradient(135deg, #fff, #cfe3ff); border: 1px solid rgba(255,255,255,0.6);
-      box-shadow: 0 3px 8px rgba(0,0,0,0.3); display: grid; place-items: center; font-size: 22px; }
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3); place-items: center; font-size: 22px; }
 
     /* a classic window */
-    .window {
+    section {
       position: absolute; z-index: 3; left: 50%; top: 46%; transform: translate(-50%, -50%);
       width: min(560px, 84vw); border-radius: 8px 8px 6px 6px; overflow: hidden;
       box-shadow: 0 18px 50px -10px rgba(0,0,0,0.5);
       border: 1px solid #0a3b8c;
     }
-    .titlebar {
+    title-bar {
+      display: flex;
       background: linear-gradient(180deg, #3a8bf0, #1a5fd0 8%, #1856c4);
       color: #fff; font-weight: 700; font-size: 14px;
-      padding: 7px 10px; display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; align-items: center; gap: 8px;
       text-shadow: 0 1px 1px rgba(0,0,0,0.4);
     }
-    .titlebar .ico { width: 16px; height: 16px; border-radius: 3px; background: linear-gradient(135deg,#ffe07a,#ff9a3c); }
-    .titlebar .btns { margin-left: auto; display: flex; gap: 4px; }
-    .titlebar .btns b { width: 20px; height: 18px; border-radius: 3px; background: #2f6fd6; border: 1px solid #9cc3ff;
-      display: grid; place-items: center; font-size: 11px; font-weight: 700; }
-    .titlebar .btns b.x { background: #e0573e; border-color: #ffb09c; }
-    .winbody { background: #ece9d8; padding: 18px 18px 22px; color: #1a1a1a; }
-    .winbody h2 { margin: 0 0 8px; font-size: 17px; }
-    .winbody p { margin: 0 0 12px; font-size: 13.5px; line-height: 1.55; }
-    .winbody code { font-family: ui-monospace, monospace; background: #fff; border: 1px solid #c9c4b0; padding: 1px 6px; border-radius: 3px; }
-    .winbody .row { display: flex; gap: 8px; justify-content: flex-end; }
-    .winbody button {
+    title-bar title-icon { display: block; width: 16px; height: 16px; border-radius: 3px; background: linear-gradient(135deg,#ffe07a,#ff9a3c); }
+    title-buttons { display: flex; margin-left: auto; gap: 4px; }
+    title-buttons title-button { display: grid; width: 20px; height: 18px; border-radius: 3px; background: #2f6fd6; border: 1px solid #9cc3ff;
+      place-items: center; font-size: 11px; font-weight: 700; }
+    title-buttons title-button[data-action="close"] { background: #e0573e; border-color: #ffb09c; }
+    window-body { display: block; background: #ece9d8; padding: 18px 18px 22px; color: #1a1a1a; }
+    window-body h2 { margin: 0 0 8px; font-size: 17px; }
+    window-body p { margin: 0 0 12px; font-size: 13.5px; line-height: 1.55; }
+    window-body code { font-family: ui-monospace, monospace; background: #fff; border: 1px solid #c9c4b0; padding: 1px 6px; border-radius: 3px; }
+    button-row { display: flex; gap: 8px; justify-content: flex-end; }
+    window-body button {
       font: inherit; font-size: 13px; padding: 5px 16px; border-radius: 4px;
       border: 1px solid #8a8a6a; background: linear-gradient(180deg,#fdfdf8,#dcd8c4); cursor: pointer;
     }
 
     /* taskbar */
-    .taskbar {
+    taskbar-bar {
+      display: flex;
       position: absolute; left: 0; right: 0; bottom: 0; height: 38px; z-index: 5;
       background: linear-gradient(180deg, #3f93f5, #1659c6 9%, #1f63cf);
-      display: flex; align-items: center; gap: 10px; padding-right: 10px;
+      align-items: center; gap: 10px; padding-right: 10px;
       box-shadow: 0 -1px 4px rgba(0,0,0,0.4);
     }
-    .start {
-      height: 100%; display: flex; align-items: center; gap: 8px; padding: 0 22px 0 14px;
+    start-button {
+      display: flex; height: 100%; align-items: center; gap: 8px; padding: 0 22px 0 14px;
       background: linear-gradient(180deg,#5db553,#3f9e36 10%,#2f8f2a);
       color: #fff; font-style: italic; font-weight: 700; font-size: 16px;
       border-radius: 0 14px 14px 0; text-shadow: 0 1px 1px rgba(0,0,0,0.4);
     }
-    .start .orb { width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff, #d9ffd0 40%, #4caf50); }
-    .clock { margin-left: auto; color: #fff; font-size: 13px; background: #1856c4; padding: 4px 12px; border-radius: 4px; }
+    start-orb { display: block; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff, #d9ffd0 40%, #4caf50); }
+    taskbar-clock { display: block; margin-left: auto; color: #fff; font-size: 13px; background: #1856c4; padding: 4px 12px; border-radius: 4px; }
 
-    .nav { position: absolute; top: 14px; right: 16px; z-index: 6; }
-    .nav a { color: #fff; text-decoration: none; font-size: 12px; letter-spacing: 0.16em; text-shadow: 0 1px 3px rgba(0,0,0,0.6); opacity: 0.85; }
+    nav { position: absolute; top: 14px; right: 16px; z-index: 6; }
+    nav a { color: #fff; text-decoration: none; font-size: 12px; letter-spacing: 0.16em; text-shadow: 0 1px 3px rgba(0,0,0,0.6); opacity: 0.85; }
   </style>
 </head>
 <body>
-  <main class="screen">
-    <bg-wc class="wallpaper" preset="bliss" intensity="0.7" density="0.5" speed="0.5"></bg-wc>
+  <main data-background="bliss" data-background-intensity="0.7" data-background-density="0.5" data-background-speed="0.5">
 
-    <div class="icons">
-      <div class="icon"><div class="glyph">&#128193;</div>My Presets</div>
-      <div class="icon"><div class="glyph">&#127912;</div>bg-wc</div>
-      <div class="icon"><div class="glyph">&#128465;</div>Recycle</div>
-    </div>
+    <icon-tray>
+      <desktop-icon><icon-glyph>&#128193;</icon-glyph>My Presets</desktop-icon>
+      <desktop-icon><icon-glyph>&#127912;</icon-glyph>bg-wc</desktop-icon>
+      <desktop-icon><icon-glyph>&#128465;</icon-glyph>Recycle</desktop-icon>
+    </icon-tray>
 
-    <section class="window">
-      <div class="titlebar">
-        <span class="ico"></span> bg-wc.exe &mdash; Display Properties
-        <span class="btns"><b>_</b><b>&#9633;</b><b class="x">&times;</b></span>
-      </div>
-      <div class="winbody">
+    <section>
+      <title-bar>
+        <title-icon></title-icon> bg-wc.exe &mdash; Display Properties
+        <title-buttons><title-button>_</title-button><title-button>&#9633;</title-button><title-button data-action="close">&times;</title-button></title-buttons>
+      </title-bar>
+      <window-body>
         <h2>Background</h2>
         <p>Your desktop is rendered by <code>&lt;bg-wc preset="bliss"&gt;</code> &mdash; rolling
           hills, a gradient sky, and drifting clouds, all from the theme tokens. No wallpaper file.</p>
         <p>Pick another preset any time. It even pauses when the screen saver kicks in.</p>
-        <div class="row">
+        <button-row>
           <button>Apply</button><button>OK</button>
-        </div>
-      </div>
+        </button-row>
+      </window-body>
     </section>
 
-    <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+    <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-    <div class="taskbar">
-      <div class="start"><span class="orb"></span> start</div>
-      <div class="clock">2:06 PM</div>
-    </div>
+    <taskbar-bar>
+      <start-button><start-orb></start-orb> start</start-button>
+      <taskbar-clock>2:06 PM</taskbar-clock>
+    </taskbar-bar>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

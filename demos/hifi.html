@@ -20,54 +20,56 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'JetBrains Mono', monospace; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    deck-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: linear-gradient(180deg, rgba(10,12,16,0.9) 0%, transparent 34%, transparent 62%, rgba(10,12,16,0.96) 100%); }
 
-    .nav { position: absolute; top: 22px; left: 30px; z-index: 12; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 22px; left: 30px; z-index: 12; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
+    nav a:hover { opacity: 1; }
 
-    .head { position: absolute; top: 30px; left: 0; right: 0; z-index: 6; text-align: center; }
-    .head .brand { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(30px, 6vw, 68px); letter-spacing: 0.16em;
+    deck-head { display: block; position: absolute; top: 30px; left: 0; right: 0; z-index: 6; text-align: center; }
+    deck-brand { display: block; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(30px, 6vw, 68px); letter-spacing: 0.16em;
       color: var(--color-foreground); text-shadow: 0 0 22px rgba(54,224,255,0.4); }
-    .head .sub { font-size: 12px; letter-spacing: 0.42em; color: var(--color-accent); text-transform: uppercase; margin-top: 8px; opacity: 0.85; }
+    deck-sub { display: block; font-size: 12px; letter-spacing: 0.42em; color: var(--color-accent); text-transform: uppercase; margin-top: 8px; opacity: 0.85; }
 
-    .foot { position: absolute; bottom: 26px; left: 0; right: 0; z-index: 6; display: flex; justify-content: center; gap: clamp(14px, 3vw, 40px); flex-wrap: wrap; }
-    .foot .btn { border: 1px solid rgba(215,222,230,0.25); border-radius: 6px; padding: 9px 16px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-foreground); }
-    .foot .btn.on { border-color: var(--color-accent); color: var(--color-accent); box-shadow: 0 0 14px rgba(54,224,255,0.25) inset; }
-    .read { position: absolute; top: 50%; left: 30px; transform: translateY(-50%); z-index: 6; font-size: 11px; letter-spacing: 0.16em; line-height: 2; color: rgba(215,222,230,0.55); }
-    .read b { color: var(--color-accent); font-weight: 400; }
+    deck-foot { display: flex; position: absolute; bottom: 26px; left: 0; right: 0; z-index: 6; justify-content: center; gap: clamp(14px, 3vw, 40px); flex-wrap: wrap; }
+    deck-button { display: inline-block; border: 1px solid rgba(215,222,230,0.25); border-radius: 6px; padding: 9px 16px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-foreground); }
+    deck-button[data-state="on"] { border-color: var(--color-accent); color: var(--color-accent); box-shadow: 0 0 14px rgba(54,224,255,0.25) inset; }
+    deck-read { display: block; position: absolute; top: 50%; left: 30px; transform: translateY(-50%); z-index: 6; font-size: 11px; letter-spacing: 0.16em; line-height: 2; color: rgba(215,222,230,0.55); }
+    deck-read p { margin: 0; }
+    deck-read b { color: var(--color-accent); font-weight: 400; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="equalizer" mode="mirror" intensity="0.8" density="0.7" speed="1.2"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="equalizer" data-background-mode="mirror" data-background-intensity="0.8" data-background-density="0.7" data-background-speed="1.2">
+    <deck-scrim></deck-scrim>
 
-    <div class="head">
-      <div class="brand">SPECTRA&nbsp;7</div>
-      <div class="sub">31-band &middot; graphic equalizer</div>
-    </div>
+    <deck-head>
+      <deck-brand>SPECTRA&nbsp;7</deck-brand>
+      <deck-sub>31-band &middot; graphic equalizer</deck-sub>
+    </deck-head>
 
-    <div class="read">
-      <div>src &middot; <b>phono</b></div>
-      <div>fmt &middot; <b>33&frac13;</b></div>
-      <div>db &middot; <b>+6</b></div>
-    </div>
+    <deck-read>
+      <p>src &middot; <b>phono</b></p>
+      <p>fmt &middot; <b>33&frac13;</b></p>
+      <p>db &middot; <b>+6</b></p>
+    </deck-read>
 
-    <div class="foot">
-      <span class="btn on">power</span>
-      <span class="btn">tape</span>
-      <span class="btn on">loudness</span>
-      <span class="btn">mono</span>
-      <span class="btn on">eq</span>
-    </div>
+    <deck-foot>
+      <deck-button data-state="on">power</deck-button>
+      <deck-button>tape</deck-button>
+      <deck-button data-state="on">loudness</deck-button>
+      <deck-button>mono</deck-button>
+      <deck-button data-state="on">eq</deck-button>
+    </deck-foot>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

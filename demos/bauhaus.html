@@ -19,49 +19,51 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Space Grotesk', system-ui, sans-serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    bauhaus-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: linear-gradient(180deg, rgba(243,239,230,0.4) 0%, rgba(243,239,230,0.1) 40%, rgba(243,239,230,0.55) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Grotesk', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Grotesk', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
+    nav a:hover { opacity: 1; }
 
-    .panel { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 6; width: min(86vw, 760px);
+    bauhaus-panel { display: block; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 6; width: min(86vw, 760px);
       background: rgba(243,239,230,0.86); backdrop-filter: blur(2px); border: 3px solid var(--color-foreground); padding: clamp(28px, 5vw, 64px); }
-    .kicker { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 22px; }
-    .kicker i { width: 16px; height: 16px; border-radius: 50%; background: var(--color-accent); display: inline-block; }
-    .kicker u { text-decoration: none; width: 16px; height: 16px; background: var(--color-primary); display: inline-block; }
-    .kicker s { text-decoration: none; width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 16px solid var(--color-warning); display: inline-block; }
+    bauhaus-kicker { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 22px; }
+    bauhaus-circle { display: inline-block; width: 16px; height: 16px; border-radius: 50%; background: var(--color-accent); }
+    bauhaus-square { display: inline-block; width: 16px; height: 16px; background: var(--color-primary); }
+    bauhaus-triangle { display: inline-block; width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 16px solid var(--color-warning); }
     h1 { font-family: 'Archivo Black', sans-serif; font-size: clamp(44px, 8vw, 104px); line-height: 0.92; letter-spacing: -0.02em; margin: 0; text-transform: uppercase; }
-    h1 .b { color: var(--color-primary); }
-    h1 .f { color: var(--color-accent); }
-    .lede { margin: 22px 0 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.55; max-width: 520px; color: #2a261f; }
-    .lede code { font-family: ui-monospace, monospace; font-size: 0.84em; background: var(--color-foreground); color: var(--color-background); padding: 2px 7px; border-radius: 3px; }
-    .foot { margin-top: 28px; display: flex; gap: 18px; align-items: center; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
-    .foot b { background: var(--color-foreground); color: var(--color-background); padding: 8px 16px; }
+    bauhaus-word { display: inline; }
+    bauhaus-word[data-tone="primary"] { color: var(--color-primary); }
+    bauhaus-word[data-tone="accent"] { color: var(--color-accent); }
+    bauhaus-panel p { margin: 22px 0 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.55; max-width: 520px; color: #2a261f; }
+    bauhaus-panel p code { font-family: ui-monospace, monospace; font-size: 0.84em; background: var(--color-foreground); color: var(--color-background); padding: 2px 7px; border-radius: 3px; }
+    bauhaus-foot { display: flex; margin-top: 28px; gap: 18px; align-items: center; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+    bauhaus-foot b { background: var(--color-foreground); color: var(--color-background); padding: 8px 16px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="bauhaus" intensity="0.8" density="0.5" speed="0.7"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="bauhaus" data-background-intensity="0.8" data-background-density="0.5" data-background-speed="0.7">
+    <bauhaus-scrim></bauhaus-scrim>
 
-    <div class="panel">
-      <div class="kicker"><i></i><u></u><s></s> Staatliches Bauhaus &middot; est. 1919</div>
-      <h1><span class="b">Form</span> follows<br><span class="f">function</span>.</h1>
-      <p class="lede">
+    <bauhaus-panel>
+      <bauhaus-kicker><bauhaus-circle></bauhaus-circle><bauhaus-square></bauhaus-square><bauhaus-triangle></bauhaus-triangle> Staatliches Bauhaus &middot; est. 1919</bauhaus-kicker>
+      <h1><bauhaus-word data-tone="primary">Form</bauhaus-word> follows<br><bauhaus-word data-tone="accent">function</bauhaus-word>.</h1>
+      <p>
         Circle, square, triangle &mdash; primary forms at full saturation, sliding into
         place and recomposing a few cells at a time. <code>preset="bauhaus"</code>, the
         grid reads straight from your theme roles.
       </p>
-      <div class="foot"><b>Foundation Course</b><span>geometry &middot; colour &middot; motion</span></div>
-    </div>
+      <bauhaus-foot><b>Foundation Course</b><span>geometry &middot; colour &middot; motion</span></bauhaus-foot>
+    </bauhaus-panel>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

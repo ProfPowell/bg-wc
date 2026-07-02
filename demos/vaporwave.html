@@ -19,14 +19,11 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Cinzel', Georgia, serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; }
-
-    /* Layer 1: animated network */
-    bg-wc.bg { position: absolute; inset: 0; z-index: 1; }
+    main { position: relative; width: 100vw; height: 100vh; }
 
     /* Layer 2: sun — radial gradient over the horizon */
-    .sun {
-      position: absolute; left: 50%; top: 32%;
+    vapor-sun {
+      display: block; position: absolute; left: 50%; top: 32%;
       width: 60vmin; height: 60vmin; transform: translateX(-50%);
       z-index: 2;
       background: radial-gradient(circle at 50% 50%,
@@ -36,7 +33,7 @@
       mix-blend-mode: screen;
     }
     /* Sun is cut at the horizon by a series of horizontal bands */
-    .sun::after {
+    vapor-sun::after {
       content: ""; position: absolute; inset: 0;
       background: repeating-linear-gradient(
         to bottom,
@@ -49,8 +46,8 @@
     }
 
     /* Layer 3: perspective grid */
-    .grid {
-      position: absolute; left: -10vw; right: -10vw; bottom: 0; height: 55vh;
+    vapor-grid {
+      display: block; position: absolute; left: -10vw; right: -10vw; bottom: 0; height: 55vh;
       z-index: 3; pointer-events: none;
       background-image:
         linear-gradient(rgba(255,113,206,0.85) 1px, transparent 1px),
@@ -63,21 +60,21 @@
     }
 
     /* Layer 4: horizon line */
-    .horizon {
-      position: absolute; left: 0; right: 0; top: 55%; height: 2px; z-index: 4;
+    vapor-horizon {
+      display: block; position: absolute; left: 0; right: 0; top: 55%; height: 2px; z-index: 4;
       background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
       opacity: 0.7; pointer-events: none;
       box-shadow: 0 0 18px var(--color-accent);
     }
 
     /* Layer 5: content */
-    .content {
-      position: absolute; inset: 0; z-index: 5;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    vapor-content {
+      display: flex; position: absolute; inset: 0; z-index: 5;
+      flex-direction: column; align-items: center; justify-content: center;
       padding: 6vh 4vw 0;
       text-align: center;
     }
-    .aesthetic {
+    h1 {
       font-family: 'Cinzel', Georgia, serif;
       font-size: clamp(36px, 7vw, 112px);
       font-weight: 700;
@@ -90,13 +87,15 @@
         0 0 60px rgba(1,205,254,0.3);
       margin: 0;
     }
-    .tag {
+    vapor-tag {
+      display: block;
       font-family: 'Cinzel', serif;
       letter-spacing: 0.32em; font-size: clamp(11px, 1vw, 14px);
       color: var(--color-info); opacity: 0.85;
       margin-top: 28px;
     }
-    .jp {
+    vapor-caption {
+      display: block;
       font-family: 'Noto Serif JP', serif;
       font-size: clamp(14px, 1.4vw, 18px);
       color: var(--color-accent);
@@ -106,7 +105,7 @@
       opacity: 0.85; z-index: 6;
       text-shadow: 0 0 10px rgba(1,205,254,0.5);
     }
-    .jp.left {
+    vapor-caption[data-side="left"] {
       right: auto; left: 36px; top: 80px;
       writing-mode: vertical-rl;
       color: var(--color-primary);
@@ -114,8 +113,8 @@
     }
 
     /* VHS scanline whisper */
-    .vhs {
-      position: absolute; inset: 0; z-index: 7; pointer-events: none;
+    vapor-scan {
+      display: block; position: absolute; inset: 0; z-index: 7; pointer-events: none;
       background: repeating-linear-gradient(
         to bottom,
         transparent 0,
@@ -124,26 +123,28 @@
       );
     }
 
-    .nav { position: absolute; top: 22px; left: 32px; z-index: 12; }
-    .nav a { color: var(--color-foreground); text-decoration: none; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.65; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 22px; left: 32px; z-index: 12; }
+    nav a { color: var(--color-foreground); text-decoration: none; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.65; }
+    nav a:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <main class="stage">
-    <bg-wc class="bg" preset="network" intensity="0.55" density="0.6" speed="0.6"></bg-wc>
-    <div class="sun"></div>
-    <div class="grid"></div>
-    <div class="horizon"></div>
-    <div class="jp left">蒸気波</div>
-    <div class="jp">美的</div>
-    <div class="content">
-      <h1 class="aesthetic">A E S T H E T I C</h1>
-      <div class="tag">&mdash; RENDER &middot; STREAM &middot; DREAM &mdash;</div>
-    </div>
-    <div class="vhs"></div>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <main data-background="network" data-background-intensity="0.55" data-background-density="0.6" data-background-speed="0.6">
+    <vapor-sun></vapor-sun>
+    <vapor-grid></vapor-grid>
+    <vapor-horizon></vapor-horizon>
+    <vapor-caption data-side="left">蒸気波</vapor-caption>
+    <vapor-caption>美的</vapor-caption>
+    <vapor-content>
+      <h1>A E S T H E T I C</h1>
+      <vapor-tag>&mdash; RENDER &middot; STREAM &middot; DREAM &mdash;</vapor-tag>
+    </vapor-content>
+    <vapor-scan></vapor-scan>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

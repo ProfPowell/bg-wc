@@ -17,35 +17,35 @@
     html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); overflow: hidden; }
     body { font-family: Inter, system-ui, sans-serif; min-height: 100vh; }
 
-    .stage {
+    main {
       position: relative; width: 100vw; height: 100vh;
       perspective: 1600px;
       perspective-origin: 50% 50%;
     }
 
-    .hall {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
+    poster-hall {
+      display: flex; position: absolute; inset: 0;
+      flex-direction: column;
       justify-content: center; gap: 26px;
       transform-style: preserve-3d;
       transform: rotateY(-12deg) rotateX(2deg);
     }
 
-    .row {
+    poster-row {
       display: flex; gap: 26px;
       width: max-content;
       will-change: transform;
     }
-    .row.r1 { animation: scroll-left  90s linear infinite; }
-    .row.r2 { animation: scroll-right 120s linear infinite; }
-    .row.r3 { animation: scroll-left  75s linear infinite; }
+    poster-row[data-row="1"] { animation: scroll-left  90s linear infinite; }
+    poster-row[data-row="2"] { animation: scroll-right 120s linear infinite; }
+    poster-row[data-row="3"] { animation: scroll-left  75s linear infinite; }
     @keyframes scroll-left  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     @keyframes scroll-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
     @media (prefers-reduced-motion: reduce) {
-      .row { animation: none; }
+      poster-row { animation: none; }
     }
 
-    .poster {
+    article {
       flex: none;
       width: 230px; height: 320px;
       border-radius: 14px;
@@ -54,25 +54,24 @@
       box-shadow: 0 24px 60px -16px rgba(0,0,0,0.7), 0 2px 0 0 rgba(255,255,255,0.06) inset;
       background: #111;
     }
-    .poster bg-wc { display: block; width: 100%; height: 100%; }
-    .poster .frame {
-      position: absolute; inset: 0;
+    poster-frame {
+      display: block; position: absolute; inset: 0;
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: 14px;
       pointer-events: none;
     }
-    .poster .cap {
-      position: absolute; left: 14px; right: 14px; bottom: 14px;
+    poster-caption {
+      display: flex; position: absolute; left: 14px; right: 14px; bottom: 14px;
       font-family: 'Archivo Black', sans-serif;
       font-size: 18px;
       letter-spacing: -0.01em;
       color: white;
       text-shadow: 0 2px 8px rgba(0,0,0,0.7);
-      display: flex; justify-content: space-between; align-items: baseline;
+      justify-content: space-between; align-items: baseline;
     }
-    .poster .cap .num { font-family: Inter, sans-serif; font-weight: 500; font-size: 11px; letter-spacing: 0.18em; opacity: 0.65; }
-    .poster .tag {
-      position: absolute; top: 12px; left: 12px;
+    poster-caption small { font-family: Inter, sans-serif; font-weight: 500; font-size: 11px; letter-spacing: 0.18em; opacity: 0.65; }
+    poster-tag {
+      display: block; position: absolute; top: 12px; left: 12px;
       font-family: Inter, sans-serif; font-size: 10px;
       letter-spacing: 0.16em; text-transform: uppercase;
       background: rgba(0,0,0,0.55); color: white;
@@ -82,22 +81,22 @@
 
     /* Color tinting — each row gets its own scoped palette so multiple
        posters with the same preset still show variation. */
-    .row.r1 { --color-primary: #5b8eff; --color-accent: #ff5fa2; --color-info: #25d0a6; --color-background: #08080f; }
-    .row.r2 { --color-primary: #ffd23f; --color-accent: #ff3d6e; --color-info: #2cc6e0; --color-background: #08080f; }
-    .row.r3 { --color-primary: #b967ff; --color-accent: #01cdfe; --color-info: #fffb96; --color-background: #08080f; }
+    poster-row[data-row="1"] { --color-primary: #5b8eff; --color-accent: #ff5fa2; --color-info: #25d0a6; --color-background: #08080f; }
+    poster-row[data-row="2"] { --color-primary: #ffd23f; --color-accent: #ff3d6e; --color-info: #2cc6e0; --color-background: #08080f; }
+    poster-row[data-row="3"] { --color-primary: #b967ff; --color-accent: #01cdfe; --color-info: #fffb96; --color-background: #08080f; }
 
     /* Vignette + title overlay */
-    .vignette {
-      position: absolute; inset: 0; pointer-events: none;
+    wall-vignette {
+      display: block; position: absolute; inset: 0; pointer-events: none;
       background: radial-gradient(ellipse at center, transparent 40%, rgba(8,8,15,0.85) 100%);
       z-index: 6;
     }
-    .title {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    wall-title {
+      display: flex; position: absolute; inset: 0;
+      flex-direction: column; align-items: center; justify-content: center;
       z-index: 8; text-align: center; pointer-events: none;
     }
-    .title h1 {
+    wall-title h1 {
       font-family: 'Archivo Black', sans-serif;
       font-size: clamp(40px, 8vw, 132px);
       line-height: 0.9; letter-spacing: -0.035em;
@@ -106,82 +105,85 @@
       -webkit-background-clip: text; background-clip: text; color: transparent;
       filter: drop-shadow(0 8px 24px rgba(0,0,0,0.6));
     }
-    .title p {
+    wall-title p {
       margin: 18px 0 0; max-width: 540px; opacity: 0.78;
       font-size: 15px; line-height: 1.55;
       text-shadow: 0 2px 8px rgba(0,0,0,0.7);
       pointer-events: auto;
     }
-    .title p code { background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px; font-family: ui-monospace, monospace; }
+    wall-title p code { background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px; font-family: ui-monospace, monospace; }
 
-    .nav { position: absolute; top: 24px; left: 28px; z-index: 12; font-family: Inter, sans-serif; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
-    .nav a { color: white; text-decoration: none; opacity: 0.65; }
-    .nav a:hover { opacity: 1; }
-    .credit { position: absolute; top: 24px; right: 28px; z-index: 12; font-family: ui-monospace, monospace; font-size: 11px; opacity: 0.5; letter-spacing: 0.12em; text-align: right; }
+    body > nav { position: absolute; top: 24px; left: 28px; z-index: 12; font-family: Inter, sans-serif; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: white; text-decoration: none; opacity: 0.65; }
+    body > nav a:hover { opacity: 1; }
+    wall-credit { display: block; position: absolute; top: 24px; right: 28px; z-index: 12; font-family: ui-monospace, monospace; font-size: 11px; opacity: 0.5; letter-spacing: 0.12em; text-align: right; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <div class="credit">17 preset wall<br>3 rows / 4 posters each</div>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <wall-credit>17 preset wall<br>3 rows / 4 posters each</wall-credit>
 
-  <main class="stage">
-    <div class="hall">
+  <main>
+    <poster-hall>
       <!-- Row 1 (cool palette) -->
-      <div class="row r1">
-        <article class="poster"><bg-wc preset="mesh-gradient" intensity="0.7" speed="0.4" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">MESH<span class="num">01</span></div></article>
-        <article class="poster"><bg-wc preset="plasma" intensity="0.6" density="0.45" speed="0.7" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">PLASMA<span class="num">02</span></div></article>
-        <article class="poster"><bg-wc preset="lava" intensity="0.55" density="0.4" speed="0.4" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">LAVA<span class="num">03</span></div></article>
-        <article class="poster"><bg-wc preset="waves" intensity="0.7" density="0.4" speed="0.6" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">WAVES<span class="num">04</span></div></article>
-        <article class="poster"><bg-wc preset="caustics" intensity="0.7" density="0.45" speed="0.6" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">CAUSTICS<span class="num">05</span></div></article>
+      <poster-row data-row="1">
+        <article data-background="mesh-gradient" data-background-intensity="0.7" data-background-speed="0.4" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>MESH<small>01</small></poster-caption></article>
+        <article data-background="plasma" data-background-intensity="0.6" data-background-density="0.45" data-background-speed="0.7" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>PLASMA<small>02</small></poster-caption></article>
+        <article data-background="lava" data-background-intensity="0.55" data-background-density="0.4" data-background-speed="0.4" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>LAVA<small>03</small></poster-caption></article>
+        <article data-background="waves" data-background-intensity="0.7" data-background-density="0.4" data-background-speed="0.6" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>WAVES<small>04</small></poster-caption></article>
+        <article data-background="caustics" data-background-intensity="0.7" data-background-density="0.45" data-background-speed="0.6" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>CAUSTICS<small>05</small></poster-caption></article>
         <!-- duplicate set for seamless loop -->
-        <article class="poster"><bg-wc preset="mesh-gradient" intensity="0.7" speed="0.4" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">MESH<span class="num">01</span></div></article>
-        <article class="poster"><bg-wc preset="plasma" intensity="0.6" density="0.45" speed="0.7" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">PLASMA<span class="num">02</span></div></article>
-        <article class="poster"><bg-wc preset="lava" intensity="0.55" density="0.4" speed="0.4" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">LAVA<span class="num">03</span></div></article>
-        <article class="poster"><bg-wc preset="waves" intensity="0.7" density="0.4" speed="0.6" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">WAVES<span class="num">04</span></div></article>
-        <article class="poster"><bg-wc preset="caustics" intensity="0.7" density="0.45" speed="0.6" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">CAUSTICS<span class="num">05</span></div></article>
-      </div>
+        <article data-background="mesh-gradient" data-background-intensity="0.7" data-background-speed="0.4" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>MESH<small>01</small></poster-caption></article>
+        <article data-background="plasma" data-background-intensity="0.6" data-background-density="0.45" data-background-speed="0.7" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>PLASMA<small>02</small></poster-caption></article>
+        <article data-background="lava" data-background-intensity="0.55" data-background-density="0.4" data-background-speed="0.4" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>LAVA<small>03</small></poster-caption></article>
+        <article data-background="waves" data-background-intensity="0.7" data-background-density="0.4" data-background-speed="0.6" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>WAVES<small>04</small></poster-caption></article>
+        <article data-background="caustics" data-background-intensity="0.7" data-background-density="0.45" data-background-speed="0.6" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>CAUSTICS<small>05</small></poster-caption></article>
+      </poster-row>
 
       <!-- Row 2 (warm palette) — direction reversed -->
-      <div class="row r2">
-        <article class="poster"><bg-wc preset="warp" intensity="0.7" density="0.5" speed="0.45" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">WARP<span class="num">06</span></div></article>
-        <article class="poster"><bg-wc preset="noise" intensity="0.65" density="0.5" speed="0.4" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">NOISE<span class="num">07</span></div></article>
-        <article class="poster"><bg-wc preset="tunnel" intensity="0.6" density="0.45" speed="0.5" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">TUNNEL<span class="num">08</span></div></article>
-        <article class="poster"><bg-wc preset="dither" intensity="0.8" density="0.18" speed="0.5" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">DITHER<span class="num">09</span></div></article>
-        <article class="poster"><bg-wc preset="aurora" intensity="0.85" density="0.4" speed="0.4" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">AURORA<span class="num">10</span></div></article>
+      <poster-row data-row="2">
+        <article data-background="warp" data-background-intensity="0.7" data-background-density="0.5" data-background-speed="0.45" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>WARP<small>06</small></poster-caption></article>
+        <article data-background="noise" data-background-intensity="0.65" data-background-density="0.5" data-background-speed="0.4" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>NOISE<small>07</small></poster-caption></article>
+        <article data-background="tunnel" data-background-intensity="0.6" data-background-density="0.45" data-background-speed="0.5" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>TUNNEL<small>08</small></poster-caption></article>
+        <article data-background="dither" data-background-intensity="0.8" data-background-density="0.18" data-background-speed="0.5" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>DITHER<small>09</small></poster-caption></article>
+        <article data-background="aurora" data-background-intensity="0.85" data-background-density="0.4" data-background-speed="0.4" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>AURORA<small>10</small></poster-caption></article>
 
-        <article class="poster"><bg-wc preset="warp" intensity="0.7" density="0.5" speed="0.45" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">WARP<span class="num">06</span></div></article>
-        <article class="poster"><bg-wc preset="noise" intensity="0.65" density="0.5" speed="0.4" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">NOISE<span class="num">07</span></div></article>
-        <article class="poster"><bg-wc preset="tunnel" intensity="0.6" density="0.45" speed="0.5" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">TUNNEL<span class="num">08</span></div></article>
-        <article class="poster"><bg-wc preset="dither" intensity="0.8" density="0.18" speed="0.5" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">DITHER<span class="num">09</span></div></article>
-        <article class="poster"><bg-wc preset="aurora" intensity="0.85" density="0.4" speed="0.4" pixel-ratio="0.5"></bg-wc><div class="frame"></div><span class="tag">webgl</span><div class="cap">AURORA<span class="num">10</span></div></article>
-      </div>
+        <article data-background="warp" data-background-intensity="0.7" data-background-density="0.5" data-background-speed="0.45" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>WARP<small>06</small></poster-caption></article>
+        <article data-background="noise" data-background-intensity="0.65" data-background-density="0.5" data-background-speed="0.4" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>NOISE<small>07</small></poster-caption></article>
+        <article data-background="tunnel" data-background-intensity="0.6" data-background-density="0.45" data-background-speed="0.5" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>TUNNEL<small>08</small></poster-caption></article>
+        <article data-background="dither" data-background-intensity="0.8" data-background-density="0.18" data-background-speed="0.5" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>DITHER<small>09</small></poster-caption></article>
+        <article data-background="aurora" data-background-intensity="0.85" data-background-density="0.4" data-background-speed="0.4" data-background-pixel-ratio="0.5"><poster-frame></poster-frame><poster-tag>webgl</poster-tag><poster-caption>AURORA<small>10</small></poster-caption></article>
+      </poster-row>
 
       <!-- Row 3 (Canvas2D palette) -->
-      <div class="row r3">
-        <article class="poster"><bg-wc preset="stars" intensity="0.55" density="0.55" speed="0.4" pixel-ratio="0.6"></bg-wc><div class="frame"></div><span class="tag">canvas2d</span><div class="cap">STARS<span class="num">11</span></div></article>
-        <article class="poster"><bg-wc preset="network" intensity="0.6" density="0.55" speed="0.5" pixel-ratio="0.6"></bg-wc><div class="frame"></div><span class="tag">canvas2d</span><div class="cap">NETWORK<span class="num">12</span></div></article>
-        <article class="poster"><bg-wc preset="confetti" intensity="0.55" density="0.45" speed="0.55" pixel-ratio="0.6"></bg-wc><div class="frame"></div><span class="tag">canvas2d</span><div class="cap">CONFETTI<span class="num">13</span></div></article>
-        <article class="poster"><bg-wc preset="pulse" intensity="0.6" density="0.4" speed="0.6" pixel-ratio="0.6"></bg-wc><div class="frame"></div><span class="tag">canvas2d</span><div class="cap">PULSE<span class="num">14</span></div></article>
-        <article class="poster"><bg-wc preset="tetris" intensity="0.6" density="0.5" speed="0.5" pixel-ratio="0.6"></bg-wc><div class="frame"></div><span class="tag">canvas2d</span><div class="cap">TETRIS<span class="num">15</span></div></article>
+      <poster-row data-row="3">
+        <article data-background="stars" data-background-intensity="0.55" data-background-density="0.55" data-background-speed="0.4" data-background-pixel-ratio="0.6"><poster-frame></poster-frame><poster-tag>canvas2d</poster-tag><poster-caption>STARS<small>11</small></poster-caption></article>
+        <article data-background="network" data-background-intensity="0.6" data-background-density="0.55" data-background-speed="0.5" data-background-pixel-ratio="0.6"><poster-frame></poster-frame><poster-tag>canvas2d</poster-tag><poster-caption>NETWORK<small>12</small></poster-caption></article>
+        <article data-background="confetti" data-background-intensity="0.55" data-background-density="0.45" data-background-speed="0.55" data-background-pixel-ratio="0.6"><poster-frame></poster-frame><poster-tag>canvas2d</poster-tag><poster-caption>CONFETTI<small>13</small></poster-caption></article>
+        <article data-background="pulse" data-background-intensity="0.6" data-background-density="0.4" data-background-speed="0.6" data-background-pixel-ratio="0.6"><poster-frame></poster-frame><poster-tag>canvas2d</poster-tag><poster-caption>PULSE<small>14</small></poster-caption></article>
+        <article data-background="tetris" data-background-intensity="0.6" data-background-density="0.5" data-background-speed="0.5" data-background-pixel-ratio="0.6"><poster-frame></poster-frame><poster-tag>canvas2d</poster-tag><poster-caption>TETRIS<small>15</small></poster-caption></article>
 
-        <article class="poster"><bg-wc preset="stars" intensity="0.55" density="0.55" speed="0.4" pixel-ratio="0.6"></bg-wc><div class="frame"></div><span class="tag">canvas2d</span><div class="cap">STARS<span class="num">11</span></div></article>
-        <article class="poster"><bg-wc preset="network" intensity="0.6" density="0.55" speed="0.5" pixel-ratio="0.6"></bg-wc><div class="frame"></div><span class="tag">canvas2d</span><div class="cap">NETWORK<span class="num">12</span></div></article>
-        <article class="poster"><bg-wc preset="confetti" intensity="0.55" density="0.45" speed="0.55" pixel-ratio="0.6"></bg-wc><div class="frame"></div><span class="tag">canvas2d</span><div class="cap">CONFETTI<span class="num">13</span></div></article>
-        <article class="poster"><bg-wc preset="pulse" intensity="0.6" density="0.4" speed="0.6" pixel-ratio="0.6"></bg-wc><div class="frame"></div><span class="tag">canvas2d</span><div class="cap">PULSE<span class="num">14</span></div></article>
-        <article class="poster"><bg-wc preset="tetris" intensity="0.6" density="0.5" speed="0.5" pixel-ratio="0.6"></bg-wc><div class="frame"></div><span class="tag">canvas2d</span><div class="cap">TETRIS<span class="num">15</span></div></article>
-      </div>
-    </div>
+        <article data-background="stars" data-background-intensity="0.55" data-background-density="0.55" data-background-speed="0.4" data-background-pixel-ratio="0.6"><poster-frame></poster-frame><poster-tag>canvas2d</poster-tag><poster-caption>STARS<small>11</small></poster-caption></article>
+        <article data-background="network" data-background-intensity="0.6" data-background-density="0.55" data-background-speed="0.5" data-background-pixel-ratio="0.6"><poster-frame></poster-frame><poster-tag>canvas2d</poster-tag><poster-caption>NETWORK<small>12</small></poster-caption></article>
+        <article data-background="confetti" data-background-intensity="0.55" data-background-density="0.45" data-background-speed="0.55" data-background-pixel-ratio="0.6"><poster-frame></poster-frame><poster-tag>canvas2d</poster-tag><poster-caption>CONFETTI<small>13</small></poster-caption></article>
+        <article data-background="pulse" data-background-intensity="0.6" data-background-density="0.4" data-background-speed="0.6" data-background-pixel-ratio="0.6"><poster-frame></poster-frame><poster-tag>canvas2d</poster-tag><poster-caption>PULSE<small>14</small></poster-caption></article>
+        <article data-background="tetris" data-background-intensity="0.6" data-background-density="0.5" data-background-speed="0.5" data-background-pixel-ratio="0.6"><poster-frame></poster-frame><poster-tag>canvas2d</poster-tag><poster-caption>TETRIS<small>15</small></poster-caption></article>
+      </poster-row>
+    </poster-hall>
 
-    <div class="vignette"></div>
-    <div class="title">
+    <wall-vignette></wall-vignette>
+    <wall-title>
       <h1>The wall<br>never ends.</h1>
       <p>
         30 live <code>&lt;bg-wc&gt;</code> instances tile across three counter-scrolling rows.
         Each one auto-pauses the moment it leaves the viewport &mdash; the wall's wide,
         but only a fraction is ever drawing.
       </p>
-    </div>
+    </wall-title>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

@@ -40,7 +40,7 @@
       margin: 0 0 1.25rem;
     }
     code { color: var(--color-accent); font-size: 0.92em; }
-    a.cta {
+    section a {
       align-self: flex-start;
       padding: 0.75rem 1.25rem;
       background: var(--color-primary);
@@ -66,7 +66,7 @@
         injects one behind the section's content. Palette comes from CSS
         custom properties; change <code>--color-primary</code> and the
         squares re-tint.</p>
-      <a class="cta" href="#waves">See the ribbons</a>
+      <a href="#waves">See the ribbons</a>
     </section>
 
     <section id="waves"
@@ -79,6 +79,9 @@
         rather than gradient. Same palette tokens flow through.</p>
     </section>
   </main>
-  <script type="module" src="../src/data-background.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

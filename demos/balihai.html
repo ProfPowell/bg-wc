@@ -20,34 +20,35 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Sansita Swashed', cursive; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .panel { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 6; width: min(86vw, 560px);
+    main { position: relative; width: 100vw; height: 100vh; }
+    shirt-label { display: block; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 6; width: min(86vw, 560px);
       background: rgba(239,230,207,0.86); backdrop-filter: blur(2px); border: 3px solid var(--color-accent); border-radius: 4px;
       padding: clamp(28px, 5vw, 56px); text-align: center; box-shadow: 0 24px 60px rgba(52,48,31,0.2); }
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
-    .nav a:hover { opacity: 1; }
-    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.28em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 14px; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
+    nav a:hover { opacity: 1; }
+    shirt-eyebrow { display: block; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.28em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 14px; }
     h1 { font-weight: 700; font-size: clamp(46px, 8vw, 96px); line-height: 0.95; margin: 0; color: var(--color-info); }
-    .lede { margin: 16px auto 0; max-width: 380px; font-family: 'Space Mono', monospace; font-size: 13px; line-height: 1.7; color: rgba(52,48,31,0.8); }
-    .lede code { background: rgba(111,143,78,0.18); color: var(--color-success); padding: 2px 7px; border-radius: 4px; }
+    shirt-label p { margin: 16px auto 0; max-width: 380px; font-family: 'Space Mono', monospace; font-size: 13px; line-height: 1.7; color: rgba(52,48,31,0.8); }
+    shirt-label p code { background: rgba(111,143,78,0.18); color: var(--color-success); padding: 2px 7px; border-radius: 4px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <main class="stage">
-    <bg-wc class="bg" preset="barkcloth" intensity="0.7" density="0.5" speed="1"></bg-wc>
-    <div class="panel">
-      <div class="eyebrow">aloha wear &middot; since 1954</div>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <main data-background="barkcloth" data-background-intensity="0.7" data-background-density="0.5" data-background-speed="1">
+    <shirt-label>
+      <shirt-eyebrow>aloha wear &middot; since 1954</shirt-eyebrow>
       <h1>Bali Hai</h1>
-      <p class="lede">
+      <p>
         Hand-blocked aloha shirts cut from genuine barkcloth. The bolt behind
         this label is <code>preset="barkcloth"</code> &mdash; monstera, hibiscus,
         and fronds, drifting like it's on the line.
       </p>
-    </div>
+    </shirt-label>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

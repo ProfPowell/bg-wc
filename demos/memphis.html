@@ -19,19 +19,18 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Space Grotesk', system-ui, sans-serif; min-height: 100vh; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; }
-
-    bg-wc.bg { position: absolute; inset: 0; }
+    main { position: relative; width: 100vw; height: 100vh; }
 
     /* Memphis ornaments */
-    svg.ornaments { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
+    svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
 
-    .content {
-      position: absolute; inset: 0; z-index: 5;
-      display: flex; flex-direction: column; justify-content: center;
+    memphis-content {
+      display: flex; position: absolute; inset: 0; z-index: 5;
+      flex-direction: column; justify-content: center;
       padding: 0 clamp(28px, 6vw, 100px);
     }
-    .eyebrow {
+    memphis-eyebrow {
+      display: block;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
       font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
@@ -48,21 +47,22 @@
       color: var(--color-foreground);
       max-width: 14ch;
     }
-    h1 .yellow { background: var(--color-accent); padding: 0 10px; box-shadow: 6px 6px 0 var(--color-foreground); }
-    h1 .pink   { color: var(--color-primary); -webkit-text-stroke: 3px var(--color-foreground); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--color-foreground); }
-    h1 .cyan   { color: var(--color-info); }
+    memphis-word { display: inline; }
+    memphis-word[data-tone="yellow"] { background: var(--color-accent); padding: 0 10px; box-shadow: 6px 6px 0 var(--color-foreground); }
+    memphis-word[data-tone="pink"]   { color: var(--color-primary); -webkit-text-stroke: 3px var(--color-foreground); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--color-foreground); }
+    memphis-word[data-tone="cyan"]   { color: var(--color-info); }
 
-    .lede {
+    memphis-content p {
       font-size: clamp(15px, 1.2vw, 18px);
       line-height: 1.55;
       max-width: 460px;
       margin: 28px 0 0;
       font-weight: 500;
     }
-    .lede code { background: var(--color-foreground); color: var(--color-background); padding: 2px 8px; font-family: ui-monospace, monospace; font-size: 0.92em; }
+    memphis-content p code { background: var(--color-foreground); color: var(--color-background); padding: 2px 8px; font-family: ui-monospace, monospace; font-size: 0.92em; }
 
-    .chip {
-      position: absolute; top: 26px; right: 32px; z-index: 6;
+    memphis-chip {
+      display: block; position: absolute; top: 26px; right: 32px; z-index: 6;
       font-family: 'Space Grotesk', sans-serif; font-weight: 700;
       font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
       background: var(--color-foreground); color: var(--color-background);
@@ -70,17 +70,15 @@
       box-shadow: 4px 4px 0 var(--color-primary);
     }
 
-    .nav { position: absolute; top: 26px; left: 32px; z-index: 6; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
-    .nav a { color: var(--color-foreground); text-decoration: none; }
+    nav { position: absolute; top: 26px; left: 32px; z-index: 6; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    nav a { color: var(--color-foreground); text-decoration: none; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <div class="chip">Memphis &middot; 09</div>
-  <main class="stage">
-    <bg-wc class="bg" preset="waves" intensity="0.7" density="0.35" speed="0.7"></bg-wc>
-
-    <svg class="ornaments" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <memphis-chip>Memphis &middot; 09</memphis-chip>
+  <main data-background="waves" data-background-intensity="0.7" data-background-density="0.35" data-background-speed="0.7">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <!-- Squiggle ribbon top-right -->
       <path d="M 1100,80 Q 1180,40 1240,90 T 1380,110 T 1520,90 T 1660,140"
             stroke="#1a1a1a" stroke-width="8" fill="none" stroke-linecap="round"/>
@@ -125,15 +123,18 @@
       </g>
     </svg>
 
-    <div class="content">
-      <div class="eyebrow">// Postmodern.Web &middot; 1981 / 2026</div>
-      <h1>Memphis<br><span class="yellow">never</span><br><span class="pink">left.</span></h1>
-      <p class="lede">
+    <memphis-content>
+      <memphis-eyebrow>// Postmodern.Web &middot; 1981 / 2026</memphis-eyebrow>
+      <h1>Memphis<br><memphis-word data-tone="yellow">never</memphis-word><br><memphis-word data-tone="pink">left.</memphis-word></h1>
+      <p>
         <code>preset="waves"</code> does the bold horizontal bands; the rest is squiggles, dots,
         and a yellow stripe wedge in SVG. Sottsass would approve.
       </p>
-    </div>
+    </memphis-content>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

@@ -18,53 +18,54 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Outfit', system-ui, sans-serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    trail-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: linear-gradient(180deg, rgba(27,24,48,0.45) 0%, transparent 28%, transparent 55%, rgba(27,24,48,0.55) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
+    nav a:hover { opacity: 1; }
 
-    .content { position: absolute; left: 0; right: 0; top: clamp(60px, 11vh, 130px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
-    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-warning); text-transform: uppercase; margin-bottom: 14px; }
+    trail-content { display: block; position: absolute; left: 0; right: 0; top: clamp(60px, 11vh, 130px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    trail-eyebrow { display: block; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-warning); text-transform: uppercase; margin-bottom: 14px; }
     h1 { font-weight: 900; font-size: clamp(54px, 11vw, 170px); line-height: 0.92; letter-spacing: -0.02em; margin: 0; text-transform: uppercase;
       color: var(--color-foreground); text-shadow: 0 4px 40px rgba(27,24,48,0.6); }
-    .lede { max-width: 520px; margin: 18px auto 0; font-size: clamp(15px, 1.25vw, 19px); line-height: 1.6; color: rgba(246,238,240,0.85); font-weight: 300; }
-    .lede code { font-family: 'Space Mono', monospace; font-size: 0.82em; background: rgba(244,168,90,0.16); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
+    trail-content p { max-width: 520px; margin: 18px auto 0; font-size: clamp(15px, 1.25vw, 19px); line-height: 1.6; color: rgba(246,238,240,0.85); font-weight: 300; }
+    trail-content p code { font-family: 'Space Mono', monospace; font-size: 0.82em; background: rgba(244,168,90,0.16); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
 
-    .stats { position: absolute; bottom: 30px; left: 0; right: 0; z-index: 6; display: flex; justify-content: center; gap: clamp(28px, 6vw, 90px);
+    trail-stats { display: flex; position: absolute; bottom: 30px; left: 0; right: 0; z-index: 6; justify-content: center; gap: clamp(28px, 6vw, 90px);
       font-family: 'Space Mono', monospace; }
-    .stats div { text-align: center; }
-    .stats b { display: block; font-family: 'Outfit', sans-serif; font-weight: 900; font-size: clamp(22px, 2.6vw, 38px); color: var(--color-foreground); }
-    .stats span { font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(246,238,240,0.6); }
+    trail-stat { display: block; text-align: center; }
+    trail-stat b { display: block; font-family: 'Outfit', sans-serif; font-weight: 900; font-size: clamp(22px, 2.6vw, 38px); color: var(--color-foreground); }
+    trail-stat span { font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(246,238,240,0.6); }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="summit" intensity="0.7" density="0.6" speed="1"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="summit" data-background-intensity="0.7" data-background-density="0.6" data-background-speed="1">
+    <trail-scrim></trail-scrim>
 
-    <div class="content">
-      <div class="eyebrow">start before sunrise</div>
+    <trail-content>
+      <trail-eyebrow>start before sunrise</trail-eyebrow>
       <h1>Alpine</h1>
-      <p class="lede">
+      <p>
         Trail series across five ridgelines &mdash; the same five drifting
         behind this page. <code>preset="summit"</code>: seeded ridges, climbing
         sun, mist in the valleys, birds when you're lucky.
       </p>
-    </div>
+    </trail-content>
 
-    <div class="stats">
-      <div><b>110k</b><span>distance</span></div>
-      <div><b>5,400m</b><span>vertical</span></div>
-      <div><b>05:12</b><span>first light</span></div>
-    </div>
+    <trail-stats>
+      <trail-stat><b>110k</b><span>distance</span></trail-stat>
+      <trail-stat><b>5,400m</b><span>vertical</span></trail-stat>
+      <trail-stat><b>05:12</b><span>first light</span></trail-stat>
+    </trail-stats>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

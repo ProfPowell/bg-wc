@@ -19,29 +19,30 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'VT323', monospace; min-height: 100vh; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; }
-
-    bg-wc.bg { position: absolute; inset: 0; }
+    main { position: relative; width: 100vw; height: 100vh; }
 
     /* CRT scanlines + vignette */
-    .scan {
+    scan-lines {
+      display: block;
       position: absolute; inset: 0; z-index: 7; pointer-events: none;
       background: repeating-linear-gradient(to bottom,
         transparent 0, transparent 2px,
         rgba(0,0,0,0.3) 3px, rgba(0,0,0,0.3) 3px);
       mix-blend-mode: multiply;
     }
-    .vig {
+    vignette-mask {
+      display: block;
       position: absolute; inset: 0; z-index: 6; pointer-events: none;
       background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.6) 95%);
     }
 
     /* Big title — Press Start 2P with stacked drop shadows */
-    .title-area {
+    title-block {
+      display: block;
       position: absolute; top: 16%; left: 0; right: 0;
       text-align: center; z-index: 8;
     }
-    .title {
+    title-block h1 {
       font-family: 'Press Start 2P', monospace;
       font-size: clamp(36px, 8vw, 92px);
       letter-spacing: 0.02em;
@@ -58,18 +59,20 @@
       0%, 100% { transform: translateY(0); }
       50%      { transform: translateY(-6px); }
     }
-    .subtitle {
+    subtitle-line {
+      display: block;
       font-family: 'Press Start 2P', monospace;
       font-size: clamp(11px, 1.4vw, 16px);
       color: var(--color-accent);
       margin-top: 28px;
       letter-spacing: 0.2em;
     }
-    .subtitle .blink { animation: blink 1.2s steps(2) infinite; }
+    blink-cursor { display: inline; animation: blink 1.2s steps(2) infinite; }
     @keyframes blink { 50% { opacity: 0.25; } }
 
     /* Scrolling marquee greet */
-    .marquee-wrap {
+    marquee-rail {
+      display: block;
       position: absolute; left: 0; right: 0; bottom: 22vh;
       z-index: 9;
       background: rgba(0,0,0,0.6);
@@ -79,7 +82,8 @@
       padding: 16px 0;
       box-shadow: 0 0 32px rgba(255,43,214,0.4);
     }
-    .marquee {
+    marquee-strip {
+      display: block;
       font-family: 'VT323', monospace;
       font-size: clamp(28px, 3.5vw, 48px);
       color: var(--color-foreground);
@@ -93,15 +97,17 @@
       to   { transform: translateX(-100%); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .marquee, .title { animation: none; }
+      marquee-strip, title-block h1 { animation: none; }
     }
-    .marquee .pink { color: var(--color-primary); }
-    .marquee .cyan { color: var(--color-accent); }
-    .marquee .yel  { color: var(--color-info); }
-    .marquee .sep { opacity: 0.5; padding: 0 14px; }
+    marquee-item { display: inline; }
+    marquee-item[data-tone="pink"] { color: var(--color-primary); }
+    marquee-item[data-tone="cyan"] { color: var(--color-accent); }
+    marquee-item[data-tone="yel"]  { color: var(--color-info); }
+    marquee-sep { display: inline; opacity: 0.5; padding: 0 14px; }
 
     /* Crew table at bottom */
-    .crew {
+    crew-list {
+      display: block;
       position: absolute; left: 0; right: 0; bottom: 20px;
       z-index: 10; text-align: center;
       font-family: 'Press Start 2P', monospace;
@@ -111,68 +117,71 @@
       opacity: 0.85;
       line-height: 2;
     }
-    .crew .row { display: inline-flex; gap: 18px; }
-    .crew .label { color: var(--color-foreground); opacity: 0.55; }
+    crew-row { display: inline-flex; gap: 18px; }
+    crew-label { display: inline; color: var(--color-foreground); opacity: 0.55; }
 
     /* Counter top-right */
-    .counter {
+    fx-counter {
+      display: block;
       position: absolute; top: 22px; right: 28px; z-index: 12;
       font-family: 'Press Start 2P', monospace; font-size: 11px;
       color: var(--color-accent);
       text-shadow: 0 0 6px var(--color-accent);
     }
 
-    .nav { position: absolute; top: 22px; left: 28px; z-index: 12; font-family: 'Press Start 2P', monospace; font-size: 10px; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.75; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 22px; left: 28px; z-index: 12; font-family: 'Press Start 2P', monospace; font-size: 10px; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.75; }
+    nav a:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <div class="counter">FX 12 / 17</div>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <fx-counter>FX 12 / 17</fx-counter>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="plasma" intensity="0.85" density="0.55" speed="1.4"></bg-wc>
+  <main data-background="plasma" data-background-intensity="0.85" data-background-density="0.55" data-background-speed="1.4">
 
-    <div class="title-area">
-      <h1 class="title">BG-WC<br>DEMO</h1>
-      <div class="subtitle">PRESS ANY KEY <span class="blink">_</span></div>
-    </div>
+    <title-block>
+      <h1>BG-WC<br>DEMO</h1>
+      <subtitle-line>PRESS ANY KEY <blink-cursor>_</blink-cursor></subtitle-line>
+    </title-block>
 
-    <div class="marquee-wrap">
-      <div class="marquee">
-        <span>GREETINGS FROM THE COMPONENT DEPT.</span>
-        <span class="sep">&diamond;</span>
-        <span class="pink">17 PRESETS ONLINE</span>
-        <span class="sep">&diamond;</span>
-        <span class="cyan">PLASMA RUNNING SMOOTH</span>
-        <span class="sep">&diamond;</span>
-        <span class="yel">SHOUTOUTS TO ALL FRONTEND OPERATORS</span>
-        <span class="sep">&diamond;</span>
-        <span>HAPPY 2026!</span>
-        <span class="sep">&diamond;</span>
-        <span class="pink">MIT LICENSED &amp; PROUD</span>
-        <span class="sep">&diamond;</span>
-        <span class="cyan">NO FRAMEWORKS REQUIRED</span>
-        <span class="sep">&diamond;</span>
-        <span class="yel">DOWNLOAD FROM PROFPOWELL/BG-WC</span>
-        <span class="sep">&diamond;</span>
-      </div>
-    </div>
+    <marquee-rail>
+      <marquee-strip>
+        <marquee-item>GREETINGS FROM THE COMPONENT DEPT.</marquee-item>
+        <marquee-sep>&diamond;</marquee-sep>
+        <marquee-item data-tone="pink">17 PRESETS ONLINE</marquee-item>
+        <marquee-sep>&diamond;</marquee-sep>
+        <marquee-item data-tone="cyan">PLASMA RUNNING SMOOTH</marquee-item>
+        <marquee-sep>&diamond;</marquee-sep>
+        <marquee-item data-tone="yel">SHOUTOUTS TO ALL FRONTEND OPERATORS</marquee-item>
+        <marquee-sep>&diamond;</marquee-sep>
+        <marquee-item>HAPPY 2026!</marquee-item>
+        <marquee-sep>&diamond;</marquee-sep>
+        <marquee-item data-tone="pink">MIT LICENSED &amp; PROUD</marquee-item>
+        <marquee-sep>&diamond;</marquee-sep>
+        <marquee-item data-tone="cyan">NO FRAMEWORKS REQUIRED</marquee-item>
+        <marquee-sep>&diamond;</marquee-sep>
+        <marquee-item data-tone="yel">DOWNLOAD FROM PROFPOWELL/BG-WC</marquee-item>
+        <marquee-sep>&diamond;</marquee-sep>
+      </marquee-strip>
+    </marquee-rail>
 
-    <div class="crew">
-      <div class="row"><span class="label">CODE</span> CLAUDE</div>
+    <crew-list>
+      <crew-row><crew-label>CODE</crew-label> CLAUDE</crew-row>
       &nbsp;&middot;&nbsp;
-      <div class="row"><span class="label">GFX</span> WEBGL</div>
+      <crew-row><crew-label>GFX</crew-label> WEBGL</crew-row>
       &nbsp;&middot;&nbsp;
-      <div class="row"><span class="label">MUSIC</span> MUTE</div>
+      <crew-row><crew-label>MUSIC</crew-label> MUTE</crew-row>
       &nbsp;&middot;&nbsp;
-      <div class="row"><span class="label">YEAR</span> 2026</div>
-    </div>
+      <crew-row><crew-label>YEAR</crew-label> 2026</crew-row>
+    </crew-list>
 
-    <div class="vig"></div>
-    <div class="scan"></div>
+    <vignette-mask></vignette-mask>
+    <scan-lines></scan-lines>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

@@ -19,15 +19,14 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); }
     body { font-family: 'VT323', 'Courier New', monospace; min-height: 100vh; overflow: hidden; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; }
+    main { position: relative; width: 100vw; height: 100vh; }
 
     /* Background layer: chunky dither, rendered at low pixel-ratio for that authentically blocky look. */
-    bg-wc.bg { position: absolute; inset: 0; }
-    bg-wc.bg::part(canvas) { image-rendering: pixelated; image-rendering: crisp-edges; }
+    bg-wc::part(canvas) { image-rendering: pixelated; image-rendering: crisp-edges; }
 
     /* CRT effects */
-    .scanlines {
-      position: absolute; inset: 0; z-index: 4; pointer-events: none;
+    crt-scanlines {
+      display: block; position: absolute; inset: 0; z-index: 4; pointer-events: none;
       background: repeating-linear-gradient(
         to bottom,
         rgba(0,0,0,0) 0,
@@ -37,23 +36,23 @@
       );
       mix-blend-mode: multiply;
     }
-    .vignette {
-      position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    crt-vignette {
+      display: block; position: absolute; inset: 0; z-index: 3; pointer-events: none;
       background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.65) 100%);
     }
-    .flicker {
-      position: absolute; inset: 0; z-index: 5; pointer-events: none;
+    crt-flicker {
+      display: block; position: absolute; inset: 0; z-index: 5; pointer-events: none;
       background: rgba(255,255,255,0.02);
       animation: flicker 0.13s steps(2) infinite;
     }
     @keyframes flicker { 50% { background: rgba(0,0,0,0.03); } }
 
-    .content {
-      position: absolute; inset: 0; z-index: 6;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    arcade-content {
+      display: flex; position: absolute; inset: 0; z-index: 6;
+      flex-direction: column; align-items: center; justify-content: center;
       text-align: center; gap: clamp(20px, 3vw, 36px); padding: 6vh 6vw;
     }
-    .title {
+    h1 {
       font-family: 'Press Start 2P', 'Courier New', monospace;
       font-size: clamp(32px, 8vw, 96px);
       color: var(--color-info);
@@ -65,21 +64,24 @@
       line-height: 1.2;
       margin: 0;
     }
-    .subtitle {
+    arcade-subtitle {
+      display: block;
       font-family: 'Press Start 2P', monospace;
       font-size: clamp(10px, 1.4vw, 14px);
       color: var(--color-foreground);
       letter-spacing: 0.1em;
       opacity: 0.85;
     }
-    .scoreboard {
+    arcade-scoreboard {
+      display: grid;
       font-size: clamp(16px, 2vw, 22px);
-      display: grid; grid-template-columns: auto auto; gap: 6px 30px;
+      grid-template-columns: auto auto; gap: 6px 30px;
       color: var(--color-accent);
       font-family: 'VT323', monospace;
     }
-    .scoreboard .v { color: var(--color-info); }
-    .press {
+    arcade-scoreboard span[data-value] { color: var(--color-info); }
+    arcade-press {
+      display: block;
       font-family: 'Press Start 2P', monospace;
       font-size: clamp(11px, 1.5vw, 16px);
       color: var(--color-foreground);
@@ -88,29 +90,31 @@
     }
     @keyframes blink { 50% { opacity: 0.15; } }
 
-    .nav { position: absolute; top: 16px; left: 20px; z-index: 10; font-family: 'Press Start 2P', monospace; font-size: 9px; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; letter-spacing: 0.15em; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 16px; left: 20px; z-index: 10; font-family: 'Press Start 2P', monospace; font-size: 9px; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; letter-spacing: 0.15em; }
+    nav a:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <main class="stage">
-    <bg-wc class="bg" preset="dither" intensity="0.95" density="0" speed="0.35" pixel-ratio="0.35"></bg-wc>
-    <div class="vignette"></div>
-    <div class="content">
-      <h1 class="title">BG-WC</h1>
-      <p class="subtitle">A WEB COMPONENT FROM 198X</p>
-      <div class="scoreboard">
-        <span>HI-SCORE</span><span class="v">008-BIT</span>
-        <span>WORLD</span><span class="v">09 / 09</span>
-        <span>RENDER</span><span class="v">WEBGL</span>
-      </div>
-      <p class="press">&gt;&gt;&gt; PRESS START &lt;&lt;&lt;</p>
-    </div>
-    <div class="scanlines"></div>
-    <div class="flicker"></div>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <main data-background="dither" data-background-intensity="0.95" data-background-density="0" data-background-speed="0.35" data-background-pixel-ratio="0.35">
+    <crt-vignette></crt-vignette>
+    <arcade-content>
+      <h1>BG-WC</h1>
+      <arcade-subtitle>A WEB COMPONENT FROM 198X</arcade-subtitle>
+      <arcade-scoreboard>
+        <span>HI-SCORE</span><span data-value>008-BIT</span>
+        <span>WORLD</span><span data-value>09 / 09</span>
+        <span>RENDER</span><span data-value>WEBGL</span>
+      </arcade-scoreboard>
+      <arcade-press>&gt;&gt;&gt; PRESS START &lt;&lt;&lt;</arcade-press>
+    </arcade-content>
+    <crt-scanlines></crt-scanlines>
+    <crt-flicker></crt-flicker>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

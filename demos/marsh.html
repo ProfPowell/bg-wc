@@ -20,41 +20,42 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Fraunces', Georgia, serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    marsh-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: linear-gradient(180deg, rgba(243,241,230,0.55) 0%, transparent 45%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
-    .nav a:hover { opacity: 1; }
+    body > nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    body > nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
+    body > nav a:hover { opacity: 1; }
 
-    .content { position: absolute; left: clamp(28px, 8vw, 130px); top: clamp(80px, 20vh, 200px); z-index: 6; max-width: 520px; }
-    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.28em; color: var(--color-warning); text-transform: uppercase; margin-bottom: 16px; }
+    hgroup { position: absolute; left: clamp(28px, 8vw, 130px); top: clamp(80px, 20vh, 200px); z-index: 6; max-width: 520px; }
+    hgroup p[data-role="eyebrow"] { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.28em; color: var(--color-warning); text-transform: uppercase; margin: 0 0 16px; }
     h1 { font-weight: 500; font-size: clamp(44px, 8vw, 104px); line-height: 1.0; letter-spacing: -0.01em; margin: 0; }
     h1 em { font-style: italic; color: var(--color-primary); }
-    .lede { margin: 20px 0 0; font-size: clamp(16px, 1.3vw, 21px); line-height: 1.6; color: rgba(47,58,44,0.78); max-width: 440px; }
-    .lede code { font-family: 'Space Mono', monospace; font-size: 0.78em; background: rgba(95,122,74,0.14); color: var(--color-primary); padding: 2px 7px; border-radius: 4px; }
+    hgroup p[data-role="lede"] { margin: 20px 0 0; font-size: clamp(16px, 1.3vw, 21px); line-height: 1.6; color: rgba(47,58,44,0.78); max-width: 440px; }
+    hgroup p[data-role="lede"] code { font-family: 'Space Mono', monospace; font-size: 0.78em; background: rgba(95,122,74,0.14); color: var(--color-primary); padding: 2px 7px; border-radius: 4px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="reeds" intensity="0.55" density="0.6" speed="0.9"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="reeds" data-background-intensity="0.55" data-background-density="0.6" data-background-speed="0.9">
+    <marsh-scrim></marsh-scrim>
 
-    <div class="content">
-      <div class="eyebrow">the wetlands trust</div>
+    <hgroup>
+      <p data-role="eyebrow">the wetlands trust</p>
       <h1>Leave it<br><em>wild</em>.</h1>
-      <p class="lede">
+      <p data-role="lede">
         Forty hectares of restored marsh, and every blade of it moves. The reed
         bed behind this page is <code>preset="reeds"</code> &mdash; wind gusts
         roll through left to right, just like the real thing.
       </p>
-    </div>
+    </hgroup>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

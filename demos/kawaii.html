@@ -19,22 +19,25 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Quicksand', system-ui, sans-serif; min-height: 100vh; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; padding: 4vh 4vw; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
+    main { position: relative; width: 100vw; height: 100vh; padding: 4vh 4vw; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
 
-    bg-wc.sparkles { position: absolute; inset: 0; opacity: 0.55; z-index: 1; pointer-events: none; }
+    /* Sparkle layer is injected by the data-background binder as main's
+       first child; only the opacity needs to be restated. */
+    main > bg-wc { opacity: 0.55; }
 
     /* Pastel cloud blobs */
-    .cloud {
-      position: absolute; border-radius: 50%;
+    cloud-blob {
+      display: block; position: absolute; border-radius: 50%;
       filter: blur(8px);
       z-index: 2; pointer-events: none;
     }
-    .c1 { width: 280px; height: 280px; background: rgba(179,212,255,0.55); top: 8%; left: -4%; }
-    .c2 { width: 220px; height: 220px; background: rgba(179,255,214,0.55); bottom: 12%; right: -3%; }
-    .c3 { width: 180px; height: 180px; background: rgba(255,179,214,0.6); top: 14%; right: 12%; }
-    .c4 { width: 140px; height: 140px; background: rgba(255,238,179,0.55); bottom: 24%; left: 14%; }
+    cloud-blob[data-tone="sky"] { width: 280px; height: 280px; background: rgba(179,212,255,0.55); top: 8%; left: -4%; }
+    cloud-blob[data-tone="mint"] { width: 220px; height: 220px; background: rgba(179,255,214,0.55); bottom: 12%; right: -3%; }
+    cloud-blob[data-tone="pink"] { width: 180px; height: 180px; background: rgba(255,179,214,0.6); top: 14%; right: 12%; }
+    cloud-blob[data-tone="cream"] { width: 140px; height: 140px; background: rgba(255,238,179,0.55); bottom: 24%; left: 14%; }
 
-    .mascot {
+    mascot-face {
+      display: block;
       font-family: 'M PLUS Rounded 1c', sans-serif;
       font-size: clamp(56px, 9vw, 110px);
       font-weight: 900;
@@ -49,7 +52,7 @@
       50%      { transform: translateY(-14px); }
     }
 
-    .title {
+    h1 {
       font-family: 'M PLUS Rounded 1c', 'Quicksand', sans-serif;
       font-weight: 900;
       font-size: clamp(40px, 7vw, 96px);
@@ -64,9 +67,10 @@
       text-shadow: 6px 6px 0 rgba(255,255,255,0.85);
       z-index: 6;
     }
-    .title .star { color: #ffd34d; -webkit-text-stroke: 2px white; }
+    title-star { display: inline; color: #ffd34d; -webkit-text-stroke: 2px white; }
 
-    .card {
+    soft-card {
+      display: block;
       background: rgba(255,255,255,0.78);
       border: 3px solid white;
       border-radius: 28px;
@@ -80,10 +84,11 @@
       backdrop-filter: blur(8px);
       z-index: 6;
     }
-    .card code { background: rgba(255,179,214,0.5); padding: 2px 8px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 0.9em; }
+    soft-card code { background: rgba(255,179,214,0.5); padding: 2px 8px; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 0.9em; }
 
-    .pill-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; z-index: 6; }
-    .pill {
+    pill-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; z-index: 6; }
+    badge-pill {
+      display: inline-block;
       padding: 8px 16px; border-radius: 999px;
       font-weight: 600; font-size: 13px;
       background: rgba(255,255,255,0.85);
@@ -91,57 +96,59 @@
       color: var(--color-foreground);
       box-shadow: 0 4px 0 0 rgba(255,179,214,0.85);
     }
-    .pill.b { background: rgba(179,212,255,0.85); box-shadow: 0 4px 0 0 rgba(143,194,255,0.95); }
-    .pill.g { background: rgba(179,255,214,0.85); box-shadow: 0 4px 0 0 rgba(122,222,168,0.95); }
+    badge-pill[data-tone="blue"] { background: rgba(179,212,255,0.85); box-shadow: 0 4px 0 0 rgba(143,194,255,0.95); }
+    badge-pill[data-tone="green"] { background: rgba(179,255,214,0.85); box-shadow: 0 4px 0 0 rgba(122,222,168,0.95); }
 
     /* Little floating hearts */
-    .hearts { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
-    .hearts span {
-      position: absolute; font-size: 22px;
+    love-field { display: block; position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+    love-spark {
+      display: block; position: absolute; font-size: 22px;
       animation: float 6s ease-in-out infinite;
     }
-    .hearts span:nth-child(1) { left: 8%;  top: 28%; animation-delay: 0s; }
-    .hearts span:nth-child(2) { left: 86%; top: 38%; animation-delay: 0.7s; }
-    .hearts span:nth-child(3) { left: 16%; top: 70%; animation-delay: 1.4s; font-size: 28px; }
-    .hearts span:nth-child(4) { left: 80%; top: 75%; animation-delay: 2.1s; }
-    .hearts span:nth-child(5) { left: 48%; top: 12%; animation-delay: 2.8s; font-size: 18px; }
+    love-spark[data-slot="1"] { left: 8%;  top: 28%; animation-delay: 0s; }
+    love-spark[data-slot="2"] { left: 86%; top: 38%; animation-delay: 0.7s; }
+    love-spark[data-slot="3"] { left: 16%; top: 70%; animation-delay: 1.4s; font-size: 28px; }
+    love-spark[data-slot="4"] { left: 80%; top: 75%; animation-delay: 2.1s; }
+    love-spark[data-slot="5"] { left: 48%; top: 12%; animation-delay: 2.8s; font-size: 18px; }
     @keyframes float {
       0%, 100% { transform: translateY(0) rotate(-6deg); opacity: 0.85; }
       50%      { transform: translateY(-18px) rotate(6deg); opacity: 1; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .mascot, .hearts span { animation: none; }
+      mascot-face, love-spark { animation: none; }
     }
 
-    .nav { position: absolute; top: 22px; left: 28px; z-index: 12; font-size: 13px; font-weight: 600; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.75; }
-    .nav a:hover { opacity: 1; }
+    body > nav { position: absolute; top: 22px; left: 28px; z-index: 12; font-size: 13px; font-weight: 600; }
+    body > nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.75; }
+    body > nav a:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <main class="stage">
-    <bg-wc class="sparkles" preset="particles" palette="rainbow" intensity="0.4" density="0.35" speed="1.6"></bg-wc>
-    <div class="cloud c1"></div>
-    <div class="cloud c2"></div>
-    <div class="cloud c3"></div>
-    <div class="cloud c4"></div>
-    <div class="hearts" aria-hidden="true">
-      <span>&#9825;</span><span>&#9734;</span><span>&#9825;</span><span>&#9734;</span><span>&#9825;</span>
-    </div>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <main data-background="particles" data-background-palette="rainbow" data-background-intensity="0.4" data-background-density="0.35" data-background-speed="1.6">
+    <cloud-blob data-tone="sky"></cloud-blob>
+    <cloud-blob data-tone="mint"></cloud-blob>
+    <cloud-blob data-tone="pink"></cloud-blob>
+    <cloud-blob data-tone="cream"></cloud-blob>
+    <love-field aria-hidden="true">
+      <love-spark data-slot="1">&#9825;</love-spark><love-spark data-slot="2">&#9734;</love-spark><love-spark data-slot="3">&#9825;</love-spark><love-spark data-slot="4">&#9734;</love-spark><love-spark data-slot="5">&#9825;</love-spark>
+    </love-field>
 
-    <div class="mascot" aria-label="kawaii face">(&#9685;&#65120;&#9685;)</div>
-    <h1 class="title">super<span class="star">&#10024;</span>soft</h1>
-    <div class="card">
+    <mascot-face aria-label="kawaii face">(&#9685;&#65120;&#9685;)</mascot-face>
+    <h1>super<title-star>&#10024;</title-star>soft</h1>
+    <soft-card>
       Pastel mesh, sparkle drift, rounded everything. The component takes <code>palette="rainbow"</code>
       and the page does the rest with two clouds and one bouncing face.
-    </div>
-    <div class="pill-row">
-      <span class="pill">preset="particles"</span>
-      <span class="pill b">palette="rainbow"</span>
-      <span class="pill g">speed="1.6"</span>
-    </div>
+    </soft-card>
+    <pill-row>
+      <badge-pill>preset="particles"</badge-pill>
+      <badge-pill data-tone="blue">palette="rainbow"</badge-pill>
+      <badge-pill data-tone="green">speed="1.6"</badge-pill>
+    </pill-row>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

@@ -22,17 +22,22 @@
 import './bg-wc.js';
 
 const STYLE_ID = '__bg-wc-data-background-style';
+// Injected defaults live in a cascade layer so any UNLAYERED author rule wins
+// regardless of specificity — a host the page positions absolutely keeps that
+// position; the binder's position:relative is only the fallback (gl-wc-aoi).
 const STYLE = `
-[data-background]:not([data-background-skip]) {
-  position: relative;
-  isolation: isolate;
-}
-[data-background]:not([data-background-skip]) > bg-wc[data-bg-element] {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  display: block;
-  pointer-events: none;
+@layer bg-wc-binder {
+  [data-background]:not([data-background-skip]) {
+    position: relative;
+    isolation: isolate;
+  }
+  [data-background]:not([data-background-skip]) > bg-wc[data-bg-element] {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    display: block;
+    pointer-events: none;
+  }
 }
 `;
 

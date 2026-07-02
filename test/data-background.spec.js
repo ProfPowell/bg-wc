@@ -76,3 +76,29 @@ test('removing data-background unbinds and removes the injected element', async 
   expect(r.gone, 'the injected bg-wc must be removed with the attribute').toBe(true);
   expect(r.rebound, 're-annotating must bind again').toBe(true);
 });
+
+test('binder defaults yield to unlayered author rules (positioned hosts)', async ({ page }) => {
+  await page.goto('/test/data-background-page.html');
+  const r = await page.evaluate(async () => {
+    const style = document.createElement('style');
+    style.textContent =
+      'layer-host { display: block; position: absolute; left: 40px; top: 30px; width: 120px; height: 80px; }';
+    document.head.appendChild(style);
+    const el = document.createElement('layer-host');
+    el.setAttribute('data-background', 'dither');
+    document.body.appendChild(el);
+    await new Promise((res) => setTimeout(res, 0));
+    const w = el.querySelector(':scope > bg-wc[data-bg-element]');
+    const r1 = el.getBoundingClientRect();
+    const r2 = w?.getBoundingClientRect();
+    return {
+      position: getComputedStyle(el).position,
+      hostRect: [r1.x, r1.y, r1.width, r1.height],
+      layerFills: !!r2 && Math.abs(r2.width - r1.width) < 1 && Math.abs(r2.height - r1.height) < 1,
+    };
+  });
+  // The author said absolute; the binder's defaults must not override that.
+  expect(r.position).toBe('absolute');
+  expect(r.hostRect).toEqual([40, 30, 120, 80]);
+  expect(r.layerFills, 'injected layer must still fill the host').toBe(true);
+});

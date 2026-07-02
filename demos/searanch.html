@@ -33,17 +33,16 @@
     }
     body { min-height: 100vh; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; }
+    main { position: relative; width: 100vw; height: 100vh; }
 
     /* The supergraphic itself — animated bands courtesy of the preset. */
-    bg-wc.bands {
-      position: absolute; inset: 0;
-      display: block;
+    sea-mural {
+      display: block; position: absolute; inset: 0;
     }
 
     /* Halftone noise overlay — gives the painted flats a screen-printed grit. */
-    bg-wc.halftone {
-      position: absolute; inset: 0;
+    sea-halftone {
+      display: block; position: absolute; inset: 0;
       mix-blend-mode: multiply;
       opacity: 0.09;
       pointer-events: none;
@@ -52,7 +51,8 @@
     /* Editorial cards — the bg moves dramatically behind them, so each card
        gets a solid cream background + thin ink border so the type stays
        legible no matter what color sweeps past. */
-    .label-tl, .label-tr, .label-bl, .label-br {
+    nav, sea-title, sea-caption, sea-issue {
+      display: block;
       position: absolute; z-index: 5;
       font-family: 'Space Mono', monospace;
       font-size: 11px;
@@ -65,11 +65,11 @@
       padding: 14px 18px;
       box-shadow: 4px 4px 0 var(--ink);
     }
-    .label-tl { top: 28px; left: 36px; }
-    .label-tr { top: 28px; right: 36px; text-align: right; }
-    .label-bl { bottom: 28px; left: 36px; }
-    .label-br { bottom: 28px; right: 36px; text-align: right; }
-    .label-tr .big {
+    nav { top: 28px; left: 36px; }
+    sea-title { top: 28px; right: 36px; text-align: right; }
+    sea-caption { bottom: 28px; left: 36px; }
+    sea-issue { bottom: 28px; right: 36px; text-align: right; }
+    sea-title strong {
       display: block;
       font-family: 'Archivo Black', sans-serif;
       font-size: 32px;
@@ -77,35 +77,38 @@
       text-transform: none;
       margin-bottom: 4px;
     }
-    .label-tl { padding: 6px 12px; box-shadow: 3px 3px 0 var(--ink); }
-    .label-tl a { color: inherit; text-decoration: none; }
-    .label-tl a:hover { color: var(--red); }
+    nav { padding: 6px 12px; box-shadow: 3px 3px 0 var(--ink); }
+    nav a { color: inherit; text-decoration: none; }
+    nav a:hover { color: var(--red); }
   </style>
 </head>
 <body>
-  <main class="stage">
-    <bg-wc class="bands" preset="supergraphics" density="0.6" intensity="0.8" speed="0.4"></bg-wc>
+  <main>
+    <sea-mural data-background="supergraphics" data-background-density="0.6" data-background-intensity="0.8" data-background-speed="0.4"></sea-mural>
 
-    <bg-wc class="halftone" preset="noise" intensity="0.7" density="0.85" speed="0.25"
-           style="--bg-wc-color-fg:#000000; --bg-wc-color-bg:#ffffff;"></bg-wc>
+    <sea-halftone data-background="noise" data-background-intensity="0.7" data-background-density="0.85" data-background-speed="0.25"
+                  data-background-color-fg="#000000" data-background-color-bg="#ffffff"></sea-halftone>
 
-    <div class="label-tl">
+    <nav>
       <a href="./" target="_top">&larr; Demos</a>
-    </div>
-    <div class="label-tr">
-      <span class="big">Sea Ranch</span>
+    </nav>
+    <sea-title>
+      <strong>Sea Ranch</strong>
       Environmental graphics<br>
       after Stauffacher Solomon
-    </div>
-    <div class="label-bl">
+    </sea-title>
+    <sea-caption>
       bg-wc &times; supergraphics<br>
       animated mural-scale bands
-    </div>
-    <div class="label-br">
+    </sea-caption>
+    <sea-issue>
       Vol. 02 &middot; Issue 01<br>
       MMXXVI
-    </div>
+    </sea-issue>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

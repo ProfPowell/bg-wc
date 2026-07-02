@@ -19,39 +19,40 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Poppins', system-ui, sans-serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    poolside-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: linear-gradient(180deg, transparent 55%, rgba(236,228,215,0.72) 100%); }
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
-    .nav a:hover { opacity: 1; }
-    .content { position: absolute; left: 0; right: 0; bottom: clamp(34px, 9vh, 90px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
-    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 12px; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    nav a:hover { opacity: 1; }
+    poolside-content { display: block; position: absolute; left: 0; right: 0; bottom: clamp(34px, 9vh, 90px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    poolside-eyebrow { display: block; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 12px; }
     h1 { font-weight: 800; font-size: clamp(40px, 7vw, 96px); line-height: 0.96; letter-spacing: -0.02em; margin: 0; }
     h1 span { color: var(--color-info); }
-    .lede { max-width: 480px; margin: 14px auto 0; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.6; color: rgba(37,48,58,0.78); font-weight: 300; }
-    .lede code { font-family: 'Space Mono', monospace; font-size: 0.82em; background: rgba(31,176,196,0.16); color: #11707e; padding: 2px 7px; border-radius: 4px; }
-    .cta { margin-top: 22px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
-    .cta a { text-decoration: none; padding: 13px 24px; border-radius: 999px; background: var(--color-info); color: #06343a; font-weight: 700; }
+    poolside-content p { max-width: 480px; margin: 14px auto 0; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.6; color: rgba(37,48,58,0.78); font-weight: 300; }
+    poolside-content p code { font-family: 'Space Mono', monospace; font-size: 0.82em; background: rgba(31,176,196,0.16); color: #11707e; padding: 2px 7px; border-radius: 4px; }
+    poolside-cta { display: block; margin-top: 22px; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
+    poolside-cta a { text-decoration: none; padding: 13px 24px; border-radius: 999px; background: var(--color-info); color: #06343a; font-weight: 700; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <main class="stage">
-    <bg-wc class="bg" preset="lanai" intensity="0.7" density="0.55" speed="1"></bg-wc>
-    <div class="scrim"></div>
-    <div class="content">
-      <div class="eyebrow">desert modernism &middot; book the house</div>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <main data-background="lanai" data-background-intensity="0.7" data-background-density="0.55" data-background-speed="1">
+    <poolside-scrim></poolside-scrim>
+    <poolside-content>
+      <poolside-eyebrow>desert modernism &middot; book the house</poolside-eyebrow>
       <h1>The <span>Kaufmann</span> House</h1>
-      <p class="lede">
+      <p>
         Five bedrooms, one perfect kidney pool. The poolside behind this card is
         <code>preset="lanai"</code> &mdash; caustics, stepping stones, and palm
         shadows on the deck.
       </p>
-      <div class="cta"><a href="#">Check dates</a></div>
-    </div>
+      <poolside-cta><a href="#">Check dates</a></poolside-cta>
+    </poolside-content>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

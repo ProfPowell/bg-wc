@@ -19,49 +19,51 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Space Grotesk', system-ui, sans-serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    cadence-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: linear-gradient(180deg, rgba(21,19,28,0.92) 0%, transparent 38%, transparent 60%, rgba(21,19,28,0.94) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    nav a:hover { opacity: 1; }
 
-    .head { position: absolute; top: 34px; left: 0; right: 0; z-index: 6; text-align: center; }
-    .head h1 { font-weight: 700; font-size: clamp(30px, 5vw, 60px); letter-spacing: -0.02em; margin: 0; }
-    .head .sub { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.34em; color: var(--color-warning); text-transform: uppercase; margin-top: 8px; }
+    cadence-head { display: block; position: absolute; top: 34px; left: 0; right: 0; z-index: 6; text-align: center; }
+    cadence-head h1 { font-weight: 700; font-size: clamp(30px, 5vw, 60px); letter-spacing: -0.02em; margin: 0; }
+    cadence-sub { display: block; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.34em; color: var(--color-warning); text-transform: uppercase; margin-top: 8px; }
 
-    .foot { position: absolute; bottom: 30px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 7vw, 120px); flex-wrap: wrap; gap: 16px;
+    cadence-foot { display: flex; position: absolute; bottom: 30px; left: 0; right: 0; z-index: 6; justify-content: space-between; padding: 0 clamp(28px, 7vw, 120px); flex-wrap: wrap; gap: 16px;
       font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.14em; color: rgba(231,227,240,0.6); }
-    .foot b { color: var(--color-info); font-weight: 400; }
-    .lede { position: absolute; left: 0; right: 0; bottom: 86px; z-index: 6; text-align: center; font-family: 'Space Mono', monospace;
-      font-size: 12.5px; letter-spacing: 0.06em; color: rgba(231,227,240,0.5); }
-    .lede code { background: rgba(255,140,26,0.16); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
+    cadence-foot b { color: var(--color-info); font-weight: 400; }
+    cadence-stat { display: block; }
+    main > p { position: absolute; left: 0; right: 0; bottom: 86px; z-index: 6; text-align: center; font-family: 'Space Mono', monospace;
+      font-size: 12.5px; letter-spacing: 0.06em; color: rgba(231,227,240,0.5); margin: 0; }
+    main > p code { background: rgba(255,140,26,0.16); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="nixie" intensity="0.85" density="0.6" speed="1"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="nixie" data-background-intensity="0.85" data-background-density="0.6" data-background-speed="1">
+    <cadence-scrim></cadence-scrim>
 
-    <div class="head">
+    <cadence-head>
       <h1>Cadence Labs</h1>
-      <div class="sub">frequency standard &middot; model 1019</div>
-    </div>
+      <cadence-sub>frequency standard &middot; model 1019</cadence-sub>
+    </cadence-head>
 
-    <div class="lede">events counted since last reset &mdash; <code>preset="nixie"</code>, or pass <code>text</code> to pin a reading</div>
+    <p>events counted since last reset &mdash; <code>preset="nixie"</code>, or pass <code>text</code> to pin a reading</p>
 
-    <div class="foot">
-      <div>gate &middot; <b>1.000 s</b></div>
-      <div>ref &middot; <b>10 MHz OCXO</b></div>
-      <div>drift &middot; <b>&plusmn;2 ppb</b></div>
-      <div>temp &middot; <b>21.4&deg;C</b></div>
-    </div>
+    <cadence-foot>
+      <cadence-stat>gate &middot; <b>1.000 s</b></cadence-stat>
+      <cadence-stat>ref &middot; <b>10 MHz OCXO</b></cadence-stat>
+      <cadence-stat>drift &middot; <b>&plusmn;2 ppb</b></cadence-stat>
+      <cadence-stat>temp &middot; <b>21.4&deg;C</b></cadence-stat>
+    </cadence-foot>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

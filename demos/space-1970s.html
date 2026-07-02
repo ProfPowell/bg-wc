@@ -19,15 +19,16 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: Inter, system-ui, sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; }
+    main { position: relative; width: 100vw; height: 100vh; }
 
     /* Lava preset doing nebula duty */
-    bg-wc.nebula { position: absolute; inset: 0; opacity: 0.72; }
+    nebula-layer { display: block; position: absolute; inset: 0; opacity: 0.72; }
     /* Stars preset on top, sparse + slow */
-    bg-wc.stars { position: absolute; inset: 0; z-index: 2; }
+    star-layer { display: block; position: absolute; inset: 0; z-index: 2; }
 
     /* Earth/moon silhouette in lower-right */
-    .planet {
+    planet-disc {
+      display: block;
       position: absolute; right: -8vw; bottom: -22vw;
       width: 60vw; height: 60vw;
       border-radius: 50%;
@@ -41,7 +42,7 @@
       z-index: 3;
       pointer-events: none;
     }
-    .planet::before {
+    planet-disc::before {
       content: ""; position: absolute; inset: 8%;
       border-radius: 50%;
       background: radial-gradient(circle at 38% 30%, #f3c969, #ff6f3c 45%, #4a2a18 80%, #06060e 100%);
@@ -49,26 +50,28 @@
     }
 
     /* Concentric ring markers — instrumentation */
-    .rings {
+    range-rings {
+      display: block;
       position: absolute; right: 36px; top: 36px;
       width: 220px; height: 220px;
       z-index: 4; opacity: 0.85;
     }
-    .rings svg { width: 100%; height: 100%; }
+    range-rings svg { width: 100%; height: 100%; }
 
-    .content {
-      position: absolute; inset: 0; z-index: 6;
-      display: flex; flex-direction: column; justify-content: center;
+    mission-brief {
+      display: flex; position: absolute; inset: 0; z-index: 6;
+      flex-direction: column; justify-content: center;
       padding: 0 clamp(28px, 6vw, 96px);
     }
-    .meta {
+    mission-meta {
+      display: block;
       font-family: 'Major Mono Display', ui-monospace, monospace;
       font-size: 13px; letter-spacing: 0.18em;
       color: var(--color-primary);
       margin-bottom: 26px;
       text-transform: lowercase;
     }
-    .meta .dot { color: var(--color-foreground); }
+    mission-meta signal-dot { display: inline; color: var(--color-foreground); }
     h1 {
       font-family: 'Major Mono Display', monospace;
       font-size: clamp(46px, 8.5vw, 132px);
@@ -79,11 +82,12 @@
       text-transform: lowercase;
       font-weight: 400;
     }
-    h1 .o {
+    h1 signal-o {
+      display: inline;
       color: var(--color-primary);
       font-weight: 400;
     }
-    .lede {
+    mission-brief p {
       font-family: Inter, sans-serif;
       font-size: clamp(15px, 1.1vw, 18px);
       line-height: 1.6;
@@ -91,43 +95,43 @@
       opacity: 0.85;
       margin: 32px 0 0;
     }
-    .lede code { font-family: 'Major Mono Display', monospace; color: var(--color-primary); }
+    mission-brief p code { font-family: 'Major Mono Display', monospace; color: var(--color-primary); }
 
-    .telemetry {
+    mission-telemetry {
+      display: flex;
       position: absolute; bottom: 32px; left: clamp(28px, 6vw, 96px); right: clamp(28px, 6vw, 96px);
       z-index: 7;
-      display: flex; gap: 28px; flex-wrap: wrap;
+      gap: 28px; flex-wrap: wrap;
       font-family: 'Major Mono Display', monospace;
       font-size: 11px; letter-spacing: 0.16em;
       color: var(--color-accent);
     }
-    .telemetry > div span { color: var(--color-foreground); opacity: 0.5; padding-right: 6px; }
+    telemetry-item { display: block; }
+    telemetry-item signal-key { display: inline; color: var(--color-foreground); opacity: 0.5; padding-right: 6px; }
 
-    .nav {
-      position: absolute; top: 28px; left: 32px; z-index: 12;
+    nav { position: absolute; top: 28px; left: 32px; z-index: 12;
       font-family: 'Major Mono Display', monospace; font-size: 12px;
-      letter-spacing: 0.2em;
-    }
-    .nav a { color: var(--color-primary); text-decoration: none; opacity: 0.85; }
-    .nav a:hover { opacity: 1; }
+      letter-spacing: 0.2em; }
+    nav a { color: var(--color-primary); text-decoration: none; opacity: 0.85; }
+    nav a:hover { opacity: 1; }
 
     /* Vignette */
-    .vig {
-      position: absolute; inset: 0; z-index: 5; pointer-events: none;
+    vignette-mask {
+      display: block; position: absolute; inset: 0; z-index: 5; pointer-events: none;
       background: radial-gradient(ellipse at 30% 50%, transparent 0%, rgba(6,6,14,0.6) 95%);
     }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <main class="stage">
-    <bg-wc class="nebula" preset="lava" intensity="0.55" density="0.4" speed="0.35"></bg-wc>
-    <bg-wc class="stars" preset="stars" intensity="0.55" density="0.35" speed="0.3"
-           style="--bg-wc-color-bg: transparent;"></bg-wc>
-    <div class="planet"></div>
-    <div class="vig"></div>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <main>
+    <nebula-layer data-background="lava" data-background-intensity="0.55" data-background-density="0.4" data-background-speed="0.35"></nebula-layer>
+    <star-layer data-background="stars" data-background-intensity="0.55" data-background-density="0.35" data-background-speed="0.3"
+           data-background-color-bg="transparent"></star-layer>
+    <planet-disc></planet-disc>
+    <vignette-mask></vignette-mask>
 
-    <div class="rings">
+    <range-rings>
       <svg viewBox="0 0 200 200">
         <g fill="none" stroke="#f3c969" stroke-width="1" opacity="0.8">
           <circle cx="100" cy="100" r="92"/>
@@ -143,25 +147,28 @@
         <text x="100" y="14" text-anchor="middle" font-family="Major Mono Display, monospace" font-size="9" fill="#f3c969" opacity="0.85">N</text>
         <text x="100" y="194" text-anchor="middle" font-family="Major Mono Display, monospace" font-size="9" fill="#f3c969" opacity="0.85">S</text>
       </svg>
-    </div>
+    </range-rings>
 
-    <div class="content">
-      <div class="meta">a<span class="dot">.</span>l<span class="dot">.</span>p<span class="dot">.</span>h<span class="dot">.</span>a &nbsp;&middot;&nbsp; transmission 0<span class="dot">.</span>7<span class="dot">.</span>9</div>
-      <h1>signal fr<span class="o">o</span>m<br>the <span class="o">o</span>uter dark.</h1>
-      <p class="lede">
+    <mission-brief>
+      <mission-meta>a<signal-dot>.</signal-dot>l<signal-dot>.</signal-dot>p<signal-dot>.</signal-dot>h<signal-dot>.</signal-dot>a &nbsp;&middot;&nbsp; transmission 0<signal-dot>.</signal-dot>7<signal-dot>.</signal-dot>9</mission-meta>
+      <h1>signal fr<signal-o>o</signal-o>m<br>the <signal-o>o</signal-o>uter dark.</h1>
+      <p>
         Lava metaballs do the nebula. Stars drift on top. The whole composition runs
         from two <code>&lt;bg-wc&gt;</code> instances, both off-screen-paused, both motion-aware.
       </p>
-    </div>
+    </mission-brief>
 
-    <div class="telemetry">
-      <div><span>vec</span>-04.207 / +12.881</div>
-      <div><span>vel</span>4.21 km/s</div>
-      <div><span>pwr</span>nominal</div>
-      <div><span>ren</span>webgl &middot; canvas2d</div>
-      <div><span>raf</span>idle-paused</div>
-    </div>
+    <mission-telemetry>
+      <telemetry-item><signal-key>vec</signal-key>-04.207 / +12.881</telemetry-item>
+      <telemetry-item><signal-key>vel</signal-key>4.21 km/s</telemetry-item>
+      <telemetry-item><signal-key>pwr</signal-key>nominal</telemetry-item>
+      <telemetry-item><signal-key>ren</signal-key>webgl &middot; canvas2d</telemetry-item>
+      <telemetry-item><signal-key>raf</signal-key>idle-paused</telemetry-item>
+    </mission-telemetry>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

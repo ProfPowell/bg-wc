@@ -21,13 +21,18 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Fraunces', Georgia, serif; min-height: 100vh; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+    main { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
 
-    /* Sky / sun bg-wc mesh */
-    bg-wc.sky { position: absolute; left: 0; right: 0; top: 0; height: 62vh; }
+    /* Sky / sun mesh-gradient; the binder forces position:relative on this
+       element, so it fills the top band as the sole in-flow child of main
+       rather than via position:absolute. */
+    sky-band {
+      display: block; width: 100%; height: 62vh;
+    }
 
     /* Sun disc */
-    .sun {
+    sun-disc {
+      display: block;
       position: absolute;
       left: 50%; top: 26vh; transform: translateX(-50%);
       width: 32vmin; height: 32vmin;
@@ -40,14 +45,16 @@
     }
 
     /* Ocean horizon band */
-    .ocean {
+    ocean-band {
+      display: block;
       position: absolute; left: 0; right: 0; top: 56vh; bottom: 0;
       background: linear-gradient(180deg,
         #2a4a6a 0%, #1d4b6e 25%, #0e2a45 100%);
       z-index: 3;
     }
     /* Sun reflection on ocean */
-    .reflection {
+    sun-glare {
+      display: block;
       position: absolute; left: 50%; top: 56vh;
       transform: translateX(-50%);
       width: 18vmin;
@@ -58,7 +65,8 @@
       mix-blend-mode: screen;
     }
     /* Ripples on the reflection */
-    .ripple {
+    ripple-line {
+      display: block;
       position: absolute; left: 0; right: 0;
       height: 2px;
       background: rgba(255,225,180,0.55);
@@ -66,19 +74,19 @@
       pointer-events: none;
       animation: shimmer 4s ease-in-out infinite;
     }
-    .ripple.r1 { top: 60vh; }
-    .ripple.r2 { top: 64vh; animation-delay: 0.6s; }
-    .ripple.r3 { top: 70vh; animation-delay: 1.2s; }
-    .ripple.r4 { top: 76vh; animation-delay: 1.8s; }
-    .ripple.r5 { top: 84vh; animation-delay: 2.4s; }
+    ripple-line[data-ripple="1"] { top: 60vh; }
+    ripple-line[data-ripple="2"] { top: 64vh; animation-delay: 0.6s; }
+    ripple-line[data-ripple="3"] { top: 70vh; animation-delay: 1.2s; }
+    ripple-line[data-ripple="4"] { top: 76vh; animation-delay: 1.8s; }
+    ripple-line[data-ripple="5"] { top: 84vh; animation-delay: 2.4s; }
     @keyframes shimmer {
       0%, 100% { opacity: 0.35; transform: translateX(-3px); }
       50%      { opacity: 0.85; transform: translateX(3px); }
     }
-    @media (prefers-reduced-motion: reduce) { .ripple { animation: none; } }
+    @media (prefers-reduced-motion: reduce) { ripple-line { animation: none; } }
 
     /* Palm silhouette in foreground */
-    svg.palm {
+    svg {
       position: absolute;
       bottom: 0; right: 4vw;
       width: clamp(220px, 36vw, 480px); height: auto;
@@ -86,19 +94,21 @@
       filter: drop-shadow(0 -6px 24px rgba(0,0,0,0.3));
     }
 
-    .content {
+    sunset-panel {
+      display: block;
       position: absolute; left: 0; right: 0; bottom: 0;
       padding: 8vh clamp(28px, 6vw, 80px);
       z-index: 10;
       max-width: 720px;
     }
-    .eyebrow {
+    sunset-panel small {
+      display: block;
       font-family: Inter, sans-serif;
       font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
       color: #ffefd1; opacity: 0.85;
       margin-bottom: 18px;
     }
-    h1 {
+    sunset-panel h1 {
       font-family: 'Fraunces', serif;
       font-weight: 500;
       font-size: clamp(44px, 7vw, 104px);
@@ -108,8 +118,8 @@
       color: #ffefd1;
       font-style: italic;
     }
-    h1 .ink { font-style: normal; color: #fff5b3; }
-    p.lede {
+    sunset-panel h1 ink-wash { display: inline; font-style: normal; color: #fff5b3; }
+    sunset-panel p {
       font-family: Inter, sans-serif;
       font-size: clamp(15px, 1.1vw, 17px);
       line-height: 1.55;
@@ -119,37 +129,38 @@
       margin: 24px 0 0;
     }
 
-    .credit {
+    credit-line {
+      display: block;
       position: absolute; top: 24px; right: 30px; z-index: 11;
       font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
       color: #fff5b3; opacity: 0.7;
       text-align: right; line-height: 1.7;
     }
 
-    .nav { position: absolute; top: 22px; left: 28px; z-index: 12; font-family: Inter, sans-serif; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
-    .nav a { color: #fff5b3; text-decoration: none; opacity: 0.8; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 22px; left: 28px; z-index: 12; font-family: Inter, sans-serif; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    nav a { color: #fff5b3; text-decoration: none; opacity: 0.8; }
+    nav a:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <div class="credit">
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <credit-line>
     08 / Coastal<br>
     bg-wc &times; mesh-gradient
-  </div>
-  <main class="stage">
-    <bg-wc class="sky" preset="mesh-gradient" intensity="0.85" speed="0.35"
-           style="--bg-wc-color-1:#ff8a5c; --bg-wc-color-2:#ff5e8e; --bg-wc-color-3:#6a52ff; --bg-wc-color-bg:#fde4cc;"></bg-wc>
-    <div class="sun"></div>
-    <div class="ocean"></div>
-    <div class="reflection"></div>
-    <div class="ripple r1"></div>
-    <div class="ripple r2"></div>
-    <div class="ripple r3"></div>
-    <div class="ripple r4"></div>
-    <div class="ripple r5"></div>
+  </credit-line>
+  <main>
+    <sky-band data-background="mesh-gradient" data-background-intensity="0.85" data-background-speed="0.35"
+              data-background-color-1="#ff8a5c" data-background-color-2="#ff5e8e" data-background-color-3="#6a52ff" data-background-color-bg="#fde4cc"></sky-band>
+    <sun-disc></sun-disc>
+    <ocean-band></ocean-band>
+    <sun-glare></sun-glare>
+    <ripple-line data-ripple="1"></ripple-line>
+    <ripple-line data-ripple="2"></ripple-line>
+    <ripple-line data-ripple="3"></ripple-line>
+    <ripple-line data-ripple="4"></ripple-line>
+    <ripple-line data-ripple="5"></ripple-line>
 
-    <svg class="palm" viewBox="0 0 400 600" preserveAspectRatio="xMaxYMax meet" aria-hidden="true">
+    <svg viewBox="0 0 400 600" preserveAspectRatio="xMaxYMax meet" aria-hidden="true">
       <!-- Trunk -->
       <path d="M 220,600 C 230,500 215,400 235,300 C 250,220 240,160 250,100" stroke="#0a0a18" stroke-width="14" fill="none" stroke-linecap="round"/>
       <!-- Fronds — long curved leaves splaying from the top -->
@@ -167,16 +178,19 @@
       <circle cx="256" cy="112" r="5" fill="#0a0a18"/>
     </svg>
 
-    <div class="content">
-      <div class="eyebrow">07 &middot; Golden hour</div>
-      <h1>Sunsets over <span class="ink">scope creep.</span></h1>
-      <p class="lede">
+    <sunset-panel>
+      <small>07 &middot; Golden hour</small>
+      <h1>Sunsets over <ink-wash>scope creep.</ink-wash></h1>
+      <p>
         Mesh-gradient does the sky &mdash; warm, slow, primary tokens swapped for sunset hues
         via per-instance <code>--bg-wc-color-*</code> overrides. The ocean, palm, and shimmering
         reflection are just CSS over the top.
       </p>
-    </div>
+    </sunset-panel>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

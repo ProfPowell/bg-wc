@@ -18,63 +18,65 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Fraunces', Georgia, serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    culture-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse 70% 70% at 50% 46%, transparent 35%, rgba(6,19,17,0.92) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    nav a:hover { opacity: 1; }
 
-    .content { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
-    .eyebrow { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.26em; color: var(--color-accent); opacity: 0.9; margin-bottom: 20px; text-transform: lowercase; }
+    culture-content { display: block; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    culture-eyebrow { display: block; font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.26em; color: var(--color-accent); opacity: 0.9; margin-bottom: 20px; text-transform: lowercase; }
     h1 { font-weight: 600; font-size: clamp(58px, 12vw, 200px); letter-spacing: -0.01em; line-height: 0.92; margin: 0;
       background: linear-gradient(170deg, #f4fff0 0%, var(--color-accent) 60%, var(--color-info) 120%);
       -webkit-background-clip: text; background-clip: text; color: transparent;
       filter: drop-shadow(0 8px 40px rgba(182,240,74,0.22)); }
-    .lede { max-width: 580px; margin: 26px auto 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.6; color: rgba(227,246,236,0.84); font-family: 'Space Mono', monospace; }
-    .lede code { font-size: 0.86em; background: rgba(182,240,74,0.12); color: var(--color-accent); padding: 2px 7px; border-radius: 4px; }
-    .cta { margin-top: 34px; display: inline-flex; gap: 14px; }
-    .cta a { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
+    culture-content p { max-width: 580px; margin: 26px auto 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.6; color: rgba(227,246,236,0.84); font-family: 'Space Mono', monospace; }
+    culture-content p code { font-size: 0.86em; background: rgba(182,240,74,0.12); color: var(--color-accent); padding: 2px 7px; border-radius: 4px; }
+    culture-actions { margin-top: 34px; display: inline-flex; gap: 14px; }
+    culture-actions a { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
       padding: 13px 22px; border-radius: 999px; }
-    .cta .solid { background: var(--color-accent); color: #07140c; font-weight: 700; }
-    .cta .ghost { border: 1px solid rgba(227,246,236,0.3); color: var(--color-foreground); }
+    culture-actions a[data-tone="solid"] { background: var(--color-accent); color: #07140c; font-weight: 700; }
+    culture-actions a[data-tone="ghost"] { border: 1px solid rgba(227,246,236,0.3); color: var(--color-foreground); }
 
-    .telemetry { position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
+    culture-telemetry { position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
       font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--color-accent); opacity: 0.85; flex-wrap: wrap; gap: 12px; }
-    .telemetry span { color: var(--color-foreground); opacity: 0.45; padding-right: 6px; }
+    culture-stat { display: block; }
+    culture-key { display: inline; color: var(--color-foreground); opacity: 0.45; padding-right: 6px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="reaction-diffusion" intensity="0.85" density="0.55" speed="1.1"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="reaction-diffusion" data-background-intensity="0.85" data-background-density="0.55" data-background-speed="1.1">
+    <culture-scrim></culture-scrim>
 
-    <div class="content">
-      <div class="eyebrow">// synthetic morphology &middot; webgl</div>
+    <culture-content>
+      <culture-eyebrow>// synthetic morphology &middot; webgl</culture-eyebrow>
       <h1>Morphogen</h1>
-      <p class="lede">
+      <p>
         Two reagents, a feed and a kill rate &mdash; and structure that designs itself.
         A live Gray&ndash;Scott field on <code>preset="reaction-diffusion"</code>, ramped
         through your theme from ground to growth.
       </p>
-      <div class="cta">
-        <a class="solid" href="#">Start a culture</a>
-        <a class="ghost" href="#">Read the model</a>
-      </div>
-    </div>
+      <culture-actions>
+        <a data-tone="solid" href="#">Start a culture</a>
+        <a data-tone="ghost" href="#">Read the model</a>
+      </culture-actions>
+    </culture-content>
 
-    <div class="telemetry">
-      <div><span>preset</span>reaction-diffusion</div>
-      <div><span>regime</span>coral</div>
-      <div><span>render</span>webgl &middot; ping-pong fbo</div>
-      <div><span>palette</span>theme</div>
-    </div>
+    <culture-telemetry>
+      <culture-stat><culture-key>preset</culture-key>reaction-diffusion</culture-stat>
+      <culture-stat><culture-key>regime</culture-key>coral</culture-stat>
+      <culture-stat><culture-key>render</culture-key>webgl &middot; ping-pong fbo</culture-stat>
+      <culture-stat><culture-key>palette</culture-key>theme</culture-stat>
+    </culture-telemetry>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

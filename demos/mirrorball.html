@@ -18,62 +18,64 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Unbounded', system-ui, sans-serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    mirrorball-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse 65% 60% at 50% 44%, rgba(11,7,18,0.25) 0%, rgba(11,7,18,0.85) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    nav a:hover { opacity: 1; }
 
-    .content { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
-    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-info); text-transform: uppercase; margin-bottom: 18px; }
+    mirrorball-content { display: block; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    mirrorball-eyebrow { display: block; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: var(--color-info); text-transform: uppercase; margin-bottom: 18px; }
     h1 { font-weight: 900; font-size: clamp(40px, 8.5vw, 130px); line-height: 0.96; letter-spacing: -0.01em; margin: 0; text-transform: uppercase;
       background: linear-gradient(120deg, var(--color-info) 0%, var(--color-primary) 45%, var(--color-accent) 100%);
       -webkit-background-clip: text; background-clip: text; color: transparent;
       filter: drop-shadow(0 6px 36px rgba(123,91,255,0.35)); }
-    .lede { max-width: 540px; margin: 22px auto 0; font-size: clamp(14px, 1.2vw, 18px); line-height: 1.65; color: rgba(246,236,255,0.78); font-family: 'Space Mono', monospace; }
-    .lede code { font-size: 0.86em; background: rgba(255,79,210,0.16); color: var(--color-accent); padding: 2px 7px; border-radius: 4px; }
-    .cta { margin-top: 30px; display: inline-flex; gap: 14px; }
-    .cta a { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; padding: 13px 24px; border-radius: 999px; }
-    .cta .solid { background: linear-gradient(120deg, var(--color-primary), var(--color-accent)); color: #0b0712; font-weight: 700; }
-    .cta .ghost { border: 1px solid rgba(246,236,255,0.3); color: var(--color-foreground); }
+    mirrorball-content p { max-width: 540px; margin: 22px auto 0; font-size: clamp(14px, 1.2vw, 18px); line-height: 1.65; color: rgba(246,236,255,0.78); font-family: 'Space Mono', monospace; }
+    mirrorball-content p code { font-size: 0.86em; background: rgba(255,79,210,0.16); color: var(--color-accent); padding: 2px 7px; border-radius: 4px; }
+    mirrorball-cta { display: inline-flex; margin-top: 30px; gap: 14px; }
+    mirrorball-cta a { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; padding: 13px 24px; border-radius: 999px; }
+    mirrorball-cta a[data-style="solid"] { background: linear-gradient(120deg, var(--color-primary), var(--color-accent)); color: #0b0712; font-weight: 700; }
+    mirrorball-cta a[data-style="ghost"] { border: 1px solid rgba(246,236,255,0.3); color: var(--color-foreground); }
 
-    .telemetry { position: absolute; bottom: 26px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
+    mirrorball-telemetry { display: flex; position: absolute; bottom: 26px; left: 0; right: 0; z-index: 6; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
       font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--color-info); opacity: 0.8; flex-wrap: wrap; gap: 12px; }
-    .telemetry span { color: var(--color-foreground); opacity: 0.45; padding-right: 6px; }
+    mirrorball-stat { display: block; }
+    mirrorball-telemetry small { display: inline; color: var(--color-foreground); opacity: 0.45; padding-right: 6px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="disco" intensity="0.8" density="0.55" speed="1"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="disco" data-background-intensity="0.8" data-background-density="0.55" data-background-speed="1">
+    <mirrorball-scrim></mirrorball-scrim>
 
-    <div class="content">
-      <div class="eyebrow">every friday &middot; doors 22:00</div>
+    <mirrorball-content>
+      <mirrorball-eyebrow>every friday &middot; doors 22:00</mirrorball-eyebrow>
       <h1>Mirror<br>ball</h1>
-      <p class="lede">
+      <p>
         One ball, ten thousand facets, all of them yours. The room is lit by
         <code>preset="disco"</code> &mdash; cells sweeping the floor in theme
         colours, flaring when a facet catches.
       </p>
-      <div class="cta">
-        <a class="solid" href="#">Guest list</a>
-        <a class="ghost" href="#">Line-up</a>
-      </div>
-    </div>
+      <mirrorball-cta>
+        <a data-style="solid" href="#">Guest list</a>
+        <a data-style="ghost" href="#">Line-up</a>
+      </mirrorball-cta>
+    </mirrorball-content>
 
-    <div class="telemetry">
-      <div><span>preset</span>disco</div>
-      <div><span>cells</span>parallelogram sweep</div>
-      <div><span>render</span>webgl</div>
-      <div><span>palette</span>theme</div>
-    </div>
+    <mirrorball-telemetry>
+      <mirrorball-stat><small>preset</small>disco</mirrorball-stat>
+      <mirrorball-stat><small>cells</small>parallelogram sweep</mirrorball-stat>
+      <mirrorball-stat><small>render</small>webgl</mirrorball-stat>
+      <mirrorball-stat><small>palette</small>theme</mirrorball-stat>
+    </mirrorball-telemetry>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

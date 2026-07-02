@@ -19,7 +19,7 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); -webkit-font-smoothing: antialiased; }
     body { font-family: Inter, -apple-system, system-ui, sans-serif; min-height: 100vh; overflow-x: hidden; }
 
-    .topbar {
+    header {
       position: fixed; top: 0; left: 0; right: 0; z-index: 50;
       display: flex; justify-content: space-between; align-items: center;
       padding: 18px 36px;
@@ -27,29 +27,26 @@
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .brand { font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
-    .brand .dot { color: var(--color-accent); }
-    .topnav { display: flex; gap: 26px; font-size: 14px; font-weight: 500; }
-    .topnav a { color: rgba(255,255,255,0.78); text-decoration: none; }
-    .topnav a:hover { color: white; }
+    wordmark { display: block; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
+    wordmark brand-dot { display: inline; color: var(--color-accent); }
+    header nav { display: flex; gap: 26px; font-size: 14px; font-weight: 500; }
+    header nav a { color: rgba(255,255,255,0.78); text-decoration: none; }
+    header nav a:hover { color: white; }
 
-    .stage { position: relative; min-height: 100vh; padding-top: 72px; }
-    bg-wc.bg {
-      position: absolute; inset: 0;
-      pointer-events: none;
-    }
-    .veil {
-      position: absolute; inset: 0;
+    main { position: relative; min-height: 100vh; padding-top: 72px; }
+    veil {
+      display: block; position: absolute; inset: 0;
       background: radial-gradient(ellipse at 50% 30%, transparent 0%, rgba(10,37,64,0.55) 80%);
       z-index: 2; pointer-events: none;
     }
 
-    .hero {
+    section {
       position: relative; z-index: 5;
       text-align: center;
       padding: 96px clamp(20px, 4vw, 80px) 64px;
     }
-    .eyebrow {
+    eyebrow {
+      display: block;
       font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
       color: var(--color-accent); margin-bottom: 22px; font-weight: 600;
     }
@@ -60,21 +57,23 @@
       background: linear-gradient(90deg, #ffffff 0%, var(--color-accent) 55%, var(--color-info) 100%);
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    .dek {
+    section p {
       margin: 24px auto 0; max-width: 540px;
       font-size: clamp(15px, 1.2vw, 18px); line-height: 1.6;
       color: rgba(255,255,255,0.78);
     }
 
-    .grid {
+    plan-grid {
+      display: grid;
       position: relative; z-index: 5;
       max-width: 1180px; margin: 0 auto 96px;
       padding: 0 clamp(20px, 4vw, 32px);
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+      grid-template-columns: repeat(3, 1fr); gap: 22px;
     }
-    @media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 880px) { plan-grid { grid-template-columns: 1fr; } }
 
-    .card {
+    pricing-card {
+      display: flex; flex-direction: column; gap: 18px;
       position: relative;
       background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
       border: 1px solid rgba(255,255,255,0.13);
@@ -83,15 +82,14 @@
       backdrop-filter: blur(14px) saturate(140%);
       -webkit-backdrop-filter: blur(14px) saturate(140%);
       box-shadow: 0 18px 50px -16px rgba(0,0,0,0.55);
-      display: flex; flex-direction: column; gap: 18px;
     }
-    .card.featured {
+    pricing-card[data-tier="featured"] {
       border-color: rgba(99, 91, 255, 0.55);
       background: linear-gradient(180deg, rgba(99,91,255,0.15), rgba(255,255,255,0.02));
       box-shadow: 0 24px 60px -16px rgba(99,91,255,0.5);
       transform: translateY(-6px);
     }
-    .card.featured::before {
+    pricing-card[data-tier="featured"]::before {
       content: "MOST POPULAR";
       position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
       font-size: 10px; letter-spacing: 0.18em; font-weight: 700;
@@ -99,14 +97,14 @@
       color: white; padding: 5px 12px; border-radius: 99px;
     }
 
-    .tier { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.65); font-weight: 600; }
-    .price { display: flex; align-items: baseline; gap: 4px; margin-top: -6px; }
-    .price .amt { font-size: 52px; font-weight: 700; letter-spacing: -0.03em; }
-    .price .per { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 500; }
-    .pitch { font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.78); margin: 0; }
-    ul.features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-    ul.features li { font-size: 14px; line-height: 1.4; color: rgba(255,255,255,0.86); display: flex; gap: 10px; align-items: flex-start; }
-    ul.features li::before {
+    plan-name { display: block; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.65); font-weight: 600; }
+    plan-price { display: flex; align-items: baseline; gap: 4px; margin-top: -6px; }
+    price-amount { display: inline; font-size: 52px; font-weight: 700; letter-spacing: -0.03em; }
+    price-period { display: inline; font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 500; }
+    pricing-card p { font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.78); margin: 0; }
+    pricing-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    pricing-card li { font-size: 14px; line-height: 1.4; color: rgba(255,255,255,0.86); display: flex; gap: 10px; align-items: flex-start; }
+    pricing-card li::before {
       content: ""; flex: none; width: 16px; height: 16px;
       background: var(--color-accent);
       mask: radial-gradient(circle, transparent 22%, black 24%, black 100%);
@@ -114,104 +112,106 @@
       border-radius: 50%;
       margin-top: 2px;
     }
-    ul.features li.muted { color: rgba(255,255,255,0.4); }
-    ul.features li.muted::before { background: rgba(255,255,255,0.18); }
+    pricing-card li[data-tone="muted"] { color: rgba(255,255,255,0.4); }
+    pricing-card li[data-tone="muted"]::before { background: rgba(255,255,255,0.18); }
 
-    .cta {
+    pricing-card a {
       display: block; text-align: center;
       padding: 13px 18px; border-radius: 999px;
       font-weight: 600; font-size: 14.5px; text-decoration: none;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
       margin-top: auto;
     }
-    .cta.outline { background: rgba(255,255,255,0.08); color: var(--color-foreground); border: 1px solid rgba(255,255,255,0.18); }
-    .cta.primary { background: var(--color-foreground); color: var(--color-background); }
-    .cta.featured-cta { background: linear-gradient(90deg, var(--color-primary), var(--color-info)); color: white; box-shadow: 0 12px 28px -10px var(--color-primary); }
-    .cta:hover { transform: translateY(-2px); }
+    pricing-card a[data-style="outline"] { background: rgba(255,255,255,0.08); color: var(--color-foreground); border: 1px solid rgba(255,255,255,0.18); }
+    pricing-card a[data-style="primary"] { background: var(--color-foreground); color: var(--color-background); }
+    pricing-card a[data-style="featured"] { background: linear-gradient(90deg, var(--color-primary), var(--color-info)); color: white; box-shadow: 0 12px 28px -10px var(--color-primary); }
+    pricing-card a:hover { transform: translateY(-2px); }
 
-    .nav-back { position: fixed; top: 88px; left: 36px; z-index: 12; }
-    .nav-back a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; }
-    .nav-back a:hover { color: white; }
+    body > nav { position: fixed; top: 88px; left: 36px; z-index: 12; }
+    body > nav a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; }
+    body > nav a:hover { color: white; }
 
-    .strip {
+    footer {
       position: relative; z-index: 5;
       padding: 24px clamp(20px, 4vw, 80px);
       text-align: center;
       font-size: 13px; opacity: 0.65;
     }
-    .strip code { font-family: ui-monospace, monospace; background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; }
+    footer code { font-family: ui-monospace, monospace; background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">gl<span class="dot">.</span>wc</div>
-    <nav class="topnav">
+  <header>
+    <wordmark>gl<brand-dot>.</brand-dot>wc</wordmark>
+    <nav>
       <a href="#">Products</a><a href="#">Pricing</a><a href="#">Docs</a><a href="#">Sign in</a>
     </nav>
   </header>
-  <a class="nav-back" href="./" target="_top">&larr; Demos</a>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="mesh-gradient" intensity="0.78" speed="0.32"></bg-wc>
-    <div class="veil"></div>
+  <main data-background="mesh-gradient" data-background-intensity="0.78" data-background-speed="0.32">
+    <veil></veil>
 
-    <section class="hero">
-      <div class="eyebrow">Pricing</div>
+    <section>
+      <eyebrow>Pricing</eyebrow>
       <h1>Pay only for what your<br>page actually animates.</h1>
-      <p class="dek">
+      <p>
         Every preset is lazy-loaded. Pages that don't ask for motion pay nothing &mdash;
         choose the tier that matches what you'll ship.
       </p>
     </section>
 
-    <section class="grid">
-      <article class="card">
-        <div class="tier">Hobby</div>
-        <div class="price"><span class="amt">$0</span><span class="per">/ forever</span></div>
-        <p class="pitch">Drop one preset on a personal site. Theme tokens inherited, render loop pauses off-screen.</p>
-        <ul class="features">
+    <plan-grid>
+      <pricing-card>
+        <plan-name>Hobby</plan-name>
+        <plan-price><price-amount>$0</price-amount><price-period>/ forever</price-period></plan-price>
+        <p>Drop one preset on a personal site. Theme tokens inherited, render loop pauses off-screen.</p>
+        <ul>
           <li>1 preset bundled</li>
           <li>WebGL or Canvas2D</li>
           <li>Theme-token inheritance</li>
-          <li class="muted">No batch snapshots</li>
-          <li class="muted">No premium presets</li>
+          <li data-tone="muted">No batch snapshots</li>
+          <li data-tone="muted">No premium presets</li>
         </ul>
-        <a class="cta outline" href="#">Start free</a>
-      </article>
+        <a data-style="outline" href="#">Start free</a>
+      </pricing-card>
 
-      <article class="card featured">
-        <div class="tier">Studio</div>
-        <div class="price"><span class="amt">$0</span><span class="per">/ also forever</span></div>
-        <p class="pitch">Every preset in the catalog &mdash; mesh, plasma, lava, aurora, tunnel, caustics, &hellip;</p>
-        <ul class="features">
+      <pricing-card data-tier="featured">
+        <plan-name>Studio</plan-name>
+        <plan-price><price-amount>$0</price-amount><price-period>/ also forever</price-period></plan-price>
+        <p>Every preset in the catalog &mdash; mesh, plasma, lava, aurora, tunnel, caustics, &hellip;</p>
+        <ul>
           <li>All 17 presets</li>
           <li>Snapshot() to PNG</li>
           <li>Context-loss handling</li>
           <li>Preset hot-swap at runtime</li>
           <li>Reduced-motion fallbacks</li>
         </ul>
-        <a class="cta featured-cta" href="#">It's actually free</a>
-      </article>
+        <a data-style="featured" href="#">It's actually free</a>
+      </pricing-card>
 
-      <article class="card">
-        <div class="tier">Enterprise</div>
-        <div class="price"><span class="amt">$0</span><span class="per">/ MIT license</span></div>
-        <p class="pitch">Fork it, vendor it, ship it inside a closed-source product. No agreement to sign.</p>
-        <ul class="features">
+      <pricing-card>
+        <plan-name>Enterprise</plan-name>
+        <plan-price><price-amount>$0</price-amount><price-period>/ MIT license</price-period></plan-price>
+        <p>Fork it, vendor it, ship it inside a closed-source product. No agreement to sign.</p>
+        <ul>
           <li>Source available</li>
           <li>No telemetry</li>
           <li>No build-time coupling</li>
           <li>Self-host the docs</li>
           <li>Author your own presets</li>
         </ul>
-        <a class="cta primary" href="#">Read the spec &rarr;</a>
-      </article>
-    </section>
+        <a data-style="primary" href="#">Read the spec &rarr;</a>
+      </pricing-card>
+    </plan-grid>
 
-    <div class="strip">
+    <footer>
       The price is a joke. The component is real. <code>npm i @profpowell/bg-wc</code>
-    </div>
+    </footer>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

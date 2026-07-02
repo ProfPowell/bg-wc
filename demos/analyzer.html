@@ -19,51 +19,53 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Space Grotesk', system-ui, sans-serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    analyzer-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: linear-gradient(90deg, rgba(6,8,16,0.92) 0%, rgba(6,8,16,0.4) 44%, transparent 78%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    nav a:hover { opacity: 1; }
 
-    .content { position: absolute; left: clamp(28px, 7vw, 110px); top: 50%; transform: translateY(-50%); z-index: 6; max-width: 540px; }
-    .badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+    analyzer-content { display: block; position: absolute; left: clamp(28px, 7vw, 110px); top: 50%; transform: translateY(-50%); z-index: 6; max-width: 540px; }
+    analyzer-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
       color: var(--color-info); border: 1px solid rgba(56,201,216,0.4); border-radius: 999px; padding: 6px 14px; margin-bottom: 24px; }
-    .badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--color-info); box-shadow: 0 0 12px var(--color-info); }
+    status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--color-info); box-shadow: 0 0 12px var(--color-info); }
     h1 { font-weight: 700; font-size: clamp(40px, 7vw, 104px); line-height: 0.98; letter-spacing: -0.03em; margin: 0; }
     h1 em { font-style: normal; color: var(--color-accent); }
-    .lede { margin: 22px 0 0; font-size: clamp(15px, 1.25vw, 19px); line-height: 1.6; color: rgba(232,236,246,0.78); max-width: 460px; }
-    .lede code { font-family: 'JetBrains Mono', monospace; font-size: 0.84em; background: rgba(47,91,208,0.22); color: #b9c8ff; padding: 2px 7px; border-radius: 4px; }
-    .stats { display: flex; gap: 38px; margin-top: 36px; font-family: 'JetBrains Mono', monospace; }
-    .stats b { display: block; font-size: clamp(22px, 2.6vw, 34px); font-weight: 700; }
-    .stats span { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(232,236,246,0.5); margin-top: 4px; }
+    analyzer-content p { margin: 22px 0 0; font-size: clamp(15px, 1.25vw, 19px); line-height: 1.6; color: rgba(232,236,246,0.78); max-width: 460px; }
+    analyzer-content p code { font-family: 'JetBrains Mono', monospace; font-size: 0.84em; background: rgba(47,91,208,0.22); color: #b9c8ff; padding: 2px 7px; border-radius: 4px; }
+    analyzer-stats { display: flex; gap: 38px; margin-top: 36px; font-family: 'JetBrains Mono', monospace; }
+    analyzer-stat { display: block; }
+    analyzer-stat b { display: block; font-size: clamp(22px, 2.6vw, 34px); font-weight: 700; }
+    analyzer-stat span { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(232,236,246,0.5); margin-top: 4px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="spectrum" intensity="0.75" density="0.7" speed="1" quality="high"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="spectrum" data-background-intensity="0.75" data-background-density="0.7" data-background-speed="1" data-background-quality="high">
+    <analyzer-scrim></analyzer-scrim>
 
-    <div class="content">
-      <span class="badge"><i></i> capturing</span>
+    <analyzer-content>
+      <analyzer-badge><status-dot></status-dot> capturing</analyzer-badge>
       <h1>Listen in<br><em>the frequency</em> domain.</h1>
-      <p class="lede">
+      <p>
         Real-time FFT over a streaming spectrogram. The whole console is one
         <code>preset="spectrum"</code> &mdash; bars up top, waterfall scrolling
         below, every band straight from your theme ramp.
       </p>
-      <div class="stats">
-        <div><b>1/24</b><span>octave</span></div>
-        <div><b>96 kHz</b><span>sample rate</span></div>
-        <div><b>-120 dB</b><span>noise floor</span></div>
-      </div>
-    </div>
+      <analyzer-stats>
+        <analyzer-stat><b>1/24</b><span>octave</span></analyzer-stat>
+        <analyzer-stat><b>96 kHz</b><span>sample rate</span></analyzer-stat>
+        <analyzer-stat><b>-120 dB</b><span>noise floor</span></analyzer-stat>
+      </analyzer-stats>
+    </analyzer-content>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

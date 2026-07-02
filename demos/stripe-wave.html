@@ -19,34 +19,34 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); -webkit-font-smoothing: antialiased; }
     body { font-family: Inter, -apple-system, system-ui, sans-serif; min-height: 100vh; overflow: hidden; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; }
-
-    bg-wc.bg { position: absolute; inset: 0; }
+    main { position: relative; width: 100vw; height: 100vh; }
 
     /* Vignette so text is comfortable over bright blob centers */
-    .vignette {
-      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    vignette {
+      display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse at 50% 40%, transparent 0%, rgba(10,37,64,0.55) 90%);
     }
 
     /* Top nav */
-    .topbar {
+    header {
       position: absolute; top: 0; left: 0; right: 0; z-index: 8;
       display: flex; justify-content: space-between; align-items: center;
       padding: 24px 36px;
     }
-    .brand { font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
-    .brand .dot { color: var(--color-accent); }
-    .topnav { display: flex; gap: 28px; font-size: 14px; font-weight: 500; }
-    .topnav a { color: rgba(255,255,255,0.78); text-decoration: none; }
-    .topnav a:hover { color: white; }
+    wordmark { display: block; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
+    wordmark brand-dot { display: inline; color: var(--color-accent); }
+    header nav { display: flex; gap: 28px; font-size: 14px; font-weight: 500; }
+    header nav a { color: rgba(255,255,255,0.78); text-decoration: none; }
+    header nav a:hover { color: white; }
 
-    .content {
+    section {
+      display: flex;
       position: absolute; inset: 0; z-index: 5;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      flex-direction: column; justify-content: center; align-items: center;
       text-align: center; padding: 0 6vw;
     }
-    .eyebrow {
+    eyebrow {
+      display: block;
       font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
       color: var(--color-accent); margin-bottom: 22px; font-weight: 600;
     }
@@ -57,25 +57,26 @@
       background: linear-gradient(90deg, #ffffff 0%, var(--color-accent) 55%, var(--color-info) 100%);
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    .lede {
+    section p {
       font-size: clamp(16px, 1.25vw, 19px);
       line-height: 1.6; color: rgba(255,255,255,0.78);
       max-width: 540px; margin: 28px auto 36px;
     }
-    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-    .cta {
+    cta-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    cta-row a {
       padding: 13px 24px; border-radius: 999px;
       font-weight: 600; font-size: 15px;
       text-decoration: none;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
-    .cta.primary { background: var(--color-foreground); color: var(--color-background); box-shadow: 0 10px 30px -10px rgba(255,255,255,0.4); }
-    .cta.secondary { background: rgba(255,255,255,0.07); color: var(--color-foreground); border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(6px); }
-    .cta:hover { transform: translateY(-2px); }
+    cta-row a[data-style="primary"] { background: var(--color-foreground); color: var(--color-background); box-shadow: 0 10px 30px -10px rgba(255,255,255,0.4); }
+    cta-row a[data-style="secondary"] { background: rgba(255,255,255,0.07); color: var(--color-foreground); border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(6px); }
+    cta-row a:hover { transform: translateY(-2px); }
 
-    .pill {
+    info-pill {
+      display: inline-flex;
       position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); z-index: 6;
-      display: inline-flex; align-items: center; gap: 8px;
+      align-items: center; gap: 8px;
       padding: 7px 14px 7px 8px;
       border-radius: 999px;
       background: rgba(255,255,255,0.06);
@@ -83,39 +84,41 @@
       color: rgba(255,255,255,0.78);
       font-size: 13px; backdrop-filter: blur(8px);
     }
-    .pill .badge { background: var(--color-info); color: white; font-size: 11px; padding: 3px 8px; border-radius: 999px; font-weight: 600; letter-spacing: 0.03em; }
-    .pill code { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+    info-pill pill-badge { display: inline-block; background: var(--color-info); color: white; font-size: 11px; padding: 3px 8px; border-radius: 999px; font-weight: 600; letter-spacing: 0.03em; }
+    info-pill code { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
 
-    .nav-back { position: absolute; top: 24px; left: 36px; z-index: 12; }
-    .nav-back a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; }
-    .nav-back a:hover { color: white; }
+    body > nav { position: absolute; top: 24px; left: 36px; z-index: 12; }
+    body > nav a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; }
+    body > nav a:hover { color: white; }
   </style>
 </head>
 <body>
-  <nav class="nav-back"><a href="./" target="_top">&larr; Demos</a></nav>
-  <header class="topbar">
-    <div class="brand">gl<span class="dot">.</span>wc</div>
-    <nav class="topnav">
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <header>
+    <wordmark>gl<brand-dot>.</brand-dot>wc</wordmark>
+    <nav>
       <a href="#">Products</a><a href="#">Pricing</a><a href="#">Docs</a><a href="#">Sign in</a>
     </nav>
   </header>
-  <main class="stage">
-    <bg-wc class="bg" preset="mesh-gradient" intensity="0.72" speed="0.45"></bg-wc>
-    <div class="vignette"></div>
-    <div class="content">
-      <div class="eyebrow">Infrastructure for the internet economy</div>
+  <main data-background="mesh-gradient" data-background-intensity="0.72" data-background-speed="0.45">
+    <vignette></vignette>
+    <section>
+      <eyebrow>Infrastructure for the internet economy</eyebrow>
       <h1>Payments, billing,<br>and revenue, in motion.</h1>
-      <p class="lede">
+      <p>
         A refined mesh &mdash; three theme tokens, one shader, twenty lines of CSS for the surrounding
         chrome. No images, no video, no extra dependencies.
       </p>
-      <div class="cta-row">
-        <a class="cta primary" href="#">Start now &rarr;</a>
-        <a class="cta secondary" href="#">View documentation</a>
-      </div>
-    </div>
-    <div class="pill"><span class="badge">NEW</span><code>preset="mesh-gradient"</code></div>
+      <cta-row>
+        <a data-style="primary" href="#">Start now &rarr;</a>
+        <a data-style="secondary" href="#">View documentation</a>
+      </cta-row>
+    </section>
+    <info-pill><pill-badge>NEW</pill-badge><code>preset="mesh-gradient"</code></info-pill>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

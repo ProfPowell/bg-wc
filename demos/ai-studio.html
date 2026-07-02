@@ -21,86 +21,92 @@
     html, body { margin: 0; padding: 0; background: #06060c; color: var(--color-foreground); overflow: hidden; }
     body { font-family: Inter, system-ui, sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    #bg { position: absolute; inset: 0; z-index: 0; transition: opacity 0.35s ease; }
-    .veil { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    main { position: relative; display: grid; width: 100vw; height: 100vh; }
+    /* Two full-bleed data-background hosts stack via the CSS grid single-cell
+       trick: both occupy grid-area 1/1, z-index sets their order. */
+    studio-backdrop { display: block; grid-area: 1 / 1; z-index: 0; }
+    studio-backdrop#bg-backdrop > bg-wc[data-bg-element] { transition: opacity 0.35s ease; }
+    studio-backdrop[data-layer="grain"] { z-index: 2; pointer-events: none; mix-blend-mode: soft-light; opacity: 0.5; }
+    studio-veil { display: block; position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background: radial-gradient(ellipse at 50% 30%, transparent 0%, rgba(6,6,12,0.55) 95%); }
-    .grain { position: absolute; inset: 0; z-index: 2; pointer-events: none; mix-blend-mode: soft-light; opacity: 0.5; }
 
-    .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 6;
+    header { position: absolute; top: 0; left: 0; right: 0; z-index: 6;
       display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; }
-    .brand { font-weight: 700; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
-    .brand .spark { width: 22px; height: 22px; border-radius: 7px; background: conic-gradient(from 0deg, var(--color-primary), var(--color-accent), var(--color-info), var(--color-primary)); }
-    .topbar a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 13px; }
-    .topbar a:hover { color: #fff; }
+    studio-brand { display: flex; font-weight: 700; letter-spacing: -0.01em; align-items: center; gap: 10px; }
+    studio-brand studio-mark { display: block; width: 22px; height: 22px; border-radius: 7px; background: conic-gradient(from 0deg, var(--color-primary), var(--color-accent), var(--color-info), var(--color-primary)); }
+    header a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 13px; }
+    header a:hover { color: #fff; }
 
-    .center { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 6vw; text-align: center; gap: 22px; }
-    .result-chip {
-      font-size: 12px; letter-spacing: 0.04em; color: rgba(255,255,255,0.7);
+    studio-center { display: flex; position: absolute; inset: 0; z-index: 5; flex-direction: column; align-items: center; justify-content: center; padding: 0 6vw; text-align: center; gap: 22px; }
+    result-chip {
+      display: inline-flex; font-size: 12px; letter-spacing: 0.04em; color: rgba(255,255,255,0.7);
       background: var(--panel); border: 1px solid var(--border); border-radius: 999px;
       padding: 6px 14px; backdrop-filter: blur(10px);
-      display: inline-flex; align-items: center; gap: 8px;
+      align-items: center; gap: 8px;
     }
-    .result-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 8px var(--color-accent); }
-    .result-chip code { font-family: ui-monospace, monospace; color: var(--color-accent); }
+    result-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 8px var(--color-accent); }
+    result-chip code { font-family: ui-monospace, monospace; color: var(--color-accent); }
 
     h1 { font-size: clamp(30px, 5vw, 64px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin: 0; max-width: 18ch;
       background: linear-gradient(100deg, #fff, var(--color-accent) 55%, var(--color-info)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
     /* prompt bar */
-    .prompt {
-      position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); z-index: 6;
+    studio-prompt {
+      display: flex; position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); z-index: 6;
       width: min(680px, 90vw);
       background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
       padding: 14px 16px; backdrop-filter: blur(14px);
-      display: flex; align-items: center; gap: 12px;
+      align-items: center; gap: 12px;
       box-shadow: 0 18px 50px -16px rgba(0,0,0,0.7);
     }
-    .prompt .spark { width: 26px; height: 26px; border-radius: 8px; flex: none;
+    studio-prompt studio-mark { display: block; width: 26px; height: 26px; border-radius: 8px; flex: none;
       background: conic-gradient(from 0deg, var(--color-primary), var(--color-accent), var(--color-info), var(--color-primary));
       animation: spin 4s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    @media (prefers-reduced-motion: reduce){ .prompt .spark { animation: none; } }
-    .prompt .text { flex: 1; text-align: left; font-size: clamp(14px,1.4vw,17px); color: #fff; min-height: 1.3em; }
-    .prompt .text .caret { display: inline-block; width: 2px; height: 1.1em; background: var(--color-accent); vertical-align: -2px; margin-left: 1px; animation: blink 1s steps(2) infinite; }
+    @media (prefers-reduced-motion: reduce){ studio-prompt studio-mark { animation: none; } }
+    prompt-text { display: block; flex: 1; text-align: left; font-size: clamp(14px,1.4vw,17px); color: #fff; min-height: 1.3em; }
+    prompt-text prompt-caret { display: inline-block; width: 2px; height: 1.1em; background: var(--color-accent); vertical-align: -2px; margin-left: 1px; animation: blink 1s steps(2) infinite; }
     @keyframes blink { 50% { opacity: 0; } }
-    .prompt .status { flex: none; font-size: 12px; color: var(--color-accent); display: flex; align-items: center; gap: 7px; min-width: 92px; justify-content: flex-end; }
-    .prompt .status .ring { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--color-accent); border-top-color: transparent; animation: spin 0.7s linear infinite; }
-    .prompt .status.done .ring { border: 2px solid var(--color-accent); animation: none; }
-
-    .nav { position: absolute; top: 18px; left: 28px; z-index: 7; }
+    studio-status { display: flex; flex: none; font-size: 12px; color: var(--color-accent); align-items: center; gap: 7px; min-width: 92px; justify-content: flex-end; }
+    studio-status status-ring { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--color-accent); border-top-color: transparent; animation: spin 0.7s linear infinite; }
+    studio-status[data-state="done"] status-ring { border: 2px solid var(--color-accent); animation: none; }
   </style>
 </head>
 <body>
-  <main class="stage">
-    <bg-wc id="bg" preset="mesh-gradient" intensity="0.6" speed="0.5"></bg-wc>
-    <div class="veil"></div>
+  <main>
+    <studio-backdrop id="bg-backdrop" data-background="mesh-gradient" data-background-intensity="0.6" data-background-speed="0.5"></studio-backdrop>
+    <studio-veil></studio-veil>
 
-    <header class="topbar">
-      <div class="brand"><span class="spark"></span> bg-wc&nbsp;studio</div>
+    <header>
+      <studio-brand><studio-mark></studio-mark> bg-wc&nbsp;studio</studio-brand>
       <a href="./" target="_top">&larr; Demos</a>
     </header>
 
-    <div class="center">
-      <div class="result-chip"><span class="dot"></span> bg-wc-diffusion v1 &middot; <code id="chipPreset">mesh-gradient</code></div>
+    <studio-center>
+      <result-chip><result-dot></result-dot> bg-wc-diffusion v1 &middot; <code id="chipPreset">mesh-gradient</code></result-chip>
       <h1 id="headline">Describe a background. Watch it render.</h1>
-    </div>
+    </studio-center>
 
-    <div class="prompt">
-      <span class="spark"></span>
-      <div class="text"><span id="promptText"></span><span class="caret"></span></div>
-      <div class="status" id="status"><span class="ring"></span><span id="statusLabel">ready</span></div>
-    </div>
+    <studio-prompt>
+      <studio-mark></studio-mark>
+      <prompt-text><span id="promptText"></span><prompt-caret></prompt-caret></prompt-text>
+      <studio-status id="status"><status-ring></status-ring><span id="statusLabel">ready</span></studio-status>
+    </studio-prompt>
 
-    <bg-wc class="grain" preset="grain" intensity="0.45" density="0.7"></bg-wc>
+    <studio-backdrop data-layer="grain" data-background="grain" data-background-intensity="0.45" data-background-density="0.7"></studio-backdrop>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
   <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+
     // A faux "prompt → background" generator: type a prompt, show a spinner,
     // then live-swap the bg-wc preset. bg-wc's runtime preset hot-swap +
     // theme-token reads make each "generation" instant and dependency-free.
-    const bg = document.getElementById('bg');
+    // The data-background binder already injected the real bg-wc element as
+    // the first child of #bg-backdrop; grab that live instance to drive directly.
+    const bgHost = document.getElementById('bg-backdrop');
+    const bg = bgHost.querySelector(':scope > bg-wc[data-bg-element]');
     const promptText = document.getElementById('promptText');
     const status = document.getElementById('status');
     const statusLabel = document.getElementById('statusLabel');
@@ -137,7 +143,7 @@
       while (true) {
         const job = JOBS[i % JOBS.length];
         // type the prompt
-        status.classList.remove('done'); statusLabel.textContent = 'ready';
+        status.removeAttribute('data-state'); statusLabel.textContent = 'ready';
         await typeOut(job.p);
         // generating
         statusLabel.textContent = 'generating';
@@ -151,7 +157,7 @@
         await bg.ready;
         bg.style.opacity = '1';
         chipPreset.textContent = job.preset;
-        status.classList.add('done'); statusLabel.textContent = 'done';
+        status.setAttribute('data-state', 'done'); statusLabel.textContent = 'done';
         headline.textContent = '“' + job.p + '”';
         await sleep(3600);
         i++;

@@ -20,31 +20,30 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'IBM Plex Mono', ui-monospace, monospace; min-height: 100vh; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; }
+    main { position: relative; width: 100vw; height: 100vh; }
 
-    bg-wc.rain {
-      position: absolute; inset: 0;
+    main > bg-wc[data-bg-element] {
       opacity: 0.5;
     }
 
     /* CRT effects */
-    .scanlines {
-      position: absolute; inset: 0; z-index: 6; pointer-events: none;
+    crt-scanlines {
+      display: block; position: absolute; inset: 0; z-index: 6; pointer-events: none;
       background: repeating-linear-gradient(to bottom,
         transparent 0, transparent 2px,
         rgba(0,0,0,0.4) 3px, rgba(0,0,0,0.4) 4px);
       mix-blend-mode: multiply;
     }
-    .vignette {
-      position: absolute; inset: 0; z-index: 4; pointer-events: none;
+    crt-vignette {
+      display: block; position: absolute; inset: 0; z-index: 4; pointer-events: none;
       background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.75) 100%);
     }
-    .glow {
-      position: absolute; inset: 0; z-index: 5; pointer-events: none;
+    crt-glow {
+      display: block; position: absolute; inset: 0; z-index: 5; pointer-events: none;
       background: radial-gradient(circle at 50% 50%, rgba(0,255,136,0.05), transparent 60%);
     }
-    .flicker {
-      position: absolute; inset: 0; z-index: 7; pointer-events: none;
+    crt-flicker {
+      display: block; position: absolute; inset: 0; z-index: 7; pointer-events: none;
       animation: flick 5s infinite;
       background: rgba(0,255,136,0.02);
     }
@@ -53,13 +52,14 @@
       48%, 52% { opacity: 1; }
     }
 
-    .content {
-      position: absolute; inset: 0; z-index: 8;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    term-stage {
+      display: flex; position: absolute; inset: 0; z-index: 8;
+      flex-direction: column; align-items: center; justify-content: center;
       padding: 6vh 4vw;
       gap: 18px;
     }
-    .term {
+    term-window {
+      display: block;
       background: rgba(0, 30, 12, 0.55);
       border: 1px solid rgba(0, 255, 136, 0.45);
       border-radius: 4px;
@@ -71,28 +71,29 @@
       backdrop-filter: blur(3px);
       text-shadow: 0 0 6px var(--glow);
     }
-    .term .bar {
+    term-bar {
       display: flex; align-items: center; gap: 8px;
       margin-bottom: 14px;
       opacity: 0.72; font-size: 11px;
       border-bottom: 1px dashed rgba(0,255,136,0.3);
       padding-bottom: 8px;
     }
-    .term .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-foreground); opacity: 0.55; }
-    .term pre { margin: 0; font-family: inherit; white-space: pre-wrap; word-break: break-all; }
-    .term .p::before { content: "guest@bg-wc:~$ "; opacity: 0.65; }
-    .term .cursor {
+    term-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--color-foreground); opacity: 0.55; }
+    term-window pre { margin: 0; font-family: inherit; white-space: pre-wrap; word-break: break-all; }
+    term-cmd::before { content: "guest@bg-wc:~$ "; opacity: 0.65; }
+    term-cursor {
       display: inline-block; width: 8px; height: 14px;
       background: var(--color-foreground); vertical-align: -2px; margin-left: 2px;
       animation: blink 1s steps(2) infinite;
       box-shadow: 0 0 8px var(--glow);
     }
     @keyframes blink { 50% { opacity: 0; } }
-    .term .dim { opacity: 0.55; }
-    .term .ok { color: var(--color-info); }
-    .term .err { color: #ff5577; text-shadow: 0 0 6px rgba(255,85,119,0.6); }
+    term-dim { opacity: 0.55; }
+    term-ok { color: var(--color-info); }
+    term-err { color: #ff5577; text-shadow: 0 0 6px rgba(255,85,119,0.6); }
 
-    .ascii {
+    ascii-art {
+      display: block;
       font-size: 9.5px;
       line-height: 1.05;
       opacity: 0.42;
@@ -102,39 +103,38 @@
       text-shadow: 0 0 6px var(--glow);
     }
 
-    .nav { position: absolute; top: 18px; left: 22px; z-index: 12; font-size: 12px; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; text-shadow: 0 0 4px var(--glow); }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 18px; left: 22px; z-index: 12; font-size: 12px; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; text-shadow: 0 0 4px var(--glow); }
+    nav a:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <main class="stage">
-    <bg-wc class="rain" preset="particles" intensity="0.55" density="0.9" speed="2.4"></bg-wc>
-    <div class="vignette"></div>
-    <div class="glow"></div>
-    <div class="content">
-      <div class="term">
-        <div class="bar">
-          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <main data-background="particles" data-background-intensity="0.55" data-background-density="0.9" data-background-speed="2.4">
+    <crt-vignette></crt-vignette>
+    <crt-glow></crt-glow>
+    <term-stage>
+      <term-window>
+        <term-bar>
+          <term-dot></term-dot><term-dot></term-dot><term-dot></term-dot>
           <span style="margin-left:8px;">guest@bg-wc:~ &mdash; bash</span>
-        </div>
-<pre><span class="dim">Last login: Sat May 23 03:11:09 on ttys001</span>
-<span class="p">npm install @profpowell/bg-wc</span>
-<span class="dim">+ @profpowell/bg-wc@0.2.0</span>
-<span class="ok">added 1 package, 0 vulnerabilities</span>
-<span class="p">cat &lt;&lt; EOF &gt; hero.html
+        </term-bar>
+<pre><term-dim>Last login: Sat May 23 03:11:09 on ttys001</term-dim>
+<term-cmd>npm install @profpowell/bg-wc</term-cmd>
+<term-dim>+ @profpowell/bg-wc@0.2.0</term-dim>
+<term-ok>added 1 package, 0 vulnerabilities</term-ok>
+<term-cmd>cat &lt;&lt; EOF &gt; hero.html
 &lt;bg-wc preset="particles" speed="2.4"&gt;
   &lt;h1&gt;Terminal mode.&lt;/h1&gt;
 &lt;/bg-wc&gt;
-EOF</span>
-<span class="p">npx serve .</span>
-<span class="dim">Serving!</span>
-<span class="ok">  &middot; Local:    http://localhost:3000</span>
-<span class="ok">  &middot; Network:  http://192.168.1.42:3000</span>
-<span class="p">open http://localhost:3000<span class="cursor"></span></span></pre>
-      </div>
-<div class="ascii">
+EOF</term-cmd>
+<term-cmd>npx serve .</term-cmd>
+<term-dim>Serving!</term-dim>
+<term-ok>  &middot; Local:    http://localhost:3000</term-ok>
+<term-ok>  &middot; Network:  http://192.168.1.42:3000</term-ok>
+<term-cmd>open http://localhost:3000<term-cursor></term-cursor></term-cmd></pre>
+      </term-window>
+<ascii-art>
    ▄████  ██▓        █     █░ ▄████▄
   ██▒ ▀█▒▓██▒       ▓█░ █ ░█░▒██▀ ▀█
  ▒██░▄▄▄░▒██░       ▒█░ █ ░█ ▒▓█    ▄
@@ -144,11 +144,14 @@ EOF</span>
    ░   ░ ░ ░ ▒  ░     ▒ ░ ░    ░  ▒
  ░ ░   ░   ░ ░        ░   ░  ░
        ░     ░  ░       ░    ░ ░
-</div>
-    </div>
-    <div class="flicker"></div>
-    <div class="scanlines"></div>
+</ascii-art>
+    </term-stage>
+    <crt-flicker></crt-flicker>
+    <crt-scanlines></crt-scanlines>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

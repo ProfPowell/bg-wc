@@ -19,57 +19,59 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Outfit', system-ui, sans-serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    mesh-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(12,10,23,0.2) 0%, rgba(12,10,23,0.82) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    nav a:hover { opacity: 1; }
 
-    .content { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
-    .eyebrow { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.26em; color: var(--color-info); text-transform: uppercase; margin-bottom: 18px; }
+    mesh-content { display: block; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    mesh-eyebrow { display: block; font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.26em; color: var(--color-info); text-transform: uppercase; margin-bottom: 18px; }
     h1 { font-weight: 700; font-size: clamp(64px, 15vw, 250px); line-height: 0.9; letter-spacing: -0.03em; margin: 0;
       background: linear-gradient(120deg, var(--color-info) 0%, var(--color-primary) 45%, var(--color-accent) 100%);
       -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .lede { max-width: 540px; margin: 24px auto 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.6; color: rgba(241,236,255,0.8); font-weight: 300; }
-    .lede code { font-family: 'Space Mono', monospace; font-size: 0.84em; background: rgba(122,92,255,0.2); color: #d7ccff; padding: 2px 7px; border-radius: 4px; }
-    .cta { margin-top: 32px; }
-    .cta a { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
+    mesh-content p { max-width: 540px; margin: 24px auto 0; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.6; color: rgba(241,236,255,0.8); font-weight: 300; }
+    mesh-content p code { font-family: 'Space Mono', monospace; font-size: 0.84em; background: rgba(122,92,255,0.2); color: #d7ccff; padding: 2px 7px; border-radius: 4px; }
+    mesh-cta { display: block; margin-top: 32px; }
+    mesh-cta a { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
       padding: 14px 26px; border-radius: 999px; background: linear-gradient(120deg, var(--color-primary), var(--color-accent)); color: #0c0a17; font-weight: 700; }
 
-    .telemetry { position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
+    mesh-telemetry { display: flex; position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
       font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--color-info); opacity: 0.8; flex-wrap: wrap; gap: 12px; }
-    .telemetry span { color: var(--color-foreground); opacity: 0.45; padding-right: 6px; }
+    mesh-stat { display: block; }
+    mesh-key { display: inline; color: var(--color-foreground); opacity: 0.45; padding-right: 6px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="delaunay" intensity="0.7" density="0.55" speed="0.9"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="delaunay" data-background-intensity="0.7" data-background-density="0.55" data-background-speed="0.9">
+    <mesh-scrim></mesh-scrim>
 
-    <div class="content">
-      <div class="eyebrow">generative &middot; low-poly</div>
+    <mesh-content>
+      <mesh-eyebrow>generative &middot; low-poly</mesh-eyebrow>
       <h1>Facet</h1>
-      <p class="lede">
+      <p>
         A seeded point set, triangulated once, then warped on tiny orbits so the mesh
         ripples without ever re-triangulating. <code>preset="delaunay"</code> &mdash;
         every facet shaded from its centroid.
       </p>
-      <div class="cta"><a href="#">Generate a set</a></div>
-    </div>
+      <mesh-cta><a href="#">Generate a set</a></mesh-cta>
+    </mesh-content>
 
-    <div class="telemetry">
-      <div><span>preset</span>delaunay</div>
-      <div><span>method</span>bowyer&ndash;watson</div>
-      <div><span>render</span>canvas2d</div>
-      <div><span>palette</span>theme</div>
-    </div>
+    <mesh-telemetry>
+      <mesh-stat><mesh-key>preset</mesh-key>delaunay</mesh-stat>
+      <mesh-stat><mesh-key>method</mesh-key>bowyer&ndash;watson</mesh-stat>
+      <mesh-stat><mesh-key>render</mesh-key>canvas2d</mesh-stat>
+      <mesh-stat><mesh-key>palette</mesh-key>theme</mesh-stat>
+    </mesh-telemetry>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

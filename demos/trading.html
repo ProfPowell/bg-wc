@@ -23,67 +23,72 @@
     html, body { margin: 0; padding: 0; background: #03050a; color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'IBM Plex Mono', ui-monospace, monospace; min-height: 100vh; }
 
-    .desk { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.tape { position: absolute; inset: 0; z-index: 0; opacity: 0.9; }
+    main { position: relative; width: 100vw; height: 100vh; }
+    /* The data-background host is the sole in-flow child, sized to fill the
+       desk; the binder's injected bg-wc is absolute-fill inside it. */
+    tape-field { display: block; width: 100%; height: 100%; opacity: 0.9; }
 
-    .topbar {
-      position: absolute; top: 0; left: 0; right: 0; z-index: 4; height: 44px;
-      display: flex; align-items: center; gap: 18px; padding: 0 20px;
+    desk-topbar {
+      display: flex; position: absolute; top: 0; left: 0; right: 0; z-index: 4; height: 44px;
+      align-items: center; gap: 18px; padding: 0 20px;
       background: linear-gradient(180deg, rgba(5,8,15,0.95), rgba(5,8,15,0.5));
       border-bottom: 1px solid var(--border);
       font-family: Inter, sans-serif; font-weight: 700; letter-spacing: 0.04em;
     }
-    .topbar .live { color: var(--color-primary); display: flex; align-items: center; gap: 8px; }
-    .topbar .live .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); box-shadow: 0 0 8px var(--color-primary); animation: blink 1.2s steps(2) infinite; }
+    market-status { display: flex; color: var(--color-primary); align-items: center; gap: 8px; }
+    status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); box-shadow: 0 0 8px var(--color-primary); animation: blink 1.2s steps(2) infinite; }
     @keyframes blink { 50% { opacity: 0.3; } }
-    .topbar .idx { font-family: 'IBM Plex Mono', monospace; font-size: 13px; opacity: 0.85; }
-    .topbar .idx b.up { color: var(--color-primary); } .topbar .idx b.dn { color: var(--color-accent); }
-    .topbar .clock { margin-left: auto; font-family: 'IBM Plex Mono', monospace; opacity: 0.8; }
+    index-quote { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 13px; opacity: 0.85; }
+    index-quote b[data-trend="up"] { color: var(--color-primary); }
+    index-quote b[data-trend="dn"] { color: var(--color-accent); }
+    desk-clock { display: inline-block; margin-left: auto; font-family: 'IBM Plex Mono', monospace; opacity: 0.8; }
 
-    .panel {
+    section[data-panel] {
       position: absolute; z-index: 4; background: var(--panel); border: 1px solid var(--border);
       border-radius: 10px; overflow: hidden; backdrop-filter: blur(8px);
       box-shadow: 0 14px 40px -16px rgba(0,0,0,0.7);
     }
-    .panel .hd { font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    panel-head { display: block; font-family: Inter, sans-serif; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
       color: rgba(215,230,255,0.7); padding: 8px 12px; border-bottom: 1px solid var(--border); }
-    .panel bg-wc { display: block; width: 100%; height: calc(100% - 31px); }
+    panel-canvas { display: block; width: 100%; height: calc(100% - 31px); }
 
-    .chart { left: 24px; bottom: 24px; width: min(380px, 42vw); height: 230px; }
-    .map   { right: 24px; bottom: 24px; width: min(380px, 42vw); height: 230px; }
+    section[data-panel="chart"] { left: 24px; bottom: 24px; width: min(380px, 42vw); height: 230px; }
+    section[data-panel="map"]   { right: 24px; bottom: 24px; width: min(380px, 42vw); height: 230px; }
 
-    .nav { position: absolute; top: 56px; left: 22px; z-index: 6; }
-    .nav a { color: var(--color-info); text-decoration: none; font-size: 12px; letter-spacing: 0.12em; opacity: 0.8; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 56px; left: 22px; z-index: 6; }
+    nav a { color: var(--color-info); text-decoration: none; font-size: 12px; letter-spacing: 0.12em; opacity: 0.8; }
+    nav a:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <main class="desk">
+  <main>
     <!-- full-bleed scrolling tape -->
-    <bg-wc class="tape" preset="trades" density="0.65" speed="1.1"></bg-wc>
+    <tape-field data-background="trades" data-background-density="0.65" data-background-speed="1.1"></tape-field>
 
-    <div class="topbar">
-      <span class="live"><span class="dot"></span>MARKETS LIVE</span>
-      <span class="idx">S&amp;P <b class="up">+0.62%</b></span>
-      <span class="idx">NDX <b class="up">+1.04%</b></span>
-      <span class="idx">DJI <b class="dn">&minus;0.18%</b></span>
-      <span class="idx">VIX <b class="dn">13.7</b></span>
-      <span class="clock" id="clock">09:41:00 ET</span>
-    </div>
+    <desk-topbar>
+      <market-status><status-dot></status-dot>MARKETS LIVE</market-status>
+      <index-quote>S&amp;P <b data-trend="up">+0.62%</b></index-quote>
+      <index-quote>NDX <b data-trend="up">+1.04%</b></index-quote>
+      <index-quote>DJI <b data-trend="dn">&minus;0.18%</b></index-quote>
+      <index-quote>VIX <b data-trend="dn">13.7</b></index-quote>
+      <desk-clock id="clock">09:41:00 ET</desk-clock>
+    </desk-topbar>
 
-    <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+    <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-    <section class="panel chart">
-      <div class="hd">Portfolio &middot; intraday</div>
-      <bg-wc preset="dashboard" intensity="0.7" speed="1"></bg-wc>
+    <section data-panel="chart">
+      <panel-head>Portfolio &middot; intraday</panel-head>
+      <panel-canvas data-background="dashboard" data-background-intensity="0.7" data-background-speed="1"></panel-canvas>
     </section>
-    <section class="panel map">
-      <div class="hd">Order flow &middot; global</div>
-      <bg-wc preset="vectormap" density="0.6" speed="0.7"></bg-wc>
+    <section data-panel="map">
+      <panel-head>Order flow &middot; global</panel-head>
+      <panel-canvas data-background="vectormap" data-background-density="0.6" data-background-speed="0.7"></panel-canvas>
     </section>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
-  <script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+
     // ticking clock for flavor
     const el = document.getElementById('clock');
     let s = 9 * 3600 + 41 * 60;

@@ -19,43 +19,45 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Oswald', sans-serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    levels-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: linear-gradient(180deg, rgba(16,11,10,0.86) 0%, transparent 38%, transparent 60%, rgba(16,11,10,0.9) 100%); }
 
-    .nav { position: absolute; top: 22px; left: 30px; z-index: 12; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 22px; left: 30px; z-index: 12; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
+    nav a:hover { opacity: 1; }
 
-    .head { position: absolute; top: 28px; left: 0; right: 0; z-index: 6; text-align: center; }
-    .head h1 { font-weight: 600; font-size: clamp(28px, 5vw, 60px); letter-spacing: 0.3em; margin: 0; text-transform: uppercase; }
-    .head .sub { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.34em; color: var(--color-accent); text-transform: uppercase; margin-top: 8px; }
+    levels-head { display: block; position: absolute; top: 28px; left: 0; right: 0; z-index: 6; text-align: center; }
+    levels-head h1 { font-weight: 600; font-size: clamp(28px, 5vw, 60px); letter-spacing: 0.3em; margin: 0; text-transform: uppercase; }
+    levels-head levels-sub { display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.34em; color: var(--color-accent); text-transform: uppercase; margin-top: 8px; }
 
-    .foot { position: absolute; bottom: 26px; left: 0; right: 0; z-index: 6; display: flex; justify-content: center; gap: clamp(14px, 3vw, 38px); flex-wrap: wrap;
+    levels-foot { display: flex; position: absolute; bottom: 26px; left: 0; right: 0; z-index: 6; justify-content: center; gap: clamp(14px, 3vw, 38px); flex-wrap: wrap;
       font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: rgba(239,232,223,0.6); }
-    .foot b { color: var(--color-accent); font-weight: 400; }
+    levels-stat { display: block; }
+    levels-foot b { color: var(--color-accent); font-weight: 400; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="vumeter" intensity="0.75" density="0.55" speed="1"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="vumeter" data-background-intensity="0.75" data-background-density="0.55" data-background-speed="1">
+    <levels-scrim></levels-scrim>
 
-    <div class="head">
+    <levels-head>
       <h1>Levels</h1>
-      <div class="sub">two-track mastering &middot; analog summing</div>
-    </div>
+      <levels-sub>two-track mastering &middot; analog summing</levels-sub>
+    </levels-head>
 
-    <div class="foot">
-      <div>peak &middot; <b>-3 dBFS</b></div>
-      <div>tape &middot; <b>+0 VU @ 250 nWb/m</b></div>
-      <div>ballistics &middot; <b>300 ms</b></div>
-    </div>
+    <levels-foot>
+      <levels-stat>peak &middot; <b>-3 dBFS</b></levels-stat>
+      <levels-stat>tape &middot; <b>+0 VU @ 250 nWb/m</b></levels-stat>
+      <levels-stat>ballistics &middot; <b>300 ms</b></levels-stat>
+    </levels-foot>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

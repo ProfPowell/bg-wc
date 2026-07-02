@@ -19,45 +19,47 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Poppins', system-ui, sans-serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { width: 100vw; height: 100vh; }
+
+    surf-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: linear-gradient(180deg, rgba(42,28,58,0.5) 0%, transparent 30%, transparent 64%, rgba(42,28,58,0.55) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
-    .nav a:hover { opacity: 1; }
+    body > nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    body > nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
+    body > nav a:hover { opacity: 1; }
 
-    .content { position: absolute; left: 0; right: 0; top: clamp(60px, 14vh, 150px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
-    .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.32em; color: var(--color-warning); text-transform: uppercase; margin-bottom: 14px; }
-    h1 { font-weight: 800; font-size: clamp(50px, 11vw, 168px); line-height: 0.92; letter-spacing: -0.03em; margin: 0; text-transform: uppercase;
+    surf-report { display: block; position: absolute; left: 0; right: 0; top: clamp(60px, 14vh, 150px); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    surf-conditions { display: block; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.32em; color: var(--color-warning); text-transform: uppercase; margin-bottom: 14px; }
+    surf-report h1 { font-weight: 800; font-size: clamp(50px, 11vw, 168px); line-height: 0.92; letter-spacing: -0.03em; margin: 0; text-transform: uppercase;
       color: var(--color-foreground); text-shadow: 0 4px 36px rgba(239,93,111,0.4); }
-    .lede { max-width: 500px; margin: 16px auto 0; font-size: clamp(15px, 1.25vw, 19px); line-height: 1.6; color: rgba(253,238,222,0.82); font-weight: 300; }
-    .lede code { font-family: 'Space Mono', monospace; font-size: 0.82em; background: rgba(255,180,74,0.16); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
-    .cta { margin-top: 26px; }
-    .cta a { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
+    surf-report p { max-width: 500px; margin: 16px auto 0; font-size: clamp(15px, 1.25vw, 19px); line-height: 1.6; color: rgba(253,238,222,0.82); font-weight: 300; }
+    surf-report p code { font-family: 'Space Mono', monospace; font-size: 0.82em; background: rgba(255,180,74,0.16); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
+    surf-cta { display: block; margin-top: 26px; }
+    surf-cta a { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
       padding: 14px 28px; border-radius: 999px; background: var(--color-accent); color: #2a1c3a; font-weight: 700; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="palms" mode="silhouette" intensity="0.6" density="0.6" speed="1"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="palms" data-background-mode="silhouette" data-background-intensity="0.6" data-background-density="0.6" data-background-speed="1">
+    <surf-scrim></surf-scrim>
 
-    <div class="content">
-      <div class="eyebrow">surf report &middot; 6&ndash;8ft, light offshore</div>
+    <surf-report>
+      <surf-conditions>surf report &middot; 6&ndash;8ft, light offshore</surf-conditions>
       <h1>Offshore</h1>
-      <p class="lede">
+      <p>
         Dawn patrol, every day it's worth it. The palms on the point are
         <code>preset="palms"</code> &mdash; fronds bending in the morning breeze
         against the sunrise.
       </p>
-      <div class="cta"><a href="#">Today's forecast</a></div>
-    </div>
+      <surf-cta><a href="#">Today's forecast</a></surf-cta>
+    </surf-report>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

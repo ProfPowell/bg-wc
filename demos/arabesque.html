@@ -18,70 +18,78 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Cormorant Garamond', Georgia, serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .vignette { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    /* The data-background host is the sole in-flow child, sized to fill the
+       stage; the binder's injected bg-wc is absolute-fill inside it. */
+    girih-field { display: block; width: 100%; height: 100%; }
+    girih-vignette { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse 60% 55% at 50% 48%, transparent 35%, rgba(10,15,20,0.82) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Major Mono Display', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Major Mono Display', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.7; }
+    nav a:hover { opacity: 1; }
 
-    .content { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
-    .eyebrow { font-family: 'Major Mono Display', monospace; font-size: 13px; letter-spacing: 0.24em; color: var(--color-accent); opacity: 0.92; margin-bottom: 18px; text-transform: lowercase; }
+    girih-content { display: block; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 6; text-align: center; padding: 0 clamp(20px, 4vw, 80px); }
+    girih-eyebrow { display: block; font-family: 'Major Mono Display', monospace; font-size: 13px; letter-spacing: 0.24em; color: var(--color-accent); opacity: 0.92; margin-bottom: 18px; text-transform: lowercase; }
     h1 { font-weight: 600; font-size: clamp(64px, 13vw, 220px); letter-spacing: 0.02em; line-height: 0.95; margin: 0; text-transform: uppercase;
       background: linear-gradient(180deg, #fff7e6 0%, var(--color-primary) 70%, var(--color-accent) 120%);
       -webkit-background-clip: text; background-clip: text; color: transparent;
       filter: drop-shadow(0 6px 28px rgba(230,180,80,0.35)); }
-    .lede { max-width: 560px; margin: 22px auto 0; font-family: 'Cormorant Garamond', serif; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.55; color: rgba(243,234,214,0.82); }
-    .lede code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(255,255,255,0.08); padding: 2px 7px; border-radius: 4px; }
+    girih-content p { max-width: 560px; margin: 22px auto 0; font-family: 'Cormorant Garamond', serif; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.55; color: rgba(243,234,214,0.82); }
+    girih-content p code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(255,255,255,0.08); padding: 2px 7px; border-radius: 4px; }
 
-    .telemetry { position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
+    girih-telemetry { display: flex; position: absolute; bottom: 28px; left: 0; right: 0; z-index: 6; justify-content: space-between; padding: 0 clamp(28px, 6vw, 80px);
       font-family: 'Major Mono Display', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--color-accent); opacity: 0.82; flex-wrap: wrap; gap: 12px; }
-    .telemetry span { color: var(--color-foreground); opacity: 0.5; padding-right: 6px; }
+    telemetry-stat { display: block; }
+    girih-telemetry span { color: var(--color-foreground); opacity: 0.5; padding-right: 6px; }
 
-    .modes { position: absolute; top: 22px; right: 28px; z-index: 12; display: flex; gap: 8px; }
-    .modes button { font-family: 'Major Mono Display', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--color-foreground);
+    mode-switch { display: flex; position: absolute; top: 22px; right: 28px; z-index: 12; gap: 8px; }
+    mode-switch button { font-family: 'Major Mono Display', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--color-foreground);
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); border-radius: 99px; padding: 6px 13px; cursor: pointer; text-transform: lowercase; }
-    .modes button[aria-pressed="true"] { background: var(--color-primary); border-color: transparent; color: #1a1206; }
+    mode-switch button[aria-pressed="true"] { background: var(--color-primary); border-color: transparent; color: #1a1206; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <div class="modes" role="group" aria-label="Lattice fold">
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <mode-switch role="group" aria-label="Lattice fold">
     <button data-mode="8fold" aria-pressed="true">8-fold</button>
     <button data-mode="12fold" aria-pressed="false">12-fold</button>
     <button data-mode="6fold" aria-pressed="false">6-fold</button>
-  </div>
+  </mode-switch>
 
-  <main class="stage">
-    <bg-wc class="bg" id="bg" preset="girih" mode="8fold" intensity="0.62" density="0.5" speed="0.6"></bg-wc>
-    <div class="vignette"></div>
+  <main>
+    <girih-field id="bg-field" data-background="girih" data-background-mode="8fold" data-background-intensity="0.62" data-background-density="0.5" data-background-speed="0.6"></girih-field>
+    <girih-vignette></girih-vignette>
 
-    <div class="content">
-      <div class="eyebrow">// islamic geometry &middot; webgl</div>
+    <girih-content>
+      <girih-eyebrow>// islamic geometry &middot; webgl</girih-eyebrow>
       <h1>Arabesque</h1>
-      <p class="lede">
+      <p>
         An endless lattice of <em>girih</em> star polygons and interlaced strapwork, drawn crisply
         at any scale in a single fragment shader. <code>preset="girih"</code> tessellates the plane
         and tints it from your theme tokens.
       </p>
-    </div>
+    </girih-content>
 
-    <div class="telemetry">
-      <div><span>preset</span>girih</div>
-      <div><span>render</span>webgl</div>
-      <div><span>tessellation</span>periodic</div>
-      <div><span>palette</span>theme</div>
-    </div>
+    <girih-telemetry>
+      <telemetry-stat><span>preset</span>girih</telemetry-stat>
+      <telemetry-stat><span>render</span>webgl</telemetry-stat>
+      <telemetry-stat><span>tessellation</span>periodic</telemetry-stat>
+      <telemetry-stat><span>palette</span>theme</telemetry-stat>
+    </girih-telemetry>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
   <script type="module">
-    const bg = document.getElementById('bg');
-    for (const btn of document.querySelectorAll('.modes button')) {
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+
+    // The data-background binder injected the real bg-wc element as the sole
+    // child of #bg-field; grab it to drive the mode attribute live.
+    const bgHost = document.getElementById('bg-field');
+    const bg = bgHost.querySelector(':scope > bg-wc[data-bg-element]');
+    for (const btn of document.querySelectorAll('mode-switch button')) {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.modes button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        document.querySelectorAll('mode-switch button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
         bg.setAttribute('mode', btn.dataset.mode);
       });
     }

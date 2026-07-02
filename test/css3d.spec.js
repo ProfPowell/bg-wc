@@ -256,6 +256,6 @@ test('dimensional demo renders both presets with content on top', async ({ page 
     for (const el of document.querySelectorAll('bg-wc')) await el.ready;
   });
   // Content slot is visible above the stage.
-  await expect(page.locator('.overlay h1').first()).toBeVisible();
+  await expect(page.locator('scene-overlay h1').first()).toBeVisible();
   await page.screenshot({ path: 'test-results/dimensional-demo.png', fullPage: false });
 });

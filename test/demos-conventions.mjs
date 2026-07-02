@@ -17,3 +17,15 @@ test('every demo back-link to the hub carries target="_top"', () => {
   }
   assert.deepEqual([...offenders].sort(), []);
 });
+
+test('demo pages follow the vocabulary idiom (no div, no class, binder-only backgrounds)', () => {
+  const offenders = [];
+  for (const f of readdirSync('demos')) {
+    if (!f.endsWith('.html') || f === 'index.html') continue;
+    const html = readFileSync(`demos/${f}`, 'utf8');
+    if (/<div\b/.test(html)) offenders.push(`${f}: <div>`);
+    if (/\bclass="/.test(html)) offenders.push(`${f}: class=`);
+    if (/<bg-wc\b/.test(html)) offenders.push(`${f}: literal <bg-wc> (use data-background)`);
+  }
+  assert.deepEqual(offenders, []);
+});

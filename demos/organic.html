@@ -19,23 +19,24 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); }
     body { font-family: 'Cormorant Garamond', Georgia, serif; min-height: 100vh; overflow-x: hidden; }
 
-    .stage {
+    main {
       display: grid; grid-template-columns: 1.05fr 1fr;
       min-height: 100vh;
     }
-    @media (max-width: 820px) { .stage { grid-template-columns: 1fr; grid-template-rows: auto auto; } }
+    @media (max-width: 820px) { main { grid-template-columns: 1fr; grid-template-rows: auto auto; } }
 
-    .text {
-      padding: 9vh clamp(28px, 5vw, 68px);
-      display: flex; flex-direction: column; justify-content: space-between; gap: 36px;
+    specimen-notes {
+      display: flex; padding: 9vh clamp(28px, 5vw, 68px);
+      flex-direction: column; justify-content: space-between; gap: 36px;
       position: relative; z-index: 2;
     }
-    .meta {
+    specimen-meta {
+      display: block;
       font-family: Inter, sans-serif;
       font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em;
       line-height: 1.7; opacity: 0.7;
     }
-    h1 {
+    hgroup h1 {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(48px, 6.5vw, 96px);
       font-weight: 500;
@@ -44,8 +45,8 @@
       letter-spacing: -0.015em;
       margin: 0;
     }
-    h1 .em { color: var(--color-info); font-weight: 700; font-style: normal; }
-    .lede {
+    hgroup h1 em { color: var(--color-info); font-weight: 700; font-style: normal; }
+    hgroup p {
       max-width: 480px;
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(18px, 1.4vw, 22px);
@@ -53,7 +54,7 @@
       opacity: 0.85;
       margin: 24px 0 0;
     }
-    .specimen-list {
+    specimen-notes dl {
       display: grid; grid-template-columns: max-content 1fr;
       gap: 6px 24px; margin: 0;
       font-family: Inter, sans-serif;
@@ -61,22 +62,21 @@
       border-top: 1px solid rgba(42,38,32,0.25);
       padding-top: 20px;
     }
-    .specimen-list dt { font-weight: 600; opacity: 0.6; }
-    .specimen-list dd { margin: 0; opacity: 0.95; }
+    specimen-notes dt { font-weight: 600; opacity: 0.6; }
+    specimen-notes dd { margin: 0; opacity: 0.95; }
 
     /* Right panel: soft warm mesh with botanical silhouettes */
-    .field {
-      position: relative; overflow: hidden;
+    botanical-plate {
+      display: block; overflow: hidden;
       background: linear-gradient(180deg, #f4ecd8 0%, #e6dcc0 100%);
       border-left: 1px solid rgba(42,38,32,0.18);
     }
-    @media (max-width: 820px) { .field { border-left: none; border-top: 1px solid rgba(42,38,32,0.18); min-height: 60vh; } }
-    .field bg-wc {
-      position: absolute; inset: 0;
+    @media (max-width: 820px) { botanical-plate { border-left: none; border-top: 1px solid rgba(42,38,32,0.18); min-height: 60vh; } }
+    botanical-plate bg-wc {
       mix-blend-mode: multiply;
       opacity: 0.55;
     }
-    svg.plants {
+    botanical-plate svg {
       position: absolute; inset: 0; width: 100%; height: 100%; display: block;
       animation: sway 9s ease-in-out infinite;
       transform-origin: bottom center;
@@ -85,10 +85,10 @@
       0%, 100% { transform: rotate(-1deg); }
       50%      { transform: rotate(1.2deg); }
     }
-    @media (prefers-reduced-motion: reduce) { svg.plants { animation: none; } }
+    @media (prefers-reduced-motion: reduce) { botanical-plate svg { animation: none; } }
 
-    .label-tag {
-      position: absolute; top: 28px; right: 28px; z-index: 4;
+    plate-label {
+      display: block; position: absolute; top: 28px; right: 28px; z-index: 4;
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-size: 14px;
@@ -99,40 +99,39 @@
       backdrop-filter: blur(4px);
     }
 
-    .nav {
+    body > nav {
       position: absolute; top: 24px; left: 28px; z-index: 12;
       font-family: Inter, sans-serif; font-size: 11px;
       letter-spacing: 0.18em; text-transform: uppercase;
     }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
-    .nav a:hover { opacity: 1; }
+    body > nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.6; }
+    body > nav a:hover { opacity: 1; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <main class="stage">
-    <section class="text">
-      <div class="meta">06 / ORGANIC<br>Specimen No. 009</div>
-      <div>
-        <h1>Live like a<br><em class="em">houseplant.</em></h1>
-        <p class="lede">
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <main>
+    <specimen-notes>
+      <specimen-meta>06 / ORGANIC<br>Specimen No. 009</specimen-meta>
+      <hgroup>
+        <h1>Live like a<br><em>houseplant.</em></h1>
+        <p>
           A slow web for a slow afternoon. Warm earth tones, hand-set serifs, and a render
           loop that pauses the moment the room does &mdash; off-screen, tab hidden, or when the
           battery starts to wilt.
         </p>
-      </div>
-      <dl class="specimen-list">
+      </hgroup>
+      <dl>
         <dt>Form</dt><dd>Trailing &middot; vining</dd>
         <dt>Habit</dt><dd>Quiet, indirect</dd>
         <dt>Light</dt><dd>Theme tokens</dd>
         <dt>Render</dt><dd>WebGL &middot; mesh-gradient</dd>
         <dt>Water</dt><dd>Once per RAF</dd>
       </dl>
-    </section>
-    <section class="field">
-      <div class="label-tag">Botanical Index, Pl. IX</div>
-      <bg-wc preset="mesh-gradient" intensity="0.55" speed="0.22"></bg-wc>
-      <svg class="plants" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    </specimen-notes>
+    <botanical-plate data-background="mesh-gradient" data-background-intensity="0.55" data-background-speed="0.22">
+      <plate-label>Botanical Index, Pl. IX</plate-label>
+      <svg viewBox="0 0 800 1000" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
         <!-- monstera-ish leaves growing from bottom -->
         <g fill="#2d3d24">
           <path d="M 80,1010 C 100,820 40,720 90,560 C 130,440 220,440 260,520 C 290,580 280,680 260,760 C 245,830 250,920 150,1010 Z" opacity="0.95"/>
@@ -152,8 +151,11 @@
         <circle cx="240" cy="580" r="7" fill="#a44432"/>
         <circle cx="430" cy="620" r="8" fill="#c79a3e"/>
       </svg>
-    </section>
+    </botanical-plate>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

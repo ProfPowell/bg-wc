@@ -18,14 +18,13 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; background: var(--color-background); color: var(--color-foreground); }
     body { font-family: 'IBM Plex Sans', system-ui, sans-serif; }
-    .crumb { position: fixed; top: 20px; left: 28px; z-index: 20; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
-    .crumb a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
-    .crumb a:hover { opacity: 1; }
-    section { min-height: 100vh; }
-    section bg-wc { display: block; min-height: 100vh; }
-    .copy { min-height: 100vh; display: flex; align-items: flex-end; padding: clamp(28px, 6vw, 90px); }
-    .copy .plate { max-width: 540px; background: rgba(13,21,18,0.78); padding: 24px 28px; border: 1px solid rgba(61,220,151,0.35); border-radius: 6px; }
-    .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-primary); margin: 0 0 10px; }
+    nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+    nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    nav a:hover { opacity: 1; }
+    section { position: relative; min-height: 100vh; }
+    station-copy { display: flex; align-items: flex-end; min-height: 100vh; padding: clamp(28px, 6vw, 90px); }
+    station-plate { display: block; max-width: 540px; background: rgba(13,21,18,0.78); padding: 24px 28px; border: 1px solid rgba(61,220,151,0.35); border-radius: 6px; }
+    p[data-eyebrow] { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-primary); margin: 0 0 10px; }
     h1 { font-weight: 600; font-size: clamp(42px, 7.5vw, 96px); line-height: 0.98; margin: 0 0 12px; }
     h2 { font-weight: 600; font-size: clamp(28px, 4vw, 50px); margin: 0 0 10px; }
     p { margin: 0; line-height: 1.65; font-weight: 300; opacity: 0.92; }
@@ -33,58 +32,51 @@
   </style>
 </head>
 <body>
-  <nav class="crumb"><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
 
-  <section>
-    <bg-wc preset="chladni" intensity="0.65" seed="12">
-      <div class="copy"><div class="plate">
-        <p class="eyebrow">FS-7 &middot; Long-term observation</p>
-        <h1>Field Station&nbsp;7</h1>
-        <p>Instruments hum at resonance; sand finds the nodes. Splash page courtesy of <code>preset="chladni"</code>.</p>
-      </div></div>
-    </bg-wc>
+  <section data-background="chladni" data-background-intensity="0.65" data-background-seed="12">
+    <station-copy><station-plate>
+      <p data-eyebrow>FS-7 &middot; Long-term observation</p>
+      <h1>Field Station&nbsp;7</h1>
+      <p>Instruments hum at resonance; sand finds the nodes. Splash page courtesy of <code>preset="chladni"</code>.</p>
+    </station-plate></station-copy>
   </section>
 
-  <section>
-    <bg-wc preset="mycelium" intensity="0.6" seed="3">
-      <div class="copy"><div class="plate">
-        <p class="eyebrow">Plot B &middot; Under the leaf litter</p>
-        <h2>The Wood Wide Web</h2>
-        <p>Hyphal threads mapping the shortest path to everything. <code>preset="mycelium"</code></p>
-      </div></div>
-    </bg-wc>
+  <section data-background="mycelium" data-background-intensity="0.6" data-background-seed="3">
+    <station-copy><station-plate>
+      <p data-eyebrow>Plot B &middot; Under the leaf litter</p>
+      <h2>The Wood Wide Web</h2>
+      <p>Hyphal threads mapping the shortest path to everything. <code>preset="mycelium"</code></p>
+    </station-plate></station-copy>
   </section>
 
-  <section>
-    <bg-wc preset="phyllotaxis" intensity="0.6" seed="17" speed="0.7">
-      <div class="copy"><div class="plate">
-        <p class="eyebrow">Greenhouse &middot; Specimen 137.5&deg;</p>
-        <h2>Golden Angles</h2>
-        <p>Every seed head runs the same tight packing algorithm. <code>preset="phyllotaxis"</code></p>
-      </div></div>
-    </bg-wc>
+  <section data-background="phyllotaxis" data-background-intensity="0.6" data-background-seed="17" data-background-speed="0.7">
+    <station-copy><station-plate>
+      <p data-eyebrow>Greenhouse &middot; Specimen 137.5&deg;</p>
+      <h2>Golden Angles</h2>
+      <p>Every seed head runs the same tight packing algorithm. <code>preset="phyllotaxis"</code></p>
+    </station-plate></station-copy>
   </section>
 
-  <section>
-    <bg-wc preset="orbital" intensity="0.6" seed="9" speed="0.8">
-      <div class="copy"><div class="plate">
-        <p class="eyebrow">Roof array &middot; Night shift</p>
-        <h2>Two-Body Problems</h2>
-        <p>Tracked objects on clean conic sections, for once. <code>preset="orbital"</code></p>
-      </div></div>
-    </bg-wc>
+  <section data-background="orbital" data-background-intensity="0.6" data-background-seed="9" data-background-speed="0.8">
+    <station-copy><station-plate>
+      <p data-eyebrow>Roof array &middot; Night shift</p>
+      <h2>Two-Body Problems</h2>
+      <p>Tracked objects on clean conic sections, for once. <code>preset="orbital"</code></p>
+    </station-plate></station-copy>
   </section>
 
-  <section>
-    <bg-wc preset="boids" intensity="0.6" seed="26">
-      <div class="copy"><div class="plate">
-        <p class="eyebrow">Estuary &middot; Dusk survey</p>
-        <h2>Murmuration</h2>
-        <p>Separation, alignment, cohesion &mdash; three rules and ten thousand decisions a second. <code>preset="boids"</code></p>
-      </div></div>
-    </bg-wc>
+  <section data-background="boids" data-background-intensity="0.6" data-background-seed="26">
+    <station-copy><station-plate>
+      <p data-eyebrow>Estuary &middot; Dusk survey</p>
+      <h2>Murmuration</h2>
+      <p>Separation, alignment, cohesion &mdash; three rules and ten thousand decisions a second. <code>preset="boids"</code></p>
+    </station-plate></station-copy>
   </section>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

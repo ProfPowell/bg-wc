@@ -19,31 +19,31 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Orbitron', system-ui, sans-serif; min-height: 100vh; }
 
-    .stage { position: relative; width: 100vw; height: 100vh; }
-
-    /* Distorted neon grid */
-    bg-wc.grid { position: absolute; inset: 0; }
+    main { position: relative; width: 100vw; height: 100vh; }
 
     /* Top gradient for atmosphere */
-    .atmos {
+    atmos-glow {
+      display: block;
       position: absolute; left: 0; right: 0; top: 0; height: 70vh;
       background: radial-gradient(ellipse at 50% 110%, rgba(255,0,128,0.35), transparent 55%);
       z-index: 2; pointer-events: none;
     }
-    .atmos.bottom {
+    atmos-glow[data-tone="bottom"] {
       top: auto; bottom: 0;
       background: radial-gradient(ellipse at 50% -10%, rgba(0,255,225,0.25), transparent 55%);
     }
 
     /* Scanlines */
-    .scan {
+    scan-lines {
+      display: block;
       position: absolute; inset: 0; z-index: 8; pointer-events: none;
       background: repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(0,0,0,0.4) 3px, rgba(0,0,0,0.4) 4px);
       mix-blend-mode: multiply;
     }
 
     /* Big kanji backdrop */
-    .kanji-bg {
+    kanji-mark {
+      display: block;
       position: absolute; right: -2vw; top: 50%; transform: translateY(-50%);
       font-family: 'Noto Sans JP', sans-serif;
       font-weight: 900;
@@ -57,26 +57,28 @@
       paint-order: stroke fill;
     }
 
-    .content {
-      position: absolute; inset: 0; z-index: 6;
-      display: flex; flex-direction: column; justify-content: center;
+    hud-panel {
+      display: flex; position: absolute; inset: 0; z-index: 6;
+      flex-direction: column; justify-content: center;
       padding: 0 clamp(28px, 6vw, 80px);
     }
 
-    .label-row {
+    status-row {
       display: flex; gap: 14px; align-items: center;
       font-family: 'Share Tech Mono', monospace;
       font-size: 12px; letter-spacing: 0.15em;
       color: var(--color-accent);
       margin-bottom: 22px;
     }
-    .label-row .blink { animation: blink 1.4s steps(2) infinite; color: var(--color-info); }
+    status-blink { display: inline; animation: blink 1.4s steps(2) infinite; color: var(--color-info); }
     @keyframes blink { 50% { opacity: 0.2; } }
-    .label-row .pill {
+    status-pill {
+      display: inline-block;
       padding: 4px 10px; border: 1px solid currentColor;
     }
+    status-time { display: inline; }
 
-    h1 {
+    hud-panel h1 {
       font-family: 'Orbitron', sans-serif;
       font-weight: 900;
       font-size: clamp(48px, 9vw, 132px);
@@ -88,14 +90,14 @@
       color: var(--color-foreground);
     }
     /* Chromatic aberration glitch */
-    h1::before, h1::after {
+    hud-panel h1::before, hud-panel h1::after {
       content: attr(data-text);
       position: absolute; left: 0; top: 0;
       width: 100%;
       mix-blend-mode: screen;
     }
-    h1::before { color: var(--color-primary); transform: translate(-3px, 0); animation: glitch-x 4s steps(40) infinite; }
-    h1::after  { color: var(--color-accent); transform: translate(3px, 0);  animation: glitch-x 4s steps(40) infinite reverse; }
+    hud-panel h1::before { color: var(--color-primary); transform: translate(-3px, 0); animation: glitch-x 4s steps(40) infinite; }
+    hud-panel h1::after  { color: var(--color-accent); transform: translate(3px, 0);  animation: glitch-x 4s steps(40) infinite reverse; }
     @keyframes glitch-x {
       0%, 90%, 100% { transform: translate(-3px, 0); clip-path: inset(0); }
       92%           { transform: translate(-6px, 0); clip-path: inset(20% 0 60% 0); }
@@ -103,12 +105,12 @@
       96%           { transform: translate(-2px, 0); clip-path: inset(0); }
     }
     @media (prefers-reduced-motion: reduce) {
-      h1::before, h1::after, .label-row .blink { animation: none; }
+      hud-panel h1::before, hud-panel h1::after, status-blink { animation: none; }
     }
 
-    h1 .accent { color: var(--color-info); }
+    accent-word { display: inline; color: var(--color-info); }
 
-    .lede {
+    hud-panel p {
       font-family: 'Share Tech Mono', monospace;
       font-size: clamp(13px, 1vw, 15px);
       line-height: 1.6;
@@ -116,9 +118,10 @@
       opacity: 0.85;
       margin: 24px 0 32px;
     }
+    cmd-echo { display: inline; color: var(--color-info); }
 
-    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
-    .cta {
+    cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    cta-row a {
       font-family: 'Share Tech Mono', monospace;
       font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
       padding: 12px 22px;
@@ -130,23 +133,24 @@
       transition: all 0.15s;
       position: relative;
     }
-    .cta:hover { background: rgba(0,255,225,0.15); box-shadow: 0 0 14px rgba(0,255,225,0.4); }
-    .cta.alt { color: var(--color-primary); border-color: var(--color-primary); background: rgba(255,0,128,0.05); }
-    .cta.alt:hover { background: rgba(255,0,128,0.15); box-shadow: 0 0 14px rgba(255,0,128,0.4); }
+    cta-row a:hover { background: rgba(0,255,225,0.15); box-shadow: 0 0 14px rgba(0,255,225,0.4); }
+    cta-row a[data-tone="alt"] { color: var(--color-primary); border-color: var(--color-primary); background: rgba(255,0,128,0.05); }
+    cta-row a[data-tone="alt"]:hover { background: rgba(255,0,128,0.15); box-shadow: 0 0 14px rgba(255,0,128,0.4); }
 
-    .corners {
-      position: absolute; inset: 0; z-index: 7; pointer-events: none;
+    hud-corners {
+      display: block; position: absolute; inset: 0; z-index: 7; pointer-events: none;
     }
-    .corners .c {
-      position: absolute; width: 28px; height: 28px;
+    hud-corner {
+      display: block; position: absolute; width: 28px; height: 28px;
       border: 2px solid var(--color-accent);
     }
-    .corners .tl { top: 22px; left: 22px; border-right: 0; border-bottom: 0; }
-    .corners .tr { top: 22px; right: 22px; border-left: 0; border-bottom: 0; }
-    .corners .bl { bottom: 22px; left: 22px; border-right: 0; border-top: 0; }
-    .corners .br { bottom: 22px; right: 22px; border-left: 0; border-top: 0; }
+    hud-corner[data-pos="tl"] { top: 22px; left: 22px; border-right: 0; border-bottom: 0; }
+    hud-corner[data-pos="tr"] { top: 22px; right: 22px; border-left: 0; border-bottom: 0; }
+    hud-corner[data-pos="bl"] { bottom: 22px; left: 22px; border-right: 0; border-top: 0; }
+    hud-corner[data-pos="br"] { bottom: 22px; right: 22px; border-left: 0; border-top: 0; }
 
-    .hud {
+    hud-status {
+      display: block;
       position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
       font-family: 'Share Tech Mono', monospace; font-size: 11px;
       letter-spacing: 0.2em;
@@ -156,44 +160,46 @@
       text-align: center;
     }
 
-    .nav { position: absolute; top: 50px; left: 56px; z-index: 12; font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-accent); text-decoration: none; opacity: 0.85; }
-    .nav a:hover { opacity: 1; text-shadow: 0 0 6px var(--color-accent); }
+    nav { position: absolute; top: 50px; left: 56px; z-index: 12; font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-accent); text-decoration: none; opacity: 0.85; }
+    nav a:hover { opacity: 1; text-shadow: 0 0 6px var(--color-accent); }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
-  <main class="stage">
-    <bg-wc class="grid" preset="warp" intensity="0.85" density="0.55" speed="0.7"></bg-wc>
-    <div class="atmos"></div>
-    <div class="atmos bottom"></div>
-    <div class="kanji-bg" aria-hidden="true">電脳</div>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
+  <main data-background="warp" data-background-intensity="0.85" data-background-density="0.55" data-background-speed="0.7">
+    <atmos-glow></atmos-glow>
+    <atmos-glow data-tone="bottom"></atmos-glow>
+    <kanji-mark aria-hidden="true">電脳</kanji-mark>
 
-    <div class="content">
-      <div class="label-row">
-        <span class="pill">SYS / 09</span>
-        <span class="blink">● ONLINE</span>
-        <span>NEO-TOKYO &middot; 03:42 JST</span>
-      </div>
-      <h1 data-text="SYSTEM/ONLINE">SYSTEM/<span class="accent">ONLINE</span></h1>
-      <p class="lede">
-        $ <span style="color:var(--color-info)">bg-wc preset="warp"</span> &nbsp;//&nbsp;
+    <hud-panel>
+      <status-row>
+        <status-pill>SYS / 09</status-pill>
+        <status-blink>&#9679; ONLINE</status-blink>
+        <status-time>NEO-TOKYO &middot; 03:42 JST</status-time>
+      </status-row>
+      <h1 data-text="SYSTEM/ONLINE">SYSTEM/<accent-word>ONLINE</accent-word></h1>
+      <p>
+        $ <cmd-echo>bg-wc preset="warp"</cmd-echo> &nbsp;//&nbsp;
         warped neon grid, chromatic glitch text, scanlines &mdash; a vertical kanji watermarks
         the wall behind. The render loop pauses whenever the operator looks away.
       </p>
-      <div class="cta-row">
-        <a class="cta" href="#">JACK IN &rsaquo;</a>
-        <a class="cta alt" href="#">DOWNLOAD .ICE</a>
-      </div>
-    </div>
+      <cta-row>
+        <a href="#">JACK IN &rsaquo;</a>
+        <a data-tone="alt" href="#">DOWNLOAD .ICE</a>
+      </cta-row>
+    </hud-panel>
 
-    <div class="corners">
-      <div class="c tl"></div><div class="c tr"></div>
-      <div class="c bl"></div><div class="c br"></div>
-    </div>
-    <div class="hud">// bg-wc &middot; warp 0.85 / 0.55 / 0.7 &middot; render: webgl &middot; tokens inherited from :host //</div>
-    <div class="scan"></div>
+    <hud-corners>
+      <hud-corner data-pos="tl"></hud-corner><hud-corner data-pos="tr"></hud-corner>
+      <hud-corner data-pos="bl"></hud-corner><hud-corner data-pos="br"></hud-corner>
+    </hud-corners>
+    <hud-status>// bg-wc &middot; warp 0.85 / 0.55 / 0.7 &middot; render: webgl &middot; tokens inherited from :host //</hud-status>
+    <scan-lines></scan-lines>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

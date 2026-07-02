@@ -18,50 +18,52 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
     body { font-family: 'Playfair Display', Georgia, serif; min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
-    bg-wc.bg { position: absolute; inset: 0; }
-    .scrim { position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    main { position: relative; width: 100vw; height: 100vh; }
+    bench-scrim { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: radial-gradient(ellipse 70% 65% at 38% 50%, transparent 25%, rgba(20,16,10,0.9) 100%); }
 
-    .nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
-    .nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
-    .nav a:hover { opacity: 1; }
+    nav { position: absolute; top: 24px; left: 32px; z-index: 12; font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.2em; }
+    nav a { color: var(--color-foreground); text-decoration: none; opacity: 0.65; }
+    nav a:hover { opacity: 1; }
 
-    .panel { position: absolute; right: clamp(24px, 6vw, 100px); top: 50%; transform: translateY(-50%); z-index: 6; max-width: 480px;
+    bench-panel { display: block; position: absolute; right: clamp(24px, 6vw, 100px); top: 50%; transform: translateY(-50%); z-index: 6; max-width: 480px;
       border: 1px solid rgba(217,168,67,0.35); background: rgba(20,16,10,0.72); backdrop-filter: blur(3px); padding: clamp(28px, 4vw, 52px); }
-    .eyebrow { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: var(--color-warning); text-transform: uppercase; margin-bottom: 16px; }
+    bench-eyebrow { display: block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: var(--color-warning); text-transform: uppercase; margin-bottom: 16px; }
     h1 { font-weight: 700; font-size: clamp(40px, 5.6vw, 76px); line-height: 1.0; letter-spacing: -0.01em; margin: 0;
       background: linear-gradient(170deg, #fdf6e3 0%, var(--color-warning) 65%, var(--color-accent) 115%);
       -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .lede { margin: 20px 0 0; font-size: clamp(15px, 1.2vw, 19px); line-height: 1.65; color: rgba(236,227,210,0.82); font-style: italic; }
-    .lede code { font-family: 'Space Mono', monospace; font-style: normal; font-size: 0.8em; background: rgba(217,168,67,0.12); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
-    .spec { margin-top: 26px; font-family: 'Space Mono', monospace; font-size: 11.5px; letter-spacing: 0.1em; line-height: 2.1; color: rgba(236,227,210,0.62); }
-    .spec b { color: var(--color-warning); font-weight: 400; padding-right: 12px; }
+    bench-panel p { margin: 20px 0 0; font-size: clamp(15px, 1.2vw, 19px); line-height: 1.65; color: rgba(236,227,210,0.82); font-style: italic; }
+    bench-panel p code { font-family: 'Space Mono', monospace; font-style: normal; font-size: 0.8em; background: rgba(217,168,67,0.12); color: var(--color-warning); padding: 2px 7px; border-radius: 4px; }
+    bench-spec { display: block; margin-top: 26px; font-family: 'Space Mono', monospace; font-size: 11.5px; letter-spacing: 0.1em; line-height: 2.1; color: rgba(236,227,210,0.62); }
+    bench-row { display: block; }
+    bench-row b { color: var(--color-warning); font-weight: 400; padding-right: 12px; }
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="./" target="_top">&larr; Demos</a></nav>
+  <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-  <main class="stage">
-    <bg-wc class="bg" preset="clockwork" intensity="0.7" density="0.6" speed="0.9"></bg-wc>
-    <div class="scrim"></div>
+  <main data-background="clockwork" data-background-intensity="0.7" data-background-density="0.6" data-background-speed="0.9">
+    <bench-scrim></bench-scrim>
 
-    <div class="panel">
-      <div class="eyebrow">atelier &middot; bench n&deg; 3</div>
+    <bench-panel>
+      <bench-eyebrow>atelier &middot; bench n&deg; 3</bench-eyebrow>
       <h1>Escapement &amp; Sons</h1>
-      <p class="lede">
+      <p>
         Eleven movements a year, finished by hand. The train behind this page is
         honest too &mdash; <code>preset="clockwork"</code>, every meshing pair
         ratio-locked, one wheel ticking.
       </p>
-      <div class="spec">
-        <div><b>cal. 7</b> manual wind &middot; 46h reserve</div>
-        <div><b>train</b> ratio-locked &middot; phase-aligned</div>
-        <div><b>escape</b> 2 ticks / second &middot; slight recoil</div>
-      </div>
-    </div>
+      <bench-spec>
+        <bench-row><b>cal. 7</b> manual wind &middot; 46h reserve</bench-row>
+        <bench-row><b>train</b> ratio-locked &middot; phase-aligned</bench-row>
+        <bench-row><b>escape</b> 2 ticks / second &middot; slight recoil</bench-row>
+      </bench-spec>
+    </bench-panel>
   </main>
 
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

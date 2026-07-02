@@ -19,24 +19,25 @@
     html, body { margin: 0; padding: 0; background: var(--color-background); color: var(--color-foreground); }
     body { font-family: 'Space Mono', ui-monospace, monospace; min-height: 100vh; overflow-x: hidden; }
 
-    .stage {
+    main {
       display: grid;
       grid-template-rows: auto auto 1fr auto;
       min-height: 100vh;
       border: 4px solid var(--color-foreground);
     }
 
-    .top {
+    file-header {
       display: flex; justify-content: space-between; align-items: flex-end; gap: 20px;
       padding: 18px 24px 14px;
       border-bottom: 4px solid var(--color-foreground);
       font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
     }
-    .top .meta { line-height: 1.6; }
-    .top .num { font-size: clamp(40px, 7vw, 84px); font-weight: 700; line-height: 0.8; letter-spacing: -0.04em; }
+    file-meta { display: block; line-height: 1.6; }
+    file-number { display: block; font-size: clamp(40px, 7vw, 84px); font-weight: 700; line-height: 0.8; letter-spacing: -0.04em; }
 
     /* Hazard / construction stripe */
-    .stripe {
+    hazard-stripe {
+      display: block;
       height: 28px;
       background: repeating-linear-gradient(45deg,
         var(--color-accent) 0 24px,
@@ -44,26 +45,26 @@
       border-bottom: 4px solid var(--color-foreground);
     }
 
-    .main {
+    file-body {
       display: grid; grid-template-columns: 1.35fr 1fr;
     }
     @media (max-width: 780px) {
-      .main { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+      file-body { grid-template-columns: 1fr; grid-template-rows: auto auto; }
     }
-    .col-left {
+    file-notes {
+      display: flex;
       padding: 36px 28px 28px;
       border-right: 4px solid var(--color-foreground);
-      display: flex; flex-direction: column; justify-content: space-between; gap: 32px;
+      flex-direction: column; justify-content: space-between; gap: 32px;
     }
     @media (max-width: 780px) {
-      .col-left { border-right: none; border-bottom: 4px solid var(--color-foreground); }
+      file-notes { border-right: none; border-bottom: 4px solid var(--color-foreground); }
     }
-    .col-right {
-      position: relative; min-height: 60vh;
+    sample-slab {
+      display: block; position: relative; min-height: 60vh;
     }
-    .col-right bg-wc { display: block; width: 100%; height: 100%; }
-    .col-right .stamp {
-      position: absolute; top: 18px; right: 22px; z-index: 4;
+    slab-stamp {
+      display: block; position: absolute; top: 18px; right: 22px; z-index: 4;
       background: var(--color-primary); color: var(--color-background);
       padding: 6px 12px;
       font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700;
@@ -79,75 +80,78 @@
       text-transform: uppercase;
       margin: 0;
     }
-    h1 .stop {
+    h1 stop-mark {
       background: var(--color-primary); color: var(--color-background);
       padding: 0 14px;
       display: inline-block;
     }
 
-    .body-copy { max-width: 38ch; font-size: 14px; line-height: 1.65; }
-    .body-copy hr { border: 0; border-top: 2px solid var(--color-foreground); margin: 18px 0; }
-    .body-copy code {
+    copy-block { display: block; max-width: 38ch; font-size: 14px; line-height: 1.65; }
+    copy-block hr { border: 0; border-top: 2px solid var(--color-foreground); margin: 18px 0; }
+    copy-block code {
       background: var(--color-foreground); color: var(--color-background);
       padding: 1px 6px; font-size: 0.92em;
     }
 
-    .specs {
+    dl {
       display: grid; grid-template-columns: max-content 1fr; gap: 4px 20px;
       font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
       border-top: 2px solid var(--color-foreground);
       padding-top: 14px;
     }
-    .specs dt { opacity: 0.55; }
-    .specs dd { margin: 0; font-weight: 700; }
+    dt { opacity: 0.55; }
+    dd { margin: 0; font-weight: 700; }
 
-    .bottom {
+    file-footer {
+      display: flex;
       padding: 14px 24px;
       border-top: 4px solid var(--color-foreground);
-      display: flex; justify-content: space-between; gap: 16px;
+      justify-content: space-between; gap: 16px;
       font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
       flex-wrap: wrap;
     }
-    .bottom a { color: var(--color-foreground); text-decoration: underline; }
+    file-footer a { color: var(--color-foreground); text-decoration: underline; }
   </style>
 </head>
 <body>
-  <main class="stage">
-    <div class="top">
-      <div class="meta">
-        <div>FILE / 05 &middot; BRUTALIST</div>
-        <div>BG-WC &times; NOISE</div>
-      </div>
-      <div class="num">B/05</div>
-    </div>
-    <div class="stripe"></div>
-    <div class="main">
-      <div class="col-left">
-        <h1>NO<br>CHROME.<br><span class="stop">NO ROUND.</span><br>STRUCTURE.</h1>
-        <div class="body-copy">
+  <main>
+    <file-header>
+      <file-meta>
+        <p>FILE / 05 &middot; BRUTALIST</p>
+        <p>BG-WC &times; NOISE</p>
+      </file-meta>
+      <file-number>B/05</file-number>
+    </file-header>
+    <hazard-stripe></hazard-stripe>
+    <file-body>
+      <file-notes>
+        <h1>NO<br>CHROME.<br><stop-mark>NO ROUND.</stop-mark><br>STRUCTURE.</h1>
+        <copy-block>
           A web component, exposed. The <code>noise</code> preset is poured into the slab on the right
           unmodified &mdash; two theme tokens, drifting fractals, no shadow, no glass, no smoothing.
           <hr>
-          <dl class="specs">
+          <dl>
             <dt>PRESET</dt><dd>NOISE</dd>
             <dt>RENDERER</dt><dd>WEBGL</dd>
             <dt>BUNDLE</dt><dd>&lt; 1 KB GZ</dd>
             <dt>FALLBACK</dt><dd>STATIC FRAME</dd>
             <dt>STRUCTURE</dt><dd>EXPOSED</dd>
           </dl>
-        </div>
-      </div>
-      <div class="col-right">
-        <div class="stamp">SLAB</div>
-        <bg-wc preset="noise" intensity="0.85" density="0.55" speed="0.4"></bg-wc>
-      </div>
-    </div>
-    <div class="bottom">
+        </copy-block>
+      </file-notes>
+      <sample-slab data-background="noise" data-background-intensity="0.85" data-background-density="0.55" data-background-speed="0.4">
+        <slab-stamp>SLAB</slab-stamp>
+      </sample-slab>
+    </file-body>
+    <file-footer>
       <span><a href="./" target="_top">&larr; Demos</a></span>
       <span>VANILLA BREEZE / INTEGRATION LAYER</span>
       <span>MMXXVI</span>
-    </div>
+    </file-footer>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>

@@ -23,80 +23,77 @@
       font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
     }
     body { min-height: 100vh; }
-    .stage { position: relative; width: 100vw; height: 100vh; }
+    main { position: relative; width: 100vw; height: 100vh; }
 
-    bg-wc.flow {
-      position: absolute; inset: 0;
-      display: block;
-      pointer-events: none;
-    }
-
-    .content {
-      position: absolute; z-index: 5;
+    brief-panel {
+      display: block; position: absolute; z-index: 5;
       top: 50%; left: 8vw;
       transform: translateY(-50%);
       max-width: 640px;
     }
-    h1 {
+    brief-panel h1 {
       font-size: clamp(2.5rem, 6vw, 5rem);
       letter-spacing: -0.025em;
       line-height: 1.04;
       margin: 0 0 1.25rem;
       font-weight: 300;
     }
-    h1 strong { font-weight: 700; color: var(--color-primary); }
-    .lede {
+    brief-panel h1 strong { font-weight: 700; color: var(--color-primary); }
+    brief-panel p {
       font-size: clamp(1rem, 1.6vw, 1.25rem);
       color: rgba(230, 244, 247, 0.78);
       margin: 0 0 2rem;
       line-height: 1.55;
     }
-    .meta {
+    meta-row {
       display: flex; gap: 1.5rem;
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.16em;
       color: rgba(230, 244, 247, 0.55);
     }
-    .meta span::before {
+    meta-tag {
+      display: block;
+    }
+    meta-tag::before {
       content: ""; display: inline-block;
       width: 6px; height: 6px;
       background: var(--color-primary);
       margin-right: 8px; vertical-align: middle;
     }
 
-    .corner-back {
-      position: absolute; z-index: 6;
-      top: 24px; left: 28px;
+    nav { position: absolute; z-index: 6; top: 24px; left: 28px; }
+    nav a {
       font-size: 11px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: rgba(230, 244, 247, 0.55);
       text-decoration: none;
     }
-    .corner-back:hover { color: var(--color-primary); }
+    nav a:hover { color: var(--color-primary); }
   </style>
 </head>
 <body>
-  <main class="stage">
-    <bg-wc class="flow" preset="flowlines" density="0.6" intensity="0.55" speed="0.35"></bg-wc>
+  <main data-background="flowlines" data-background-density="0.6" data-background-intensity="0.55" data-background-speed="0.35">
+    <nav><a href="./" target="_top">&larr; Demos</a></nav>
 
-    <a class="corner-back" href="./" target="_top">&larr; Demos</a>
-
-    <div class="content">
+    <brief-panel>
       <h1>Website <strong>Redesign</strong>.</h1>
-      <p class="lede">
+      <p>
         Thin streamlines flow across a dark canvas, tracing the slow
         rhythm of a 2D vector field. Same component, no SVG, no library
         soup &mdash; just <code>preset="flowlines"</code>.
       </p>
-      <div class="meta">
-        <span>bg-wc &times; flowlines</span>
-        <span>Canvas2D</span>
-        <span>theme-aware</span>
-      </div>
-    </div>
+      <meta-row>
+        <meta-tag>bg-wc &times; flowlines</meta-tag>
+        <meta-tag>Canvas2D</meta-tag>
+        <meta-tag>theme-aware</meta-tag>
+      </meta-row>
+    </brief-panel>
   </main>
-  <script type="module" src="../src/bg-wc.js"></script>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
 </body>
 </html>
