@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Craft Fair &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* County craft fair. The hall is a grid of stalls; each stall's craft is
+       painted by its data-background attribute. Vocabulary elements carry the
+       structure — no divs, no classes, variants ride on data-*. */
+    :root {
+      --color-background: #fdf6ec;  /* calico cream */
+      --color-foreground: #4a2c1a;  /* walnut */
+      --color-primary: #c94f3d;     /* cherry bunting */
+      --color-accent: #3f8f7a;      /* spruce teal */
+      --color-info: #e0a52e;        /* mustard yarn */
+    }
+    html, body { margin: 0; background: var(--color-foreground); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: Quicksand, system-ui, sans-serif; height: 100vh; padding: 16px; }
+    main { height: 100%; }
+
+    fair-hall {
+      display: grid; width: 100%; height: 100%; gap: 14px;
+      grid-template-columns: 1.2fr 1fr 1fr; grid-template-rows: 1fr 1fr;
+    }
+    craft-stall { display: block; position: relative; overflow: hidden; border: 4px solid var(--color-foreground); border-radius: 10px; background: var(--color-background); }
+    craft-stall[data-plot="corner"] { grid-row: 1 / 3; }
+
+    stall-sign {
+      display: block; position: absolute; top: 14px; left: 16px; max-width: 78%;
+      background: var(--color-background); border: 3px solid var(--color-foreground); border-radius: 8px;
+      padding: 8px 18px 10px; transform: rotate(-2deg);
+      font-family: Caveat, cursive; font-weight: 700; font-size: clamp(24px, 3vw, 44px); line-height: 1;
+      box-shadow: 4px 4px 0 rgba(74, 44, 26, 0.35);
+    }
+    stall-sign small { display: block; font-family: Quicksand, sans-serif; font-weight: 600; font-size: clamp(10px, 0.9vw, 13px); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; color: var(--color-accent); }
+
+    price-tag {
+      display: block; position: absolute; right: 12px; bottom: 12px;
+      background: var(--color-info); border: 3px solid var(--color-foreground); border-radius: 6px 18px 18px 6px;
+      padding: 6px 14px 6px 18px; transform: rotate(3deg);
+      font-family: Caveat, cursive; font-weight: 700; font-size: clamp(18px, 2vw, 30px); line-height: 1;
+    }
+    price-tag[data-deal] { background: var(--color-primary); color: var(--color-background); transform: rotate(-4deg); }
+
+    body > nav { position: absolute; top: 30px; right: 36px; z-index: 10; transform: rotate(2deg); }
+    body > nav a {
+      display: block; background: var(--color-background); color: var(--color-foreground);
+      border: 3px solid var(--color-foreground); border-radius: 8px; padding: 5px 12px;
+      box-shadow: 3px 3px 0 rgba(74, 44, 26, 0.35);
+      text-decoration: none; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <fair-hall>
+      <!-- Corner booth: the quilting circle gets the big table -->
+      <craft-stall data-plot="corner" data-background="quilt" data-background-intensity="0.65" data-background-seed="12" data-background-speed="0.6">
+        <stall-sign>Grandma&rsquo;s Quilts <small>log cabin &middot; flying geese &middot; hand-tied</small></stall-sign>
+        <price-tag>$45 the throw</price-tag>
+      </craft-stall>
+      <craft-stall data-background="crochet" data-background-intensity="0.6" data-background-seed="4" data-background-speed="0.6">
+        <stall-sign>Granny Squares <small>acrylic, sincerity included</small></stall-sign>
+        <price-tag data-deal>3 for $10</price-tag>
+      </craft-stall>
+      <craft-stall data-background="pegboard" data-background-intensity="0.6" data-background-seed="9" data-background-speed="0.7">
+        <stall-sign>The Tool Wall <small>every hook labeled, nothing returned</small></stall-sign>
+        <price-tag>make an offer</price-tag>
+      </craft-stall>
+      <craft-stall data-background="domino" data-background-intensity="0.6" data-background-seed="27" data-background-speed="0.8">
+        <stall-sign>The Bone Yard <small>chain reactions on the hour</small></stall-sign>
+        <price-tag>free to watch</price-tag>
+      </craft-stall>
+      <craft-stall data-background="scandi" data-background-intensity="0.6" data-background-seed="7" data-background-speed="0.6">
+        <stall-sign>Nordic Folk Prints <small>hygge by the yard</small></stall-sign>
+        <price-tag data-deal>2 kr</price-tag>
+      </craft-stall>
+    </fair-hall>
+  </main>
+  <nav><a href="./index.html">&larr; bg-wc demos</a></nav>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>

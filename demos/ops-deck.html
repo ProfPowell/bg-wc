@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ops Deck &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Chakra+Petch:wght@600&display=swap" rel="stylesheet">
+  <style>
+    /* A night-shift instrument deck. Each panel is an instrument whose face is
+       painted by data-background; the vocabulary elements are the console. */
+    :root {
+      --color-background: #0a1420;  /* deck night */
+      --color-foreground: #cfe8f2;  /* phosphor white */
+      --color-primary: #35e0c2;     /* trace teal */
+      --color-accent: #ffb347;      /* caution amber */
+      --color-info: #4aa8ff;        /* telemetry blue */
+    }
+    html, body { margin: 0; background: #05090f; color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Share Tech Mono', monospace; height: 100vh; padding: 16px; }
+    main { height: 100%; }
+
+    ops-deck {
+      display: grid; width: 100%; height: 100%; gap: 12px;
+      grid-template-columns: 1.4fr 1fr; grid-template-rows: 1fr 1fr;
+      border: 1px solid rgba(53, 224, 194, 0.4); padding: 12px;
+    }
+    deck-panel { display: block; position: relative; overflow: hidden; border: 1px solid rgba(53, 224, 194, 0.35); background: var(--color-background); }
+    deck-panel[data-span="tall"] { grid-row: 1 / 3; }
+
+    panel-label {
+      display: block; position: absolute; top: 10px; left: 12px;
+      font-family: 'Chakra Petch', sans-serif; font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--color-primary); background: rgba(10, 20, 32, 0.75); padding: 4px 10px;
+      border-left: 3px solid var(--color-primary);
+    }
+    panel-label[data-alert] { color: var(--color-accent); border-left-color: var(--color-accent); }
+
+    panel-readout {
+      display: block; position: absolute; right: 12px; bottom: 10px;
+      font-size: 13px; letter-spacing: 0.08em;
+      background: rgba(10, 20, 32, 0.75); padding: 4px 10px;
+      color: var(--color-foreground); opacity: 0.9;
+    }
+    panel-readout::before { content: "▮ "; color: var(--color-primary); }
+    panel-readout[data-trend="drift"]::before { content: "▲ "; color: var(--color-accent); }
+
+    body > nav { position: absolute; top: 26px; right: 34px; z-index: 10; }
+    body > nav a { color: var(--color-foreground); opacity: 0.7; text-decoration: none; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; }
+    body > nav a:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <main>
+    <ops-deck>
+      <!-- Main trace: the ridgeline stack gets the full column -->
+      <deck-panel data-span="tall" data-background="waveform" data-background-intensity="0.65" data-background-seed="31" data-background-speed="0.8">
+        <panel-label>CH-1 &middot; Pulse Stack</panel-label>
+        <panel-readout>81 traces &middot; nominal</panel-readout>
+      </deck-panel>
+      <deck-panel data-background="scatter" data-background-intensity="0.6" data-background-seed="6" data-background-speed="0.7">
+        <panel-label>CH-2 &middot; Cluster Field</panel-label>
+        <panel-readout data-trend="drift">3 clusters &middot; drifting</panel-readout>
+      </deck-panel>
+      <deck-panel data-background="wordcloud" data-background-intensity="0.6" data-background-seed="14" data-background-speed="0.7"
+                  data-background-text="SIGNAL|NOISE|DRIFT|LOCK|SWEEP|GAIN|PHASE|SYNC|ECHO|CARRIER|BURST|IDLE">
+        <panel-label data-alert>CH-3 &middot; Chatter</panel-label>
+        <panel-readout>12 terms &middot; cycling</panel-readout>
+      </deck-panel>
+    </ops-deck>
+  </main>
+  <nav><a href="./index.html">&larr; bg-wc demos</a></nav>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>

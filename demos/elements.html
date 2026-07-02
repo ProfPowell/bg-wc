@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Elements of Motion &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* Six geometric plates after Byrne's Euclid: each full-viewport section is
+       a plate (vanilla-breeze cover primitive), the figure itself painted by
+       data-background, with a small caption card pinned to a corner via the
+       plate-label vocabulary element. Unlayered flavor beats VB's layers. */
+    :root {
+      --color-background: #f5efdf;  /* laid paper */
+      --color-foreground: #22201c;  /* letterpress ink */
+      --color-primary: #c8392e;     /* Byrne red */
+      --color-accent: #2b53b8;      /* Byrne blue */
+      --color-info: #e3b71f;        /* Byrne yellow */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: 'EB Garamond', Georgia, serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    plate-label {
+      display: block; position: absolute; max-width: 380px;
+      background: var(--color-background); border: 1px solid var(--color-foreground);
+      box-shadow: 4px 4px 0 rgba(34, 32, 28, 0.18);
+      padding: 18px 22px; font-size: 17px; line-height: 1.55;
+    }
+    plate-label[data-at="tl"] { top: clamp(60px, 9vh, 88px); left: clamp(24px, 5vw, 72px); }
+    plate-label[data-at="tr"] { top: clamp(60px, 9vh, 88px); right: clamp(24px, 5vw, 72px); }
+    plate-label[data-at="bl"] { bottom: clamp(24px, 6vh, 64px); left: clamp(24px, 5vw, 72px); }
+    plate-label[data-at="br"] { bottom: clamp(24px, 6vh, 64px); right: clamp(24px, 5vw, 72px); }
+
+    plate-no { display: block; font-variant: small-caps; letter-spacing: 0.22em; color: var(--color-primary); font-size: 14px; margin-bottom: 6px; }
+    plate-label h1, plate-label h2 { font-size: 26px; font-weight: 600; margin: 0 0 6px; font-style: italic; }
+    plate-label p { margin: 0; }
+    code { font-family: ui-monospace, monospace; font-size: 0.75em; background: rgba(34,32,28,0.08); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="truchet" data-background-intensity="0.6" data-background-seed="3" data-background-speed="0.5">
+    <plate-label data-at="tl">
+      <plate-no>Plate I &middot; Of Tiles</plate-no>
+      <h1>The Tile That Cannot Err</h1>
+      <p>A quarter-turn in either direction, and the path still joins. <code>data-background="truchet"</code></p>
+    </plate-label>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="hilbert" data-background-intensity="0.6" data-background-seed="11" data-background-speed="0.6">
+    <plate-label data-at="br">
+      <plate-no>Plate II &middot; Of Curves</plate-no>
+      <h2>One Line Visits Every Room</h2>
+      <p>The curve that fills the square without once crossing itself. <code>data-background="hilbert"</code></p>
+    </plate-label>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="moire" data-background-intensity="0.55" data-background-seed="8" data-background-speed="0.5">
+    <plate-label data-at="tr">
+      <plate-no>Plate III &middot; Of Interference</plate-no>
+      <h2>Two Truths, Overlaid</h2>
+      <p>Neither ring field moves quickly; the bands between them race. <code>data-background="moire"</code></p>
+    </plate-label>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="kaleidoscope" data-background-intensity="0.6" data-background-seed="19" data-background-speed="0.5">
+    <plate-label data-at="bl">
+      <plate-no>Plate IV &middot; Of Mirrors</plate-no>
+      <h2>Symmetry, Manufactured</h2>
+      <p>One angle folded until the whole circle agrees. <code>data-background="kaleidoscope"</code></p>
+    </plate-label>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="cells" data-background-intensity="0.6" data-background-seed="5" data-background-speed="0.6">
+    <plate-label data-at="tl">
+      <plate-no>Plate V &middot; Of Territories</plate-no>
+      <h2>Nearest-Neighbor Provinces</h2>
+      <p>Every point swears fealty to its closest center; borders are the undecided. <code>data-background="cells"</code></p>
+    </plate-label>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="topology" data-background-intensity="0.6" data-background-seed="23" data-background-speed="0.5">
+    <plate-label data-at="br">
+      <plate-no>Plate VI &middot; Of Heights</plate-no>
+      <h2>The Mountain, Flattened</h2>
+      <p>Elevation drawn as the lines where equal heights walk. <code>data-background="topology"</code></p>
+    </plate-label>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
