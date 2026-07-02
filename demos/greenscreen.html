@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Greenscreen &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #050b06;  /* CRT black */
+      --color-foreground: #7dffa0;  /* P1 phosphor */
+      --color-primary: #34d17a;
+      --color-accent: #ffd166;      /* amber terminal */
+      --color-info: #59d8e6;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--color-background); color: var(--color-foreground); }
+    body { font-family: 'IBM Plex Mono', monospace; }
+    .crumb { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .crumb a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    .crumb a:hover { opacity: 1; }
+    section { min-height: 100vh; }
+    section bg-wc { display: block; min-height: 100vh; }
+    .copy { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: clamp(28px, 6vw, 90px); text-align: center; }
+    .copy .plate { max-width: 560px; background: rgba(5,11,6,0.8); padding: 26px 30px; border: 1px solid rgba(125,255,160,0.35); box-shadow: 0 0 40px rgba(125,255,160,0.12); }
+    .eyebrow { font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 10px; }
+    h1 { font-family: 'VT323', monospace; font-weight: 400; font-size: clamp(56px, 10vw, 130px); line-height: 0.9; margin: 0 0 10px; }
+    h2 { font-family: 'VT323', monospace; font-weight: 400; font-size: clamp(36px, 5vw, 64px); margin: 0 0 10px; }
+    p { margin: 0; line-height: 1.65; opacity: 0.9; font-size: 14px; }
+    code { background: rgba(125,255,160,0.12); padding: 2px 8px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav class="crumb"><a href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section>
+    <bg-wc preset="matrix" intensity="0.65" seed="1">
+      <div class="copy"><div class="plate">
+        <p class="eyebrow">tty0 &middot; 80&times;25</p>
+        <h1>GREENSCREEN</h1>
+        <p>Five terminals nobody logged out of. Rain of glyphs by <code>preset="matrix"</code>.</p>
+      </div></div>
+    </bg-wc>
+  </section>
+
+  <section>
+    <bg-wc preset="crt" intensity="0.6" seed="6">
+      <div class="copy"><div class="plate">
+        <p class="eyebrow">tty1 &middot; degauss pending</p>
+        <h2>PHOSPHOR BURN</h2>
+        <p>Scanlines, bloom, and the curvature your eyes still remember. <code>preset="crt"</code></p>
+      </div></div>
+    </bg-wc>
+  </section>
+
+  <section>
+    <bg-wc preset="bootlog" intensity="0.6" seed="2"
+           text="BIOS 4.51PG OK|MEM CHECK 640K OK|MOUNT /dev/bg0 .. ok|LOAD PRESET RegistrY .. 150 found|START compositor .. ok|WELCOME TO GREENSCREEN">
+      <div class="copy"><div class="plate">
+        <p class="eyebrow">tty2 &middot; cold boot</p>
+        <h2>POST</h2>
+        <p>Every line a small victory. Feed your own via the <code>text</code> attribute &mdash; <code>preset="bootlog"</code>.</p>
+      </div></div>
+    </bg-wc>
+  </section>
+
+  <section>
+    <bg-wc preset="source" intensity="0.55" seed="13"
+           text="function frame(t, params) {|  const c = getColors();|  clearAndFill(c2d, w, h, c.bg);|  // t is pre-scaled by speed|  drops.forEach(step);}">
+      <div class="copy"><div class="plate">
+        <p class="eyebrow">tty3 &middot; read the source</p>
+        <h2>LISTING</h2>
+        <p>Faded pages of somebody else&rsquo;s good ideas. <code>preset="source"</code> with slotted <code>text</code>.</p>
+      </div></div>
+    </bg-wc>
+  </section>
+
+  <section>
+    <bg-wc preset="glitch" intensity="0.6" seed="23">
+      <div class="copy"><div class="plate">
+        <p class="eyebrow">tty4 &middot; signal degraded</p>
+        <h2>HOLD STILL</h2>
+        <p>Slices, tears, channel splits &mdash; the picture is fine, the cable is art. <code>preset="glitch"</code></p>
+      </div></div>
+    </bg-wc>
+  </section>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
