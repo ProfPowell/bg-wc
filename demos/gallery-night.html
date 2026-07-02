@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gallery Night &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;900&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-background: #101014;  /* gallery night */
+      --color-foreground: #f4f2ec;
+      --color-primary: #e4572e;     /* cadmium */
+      --color-accent: #17bebb;      /* viridian pop */
+      --color-info: #ffc914;        /* hansa yellow */
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--color-background); color: var(--color-foreground); }
+    body { font-family: 'Space Grotesk', system-ui, sans-serif; }
+    .crumb { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .crumb a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    .crumb a:hover { opacity: 1; }
+    section { min-height: 100vh; }
+    section bg-wc { display: block; min-height: 100vh; }
+    .copy { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: clamp(28px, 6vw, 90px); }
+    .copy .plate { max-width: 560px; background: rgba(16,16,20,0.72); backdrop-filter: blur(6px); padding: 26px 30px; border-left: 3px solid var(--color-primary); }
+    .eyebrow { font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-accent); margin: 0 0 10px; }
+    h1 { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: clamp(44px, 8vw, 110px); line-height: 0.95; margin: 0 0 12px; text-transform: uppercase; }
+    h2 { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: clamp(28px, 4vw, 54px); margin: 0 0 10px; }
+    p { margin: 0; line-height: 1.6; font-weight: 300; opacity: 0.9; }
+    code { font-size: 0.85em; background: rgba(244,242,236,0.12); padding: 2px 8px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="crumb"><a href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section>
+    <bg-wc preset="drip" intensity="0.65" seed="11">
+      <div class="copy"><div class="plate">
+        <p class="eyebrow">One night only &middot; South Hall</p>
+        <h1>Nocturne</h1>
+        <p>Five rooms, five ways of making a mess on purpose. Backgrounds by <code>preset="drip"</code> &mdash; action painting, live.</p>
+      </div></div>
+    </bg-wc>
+  </section>
+
+  <section>
+    <bg-wc preset="graffiti" intensity="0.6" seed="4">
+      <div class="copy"><div class="plate">
+        <p class="eyebrow">Room I &middot; East wall</p>
+        <h2>Writers&rsquo; Bench</h2>
+        <p>Throw-ups and fills, layered like the wall remembers every crew that passed. <code>preset="graffiti"</code></p>
+      </div></div>
+    </bg-wc>
+  </section>
+
+  <section>
+    <bg-wc preset="colorfield" intensity="0.55" seed="7" speed="0.6">
+      <div class="copy"><div class="plate">
+        <p class="eyebrow">Room II &middot; The quiet room</p>
+        <h2>Fields</h2>
+        <p>Soft-edged planes of color to stand in front of until closing time. <code>preset="colorfield"</code></p>
+      </div></div>
+    </bg-wc>
+  </section>
+
+  <section>
+    <bg-wc preset="cutouts" intensity="0.6" seed="19">
+      <div class="copy"><div class="plate">
+        <p class="eyebrow">Room III &middot; The annex</p>
+        <h2>Scissors, Not Sketches</h2>
+        <p>Torn-paper shapes drifting into arrangements the artist would have pinned down. <code>preset="cutouts"</code></p>
+      </div></div>
+    </bg-wc>
+  </section>
+
+  <section>
+    <bg-wc preset="mobile" intensity="0.6" seed="2" speed="0.8">
+      <div class="copy"><div class="plate">
+        <p class="eyebrow">Room IV &middot; The court</p>
+        <h2>Counterweights</h2>
+        <p>A kinetic mobile turning on air currents nobody can feel but everyone can see. <code>preset="mobile"</code></p>
+      </div></div>
+    </bg-wc>
+  </section>
+
+  <script type="module" src="../src/bg-wc.js"></script>
+</body>
+</html>
