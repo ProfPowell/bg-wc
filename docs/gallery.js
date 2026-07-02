@@ -154,7 +154,7 @@ function makeCard({ name, renderer }) {
   card.innerHTML = `
     <div class="card-stage"></div>
     <div class="card-meta">
-      <h4>${name}</h4>
+      <h3>${name}</h3>
       <span class="badge ${renderer}">${renderer}</span>
     </div>
     ${modesHtml}
@@ -277,7 +277,7 @@ const io = new IntersectionObserver(
 function renderGroup(id) {
   for (const btn of tabsHost.querySelectorAll('.group-tab')) {
     btn.classList.toggle('active', btn.dataset.group === id);
-    btn.setAttribute('aria-selected', btn.dataset.group === id ? 'true' : 'false');
+    btn.setAttribute('aria-pressed', btn.dataset.group === id ? 'true' : 'false');
   }
   // Tear down the outgoing group: stop observing, free every live context, and
   // drop the cards. The new group's cards mount later (async IO callback), so
@@ -302,7 +302,6 @@ for (const g of groups) {
   btn.className = 'group-tab';
   btn.type = 'button';
   btn.dataset.group = g.id;
-  btn.setAttribute('role', 'tab');
   btn.innerHTML = `${g.label} <span class="count">${g.presets.length}</span>`;
   btn.addEventListener('click', () => renderGroup(g.id));
   tabsHost.appendChild(btn);

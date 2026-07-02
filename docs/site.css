@@ -161,7 +161,7 @@ main { padding: clamp(16px, 4vw, 24px); max-width: 1200px; margin: 0 auto; }
   display: flex; align-items: center; justify-content: space-between;
   border-top: 1px solid var(--color-border);
 }
-.card-meta h4 {
+.card-meta h3 {
   margin: 0;
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
   font-size: 14px;

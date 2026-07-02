@@ -59,14 +59,14 @@ test('cards at the end of a group mount when scrolled into view', async ({ page 
   for (const name of ['doodles', 'scandi']) {
     await page.evaluate((n) => {
       const card = [...document.querySelectorAll('#grid .card')].find(
-        (c) => c.querySelector('.card-meta h4')?.textContent.trim() === n
+        (c) => c.querySelector('.card-meta h3')?.textContent.trim() === n
       );
       card?.scrollIntoView({ block: 'center' });
     }, name);
     await page.waitForTimeout(700);
     const mounted = await page.evaluate((n) => {
       const card = [...document.querySelectorAll('#grid .card')].find(
-        (c) => c.querySelector('.card-meta h4')?.textContent.trim() === n
+        (c) => c.querySelector('.card-meta h3')?.textContent.trim() === n
       );
       return !!card?.querySelector('bg-wc');
     }, name);
@@ -84,13 +84,13 @@ test('paper-grain is showcased at full intensity', async ({ page }) => {
   await showGroup(page, 'texture');
   await page.evaluate(() => {
     [...document.querySelectorAll('#grid .card')]
-      .find((c) => c.querySelector('.card-meta h4')?.textContent.trim() === 'paper-grain')
+      .find((c) => c.querySelector('.card-meta h3')?.textContent.trim() === 'paper-grain')
       ?.scrollIntoView({ block: 'center' });
   });
   await page.waitForTimeout(700);
   const intensity = await page.evaluate(() => {
     const card = [...document.querySelectorAll('#grid .card')].find(
-      (c) => c.querySelector('.card-meta h4')?.textContent.trim() === 'paper-grain'
+      (c) => c.querySelector('.card-meta h3')?.textContent.trim() === 'paper-grain'
     );
     return card?.querySelector('bg-wc')?.getAttribute('intensity');
   });
@@ -114,7 +114,7 @@ test('Patterns is split into Geometric and Texture groups', async ({ page }) => 
     const groupOf = (name) => {
       for (const b of document.querySelectorAll('.group-tab')) {
         b.click();
-        const here = [...document.querySelectorAll('#grid .card h4')].some(
+        const here = [...document.querySelectorAll('#grid .card h3')].some(
           (h) => h.textContent.trim() === name
         );
         if (here) return b.textContent.replace(/\s*\d+\s*$/, '').trim();
@@ -149,13 +149,13 @@ test('faint overlay cards render on a dark backing on a light theme', async ({ p
   const bgOf = async (name) => {
     await page.evaluate((n) => {
       [...document.querySelectorAll('#grid .card')]
-        .find((c) => c.querySelector('.card-meta h4')?.textContent.trim() === n)
+        .find((c) => c.querySelector('.card-meta h3')?.textContent.trim() === n)
         ?.scrollIntoView({ block: 'center' });
     }, name);
     await page.waitForTimeout(700);
     return page.evaluate((n) => {
       const card = [...document.querySelectorAll('#grid .card')].find(
-        (c) => c.querySelector('.card-meta h4')?.textContent.trim() === n
+        (c) => c.querySelector('.card-meta h3')?.textContent.trim() === n
       );
       const el = card?.querySelector('bg-wc');
       return {
