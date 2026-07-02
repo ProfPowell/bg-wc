@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>data-background harness</title>
+  <style>
+    section, div { width: 200px; height: 150px; }
+    :root {
+      --color-primary: #5b8eff; --color-accent: #ff5fa2; --color-info: #25d0a6;
+      --color-background: #0b0d12; --color-text: #e8eaf2;
+    }
+  </style>
+</head>
+<body>
+  <section id="static" data-background="dither" data-background-intensity="0.7"
+           data-background-color-1="rgb(1, 2, 3)">
+    <h1>Content stays in the light DOM.</h1>
+  </section>
+  <section id="skip" data-background="dither" data-background-skip></section>
+  <section id="plain"></section>
+  <script type="module" src="../src/data-background.js"></script>
+</body>
+</html>
