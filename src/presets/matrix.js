@@ -3,7 +3,7 @@
 // glyph is drawn bright. The 90s hacker aesthetic. Canvas2D.
 
 import { mulberry32 } from '../util/pause.js';
-import { rgbCss, rgbaCss } from '../renderer/tokens.js';
+import { rgbCss } from '../renderer/tokens.js';
 
 const GLYPHS = 'アイウエオカキクケコサシスセソタチツテトナニヌ0123456789:.=*+-<>';
 
@@ -45,12 +45,17 @@ export function create({ c2d, getColors, pxScale }) {
     ensure(params);
     const c = getColors();
 
-    // Trailing fade: translucent bg fill (fall back to near-black if the
-    // theme bg is transparent, since trails need something to fade into).
-    const bg = c.bg[3] > 0.01 ? c.bg : [0.02, 0.04, 0.02, 1];
-    c2d.globalCompositeOperation = 'source-over';
-    c2d.fillStyle = rgbaCss(bg, 0.1);
+    // Trailing fade: erase alpha instead of compositing a translucent bg
+    // fill. The old fill stalled on 8-bit rounding at a color that is NOT
+    // the bg (measured rgb(9,9,9) vs bg rgb(5,11,6)), permanently burning
+    // ghost columns into the canvas (gl-wc-kq9). Erasing decays trails
+    // toward transparent — the host's own background shows through, which
+    // composites to the same visual — and the rounding floor is a ~2%-alpha
+    // glyph tint instead of an opaque gray.
+    c2d.globalCompositeOperation = 'destination-out';
+    c2d.fillStyle = 'rgba(0,0,0,0.1)';
     c2d.fillRect(0, 0, w, h);
+    c2d.globalCompositeOperation = 'source-over';
 
     const dt = Math.max(0, Math.min(0.1, t - lastT));
     lastT = t;
