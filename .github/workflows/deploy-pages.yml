@@ -1,7 +1,12 @@
 name: Deploy site to GitHub Pages
 
+# Deploys only after the CI workflow succeeds on main (workflow_run), so a red
+# build can never reach GitHub Pages. workflow_dispatch stays as the manual
+# escape hatch.
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
@@ -16,6 +21,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

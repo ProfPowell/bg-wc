@@ -12,7 +12,6 @@
   "exports": {
     ".": "./dist/bg-wc.js",
     "./data-background": "./dist/data-background.js",
-    "./data-bg": "./dist/data-background.js",
     "./presets/*": "./dist/presets/*.js"
   },
   "files": [
@@ -63,14 +62,12 @@
     "@custom-elements-manifest/analyzer": "^0.11.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.60.0",
+    "@profpowell/browser-window": "^1.4.7",
     "@profpowell/code-block": "^2.9.0",
     "eslint": "^10.4.0",
     "prettier": "^3.8.3",
     "vanilla-breeze": "^0.1.3",
     "vite": "^7.3.3"
   },
-  "customElements": "custom-elements.json",
-  "dependencies": {
-    "@profpowell/browser-window": "^1.4.7"
-  }
+  "customElements": "custom-elements.json"
 }
