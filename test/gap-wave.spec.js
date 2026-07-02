@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 // non-blank still. Pixel baselines live in the visual project; frame-purity
 // for the canvas2d ones is pinned in time-rule.spec.js.
 
-const PRESETS = ['rain', 'fireflies'];
+const PRESETS = ['rain', 'fireflies', 'zen-garden'];
 
 for (const name of PRESETS) {
   test(`${name} renders with ink and no fallback`, async ({ page }) => {

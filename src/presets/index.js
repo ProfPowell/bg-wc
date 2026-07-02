@@ -131,6 +131,11 @@ const REGISTRY = {
   'ukiyo-e': { renderer: 'canvas2d', group: 'japanese', loader: () => import('./ukiyo-e.js') },
   sakura: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./sakura.js') },
   origami: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./origami.js') },
+  'zen-garden': {
+    renderer: 'canvas2d',
+    group: 'japanese',
+    loader: () => import('./zen-garden.js'),
+  },
 
   // Print art — riso overprint, pen plots, relief cuts
   risograph: { renderer: 'webgl', group: 'print', loader: () => import('./risograph.js') },
