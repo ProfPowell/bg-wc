@@ -1,6 +1,6 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
-import { buildDotPalette, stippleField, dotCircle } from './_dots.js';
+import { buildDotPalette, makeFieldCanvas, dotCircle } from './_dots.js';
 
 // Pointillist fields. `field` renders a dense graded stipple once to an
 // offscreen canvas and blits it (with a sparse shimmer on top); `contour` and
@@ -18,25 +18,13 @@ function readMode(host) {
 export function create({ c2d, getColors, host }) {
   let w = 0;
   let h = 0;
-  let base = null; // { key, canvas }
   let sim = null; // { key, items, verts, rng }
   let lastT = 0;
 
-  function fieldCanvas(params, palKey, pal) {
-    const key = `${params.seed | 0}|${params.density}|${palKey}|${w}x${h}`;
-    if (base && base.key === key) return base.canvas;
-    const off = (base && base.canvas) || document.createElement('canvas');
-    off.width = w;
-    off.height = h;
-    const g = off.getContext('2d');
-    g.clearRect(0, 0, w, h);
-    const rng = mulberry32(params.seed | 0 || 1);
-    const count = Math.round(w * h * 0.0008 * (0.3 + params.density * 1.5));
-    const dotR = Math.max(1, Math.min(w, h) * 0.0035);
-    stippleField(g, w, h, { rng, count, dotR, pal });
-    base = { key, canvas: off };
-    return off;
-  }
+  const field = makeFieldCanvas({
+    count: (fw, fh, params) => Math.round(fw * fh * 0.0008 * (0.3 + params.density * 1.5)),
+    dotR: (fw, fh) => Math.max(1, Math.min(fw, fh) * 0.0035),
+  });
 
   function buildSim(params, mode) {
     const cap = CAP[params.quality] || CAP.med;
@@ -72,7 +60,7 @@ export function create({ c2d, getColors, host }) {
     const f = dt * 60; // normalize step to a 60fps reference so motion is speed-aware + framerate-independent
 
     if (mode === 'field') {
-      c2d.drawImage(fieldCanvas(params, palKey, pal), 0, 0);
+      c2d.drawImage(field.get(w, h, params, palKey, pal), 0, 0);
       const rng = mulberry32((params.seed | 0 || 1) ^ ((t * 2) | 0));
       const dotR = Math.max(1, Math.min(w, h) * 0.0045);
       for (let i = 0; i < 40; i++) {
@@ -127,7 +115,7 @@ export function create({ c2d, getColors, host }) {
     resize(nw, nh) {
       w = nw;
       h = nh;
-      base = null;
+      field.reset();
       sim = null;
     },
     frame,
@@ -135,7 +123,7 @@ export function create({ c2d, getColors, host }) {
       frame(0, params);
     },
     dispose() {
-      base = null;
+      field.reset();
       sim = null;
     },
   };

@@ -3,8 +3,15 @@
 // is dot-based (filled arcs) to evoke hand-stippled Aboriginal / pointillist
 // painting. Callers resolve theme tuples → css once per frame; drawing helpers
 // take ready-made css strings.
+//
+// Motif contract: `dir` means CHIRALITY only — it mirrors the motif's
+// geometry. Rotation over time is the caller's job: bake the direction into
+// `phase` (e.g. `phase: dir * (base + t * w)`). Helpers never scale phase by
+// dir — doing both gave dir² = 1, so dir=-1 motifs could never rotate
+// backwards (gl-wc-2h7).
 
 import { rgbCss } from '../renderer/tokens.js';
+import { mulberry32 } from '../util/pause.js';
 
 export function mix(a, b, t) {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
@@ -58,14 +65,14 @@ export function phyllotaxis(c2d, cx, cy, opts) {
 
 // Paired counter-offset spiral arms.
 export function doubleSpiral(c2d, cx, cy, opts) {
-  const { arms = 2, n, b, dotR, pal, phase = 0, dir = 1, ci = 0 } = opts;
+  const { arms = 2, n, b, dotR, pal, phase = 0, ci = 0 } = opts;
   const m = pal.length;
   for (let arm = 0; arm < arms; arm++) {
     const off = (arm / arms) * Math.PI * 2;
     for (let k = 0; k < n; k++) {
       const th = (k / 22) * Math.PI;
       const rad = b * th;
-      const a = th + off + phase * dir;
+      const a = th + off + phase;
       dotCircle(
         c2d,
         cx + Math.cos(a) * rad,
@@ -85,7 +92,7 @@ export function whorl(c2d, cx, cy, opts) {
   for (let k = 0; k < steps; k++) {
     const th = (k / STEP) * Math.PI * 2;
     const rad = b * th;
-    const a = th * dir + phase * dir;
+    const a = th * dir + phase;
     dotCircle(
       c2d,
       cx + Math.cos(a) * rad,
@@ -94,6 +101,31 @@ export function whorl(c2d, cx, cy, opts) {
       k % 6 < 3 ? baseCss : highlight
     );
   }
+}
+
+// Lazy offscreen stipple-field canvas, cached by (seed, density, palette,
+// size). Presets supply only their tuning: count(w, h, params) and dotR(w, h).
+// Call reset() on resize/dispose to drop the cache.
+export function makeFieldCanvas({ count, dotR }) {
+  let base = null; // { key, canvas }
+  return {
+    get(w, h, params, palKey, pal) {
+      const key = `${params.seed | 0}|${params.density}|${palKey}|${w}x${h}`;
+      if (base && base.key === key) return base.canvas;
+      const off = (base && base.canvas) || document.createElement('canvas');
+      off.width = w;
+      off.height = h;
+      const g = off.getContext('2d');
+      g.clearRect(0, 0, w, h);
+      const rng = mulberry32(params.seed | 0 || 1);
+      stippleField(g, w, h, { rng, count: count(w, h, params), dotR: dotR(w, h), pal });
+      base = { key, canvas: off };
+      return off;
+    },
+    reset() {
+      base = null;
+    },
+  };
 }
 
 // Dense graded pointillist fill. Writes `count` jittered dots across w×h.

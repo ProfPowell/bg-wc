@@ -329,6 +329,15 @@
         },
         {
           "kind": "function",
+          "name": "makeFieldCanvas",
+          "parameters": [
+            {
+              "name": "{ count, dotR }"
+            }
+          ]
+        },
+        {
+          "kind": "function",
           "name": "stippleField",
           "parameters": [
             {
@@ -400,6 +409,14 @@
           "name": "whorl",
           "declaration": {
             "name": "whorl",
+            "module": "src/presets/_dots.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "makeFieldCanvas",
+          "declaration": {
+            "name": "makeFieldCanvas",
             "module": "src/presets/_dots.js"
           }
         },
@@ -1365,10 +1382,6 @@
         {
           "kind": "variable",
           "name": "dotR"
-        },
-        {
-          "kind": "variable",
-          "name": "phase"
         }
       ],
       "exports": [

@@ -1,6 +1,6 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
-import { buildDotPalette, stippleField, concentricRings, whorl } from './_dots.js';
+import { buildDotPalette, makeFieldCanvas, concentricRings, whorl } from './_dots.js';
 
 // Dense dot-art composite: a stipple field base (offscreen, cached) packed with
 // concentric dot rosettes and a few whorls, edge to edge like the source
@@ -11,24 +11,12 @@ const ROT_W = 0.1;
 export function create({ c2d, getColors }) {
   let w = 0;
   let h = 0;
-  let base = null; // { key, canvas }
   let layout = null; // { key, rings, whorls }
 
-  function fieldCanvas(params, palKey, pal) {
-    const key = `${params.seed | 0}|${params.density}|${palKey}|${w}x${h}`;
-    if (base && base.key === key) return base.canvas;
-    const off = (base && base.canvas) || document.createElement('canvas');
-    off.width = w;
-    off.height = h;
-    const g = off.getContext('2d');
-    g.clearRect(0, 0, w, h);
-    const rng = mulberry32(params.seed | 0 || 1);
-    const count = Math.round(w * h * 0.0012 * (0.5 + params.density * 1.2));
-    const dotR = Math.max(1, Math.min(w, h) * 0.003);
-    stippleField(g, w, h, { rng, count, dotR, pal });
-    base = { key, canvas: off };
-    return off;
-  }
+  const field = makeFieldCanvas({
+    count: (fw, fh, params) => Math.round(fw * fh * 0.0012 * (0.5 + params.density * 1.2)),
+    dotR: (fw, fh) => Math.max(1, Math.min(fw, fh) * 0.003),
+  });
 
   function build(params) {
     const key = `${params.seed | 0}|${params.density}|${params.intensity}|${w}x${h}`;
@@ -70,7 +58,7 @@ export function create({ c2d, getColors }) {
     const { pal, highlight } = buildDotPalette(c, params.intensity);
     const palKey = pal.join(',');
     clearAndFill(c2d, w, h, c.bg);
-    c2d.drawImage(fieldCanvas(params, palKey, pal), 0, 0);
+    c2d.drawImage(field.get(w, h, params, palKey, pal), 0, 0);
     const { rings, whorls } = build(params);
     const dotR = Math.max(1, Math.min(w, h) * 0.004);
     for (const r of rings) {
@@ -91,7 +79,8 @@ export function create({ c2d, getColors }) {
         dotR: dotR * 0.85,
         baseCss: pal[sw.ci % pal.length],
         highlight,
-        phase: sw.phase + t * ROT_W * sw.dir,
+        // rotation direction baked into phase; dir is chirality only
+        phase: sw.dir * (sw.phase + t * ROT_W),
         dir: sw.dir,
       });
     }
@@ -101,7 +90,7 @@ export function create({ c2d, getColors }) {
     resize(nw, nh) {
       w = nw;
       h = nh;
-      base = null;
+      field.reset();
       layout = null;
     },
     frame,
@@ -109,7 +98,7 @@ export function create({ c2d, getColors }) {
       frame(0, params);
     },
     dispose() {
-      base = null;
+      field.reset();
       layout = null;
     },
   };

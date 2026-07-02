@@ -87,17 +87,22 @@ export function create({ c2d, getColors, host }) {
     }
 
     for (const m of motifs) {
-      const phase = m.phase + t * ROT_W * m.spin * m.dir;
-      const common = { dotR, pal, highlight, phase, dir: m.dir, ci: m.ci };
+      // Rotation direction lives in the phase (see the _dots.js motif
+      // contract); helpers only take `dir` where it means chirality.
+      const spin = t * ROT_W * m.spin;
+      const common = { dotR, pal, highlight, ci: m.ci };
       if (mode === 'spiral') {
         phyllotaxis(c2d, m.cx, m.cy, {
           ...common,
+          phase: m.phase + spin * m.dir,
+          dir: m.dir,
           n: Math.round(140 * detail),
           scale: m.scale * 0.5,
         });
       } else if (mode === 'double') {
         doubleSpiral(c2d, m.cx, m.cy, {
           ...common,
+          phase: m.dir * (m.phase + spin),
           arms: 2,
           n: Math.round(90 * detail),
           b: m.scale * 0.35,
@@ -105,13 +110,20 @@ export function create({ c2d, getColors, host }) {
       } else if (mode === 'whorl') {
         whorl(c2d, m.cx, m.cy, {
           ...common,
+          phase: m.dir * (m.phase + spin),
+          dir: m.dir,
           baseCss: pal[m.ci % pal.length],
           turns: m.turns,
           b: m.scale * 0.12,
         });
       } else {
         // rings (default) and waterholes both draw rosettes
-        concentricRings(c2d, m.cx, m.cy, { ...common, rings, ringGap: m.scale * 0.18 });
+        concentricRings(c2d, m.cx, m.cy, {
+          ...common,
+          phase: m.phase + spin * m.dir,
+          rings,
+          ringGap: m.scale * 0.18,
+        });
       }
     }
   }
