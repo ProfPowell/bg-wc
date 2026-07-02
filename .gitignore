@@ -16,3 +16,6 @@ test-results/
 
 # Visual brainstorm companion (transient mockups)
 .superpowers/
+
+# Claude-in-Chrome MCP session artifacts
+.playwright-mcp/
