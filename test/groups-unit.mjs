@@ -42,3 +42,11 @@ test('lounge group exists with tiki', () => {
   assert.ok(g, 'lounge group exists');
   assert.ok(g.presets.some((p) => p.name === 'tiki'));
 });
+
+test('particles group gained rain (2026-07-01 gap wave)', () => {
+  const g = listGroups().find((x) => x.id === 'particles');
+  assert.ok(
+    g.presets.some((p) => p.name === 'rain'),
+    'particles has rain'
+  );
+});
