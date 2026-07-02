@@ -3,7 +3,8 @@
 const VISIBILITY_ROOT_MARGIN = '200px';
 
 export function observeVisibility(host, cb) {
-  const io = new IntersectionObserver((entries) => cb(entries[0].isIntersecting), {
+  // Entries batch oldest → newest; only the newest reflects the current state.
+  const io = new IntersectionObserver((entries) => cb(entries[entries.length - 1].isIntersecting), {
     rootMargin: VISIBILITY_ROOT_MARGIN,
   });
   io.observe(host);

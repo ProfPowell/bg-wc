@@ -14,6 +14,8 @@ const PRESETS = listPresets().map((p) => p.name);
 // just not a pixel baseline. reaction-diffusion steps its Gray-Scott sim every
 // frame regardless of `t`; the phase-3/4 sims (flocking, accumulation buffers,
 // growth) likewise advance per frame, so none settle to a stable still.
+// particles now integrates from `t` (gl-wc-21m) and is stable at speed=0 — it
+// stays excluded only until a baseline is generated in the CI container.
 const NO_SNAPSHOT = new Set([
   'particles',
   'reaction-diffusion',

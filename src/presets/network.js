@@ -12,6 +12,7 @@ export function create({ c2d, getColors, pxScale }) {
     h = 1;
   let nodes = [];
   let lastKey = '';
+  let lastT = 0;
 
   function rebuild(params) {
     const cap = CAPS[params.quality] || CAPS.med;
@@ -39,8 +40,12 @@ export function create({ c2d, getColors, pxScale }) {
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
 
-    // Advance positions (normalized units, wrap).
-    const speedScale = 0.03 * params.speed;
+    // Advance positions (normalized units, wrap) from t — already
+    // speed-scaled by the host, so params.speed must not be applied again.
+    let dt = t - lastT;
+    lastT = t;
+    if (!(dt >= 0) || dt > 1) dt = 0;
+    const speedScale = 1.8 * dt;
     for (let i = 0; i < nodes.length; i++) {
       const n = nodes[i];
       n.x += n.vx * speedScale;

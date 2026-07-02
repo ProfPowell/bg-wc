@@ -12,6 +12,7 @@ export function create({ c2d, getColors, pxScale }) {
   let rocks = [];
   let rand = mulberry32(1);
   let lastKey = '';
+  let lastT = 0;
 
   function rebuild(params) {
     const n = Math.floor(5 + params.density * 16);
@@ -54,14 +55,19 @@ export function create({ c2d, getColors, pxScale }) {
     const glow = params.intensity;
     c2d.lineJoin = 'round';
 
-    // Advance + build all rock outlines into a single path (device space),
-    // then stroke once for the glow pass and once crisp — no shadowBlur.
-    const sp = params.speed * 0.4;
+    // Advance from t (already speed-scaled by the host — multiplying by
+    // params.speed again would double-apply), then build all rock outlines
+    // into a single path (device space) and stroke once for the glow pass and
+    // once crisp — no shadowBlur.
+    let dt = t - lastT;
+    lastT = t;
+    if (!(dt >= 0) || dt > 1) dt = 0;
+    const sp = 24 * dt;
     c2d.beginPath();
     for (const rk of rocks) {
       rk.x = (rk.x + rk.vx * sp + 1) % 1;
       rk.y = (rk.y + rk.vy * sp + 1) % 1;
-      rk.rot += rk.vrot * params.speed * 0.01;
+      rk.rot += rk.vrot * 0.6 * dt;
       c2d.save();
       c2d.translate(rk.x * w, rk.y * h);
       c2d.rotate(rk.rot);

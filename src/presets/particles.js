@@ -11,6 +11,7 @@ export function create({ c2d, getColors }) {
     h = 1;
   let parts = [];
   let lastKey = '';
+  let lastT = 0;
 
   function rebuild(params) {
     const cap = CAPS[params.quality] || CAPS.med;
@@ -56,11 +57,18 @@ export function create({ c2d, getColors }) {
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
 
-    const intMul = 0.5 + params.intensity * 1.5;
+    // Integrate from t (already speed-scaled by the host), never per rAF tick:
+    // per-tick steps ignore `speed` and run 2x faster at 120 Hz. A jump or
+    // rewind of the time base (staticFrame, reload) draws without advancing.
+    let dt = t - lastT;
+    lastT = t;
+    if (!(dt >= 0) || dt > 1) dt = 0;
+
+    const intMul = (0.5 + params.intensity * 1.5) * 24 * dt;
     for (let i = 0; i < parts.length; i++) {
       const p = parts[i];
-      p.x += p.vx * intMul * 0.4;
-      p.y += p.vy * intMul * 0.4;
+      p.x += p.vx * intMul;
+      p.y += p.vy * intMul;
       if (p.x < 0) p.x += 1;
       else if (p.x > 1) p.x -= 1;
       if (p.y < 0) p.y += 1;
