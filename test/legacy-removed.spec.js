@@ -20,24 +20,20 @@ test('<gl-wc> is not registered and does not upgrade; <bg-wc> still does', async
 });
 
 test('gl-wc:* events no longer fire; bg-wc:* still do', async ({ page }) => {
-  const seen = { bg: false, gl: false };
-  await page.exposeFunction('__bg', () => {
-    seen.bg = true;
-  });
-  await page.exposeFunction('__gl', () => {
-    seen.gl = true;
-  });
   await page.addInitScript(() => {
+    window.__seen = { bg: false, gl: false };
     window.addEventListener('DOMContentLoaded', () => {
       const el = document.getElementById('canonical');
-      el?.addEventListener('bg-wc:ready', () => window.__bg());
-      el?.addEventListener('gl-wc:ready', () => window.__gl());
+      el?.addEventListener('bg-wc:ready', () => (window.__seen.bg = true));
+      el?.addEventListener('gl-wc:ready', () => (window.__seen.gl = true));
     });
   });
   await page.goto('/test/legacy-page.html');
-  const deadline = Date.now() + 4000;
-  while (!seen.bg && Date.now() < deadline) await page.waitForTimeout(100);
-  await page.waitForTimeout(400); // give any stray gl-wc:ready a chance — it must NOT fire
+  // The removed twin was dispatched synchronously alongside bg-wc:ready, so
+  // once bg is observed in page state the gl flag is already settled — no
+  // grace sleep needed.
+  await page.waitForFunction(() => window.__seen.bg);
+  const seen = await page.evaluate(() => window.__seen);
   expect(seen.bg, 'bg-wc:ready should still fire').toBe(true);
   expect(seen.gl, 'gl-wc:ready twin should be gone').toBe(false);
 });
@@ -47,7 +43,8 @@ test('data-bg is not bound; data-background still injects a <bg-wc>', async ({ p
   await page.waitForFunction(
     () => !!document.getElementById('binder-canonical')?.querySelector('bg-wc')
   );
-  await page.waitForTimeout(300); // let the binder finish scanning
+  // The initial scan handles every annotated element in one synchronous pass,
+  // so once the canonical element is bound the legacy decision is final.
   const r = await page.evaluate(() => ({
     legacyBound: !!document.getElementById('binder-legacy')?.querySelector('bg-wc'),
     canonicalBound: !!document.getElementById('binder-canonical')?.querySelector('bg-wc'),

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 // Library build. preserveModules keeps dist/ mirroring src/ with stable,
-// unhashed filenames, so the 55 dynamic import() preset chunks and the public
+// unhashed filenames, so the per-preset dynamic import() chunks and the public
 // ./presets/* subpath export keep working.
 export default defineConfig({
   build: {

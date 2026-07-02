@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { MAX_WEBGL } from '../docs/gallery-config.js';
 
 // The gallery must never hold more live <bg-wc> (and therefore WebGL contexts)
 // than a fixed budget, no matter how many presets a group contains. A large
@@ -6,8 +7,23 @@ import { test, expect } from '@playwright/test';
 // group switch used to push a GPU-backed browser past its ~16 live-context
 // limit — the browser then evicted contexts it could not restore, leaving cards
 // blank. Cards mount lazily by viewport visibility and unmount when scrolled
-// away, so the live count stays within MAX_LIVE.
-const MAX_WEBGL = 8;
+// away, so the live count stays within the budget (imported from the same
+// module the gallery enforces, so test and code can't drift).
+
+// Cards mount from an async IntersectionObserver callback; "settled" means at
+// least one card is mounted and the mounted count held steady across two
+// frames — no fixed sleeps.
+async function settleMounts(page) {
+  await page.waitForFunction(() => !!document.querySelector('#grid .card bg-wc'));
+  await page.waitForFunction(
+    () =>
+      new Promise((res) => {
+        const count = () => document.querySelectorAll('#grid .card bg-wc').length;
+        const before = count();
+        requestAnimationFrame(() => requestAnimationFrame(() => res(count() === before)));
+      })
+  );
+}
 
 async function showGroup(page, re) {
   await page.evaluate((r) => {
@@ -16,8 +32,23 @@ async function showGroup(page, re) {
     );
     btn?.click();
   }, re);
-  // Let the IntersectionObserver settle and cards mount.
-  await page.waitForTimeout(800);
+  await settleMounts(page);
+}
+
+// Scroll a named card into view and wait until the lazy mount lands.
+async function mountCard(page, name) {
+  await page.evaluate((n) => {
+    [...document.querySelectorAll('#grid .card')]
+      .find((c) => c.querySelector('.card-meta h3')?.textContent.trim() === n)
+      ?.scrollIntoView({ block: 'center' });
+  }, name);
+  await page.waitForFunction(
+    (n) =>
+      !![...document.querySelectorAll('#grid .card')]
+        .find((c) => c.querySelector('.card-meta h3')?.textContent.trim() === n)
+        ?.querySelector('bg-wc'),
+    name
+  );
 }
 
 // Count mounted cards whose preset renders with WebGL (badge class). Only these
@@ -41,7 +72,7 @@ test('live WebGL context budget holds across every group', async ({ page }) => {
     await page.evaluate((id) => {
       [...document.querySelectorAll('.group-tab')].find((b) => b.dataset.group === id)?.click();
     }, g);
-    await page.waitForTimeout(600);
+    await settleMounts(page);
     expect(await webglMounted(page), `group ${g} exceeds the WebGL budget`).toBeLessThanOrEqual(
       MAX_WEBGL
     );
@@ -57,20 +88,7 @@ test('cards at the end of a group mount when scrolled into view', async ({ page 
   await page.goto('/docs/index.html', { waitUntil: 'networkidle' });
   await showGroup(page, 'geometric');
   for (const name of ['doodles', 'scandi']) {
-    await page.evaluate((n) => {
-      const card = [...document.querySelectorAll('#grid .card')].find(
-        (c) => c.querySelector('.card-meta h3')?.textContent.trim() === n
-      );
-      card?.scrollIntoView({ block: 'center' });
-    }, name);
-    await page.waitForTimeout(700);
-    const mounted = await page.evaluate((n) => {
-      const card = [...document.querySelectorAll('#grid .card')].find(
-        (c) => c.querySelector('.card-meta h3')?.textContent.trim() === n
-      );
-      return !!card?.querySelector('bg-wc');
-    }, name);
-    expect(mounted, `${name} should mount when scrolled into view`).toBe(true);
+    await mountCard(page, name); // waits for the mount — failing to mount times out here
   }
 });
 
@@ -82,12 +100,7 @@ test('paper-grain is showcased at full intensity', async ({ page }) => {
   await page.setViewportSize({ width: 1200, height: 800 });
   await page.goto('/docs/index.html', { waitUntil: 'networkidle' });
   await showGroup(page, 'texture');
-  await page.evaluate(() => {
-    [...document.querySelectorAll('#grid .card')]
-      .find((c) => c.querySelector('.card-meta h3')?.textContent.trim() === 'paper-grain')
-      ?.scrollIntoView({ block: 'center' });
-  });
-  await page.waitForTimeout(700);
+  await mountCard(page, 'paper-grain');
   const intensity = await page.evaluate(() => {
     const card = [...document.querySelectorAll('#grid .card')].find(
       (c) => c.querySelector('.card-meta h3')?.textContent.trim() === 'paper-grain'
@@ -147,12 +160,7 @@ test('faint overlay cards render on a dark backing on a light theme', async ({ p
   };
 
   const bgOf = async (name) => {
-    await page.evaluate((n) => {
-      [...document.querySelectorAll('#grid .card')]
-        .find((c) => c.querySelector('.card-meta h3')?.textContent.trim() === n)
-        ?.scrollIntoView({ block: 'center' });
-    }, name);
-    await page.waitForTimeout(700);
+    await mountCard(page, name);
     return page.evaluate((n) => {
       const card = [...document.querySelectorAll('#grid .card')].find(
         (c) => c.querySelector('.card-meta h3')?.textContent.trim() === n

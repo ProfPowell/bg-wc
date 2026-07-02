@@ -27,12 +27,7 @@ const motionSel = document.getElementById('motionSelect');
 
 const groups = listGroups();
 
-// Most live WebGL backgrounds allowed at once. Headroom below the browser's
-// ~16 live-WebGL-context limit for the persistent hero context and the brief
-// overlap while an outgoing group's contexts are still being reclaimed. Only
-// WebGL presets count toward this — Canvas2D cards hold no GPU context, so they
-// always mount when visible (and never get starved by the budget).
-const MAX_WEBGL = 8;
+import { MAX_WEBGL } from './gallery-config.js';
 // Preload distance: a card within this margin of the viewport mounts early so
 // it's already running by the time it scrolls fully into view.
 const ROOT_MARGIN = '300px';

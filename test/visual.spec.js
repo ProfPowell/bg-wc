@@ -46,7 +46,7 @@ test.describe('visual', () => {
         return !el.hasAttribute('data-fallback');
       }, name);
       // Every preset must at least load (this also guards the WebGL-context and
-      // unknown-preset paths for all 72 presets, beyond the loose pixel check).
+      // unknown-preset paths for every registered preset, beyond the loose pixel check).
       expect(ok, `${name} should not fall back`).toBe(true);
       if (NO_SNAPSHOT.has(name)) return;
       await expect(page.locator('#wc')).toHaveScreenshot(`${name}.png`, {

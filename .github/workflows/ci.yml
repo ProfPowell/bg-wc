@@ -36,7 +36,7 @@ jobs:
       - name: Custom-elements manifest is up to date
         run: npm run cem:check
 
-      - name: Node unit tests (SSR import, battery power-save)
+      - name: Node unit tests (test/*.mjs)
         run: npm run test:node
 
       - name: Build library
