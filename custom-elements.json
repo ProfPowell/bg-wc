@@ -2323,6 +2323,26 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/metaballs.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/metaballs.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/migration.js",
       "declarations": [
         {

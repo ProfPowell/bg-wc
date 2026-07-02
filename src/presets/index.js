@@ -236,6 +236,7 @@ const REGISTRY = {
   crt: { renderer: 'webgl', group: 'retro', loader: () => import('./crt.js') },
   gameboy: { renderer: 'webgl', group: 'retro', loader: () => import('./gameboy.js') },
   copperbars: { renderer: 'webgl', group: 'retro', loader: () => import('./copperbars.js') },
+  metaballs: { renderer: 'webgl', group: 'retro', loader: () => import('./metaballs.js') },
   matrix: { renderer: 'canvas2d', group: 'retro', loader: () => import('./matrix.js') },
   bliss: { renderer: 'webgl', group: 'retro', loader: () => import('./bliss.js') },
   mystify: { renderer: 'canvas2d', group: 'retro', loader: () => import('./mystify.js') },

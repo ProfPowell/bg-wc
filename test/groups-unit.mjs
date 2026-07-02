@@ -52,3 +52,11 @@ test('particles group gained rain and fireflies (2026-07-01 gap wave)', () => {
       `particles has ${n}`
     );
 });
+
+test('retro group gained metaballs (2026-07-01 gap wave)', () => {
+  const g = listGroups().find((x) => x.id === 'retro');
+  assert.ok(
+    g.presets.some((p) => p.name === 'metaballs'),
+    'retro has metaballs'
+  );
+});
