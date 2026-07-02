@@ -3,7 +3,7 @@
 // bg fill each frame makes the wake. Retro group.
 
 import { mulberry32 } from '../util/pause.js';
-import { rgbCss, rgbaCss } from '../renderer/tokens.js';
+import { rgbCss } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
@@ -44,11 +44,15 @@ export function create({ c2d, getColors, pxScale }) {
     ensure(params);
     const c = getColors();
 
-    // Trailing wake: translucent fill (fall back to near-black if transparent).
-    const bg = c.bg[3] > 0.01 ? c.bg : [0.02, 0.02, 0.05, 1];
-    c2d.globalCompositeOperation = 'source-over';
-    c2d.fillStyle = rgbaCss(bg, 0.08);
+    // Trailing wake: erase alpha instead of compositing a translucent bg
+    // fill — the fill stalls on 8-bit rounding at a color that is NOT the
+    // bg, burning ghost polylines into the canvas (gl-wc-4vy; same class
+    // as matrix's gl-wc-kq9). Erasing decays the wake toward transparent
+    // and the host's own background shows through.
+    c2d.globalCompositeOperation = 'destination-out';
+    c2d.fillStyle = 'rgba(0,0,0,0.08)';
     c2d.fillRect(0, 0, w, h);
+    c2d.globalCompositeOperation = 'source-over';
 
     const dt = Math.max(0, Math.min(0.1, t - lastT));
     lastT = t;

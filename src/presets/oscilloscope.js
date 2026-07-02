@@ -4,6 +4,13 @@
 // trace geometry is a single parametric buffer animated entirely in the vertex
 // shader. `density` = trace count, `intensity` = glow brightness. The persistence
 // buffer is per-frame state, so this is excluded from the visual still baseline.
+//
+// 8-bit fade-stall note (gl-wc-4vy): like any RGBA8 accumulate-and-fade, the
+// blend toward u_bg stalls a few LSB shy of it. Measured: the whole face
+// converges to ONE uniform color ~10 LSB above bg — no per-pixel ghosting
+// (the traces sweep the full envelope), so it reads as ambient phosphor glow
+// and needs no fix. Contrast matrix/mystify (canvas2d), where uneven
+// excitation left visible ghost patterns and the fade is now an alpha erase.
 
 import { QUAD_VS, createProgram, fullscreenQuad, bindQuad } from '../renderer/webgl.js';
 import { mulberry32 } from '../util/pause.js';
