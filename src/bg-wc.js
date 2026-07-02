@@ -507,15 +507,17 @@ class BgWc extends HTMLElement {
       return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : def;
     };
     const css = getComputedStyle(this);
-    const cssVar = (suffix) => {
+    // CSS-var overrides honor the same contract ranges as the attributes — a
+    // stray stylesheet value must not hand presets out-of-range params.
+    const cssVar = (suffix, lo, hi) => {
       const v = parseFloat(css.getPropertyValue('--bg-wc-' + suffix));
-      return Number.isFinite(v) ? v : null;
+      return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : null;
     };
     return {
       palette: this.getAttribute('palette') || 'theme',
-      intensity: cssVar('intensity') ?? num('intensity', 0.5, 0, 1),
-      speed: cssVar('speed') ?? num('speed', 1, 0, 5),
-      density: cssVar('density') ?? num('density', 0.5, 0, 1),
+      intensity: cssVar('intensity', 0, 1) ?? num('intensity', 0.5, 0, 1),
+      speed: cssVar('speed', 0, 5) ?? num('speed', 1, 0, 5),
+      density: cssVar('density', 0, 1) ?? num('density', 0.5, 0, 1),
       seed: num('seed', 0, -1e9, 1e9) | 0,
       quality: this.getAttribute('quality') || 'med',
       fit: this.getAttribute('fit') || 'cover',
