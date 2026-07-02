@@ -2,6 +2,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss } from '../renderer/tokens.js';
 
 const CAPS = { low: 80, med: 220, high: 500 };
 
@@ -56,14 +57,13 @@ export function create({ c2d, getColors, getParams: _getParams }) {
     c2d.globalCompositeOperation = 'source-over';
     clearAndFill(c2d, w, h, c.bg);
 
-    const fg = `${(c.fg[0] * 255) | 0},${(c.fg[1] * 255) | 0},${(c.fg[2] * 255) | 0}`;
     for (let i = 0; i < stars.length; i++) {
       const s = stars[i];
       const y = (((s.y + t * s.v) % 1) + 1) % 1;
       const x = s.x;
       const twinkle = 0.5 + 0.5 * Math.sin(t * s.twr * 1.5 + s.tw);
       const a = (0.4 + 0.6 * twinkle) * (s.layer ? 1.0 : 0.85);
-      c2d.fillStyle = `rgba(${fg},${a.toFixed(3)})`;
+      c2d.fillStyle = rgbaCss(c.fg, a);
       c2d.beginPath();
       c2d.arc(x * w, y * h, s.r * (s.layer ? 1.4 : 1), 0, Math.PI * 2);
       c2d.fill();

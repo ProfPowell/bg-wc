@@ -47,8 +47,7 @@ export function create({ c2d, getColors }) {
       if (radius < 0) return true;
       if (radius > maxR * 1.25) return false;
       const a = 1 - Math.min(1, radius / (maxR * 1.25));
-      const [r, g, b] = ring.color;
-      c2d.strokeStyle = `rgba(${(r * 255) | 0},${(g * 255) | 0},${(b * 255) | 0},${(a * 0.85).toFixed(3)})`;
+      c2d.strokeStyle = rgbaCss(ring.color, a * 0.85);
       c2d.beginPath();
       c2d.arc(cx, cy, radius, 0, Math.PI * 2);
       c2d.stroke();

@@ -2,6 +2,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss } from '../renderer/tokens.js';
 
 // Node count cap per quality. O(n²) link search, so keep modest.
 const CAPS = { low: 30, med: 70, high: 120 };
@@ -58,8 +59,6 @@ export function create({ c2d, getColors, pxScale }) {
 
     // Link threshold: bigger intensity → longer links.
     const linkDist = 0.12 + params.intensity * 0.18;
-    const primary = `${(c.primary[0] * 255) | 0},${(c.primary[1] * 255) | 0},${(c.primary[2] * 255) | 0}`;
-    const fg = `${(c.fg[0] * 255) | 0},${(c.fg[1] * 255) | 0},${(c.fg[2] * 255) | 0}`;
 
     // Lines
     c2d.lineWidth = 1 * px;
@@ -73,7 +72,7 @@ export function create({ c2d, getColors, pxScale }) {
         if (d2 < linkDist * linkDist) {
           const d = Math.sqrt(d2);
           const alpha = (1 - d / linkDist) * 0.6;
-          c2d.strokeStyle = `rgba(${primary},${alpha.toFixed(3)})`;
+          c2d.strokeStyle = rgbaCss(c.primary, alpha);
           c2d.beginPath();
           c2d.moveTo(a.x * w, a.y * h);
           c2d.lineTo(b.x * w, b.y * h);
@@ -83,7 +82,7 @@ export function create({ c2d, getColors, pxScale }) {
     }
 
     // Dots on top
-    c2d.fillStyle = `rgba(${fg},0.9)`;
+    c2d.fillStyle = rgbaCss(c.fg, 0.9);
     for (let i = 0; i < nodes.length; i++) {
       const n = nodes[i];
       c2d.beginPath();

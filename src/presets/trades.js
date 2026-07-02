@@ -4,6 +4,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 
 const SYMS = [
   'AAPL',
@@ -65,9 +66,9 @@ export function create({ c2d, getColors }) {
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
 
-    const up = `rgb(${(c.success ? c.success : c.primary).map((v) => (v * 255) | 0).join(',')})`;
-    const down = `rgb(${(c.error ? c.error : c.accent).map((v) => (v * 255) | 0).join(',')})`;
-    const fg = `rgb(${c.fg.map((v) => (v * 255) | 0).join(',')})`;
+    const up = rgbCss(c.success ? c.success : c.primary);
+    const down = rgbCss(c.error ? c.error : c.accent);
+    const fg = rgbCss(c.fg);
 
     const cols = Math.max(3, Math.round(3 + params.density * 4));
     const colW = w / cols;
@@ -111,7 +112,7 @@ export function create({ c2d, getColors }) {
         );
       }
       // column divider
-      c2d.strokeStyle = `rgba(${c.fg.map((v) => (v * 255) | 0).join(',')},0.08)`;
+      c2d.strokeStyle = rgbaCss(c.fg, 0.08);
       c2d.lineWidth = 1;
       c2d.beginPath();
       c2d.moveTo(col * colW, 0);

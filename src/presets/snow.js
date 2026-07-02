@@ -2,6 +2,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss } from '../renderer/tokens.js';
 
 const CAPS = { low: 60, med: 180, high: 400 };
 
@@ -39,14 +40,13 @@ export function create({ c2d, getColors }) {
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
 
-    const fg = `${(c.fg[0] * 255) | 0},${(c.fg[1] * 255) | 0},${(c.fg[2] * 255) | 0}`;
     const fall = t * (0.5 + params.intensity);
     for (let i = 0; i < flakes.length; i++) {
       const f = flakes[i];
       const y = (((f.y + fall * f.v) % 1) + 1) % 1;
       const x = (((f.x + Math.sin(fall + f.drift) * f.driftAmp) % 1) + 1) % 1;
       const a = 0.55 + 0.4 * Math.sin(t * 0.7 + f.drift);
-      c2d.fillStyle = `rgba(${fg},${a.toFixed(3)})`;
+      c2d.fillStyle = rgbaCss(c.fg, a);
       c2d.beginPath();
       c2d.arc(x * w, y * h, f.r, 0, Math.PI * 2);
       c2d.fill();

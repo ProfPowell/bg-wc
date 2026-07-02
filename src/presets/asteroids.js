@@ -3,7 +3,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
-import { rgbCss as rgb } from '../renderer/tokens.js';
+import { rgbCss as rgb, rgbaCss } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1; // scale device-pixel line widths so they aren't thin on hi-DPI
@@ -81,7 +81,7 @@ export function create({ c2d, getColors, pxScale }) {
       c2d.restore(); // restore before stroke so lineWidth isn't scaled
     }
     if (glow > 0.05) {
-      c2d.strokeStyle = `rgba(${(c1[0] * 255) | 0},${(c1[1] * 255) | 0},${(c1[2] * 255) | 0},${(0.18 * glow).toFixed(3)})`;
+      c2d.strokeStyle = rgbaCss(c1, 0.18 * glow);
       c2d.lineWidth = 4 * px;
       c2d.stroke();
     }

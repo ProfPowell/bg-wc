@@ -10,6 +10,7 @@
 // frames so a steady globe allocates nothing per frame.
 
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1; // scale stroke widths so they aren't thin on hi-DPI
@@ -53,13 +54,6 @@ export function create({ c2d, getColors, pxScale }) {
       say = Math.sin(ay);
     const cax = Math.cos(ax),
       sax = Math.sin(ax);
-
-    const pr = (c.primary[0] * 255) | 0,
-      pg = (c.primary[1] * 255) | 0,
-      pb = (c.primary[2] * 255) | 0;
-    const ar = (c.accent[0] * 255) | 0,
-      ag = (c.accent[1] * 255) | 0,
-      ab = (c.accent[2] * 255) | 0;
 
     function proj(theta, phi) {
       const st = Math.sin(theta),
@@ -112,9 +106,9 @@ export function create({ c2d, getColors, pxScale }) {
 
     const glow = params.intensity;
     // back (behind), then front glow, then crisp front.
-    strokeSegs(back, `rgba(${pr},${pg},${pb},0.22)`, 1.2);
-    if (glow > 0.05) strokeSegs(front, `rgba(${pr},${pg},${pb},${(0.18 * glow).toFixed(3)})`, 4.0);
-    strokeSegs(front, `rgba(${pr},${pg},${pb},0.95)`, 1.4);
+    strokeSegs(back, rgbaCss(c.primary, 0.22), 1.2);
+    if (glow > 0.05) strokeSegs(front, rgbaCss(c.primary, 0.18 * glow), 4.0);
+    strokeSegs(front, rgbaCss(c.primary, 0.95), 1.4);
 
     // Equatorial trench — a bold accent ring, batched front/back too.
     {
@@ -127,14 +121,14 @@ export function create({ c2d, getColors, pxScale }) {
           b = pts[i];
         ((a[2] + b[2]) * 0.5 > 0 ? ef : eb).push(a[0], a[1], b[0], b[1]);
       }
-      strokeSegs(eb, `rgba(${ar},${ag},${ab},0.3)`, 1.8);
-      strokeSegs(ef, `rgba(${ar},${ag},${ab},1)`, 2.4);
+      strokeSegs(eb, rgbaCss(c.accent, 0.3), 1.8);
+      strokeSegs(ef, rgbaCss(c.accent, 1), 2.4);
     }
 
     // Surface dish (front only).
     const center = proj(0.7, 0.6 - ay);
     if (center[2] > 0) {
-      c2d.strokeStyle = `rgb(${pr},${pg},${pb})`;
+      c2d.strokeStyle = rgbCss(c.primary);
       c2d.lineWidth = 1.6 * px;
       c2d.beginPath();
       c2d.arc(center[0], center[1], R * 0.12, 0, Math.PI * 2);

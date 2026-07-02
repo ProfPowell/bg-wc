@@ -66,9 +66,7 @@ function makeUnit(unit, n, count) {
   return el;
 }
 
-function rgb(c) {
-  return `rgb(${Math.round(c[0] * 255)}, ${Math.round(c[1] * 255)}, ${Math.round(c[2] * 255)})`;
-}
+import { rgbCss as rgb } from '../renderer/tokens.js';
 
 // Returns [r, g, b] each 0..255
 function hslToRgb(h, s, l) {

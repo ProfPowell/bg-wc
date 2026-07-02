@@ -5,9 +5,7 @@
 
 const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
 
-function rgb(c) {
-  return `rgb(${Math.round(c[0] * 255)}, ${Math.round(c[1] * 255)}, ${Math.round(c[2] * 255)})`;
-}
+import { rgbCss as rgb } from '../renderer/tokens.js';
 
 // Tiny deterministic PRNG so `seed` gives reproducible scatter.
 function mulberry32(seed) {

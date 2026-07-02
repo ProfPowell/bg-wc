@@ -5,6 +5,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbCss } from '../renderer/tokens.js';
 
 const SHAPES = [
   [[1, 1, 1, 1]], // I
@@ -125,12 +126,9 @@ export function create({ c2d, getColors }) {
   }
 
   function drawCell(rgba, gx, gy) {
-    const r = (rgba[0] * 255) | 0;
-    const g = (rgba[1] * 255) | 0;
-    const b = (rgba[2] * 255) | 0;
     const x = gx * cell;
     const y = gy * cell;
-    c2d.fillStyle = `rgb(${r},${g},${b})`;
+    c2d.fillStyle = rgbCss(rgba);
     c2d.fillRect(x, y, cell - 1, cell - 1);
     // Brighter top edge / darker bottom for a faux-bevel.
     c2d.fillStyle = `rgba(255,255,255,0.25)`;

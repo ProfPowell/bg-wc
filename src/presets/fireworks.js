@@ -5,6 +5,7 @@
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
+import { rgbaCss } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1; // scale device-pixel line widths so they aren't thin on hi-DPI
@@ -98,20 +99,17 @@ export function create({ c2d, getColors, pxScale }) {
         c2d.moveTo(cx + dx * r0, cy + dy * r0);
         c2d.lineTo(cx + dx * r1, cy + dy * r1);
       }
-      const cr = (b.color[0] * 255) | 0,
-        cg = (b.color[1] * 255) | 0,
-        cb = (b.color[2] * 255) | 0;
       if (glow > 0.05) {
-        c2d.strokeStyle = `rgba(${cr},${cg},${cb},${(alpha * 0.22 * glow).toFixed(3)})`;
+        c2d.strokeStyle = rgbaCss(b.color, alpha * 0.22 * glow);
         c2d.lineWidth = 4.5 * px;
         c2d.stroke();
       }
-      c2d.strokeStyle = `rgba(${cr},${cg},${cb},${alpha.toFixed(3)})`;
+      c2d.strokeStyle = rgbaCss(b.color, alpha);
       c2d.lineWidth = 1.8 * px;
       c2d.stroke();
       // bright core dot early in life
       if (age < 0.3) {
-        c2d.fillStyle = `rgba(${(c.fg[0] * 255) | 0},${(c.fg[1] * 255) | 0},${(c.fg[2] * 255) | 0},${((0.3 - age) / 0.3).toFixed(3)})`;
+        c2d.fillStyle = rgbaCss(c.fg, (0.3 - age) / 0.3);
         c2d.beginPath();
         c2d.arc(cx, cy, 2.5 * px, 0, Math.PI * 2);
         c2d.fill();
@@ -142,7 +140,7 @@ export function create({ c2d, getColors, pxScale }) {
           cy = r() * h;
         const spikes = 10;
         const col = palette[k % palette.length];
-        c2d.strokeStyle = `rgba(${(col[0] * 255) | 0},${(col[1] * 255) | 0},${(col[2] * 255) | 0},0.85)`;
+        c2d.strokeStyle = rgbaCss(col, 0.85);
         c2d.beginPath();
         for (let i = 0; i < spikes; i++) {
           const a = (i / spikes) * Math.PI * 2;

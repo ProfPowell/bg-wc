@@ -5,8 +5,6 @@ import { test, expect } from '@playwright/test';
 // scan, params mapping, skip opt-out, dynamically added nodes, late
 // annotation, value changes, and removal.
 
-const tick = () => new Promise((res) => setTimeout(res, 0)); // let the MutationObserver deliver
-
 test('initial scan binds and maps params (attrs + color vars)', async ({ page }) => {
   await page.goto('/test/data-background-page.html');
   const r = await page.evaluate(() => {

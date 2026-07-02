@@ -8,6 +8,7 @@
 // `geometric`. Absent/empty/unknown -> all three.
 
 import { mulberry32 } from '../util/pause.js';
+import { rgbCss } from '../renderer/tokens.js';
 
 // --- Icon library ----------------------------------------------------------
 // Each icon is an array of strokes; each stroke is an array of [x,y] points in
@@ -351,10 +352,7 @@ export function create({ host, c2d, getColors }) {
   }
 
   function inkColor(c) {
-    const r = (c.fg[0] * 255) | 0;
-    const g = (c.fg[1] * 255) | 0;
-    const b = (c.fg[2] * 255) | 0;
-    return `rgb(${r},${g},${b})`;
+    return rgbCss(c.fg);
   }
 
   function frame(t, params) {
