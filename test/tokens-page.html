@@ -4,9 +4,10 @@
 <body>
   <div id="host"></div>
   <script type="module">
-    import { readTokenString, cssToRgba } from '../src/renderer/tokens.js';
+    import { readTokenString, cssToRgba, resolveTokens } from '../src/renderer/tokens.js';
     window.readTokenString = readTokenString;
     window.cssToRgba = cssToRgba;
+    window.resolveTokens = resolveTokens;
   </script>
 </body>
 </html>

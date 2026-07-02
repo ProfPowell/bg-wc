@@ -29,43 +29,73 @@ const CACHE_CAP = 128;
 const cache = new Map();
 let probeCtx = null;
 let probeEl = null;
+// Ambient dark-preference MQL: qualifies light-dark() cache keys so an `auto`
+// scheme ("light dark"), whose resolution follows the OS preference, can't
+// serve a stale arm after the preference flips mid-session.
+const darkMq =
+  typeof matchMedia !== 'undefined' ? matchMedia('(prefers-color-scheme: dark)') : null;
+
+function cacheGet(key) {
+  const hit = cache.get(key);
+  if (hit) {
+    cache.delete(key); // re-insert to mark most-recently-used
+    cache.set(key, hit);
+  }
+  return hit;
+}
+
+function cacheSet(key, rgba) {
+  if (cache.size >= CACHE_CAP) cache.delete(cache.keys().next().value);
+  cache.set(key, rgba);
+}
 
 // Resolve a CSS color the canvas can't parse (notably `light-dark()`) to a
-// concrete color via the DOM. The browser resolves `light-dark()` against the
-// page's `color-scheme`, which a bare canvas context has no notion of — so a
-// theme that serves tokens as `light-dark(...)` (e.g. vanilla-breeze in
-// light/auto mode) would otherwise collapse to black. Resolved against
-// document.body so the page's scheme applies.
-function resolveViaDom(str) {
+// concrete color via the DOM. The browser resolves `light-dark()` against an
+// element's `color-scheme`, which a bare canvas context has no notion of — so
+// a theme that serves tokens as `light-dark(...)` (e.g. vanilla-breeze in
+// light/auto mode) would otherwise collapse to black. The probe carries the
+// caller's scheme so a host inside a scheme island resolves its own arm, and
+// is detached again after the read — it must not linger in the user's DOM.
+function resolveViaDom(str, scheme) {
   if (typeof document === 'undefined' || !document.body) return str;
   if (!probeEl) {
     probeEl = document.createElement('span');
     probeEl.setAttribute('aria-hidden', 'true');
     probeEl.style.cssText = 'position:fixed;left:-9999px;top:0;width:0;height:0';
   }
-  if (!probeEl.isConnected) document.body.appendChild(probeEl);
+  probeEl.style.colorScheme = scheme || '';
   probeEl.style.color = '';
   probeEl.style.color = str; // invalid input leaves it empty
+  document.body.appendChild(probeEl);
   const resolved = getComputedStyle(probeEl).color;
+  probeEl.remove();
   return resolved || str;
 }
 
-export function parseColor(str) {
+export function parseColor(str, scheme) {
   if (!str) return [0, 0, 0, 0];
   const key = String(str).trim();
   if (!key || key === 'transparent') return [0, 0, 0, 0];
   // `light-dark()` is scheme-dependent (the same string resolves differently in
-  // light vs dark), so resolve it fresh through the DOM and do NOT cache by the
-  // light-dark string. The resolved rgb() goes through the normal cached path.
+  // light vs dark), so it is cached under a scheme-qualified key. resolveTokens
+  // passes the host's scheme; bare cssToRgba() falls back to the page's.
   if (key.indexOf('light-dark(') >= 0) {
-    return parseColor(resolveViaDom(key));
+    if (scheme == null) {
+      scheme =
+        (typeof document !== 'undefined' &&
+          document.body &&
+          getComputedStyle(document.body).colorScheme) ||
+        '';
+    }
+    const ldKey = `${key}@${scheme}|${darkMq?.matches ? 'd' : 'l'}`;
+    const ldHit = cacheGet(ldKey);
+    if (ldHit) return ldHit;
+    const rgba = parseColor(resolveViaDom(key, scheme));
+    cacheSet(ldKey, rgba);
+    return rgba;
   }
-  const hit = cache.get(key);
-  if (hit) {
-    cache.delete(key); // re-insert to mark most-recently-used
-    cache.set(key, hit);
-    return hit;
-  }
+  const hit = cacheGet(key);
+  if (hit) return hit;
   if (!probeCtx) {
     probeCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
   }
@@ -83,13 +113,11 @@ export function parseColor(str) {
   probeCtx.fillRect(0, 0, 1, 1);
   const d = probeCtx.getImageData(0, 0, 1, 1).data;
   const rgba = [d[0] / 255, d[1] / 255, d[2] / 255, d[3] / 255];
-  if (cache.size >= CACHE_CAP) cache.delete(cache.keys().next().value);
-  cache.set(key, rgba);
+  cacheSet(key, rgba);
   return rgba;
 }
 
-export function readTokenString(host, token, override) {
-  const cs = getComputedStyle(host);
+export function readTokenString(host, token, override, cs = getComputedStyle(host)) {
   if (override) {
     const overrides = Array.isArray(override) ? override : [override];
     for (const o of overrides) {
@@ -106,10 +134,14 @@ export function readTokenString(host, token, override) {
 }
 
 export function resolveTokens(host, mapping) {
+  // One computed-style read for the whole mapping — this runs per frame, and a
+  // per-key getComputedStyle(host) is 8 forced style resolutions per element.
+  const cs = getComputedStyle(host);
+  const scheme = cs.colorScheme || '';
   const out = {};
   for (const key of Object.keys(mapping)) {
     const { token, override } = mapping[key];
-    out[key] = parseColor(readTokenString(host, token, override));
+    out[key] = parseColor(readTokenString(host, token, override, cs), scheme);
   }
   return out;
 }

@@ -4202,6 +4202,9 @@
           "parameters": [
             {
               "name": "str"
+            },
+            {
+              "name": "scheme"
             }
           ]
         },
@@ -4217,6 +4220,10 @@
             },
             {
               "name": "override"
+            },
+            {
+              "name": "cs",
+              "default": "getComputedStyle(host)"
             }
           ]
         },
