@@ -343,7 +343,7 @@ console.log('PNG ready:', url);</code-block>
         </table>
       </div>
       <h3>Text presets (Canvas2D)</h3>
-      <p>Type as the background. Set the copy with the <code>text</code> attribute; all but <code>bootlog</code> honor <code>palette="rainbow|theme|mono"</code>.</p>
+      <p>Type as the background. Set the copy with the <code>text</code> attribute; all but <code>bootlog</code> honor <code>palette="rainbow|theme|mono"</code>. Presets in other groups also read <code>text</code>: <code>source</code>, <code>wordcloud</code>, <code>ledticker</code>, <code>nixie</code>, <code>splitflap</code>, <code>neon-sign</code>, and <code>swarm</code> &mdash; see their group tables.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
@@ -362,6 +362,9 @@ console.log('PNG ready:', url);</code-block>
         <table>
           <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
           <tbody>
+            <tr><td><code>ledticker</code></td><td>Dot-matrix LED marquee &mdash; scrolls <code>text</code> with a phosphor trail; a scrolling waveform without it</td><td>accent, warning, background</td></tr>
+            <tr><td><code>nixie</code></td><td>Row of Nixie tubes ticking like a counter &mdash; warm wire digits with ghost stack and glass glow (reads <code>text</code>)</td><td>accent, warning, foreground, background</td></tr>
+            <tr><td><code>splitflap</code></td><td>Solari split-flap board clattering through messages on staggered cell schedules (reads <code>text</code>)</td><td>warning, foreground, background</td></tr>
             <tr><td><code>trades</code></td><td>Trading terminal: scrolling ticker columns + candles</td><td>primary, success, error, foreground</td></tr>
             <tr><td><code>dashboard</code></td><td>Streaming area-line, bouncing bars, sweep gauge</td><td>primary, accent, info, foreground</td></tr>
             <tr><td><code>vectormap</code></td><td>Node map with arcs + traveling packets</td><td>primary, accent, info, foreground</td></tr>
@@ -383,6 +386,7 @@ console.log('PNG ready:', url);</code-block>
             <tr><td><code>particles</code></td><td>Generic drift &mdash; honors <code>palette</code>.</td><td>per palette</td></tr>
             <tr><td><code>pulse</code></td><td>Concentric rings from center</td><td>primary, accent, info</td></tr>
             <tr><td><code>tetris</code></td><td>Ambient falling tetrominoes</td><td>primary, accent, info, success, warning, error</td></tr>
+            <tr><td><code>lanterns</code></td><td>Sky lanterns at dusk &mdash; warm flickering paper lights rising on swaying, depth-scaled paths</td><td>warning, accent, background</td></tr>
             <tr><td><code>matrix</code></td><td>Falling digital rain with glyph trails</td><td>primary, foreground, background</td></tr>
             <tr><td><code>mystify</code></td><td>Windows "Mystify" bouncing polyline screensaver</td><td>primary, accent, info, background</td></tr>
           </tbody>
@@ -487,6 +491,41 @@ console.log('PNG ready:', url);</code-block>
           </tbody>
         </table>
       </div>
+      <h3>Atmospheric presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>nebula</code></td>
+                <td>Deep-space gas &mdash; layered fbm clouds drifting at parallax rates
+                    over a bg&rarr;primary&rarr;accent ramp, pricked with star sparks
+                    and slow ignition flares.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>summit</code></td>
+                <td>Mountain dawn &mdash; parallax noise ridgelines stepping back into a
+                    slow sunrise, with drifting mist bands and occasional birds.</td>
+                <td>primary, accent, warning, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Retro presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>equalizer</code></td>
+                <td>80s hi-fi graphic equalizer &mdash; LED segment columns thump to a
+                    synthesized spectrum with falling peak-hold caps. <code>mode</code>:
+                    <code>bars</code> (default), <code>mirror</code>, <code>dots</code>.</td>
+                <td>success, warning, error, foreground, background</td></tr>
+            <tr><td><code>vumeter</code></td>
+                <td>Analog VU meters &mdash; ballistic spring needles chase a synthesized
+                    signal past tick scales, a red zone, PEAK LEDs, and a sweeping glass
+                    glare.</td>
+                <td>warning, error, foreground, background</td></tr>
+          </tbody>
+        </table>
+      </div>
       <h3>Ornamental presets</h3>
       <div class="table-wrap">
         <table>
@@ -541,6 +580,11 @@ console.log('PNG ready:', url);</code-block>
             <tr><td><code>sakura</code></td>
                 <td>Cherry petals tumbling through three depth layers on gusting wind.</td>
                 <td>primary, background</td></tr>
+            <tr><td><code>origami</code></td>
+                <td>Sheets fold into figures via hand-authored crease scripts with
+                    pseudo-3D foreshortening &mdash; guides draw first, the form folds
+                    step by step, holds, then fades.</td>
+                <td>primary, accent, info, foreground, background</td></tr>
           </tbody>
         </table>
       </div>
@@ -569,11 +613,26 @@ console.log('PNG ready:', url);</code-block>
         <table>
           <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
           <tbody>
+            <tr><td><code>alchemy</code></td>
+                <td>Engraved esoteric diagram &mdash; nested rings of invented sigils,
+                    inscribed polygons, and seeded chords etch on, each ring rotating
+                    at its own slow rate.</td>
+                <td>foreground, accent, background</td></tr>
             <tr><td><code>bauhaus</code></td>
                 <td>Grid composition of primary geometric forms (circles, arcs,
                     triangles, bars) at full saturation; cells slide into place and
                     recompose on staggered cycles.</td>
                 <td>primary, accent, info, success, warning, error</td></tr>
+            <tr><td><code>cave</code></td>
+                <td>Parietal cave art &mdash; charcoal animal outlines and ochre
+                    handprint stencils emerge from a mottled rock wall under a
+                    drifting torchlight vignette.</td>
+                <td>foreground, warning, error, background</td></tr>
+            <tr><td><code>clockwork</code></td>
+                <td>Meshing brass gear train &mdash; ratio-locked gears with trapezoid
+                    teeth, phase-aligned at their contact points, plus a ticking
+                    escapement wheel.</td>
+                <td>warning, accent, background</td></tr>
             <tr><td><code>damask</code></td>
                 <td>Procedural damask tile &mdash; mirrored flourish motif under a slow
                     diagonal specular sheen.</td>
@@ -582,6 +641,16 @@ console.log('PNG ready:', url);</code-block>
                 <td>Mondrian composition from recursive seeded splits; rule lines
                     periodically redraw, coloured cells cross-fade.</td>
                 <td>primary, accent, info, foreground, background</td></tr>
+            <tr><td><code>hieroglyph</code></td>
+                <td>Columns of invented glyph forms (eye, bird, wave, reed, sun&hellip;)
+                    chisel in top-to-bottom on a speckled sandstone field, with an
+                    inset shadow so they read as carved.</td>
+                <td>foreground, warning, background</td></tr>
+            <tr><td><code>illuminated</code></td>
+                <td>Manuscript page &mdash; a gilded initial capital swept by an animated
+                    sheen, vine marginalia growing down the margin, and rubricated
+                    line stubs on parchment.</td>
+                <td>primary, success, warning, error, foreground, background</td></tr>
             <tr><td><code>meander</code></td>
                 <td>Greek-key fret rows scrolling in alternating directions with
                     per-row parallax.</td>
@@ -590,6 +659,92 @@ console.log('PNG ready:', url);</code-block>
                 <td>Morris-style wallpaper &mdash; mirrored acanthus/vine tiles that draw
                     themselves on, then breathe; pastel-softened theme roles.</td>
                 <td>primary, accent, info, background</td></tr>
+            <tr><td><code>stained-glass</code></td>
+                <td>Gothic window &mdash; seeded Voronoi panes between thick dark lead
+                    cames, each tinted by hashed theme roles, with a slow light bloom
+                    drifting behind the glass.</td>
+                <td>primary, accent, info, success, warning, background</td></tr>
+            <tr><td><code>swiss</code></td>
+                <td>International Typographic Style &mdash; a strict modular grid carries
+                    oversized numerals, thick rules, and flat colour planes sliding
+                    between seeded alignments, one element at a time.</td>
+                <td>primary, accent, error, foreground, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Art presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>colorfield</code></td>
+                <td>Colour-field abstraction &mdash; stacked soft-edged rectangles of
+                    colour with grain-roughened smoothstep edges, breathing glacially
+                    over a toned ground.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>cutouts</code></td>
+                <td>Paper-cut collage &mdash; organic silhouettes (fronds, leaves,
+                    rounded stars, seed forms) drift and layer like physically placed
+                    cut paper with a slight drop offset.</td>
+                <td>primary, accent, info, success, warning, error, background</td></tr>
+            <tr><td><code>drip</code></td>
+                <td>Action painting &mdash; flung-paint spline arcs and droplet spatter
+                    accumulate Pollock-style on a canvas weave; a slow whitewash veils
+                    and restarts when coverage saturates.</td>
+                <td>primary, accent, info, warning, error, foreground, background</td></tr>
+            <tr><td><code>graffiti</code></td>
+                <td>Spray writing &mdash; seeded tags build dab by dab with a dense core,
+                    wide overspray, and descending drip runs on a concrete wall, fading
+                    behind newer layers.</td>
+                <td>primary, accent, info, warning, error, foreground, background</td></tr>
+            <tr><td><code>mobile</code></td>
+                <td>Kinetic hanging sculpture &mdash; a seeded binary tree of wire arms
+                    and coloured paddles swinging as coupled damped pendulums, kept
+                    alive by gentle periodic impulses.</td>
+                <td>primary, accent, info, warning, error, foreground, background</td></tr>
+            <tr><td><code>watercolor</code></td>
+                <td>Wet-on-wet blooms &mdash; fbm-edged splats glaze multiplicatively
+                    with a darker granulated wet-edge band bleeding into paper grain;
+                    washes grow, hold, then fade.</td>
+                <td>primary, accent, info, success, warning, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Kitsch presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>crochet</code></td>
+                <td>Granny-square afghan &mdash; squares crochet themselves stitch by
+                    stitch, round by round, yarn colour rotating through theme roles in
+                    the classic scrap-yarn look.</td>
+                <td>primary, accent, info, success, warning, foreground, background</td></tr>
+            <tr><td><code>disco</code></td>
+                <td>Mirror-ball light &mdash; a perspective grid of parallelogram light
+                    cells sweeps a dark floor-and-wall space, tint-cycling through theme
+                    roles with occasional lens-flare pings.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>domino</code></td>
+                <td>Domino chains seen from above &mdash; a toppling wave travels seeded
+                    curved paths, tiles laying flat over their leading edges while the
+                    chain quietly re-stands behind the front.</td>
+                <td>primary, accent, info, foreground, background</td></tr>
+            <tr><td><code>neon-sign</code></td>
+                <td>Roadside neon &mdash; tube-outline shapes and a tube-script word
+                    (&ldquo;OPEN&rdquo;, or set <code>text</code>) with bulb-chase dots,
+                    per-segment flicker, and pre-rendered glow.</td>
+                <td>primary, accent, info, warning, background</td></tr>
+            <tr><td><code>pegboard</code></td>
+                <td>Backlit toy peg board &mdash; glowing translucent pegs fill in seeded
+                    pictures (star, heart, rocket, rainbow) peg by peg, hold lit, then
+                    clear for the next.</td>
+                <td>primary, accent, info, success, warning, background</td></tr>
+            <tr><td><code>quilt</code></td>
+                <td>Patchwork &mdash; classic quilt blocks (log cabin, flying geese,
+                    pinwheel, nine-patch) assemble patch by patch under a fabric-grain
+                    overlay, occasionally re-piecing themselves.</td>
+                <td>primary, accent, info, warning, error, foreground, background</td></tr>
           </tbody>
         </table>
       </div>
@@ -622,6 +777,11 @@ console.log('PNG ready:', url);</code-block>
                 <td>Vibrating Chladni plate &mdash; sand gathers on nodal lines as the
                     mode pair cross-fades.</td>
                 <td>primary, accent, background</td></tr>
+            <tr><td><code>orbital</code></td>
+                <td>Planetary system &mdash; satellites ride seeded ellipses with true
+                    Keplerian speed variation, trailing faded orbit arcs; occasional
+                    Hohmann-style transfers animate between orbits.</td>
+                <td>primary, accent, info, success, warning, foreground, background</td></tr>
             <tr><td><code>slime-mold</code></td>
                 <td>Physarum agents depositing and chasing a diffusing trail (needs
                     renderable float textures; degrades to a frozen field).</td>
@@ -658,6 +818,82 @@ console.log('PNG ready:', url);</code-block>
                 <td>Lissajous / waveform traces with glowing phosphor-persistence
                     trails.</td>
                 <td>primary, accent, info, background</td></tr>
+            <tr><td><code>spectrum</code></td>
+                <td>Spectrum analyzer &mdash; a live FFT bar strip feeds a scrolling
+                    time-frequency waterfall below; magnitudes ramp through
+                    bg&rarr;primary&rarr;accent&rarr;warning.</td>
+                <td>primary, accent, warning, background</td></tr>
+            <tr><td><code>hologram</code></td>
+                <td>Projected wireframe &mdash; an icosahedron and a torus knot alternate
+                    rotating above a projector glow, drawn as scan-lined emissive lines
+                    with a chromatic ghost and occasional frame tears.</td>
+                <td>primary, accent, background</td></tr>
+            <tr><td><code>neon-city</code></td>
+                <td>Night skyline over wet asphalt &mdash; lit-window towers and
+                    saturated neon signs mirrored in a rain-slick, streak-blurred,
+                    ripple-perturbed street.</td>
+                <td>primary, accent, info, background</td></tr>
+            <tr><td><code>swarm</code></td>
+                <td>Drone light show &mdash; hundreds of glowing points fly formation
+                    transitions (scatter, ring, lattice, figures); lines of
+                    <code>text</code> rasterize into formations.</td>
+                <td>primary, accent, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Nature presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>komorebi</code></td>
+                <td>Dappled late-afternoon light through swaying trees &mdash; warm
+                    sunflecks drift and breathe over a layered foliage shadow, with
+                    long raking light shafts.</td>
+                <td>success, warning, accent, background</td></tr>
+            <tr><td><code>migration</code></td>
+                <td>Birds migrating high in an autumn sky &mdash; undulating V-skeins at
+                    parallax altitudes, lead birds trading off, far skeins smaller and
+                    paler.</td>
+                <td>accent, info, warning, foreground, background</td></tr>
+            <tr><td><code>palms</code></td>
+                <td>Palm trees swaying against a tropical sky, distant palms hazier
+                    (parallax). <code>mode</code>: <code>silhouette</code> (default,
+                    sunset), <code>lit</code> (daytime).</td>
+                <td>primary, accent, info, success, warning, foreground, background</td></tr>
+            <tr><td><code>reeds</code></td>
+                <td>Cattails and tall grasses swaying as travelling wind gusts sweep
+                    across, in 2&ndash;3 depth layers with pastel-softened backs.</td>
+                <td>primary, info, success, warning, background</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Lounge presets</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
+          <tbody>
+            <tr><td><code>barkcloth</code></td>
+                <td>1950s tiki / Hawaiian barkcloth textile &mdash; stylized tropical
+                    motifs (monstera, hibiscus, fronds) on a brick-offset tile grid,
+                    drifting like fabric stirring in a breeze.</td>
+                <td>primary, accent, info, success, warning, foreground, background</td></tr>
+            <tr><td><code>breezeblock</code></td>
+                <td>Atomic-ranch decorative concrete screen &mdash; geometric apertures
+                    backlit by a raking diagonal light sweep, with a floating starburst.
+                    <code>mode</code>: <code>hourglass</code>, <code>circle</code>,
+                    <code>leaf</code>, <code>mixed</code>.</td>
+                <td>primary, accent, warning, foreground, background</td></tr>
+            <tr><td><code>lanai</code></td>
+                <td>Mid-century pool patio &mdash; a kidney pool with caustic ripples on
+                    a terrazzo deck, amoeba stepping stones, a starburst sun, and
+                    swaying palm-frond shadows.</td>
+                <td>primary, accent, info, warning, background</td></tr>
+            <tr><td><code>tiki</code></td>
+                <td>Torch-lit tiki bar at night &mdash; carved totem silhouettes flanked
+                    by flickering torches, hanging glass-float lamps, and a thatch eave
+                    over a deep tropical-night gradient.</td>
+                <td>primary, accent, info, warning, foreground, background</td></tr>
           </tbody>
         </table>
       </div>
