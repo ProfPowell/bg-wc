@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Mezzanine &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+  <style>
+    /* The hotel mezzanine, 1928: three walls off the landing, each painted by
+       its data-background, each with a brass plate by the doorway. */
+    :root {
+      --color-background: #14110d;  /* onyx */
+      --color-foreground: #efe6d3;  /* candlelight */
+      --color-primary: #d4b36a;     /* brass */
+      --color-accent: #2e6f5e;      /* emerald */
+      --color-info: #8a5a3b;        /* walnut inlay */
+    }
+    html, body { margin: 0; background: #0b0908; color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Cormorant Garamond', Georgia, serif; height: 100vh; padding: 18px; }
+    main { height: 100%; }
+
+    hotel-floor {
+      display: grid; width: 100%; height: 100%; gap: 14px;
+      grid-template-columns: 1.3fr 1fr; grid-template-rows: 1fr 1fr;
+      border: 2px solid var(--color-primary); padding: 14px; background: var(--color-background);
+    }
+    lounge-wall { display: block; position: relative; overflow: hidden; border: 1px solid var(--color-primary); background: var(--color-background); }
+    lounge-wall[data-bay="grand"] { grid-row: 1 / 3; }
+
+    brass-plate {
+      display: block; position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+      background: linear-gradient(175deg, #e6cd8d, #b28f47);
+      color: #2a2213; border: 1px solid #8a6d33; border-radius: 3px;
+      padding: 8px 22px; text-align: center; white-space: nowrap;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+    }
+    brass-plate strong { display: block; font-family: 'Poiret One', cursive; font-weight: 400; font-size: clamp(18px, 2vw, 30px); letter-spacing: 0.28em; text-transform: uppercase; }
+    brass-plate small { display: block; font-style: italic; font-size: clamp(11px, 1vw, 14px); letter-spacing: 0.08em; }
+
+    body > nav { position: absolute; top: 32px; right: 40px; z-index: 10; }
+    body > nav a { color: var(--color-primary); text-decoration: none; font-family: 'Poiret One', cursive; font-size: 13px; letter-spacing: 0.24em; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <main>
+    <hotel-floor>
+      <!-- The grand wall facing the stair -->
+      <lounge-wall data-bay="grand" data-background="deco" data-background-intensity="0.65" data-background-seed="8" data-background-speed="0.5">
+        <brass-plate>
+          <strong>The Mezzanine</strong>
+          <small>est. 1928 &middot; data-background="deco"</small>
+        </brass-plate>
+      </lounge-wall>
+      <lounge-wall data-background="shine" data-background-intensity="0.6" data-background-seed="15" data-background-speed="0.5">
+        <brass-plate>
+          <strong>Marble Bar</strong>
+          <small>polished nightly &middot; data-background="shine"</small>
+        </brass-plate>
+      </lounge-wall>
+      <lounge-wall data-background="groove" data-background-intensity="0.65" data-background-seed="5" data-background-speed="0.6">
+        <brass-plate>
+          <strong>Club Room</strong>
+          <small>refurbished 1972, regrettably &middot; data-background="groove"</small>
+        </brass-plate>
+      </lounge-wall>
+    </hotel-floor>
+  </main>
+  <nav><a href="./index.html">&larr; bg-wc demos</a></nav>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>

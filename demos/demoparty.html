@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demoparty &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* SCENE PARTY '94 — the compo wall. Each entry is a screen on the wall;
+       the greets crawl is the sinescroll strip along the bottom. */
+    :root {
+      --color-background: #0b0614;  /* venue dark */
+      --color-foreground: #e8e2f4;
+      --color-primary: #ff4fa3;     /* hot magenta */
+      --color-accent: #45f0df;      /* scanline cyan */
+      --color-info: #ffd24a;        /* trophy gold */
+    }
+    html, body { margin: 0; background: #050308; color: var(--color-foreground); overflow: hidden; }
+    body { font-family: Silkscreen, monospace; height: 100vh; padding: 14px; }
+    main { height: 100%; }
+
+    compo-wall {
+      display: grid; width: 100%; height: 100%; gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1.4fr 1fr 0.35fr;
+      border: 3px solid var(--color-primary);
+      padding: 10px; background: var(--color-background);
+    }
+    compo-entry { display: block; position: relative; overflow: hidden; border: 2px solid rgba(232, 226, 244, 0.35); background: var(--color-background); }
+    compo-entry[data-span="wide"] { grid-column: 1 / -1; }
+    compo-entry[data-span="strip"] { grid-column: 1 / -1; }
+
+    entry-badge {
+      display: block; position: absolute; top: 8px; left: 10px;
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      background: rgba(11, 6, 20, 0.85); border: 1px solid var(--color-accent);
+      color: var(--color-accent); padding: 4px 8px;
+    }
+    entry-badge[data-rank="winner"] { color: var(--color-info); border-color: var(--color-info); }
+    entry-badge[data-rank="winner"]::after { content: " ★"; }
+
+    body > nav { position: absolute; top: 26px; right: 34px; z-index: 10; }
+    body > nav a { color: var(--color-accent); text-decoration: none; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <main>
+    <compo-wall>
+      <!-- Big screen: the headliner -->
+      <compo-entry data-span="wide" data-background="synthwave" data-background-intensity="0.7" data-background-seed="1" data-background-speed="0.8">
+        <entry-badge data-rank="winner">demo compo &middot; 1st &middot; "OUTRUN THE SUN"</entry-badge>
+      </compo-entry>
+      <compo-entry data-background="copperbars" data-background-intensity="0.7" data-background-seed="5" data-background-speed="0.9">
+        <entry-badge>oldskool &middot; 2nd &middot; "RASTER FARIAN"</entry-badge>
+      </compo-entry>
+      <compo-entry data-background="metaballs" data-background-intensity="0.65" data-background-seed="12" data-background-speed="0.8">
+        <entry-badge>4k intro &middot; 3rd &middot; "BLOBBY TABLES"</entry-badge>
+      </compo-entry>
+      <compo-entry data-background="mystify" data-background-intensity="0.6" data-background-seed="8" data-background-speed="0.9">
+        <entry-badge>wild &middot; dq'd &middot; "SCREENSAVER, HONEST"</entry-badge>
+      </compo-entry>
+      <compo-entry data-background="gameboy" data-background-intensity="0.65" data-background-seed="6" data-background-speed="0.7">
+        <entry-badge>handheld lounge &middot; "4 SHADES OK"</entry-badge>
+      </compo-entry>
+      <!-- The greets crawl -->
+      <compo-entry data-span="strip" data-background="sinescroll" data-background-intensity="0.7" data-background-seed="2" data-background-speed="0.9"
+                   data-background-text="GREETINGS TO THE VANILLA BREEZE CREW ... BG-WC POSSE ... ALL CANVAS2D WIZARDS ... AND YOU, READING THE MARKUP">
+        <entry-badge>greets</entry-badge>
+      </compo-entry>
+    </compo-wall>
+  </main>
+  <nav><a href="./index.html">&larr; bg-wc demos</a></nav>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ryokan &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    /* A three-room inn. Each room is a cover section painted by
+       data-background; the plaque is the vocabulary — and it reads
+       top-to-bottom, the way a ryokan plaque should (writing-mode). */
+    :root {
+      --color-background: #f6f1e6;  /* washi */
+      --color-foreground: #26221c;  /* sumi ink */
+      --color-primary: #2c4a6e;     /* ai indigo */
+      --color-accent: #b8452e;      /* shu vermilion */
+      --color-info: #6a8672;        /* matcha */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: 'Zen Kaku Gothic New', system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.6; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    room-plaque {
+      display: block; position: absolute; top: 50%; right: clamp(28px, 6vw, 96px);
+      transform: translateY(-50%);
+      writing-mode: vertical-rl; text-orientation: mixed;
+      background: rgba(246, 241, 230, 0.88); border: 1px solid rgba(38, 34, 28, 0.35);
+      padding: 26px 14px; max-height: 76vh;
+    }
+    room-plaque h1, room-plaque h2 { font-family: 'Shippori Mincho', serif; font-weight: 700; margin: 0 0 0 10px; font-size: clamp(26px, 3.4vw, 44px); letter-spacing: 0.14em; }
+    room-plaque p { margin: 0; font-weight: 300; font-size: 14px; letter-spacing: 0.1em; line-height: 1.9; }
+    room-plaque small { display: block; color: var(--color-accent); font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; margin-left: 12px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(38, 34, 28, 0.08); padding: 6px 2px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="zen-garden" data-background-intensity="0.6" data-background-seed="3" data-background-speed="0.5">
+    <room-plaque>
+      <small>The courtyard</small>
+      <h1>Karesansui</h1>
+      <p>Raked gravel, three stones, no water anywhere &mdash; and yet. <code>data-background="zen-garden"</code></p>
+    </room-plaque>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="seigaiha" data-background-intensity="0.6" data-background-seed="11" data-background-speed="0.5">
+    <room-plaque>
+      <small>The bath hall</small>
+      <h2>Seigaiha</h2>
+      <p>Blue-ocean waves, overlapping forever, tiled on every wall. <code>data-background="seigaiha"</code></p>
+    </room-plaque>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="origami" data-background-intensity="0.6" data-background-seed="8" data-background-speed="0.6">
+    <room-plaque>
+      <small>The tea room</small>
+      <h2>Origami</h2>
+      <p>The paper remembers every fold it has ever been asked to make. <code>data-background="origami"</code></p>
+    </room-plaque>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Print Shop &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Gochi+Hand&display=swap" rel="stylesheet">
+  <style>
+    /* A risograph shop floor: four stations, each face painted by its
+       data-background; the job tickets are taped on at an angle. */
+    :root {
+      --color-background: #f7f3e9;  /* uncoated stock */
+      --color-foreground: #2a2622;
+      --color-primary: #ff5f9e;     /* fluoro pink drum */
+      --color-accent: #2d7ff0;      /* riso blue drum */
+      --color-info: #ffc22e;        /* sunflower drum */
+    }
+    html, body { margin: 0; background: var(--color-foreground); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: 'Space Grotesk', system-ui, sans-serif; height: 100vh; padding: 16px; }
+    main { height: 100%; }
+
+    press-room {
+      display: grid; width: 100%; height: 100%; gap: 14px;
+      grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+    }
+    press-station { display: block; position: relative; overflow: hidden; border: 3px solid var(--color-foreground); border-radius: 6px; background: var(--color-background); }
+
+    station-sign {
+      display: block; position: absolute; top: 12px; left: 14px;
+      background: var(--color-foreground); color: var(--color-background);
+      padding: 6px 14px; font-weight: 700; font-size: clamp(14px, 1.4vw, 20px); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+
+    job-ticket {
+      display: block; position: absolute; right: 14px; bottom: 14px; max-width: 60%;
+      background: var(--color-background); border: 2px dashed var(--color-foreground);
+      padding: 8px 14px; transform: rotate(-2deg);
+      font-family: 'Gochi Hand', cursive; font-size: clamp(15px, 1.6vw, 22px); line-height: 1.25;
+    }
+    job-ticket[data-rush] { background: var(--color-info); transform: rotate(2deg); border-style: solid; }
+    job-ticket[data-rush]::before { content: "RUSH — "; font-weight: 700; }
+
+    body > nav { position: absolute; top: 30px; right: 36px; z-index: 10; }
+    body > nav a {
+      display: block; background: var(--color-foreground); color: var(--color-background);
+      padding: 6px 12px; text-decoration: none; font-weight: 700; font-size: 12px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <press-room>
+      <press-station data-background="paper-grain" data-background-intensity="1" data-background-seed="3" data-background-speed="0.5">
+        <station-sign>Stock Room</station-sign>
+        <job-ticket>feel this one &mdash; 80lb, laid finish, lovely tooth</job-ticket>
+      </press-station>
+      <press-station data-background="halftone" data-background-intensity="0.65" data-background-seed="11" data-background-speed="0.6">
+        <station-sign>Screen Dept</station-sign>
+        <job-ticket data-rush>45&deg; angle, coarse dot, client "wants it to feel newspaper"</job-ticket>
+      </press-station>
+      <press-station data-background="rainbow" data-background-intensity="0.6" data-background-seed="7" data-background-speed="0.6">
+        <station-sign>The Rainbow Roll</station-sign>
+        <job-ticket>split fountain on drum 2 &mdash; do not wash up until Friday</job-ticket>
+      </press-station>
+      <press-station data-background="cascade" data-background-intensity="0.65" data-background-seed="19" data-background-speed="0.8"
+                     data-background-text="AaBbCcDdEeFfGgHh0123456789&amp;?!">
+        <station-sign>Type Waterfall</station-sign>
+        <job-ticket>galley overflow &mdash; sweep sorts hourly</job-ticket>
+      </press-station>
+    </press-room>
+  </main>
+  <nav><a href="./index.html">&larr; bg-wc demos</a></nav>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Drawing Office &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=IBM+Plex+Sans:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* Four sheets on the drafting racks. The title block on each sheet is a
+       real definition list — drafting title blocks always were field/value
+       pairs; HTML has had the element all along. */
+    :root {
+      --color-background: #dde5ea;  /* drafting-film gray */
+      --color-foreground: #24303a;  /* graphite */
+      --color-primary: #2f5f8f;     /* pencil blue */
+      --color-accent: #c2542e;      /* checker's red */
+      --color-info: #5a8f7b;        /* stamp green */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    sheet-block {
+      display: block; position: absolute; right: clamp(20px, 4vw, 56px); bottom: clamp(20px, 6vh, 56px);
+      background: rgba(221, 229, 234, 0.92); border: 2px solid var(--color-foreground);
+      min-width: 300px; max-width: 380px;
+    }
+    sheet-block h1, sheet-block h2 {
+      font-family: 'Architects Daughter', cursive; font-size: clamp(20px, 2.2vw, 30px); font-weight: 400;
+      margin: 0; padding: 10px 14px; border-bottom: 2px solid var(--color-foreground);
+    }
+    sheet-block dl { display: grid; grid-template-columns: auto 1fr; margin: 0; font-size: 12px; }
+    sheet-block dt { padding: 6px 10px; border-top: 1px solid rgba(36, 48, 58, 0.35); border-right: 1px solid rgba(36, 48, 58, 0.35); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+    sheet-block dd { margin: 0; padding: 6px 10px; border-top: 1px solid rgba(36, 48, 58, 0.35); font-family: ui-monospace, monospace; }
+    sheet-block dt:first-of-type, sheet-block dd:first-of-type { border-top: 0; }
+    sheet-block dd[data-stamp] { color: var(--color-accent); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <nav><a href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <!-- Sheet 1 pins classic Prussian-blue paper via the binder's color overrides -->
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="blueprint" data-background-intensity="0.65" data-background-seed="4" data-background-speed="0.6"
+           data-background-color-bg="#173a63" data-background-color-fg="#eaf2fb" data-background-color-3="#8fb8e8">
+    <sheet-block>
+      <h1>The Drawing Office</h1>
+      <dl>
+        <dt>Sheet</dt><dd>A1 &middot; 1 of 4</dd>
+        <dt>Drawn by</dt><dd>data-background="blueprint"</dd>
+        <dt>Scale</dt><dd>as the viewport allows</dd>
+        <dt>Status</dt><dd data-stamp>ISSUED FOR DEMO</dd>
+      </dl>
+    </sheet-block>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="hologram" data-background-intensity="0.65" data-background-seed="16" data-background-speed="0.7">
+    <sheet-block>
+      <h2>Projection Table</h2>
+      <dl>
+        <dt>Sheet</dt><dd>H0 &middot; 2 of 4</dd>
+        <dt>Drawn by</dt><dd>data-background="hologram"</dd>
+        <dt>Medium</dt><dd>light, mostly</dd>
+        <dt>Status</dt><dd data-stamp>DO NOT TOUCH THE BEAM</dd>
+      </dl>
+    </sheet-block>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="helix" data-background-intensity="0.6" data-background-seed="7" data-background-speed="0.6">
+    <sheet-block>
+      <h2>Spiral Detail</h2>
+      <dl>
+        <dt>Sheet</dt><dd>B2 &middot; 3 of 4</dd>
+        <dt>Drawn by</dt><dd>data-background="helix"</dd>
+        <dt>Revision</dt><dd>every 3.4 &#8491;ngstr&ouml;ms</dd>
+        <dt>Status</dt><dd data-stamp>CHECKED &middot; TWICE</dd>
+      </dl>
+    </sheet-block>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="spirograph" data-background-intensity="0.6" data-background-seed="12" data-background-speed="0.6">
+    <sheet-block>
+      <h2>Ornamental Gear Study</h2>
+      <dl>
+        <dt>Sheet</dt><dd>C3 &middot; 4 of 4</dd>
+        <dt>Drawn by</dt><dd>data-background="spirograph"</dd>
+        <dt>Instrument</dt><dd>the good pen, the 63-tooth wheel</dd>
+        <dt>Status</dt><dd data-stamp>SUSPICIOUSLY FUN</dd>
+      </dl>
+    </sheet-block>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>

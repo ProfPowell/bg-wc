@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Night Almanac &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* An almanac of nights. Each entry is a full-viewport section painted by
+       data-background; the note card is the vocabulary. Unlayered flavor
+       rules ride over vanilla-breeze's layers. */
+    :root {
+      --color-background: #10142a;  /* ink sky */
+      --color-foreground: #d8dcec;  /* moon silver */
+      --color-primary: #5a6fb4;     /* midnight blue */
+      --color-accent: #b48ead;      /* dusk lilac */
+      --color-info: #7fb2d9;        /* rain glass */
+      --color-warning: #f4b04a;     /* lantern amber */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.6; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    almanac-note {
+      display: block; position: absolute; left: 50%; bottom: clamp(28px, 8vh, 84px);
+      transform: translateX(-50%); max-width: 460px; text-align: center;
+      background: rgba(16, 20, 42, 0.78); border: 1px solid rgba(216, 220, 236, 0.3);
+      padding: 20px 28px;
+    }
+    note-date { display: block; font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--color-warning); margin-bottom: 8px; }
+    almanac-note h1, almanac-note h2 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-style: italic; margin: 0 0 8px; }
+    almanac-note h1 { font-size: clamp(34px, 5vw, 58px); }
+    almanac-note h2 { font-size: clamp(24px, 3vw, 38px); }
+    almanac-note p { margin: 0; font-weight: 300; line-height: 1.65; font-size: 15px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(216, 220, 236, 0.12); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="nebula" data-background-intensity="0.65" data-background-seed="2" data-background-speed="0.5">
+    <almanac-note>
+      <note-date>Frontispiece &middot; the wider dark</note-date>
+      <h1>The Night Almanac</h1>
+      <p>Five entries on what the sky does while nobody is watching. <code>data-background="nebula"</code></p>
+    </almanac-note>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="rain" data-background-intensity="0.7" data-background-seed="19" data-background-speed="0.9">
+    <almanac-note>
+      <note-date>Entry I &middot; a wet one</note-date>
+      <h2>Rain, After Midnight</h2>
+      <p>Streaks by depth, splashes on the sill. Best read indoors. <code>data-background="rain"</code></p>
+    </almanac-note>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="snow" data-background-intensity="0.6" data-background-seed="7" data-background-speed="0.5">
+    <almanac-note>
+      <note-date>Entry II &middot; first fall</note-date>
+      <h2>Snow, Unhurried</h2>
+      <p>Every flake takes the long way down. <code>data-background="snow"</code></p>
+    </almanac-note>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="fireflies" data-background-intensity="0.7" data-background-seed="9" data-background-speed="0.8">
+    <almanac-note>
+      <note-date>Entry III &middot; the meadow</note-date>
+      <h2>Fireflies, Answering</h2>
+      <p>Amber pulses in the grass; the violet ones are replies. <code>data-background="fireflies"</code></p>
+    </almanac-note>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="lanterns" data-background-intensity="0.65" data-background-seed="4" data-background-speed="0.6">
+    <almanac-note>
+      <note-date>Entry IV &middot; the festival</note-date>
+      <h2>Lanterns, Let Go</h2>
+      <p>Paper lights climbing on their own warm air. <code>data-background="lanterns"</code></p>
+    </almanac-note>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
