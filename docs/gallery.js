@@ -315,5 +315,5 @@ motionSel.addEventListener('change', () => {
 });
 
 // Log lifecycle events for inspection.
-addEventListener('error', (e) => console.error('[bg-wc page error]', e.error));
+window.addEventListener('error', (e) => console.error('[bg-wc page error]', e.error));
 grid.addEventListener('bg-wc:error', (e) => console.warn('[bg-wc:error]', e.detail), true);

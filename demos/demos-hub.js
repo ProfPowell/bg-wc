@@ -38,9 +38,9 @@ document.addEventListener('click', (e) => {
   const win = open.closest('.bw-card')?.querySelector('browser-window');
   if (win && typeof win.toggleMaximize === 'function') {
     e.preventDefault();
-    document
-      .querySelectorAll('.bw-card browser-window')
-      .forEach((w) => { if (w !== win) unmountDemo(w); });
+    document.querySelectorAll('.bw-card browser-window').forEach((w) => {
+      if (w !== win) unmountDemo(w);
+    });
     unmountDemo(win); // tear down (releases any previous context)
     mountDemo(win); // rebuild fresh
     win.toggleMaximize();

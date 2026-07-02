@@ -42,6 +42,15 @@ export default [
     },
   },
   {
-    ignores: ['dist/', 'dist-site/', 'node_modules/', 'docs/', 'demos/'],
+    // Node build/CI scripts, not browser code.
+    files: ['scripts/**'],
+    languageOptions: {
+      globals: {
+        process: 'readonly',
+      },
+    },
+  },
+  {
+    ignores: ['dist/', 'dist-site/', 'node_modules/'],
   },
 ];
