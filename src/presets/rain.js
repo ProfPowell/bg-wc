@@ -60,13 +60,17 @@ export function create({ c2d, getColors, pxScale }) {
       d.x = (d.x + fall * slant + 1) % 1;
       if (d.y >= d.ground) {
         ripples.push({ x: d.x, y: d.ground, r: 0, max: (6 + d.depth * 18) * px });
-        d.y -= d.ground; // respawn at the top, keeping the overshoot
+        // Respawn at the top, keeping the overshoot; wrap in case a large
+        // clamped dt pushed the drop more than one ground-length past.
+        while (d.y >= d.ground) d.y -= d.ground;
       }
       const len = (5 + d.depth * 16) * (0.6 + params.intensity) * px;
       c2d.strokeStyle = rgbaCss(c.info, 0.2 + d.depth * 0.55);
       c2d.lineWidth = (0.7 + d.depth * 0.9) * px;
       c2d.beginPath();
       c2d.moveTo(d.x * w, d.y * h);
+      // Streak tail leans harder than the drift (`slant * 3`): visual tuning
+      // so the storm reads angled rather than merely drifting sideways.
       c2d.lineTo(d.x * w - len * slant * 3, d.y * h - len);
       c2d.stroke();
     }

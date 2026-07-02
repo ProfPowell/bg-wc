@@ -3,7 +3,8 @@
 // around each stone over a cleared disc. Grooves are low-alpha fg strokes on
 // the theme bg; stones blend fg toward bg. Nearly still by design — time only
 // breathes the waver. intensity = groove contrast; density = rake spacing and
-// stone count.
+// stone count. Furrows are drawn as single low-alpha grooves, not the spec's
+// paired highlight/shadow relief — a deliberate simplification.
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
@@ -74,7 +75,7 @@ export function create({ c2d, getColors, pxScale }) {
         c2d.globalCompositeOperation = 'destination-out';
         c2d.fillStyle = 'rgba(0,0,0,1)';
       } else {
-        c2d.fillStyle = rgbCss(c.bg);
+        c2d.fillStyle = rgbaCss(c.bg, c.bg[3]);
       }
       c2d.beginPath();
       c2d.arc(cx, cy, maxR + gap * 0.4, 0, Math.PI * 2);

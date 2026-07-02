@@ -2,7 +2,9 @@
 // blobs orbiting the center on incommensurate periods, thresholded at a soft
 // iso edge and banded through three theme colors over the theme bg. A pure
 // function of u_time, so stills are deterministic. density = blob count,
-// intensity = blob size.
+// intensity = blob size. `seed` is a no-op here: makeShaderPreset's closed
+// uniform vocabulary has no u_seed, and the orbits use fixed incommensurate
+// periods rather than seeded randomness.
 
 import { makeShaderPreset } from '../renderer/shader-preset.js';
 

@@ -2,11 +2,14 @@
 // sin flow field and pulses on its own cycle; glow is drawn in passes (wide
 // faint halo under a crisp core — the asteroids idiom, no shadowBlur). Warm
 // theme warning color; a few "answering" flies pulse in accent. intensity =
-// glow reach + wander speed; density = fly count.
+// glow reach + wander speed; density = fly count. The sky is the theme bg
+// darkened toward black (dusk treatment, lanterns idiom) so the glow has
+// somewhere dark to land; falls back to a dark fill when bg is transparent.
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
+import { mix } from './_dots.js';
 
 const CAPS = { low: 25, med: 60, high: 120 };
 
@@ -45,7 +48,8 @@ export function create({ c2d, getColors, pxScale }) {
   function frame(t, params) {
     ensure(params);
     const c = getColors();
-    clearAndFill(c2d, w, h, c.bg);
+    const bg = c.bg && c.bg[3] > 0.01 ? c.bg : [0.08, 0.07, 0.14];
+    clearAndFill(c2d, w, h, [...mix(bg, [0, 0, 0], 0.6), 1]);
 
     let dt = t - lastT;
     lastT = t;
