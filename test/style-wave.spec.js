@@ -14,6 +14,7 @@ const PRESETS = [
   'paisley',
   'azulejo',
   'mudcloth',
+  'terrazzo',
 ];
 
 for (const name of PRESETS) {
