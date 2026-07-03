@@ -69,6 +69,7 @@ test('style-wave presets landed in their groups (2026-07-03)', () => {
     brushstroke: 'art',
     'celtic-knot': 'ornamental',
     paisley: 'ornamental',
+    azulejo: 'ornamental',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(STYLE_WAVE)) {

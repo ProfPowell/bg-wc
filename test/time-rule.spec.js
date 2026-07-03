@@ -19,6 +19,7 @@ const PRESETS = [
   'brushstroke',
   'celtic-knot',
   'paisley',
+  'azulejo',
 ];
 
 for (const name of PRESETS) {
