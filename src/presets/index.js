@@ -161,6 +161,11 @@ const REGISTRY = {
   },
   meander: { renderer: 'canvas2d', group: 'classic', loader: () => import('./meander.js') },
   morris: { renderer: 'canvas2d', group: 'classic', loader: () => import('./morris.js') },
+  'art-nouveau': {
+    renderer: 'canvas2d',
+    group: 'classic',
+    loader: () => import('./art-nouveau.js'),
+  },
   'stained-glass': {
     renderer: 'webgl',
     group: 'classic',
