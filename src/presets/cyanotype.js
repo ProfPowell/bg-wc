@@ -33,7 +33,6 @@ export function create({ c2d, getColors, pxScale }) {
         lean: -0.4 + rand() * 0.8,
         kind: (rand() * 3) | 0, // fern / sprig / seed-head
         leaflets: 7 + ((rand() * 6) | 0),
-        phase: rand() * Math.PI * 2,
       });
     }
     lastKey = `${params.seed}|${params.density}`;

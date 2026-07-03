@@ -37,7 +37,6 @@ export function create({ c2d, getColors, pxScale }) {
           bud: rand() < 0.35,
         });
         len *= 0.78;
-        heading += 0;
       }
       vines.push({ start, heading, segs, phase: rand() * Math.PI * 2, ci: (rand() * 3) | 0 });
     }

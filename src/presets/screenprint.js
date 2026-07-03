@@ -89,10 +89,11 @@ export function create({ c2d, getColors, pxScale }) {
           motifPath(m.kind, m.r, m.rot);
           c2d.clip();
           const dot = 5 * px;
-          for (let yy = -m.r; yy <= m.r; yy += dot * 2) {
+          let row = 0;
+          for (let yy = -m.r; yy <= m.r; yy += dot * 2, row++) {
             for (let xx = -m.r; xx <= m.r; xx += dot * 2) {
               c2d.beginPath();
-              c2d.arc(xx + ((yy / (dot * 2)) % 2 ? dot : 0), yy, dot * 0.6, 0, Math.PI * 2);
+              c2d.arc(xx + (row % 2 ? dot : 0), yy, dot * 0.6, 0, Math.PI * 2);
               c2d.fill();
             }
           }
