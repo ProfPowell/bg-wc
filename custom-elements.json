@@ -2968,6 +2968,26 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/psychedelia.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/psychedelia.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/pulse.js",
       "declarations": [
         {

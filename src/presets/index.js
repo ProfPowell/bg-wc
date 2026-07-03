@@ -115,6 +115,7 @@ const REGISTRY = {
   deco: { renderer: 'webgl', group: 'pop', loader: () => import('./deco.js') },
   atomic: { renderer: 'canvas2d', group: 'pop', loader: () => import('./atomic.js') },
   groove: { renderer: 'canvas2d', group: 'pop', loader: () => import('./groove.js') },
+  psychedelia: { renderer: 'webgl', group: 'pop', loader: () => import('./psychedelia.js') },
 
   // Ornamental geometry
   girih: { renderer: 'webgl', group: 'ornamental', loader: () => import('./girih.js') },
