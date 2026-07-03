@@ -18,6 +18,7 @@ const PRESETS = [
   'constructivism',
   'brushstroke',
   'celtic-knot',
+  'paisley',
 ];
 
 for (const name of PRESETS) {

@@ -129,6 +129,7 @@ const REGISTRY = {
     group: 'ornamental',
     loader: () => import('./celtic-knot.js'),
   },
+  paisley: { renderer: 'canvas2d', group: 'ornamental', loader: () => import('./paisley.js') },
 
   // Japanese — ink, pattern, season
   seigaiha: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./seigaiha.js') },

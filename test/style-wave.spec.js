@@ -5,7 +5,14 @@ import { test, expect } from '@playwright/test';
 // project; frame-purity is pinned in time-rule.spec.js (all twelve are pure
 // functions of t by design).
 
-const PRESETS = ['art-nouveau', 'constructivism', 'psychedelia', 'brushstroke', 'celtic-knot'];
+const PRESETS = [
+  'art-nouveau',
+  'constructivism',
+  'psychedelia',
+  'brushstroke',
+  'celtic-knot',
+  'paisley',
+];
 
 for (const name of PRESETS) {
   test(`${name} renders with ink and no fallback`, async ({ page }) => {

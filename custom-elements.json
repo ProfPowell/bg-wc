@@ -2848,6 +2848,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/paisley.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors, pxScale }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/paisley.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/palms.js",
       "declarations": [
         {
