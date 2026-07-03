@@ -186,6 +186,7 @@ const REGISTRY = {
   graffiti: { renderer: 'canvas2d', group: 'art', loader: () => import('./graffiti.js') },
   mobile: { renderer: 'canvas2d', group: 'art', loader: () => import('./mobile.js') },
   watercolor: { renderer: 'webgl', group: 'art', loader: () => import('./watercolor.js') },
+  brushstroke: { renderer: 'canvas2d', group: 'art', loader: () => import('./brushstroke.js') },
 
   // Kitsch — roadside / craft / nostalgia Americana
   crochet: { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./crochet.js') },

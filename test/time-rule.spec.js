@@ -16,6 +16,7 @@ const PRESETS = [
   'zen-garden',
   'art-nouveau',
   'constructivism',
+  'brushstroke',
 ];
 
 for (const name of PRESETS) {
