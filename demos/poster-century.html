@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poster Century &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* Three revolutions in poster design, one scroll: 1920s agitprop, 1967
+       Fillmore, and the Factory's screenprints. Era placards ride each wall. */
+    :root {
+      --color-background: #efe6d4;  /* poster stock */
+      --color-foreground: #1d1a17;
+      --color-primary: #cf2f25;     /* agitprop red */
+      --color-accent: #f2a71b;      /* fillmore orange */
+      --color-info: #2762a8;        /* worker blue */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Inter, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    era-placard {
+      display: block; position: absolute; left: clamp(24px, 6vw, 90px); top: 50%; transform: translateY(-50%);
+      max-width: 400px; background: var(--color-background);
+      border: 4px solid var(--color-foreground); padding: 22px 26px;
+      box-shadow: 8px 8px 0 var(--color-foreground);
+    }
+    era-placard[data-side="right"] { left: auto; right: clamp(24px, 6vw, 90px); }
+    era-year { display: block; font-family: 'Archivo Black', sans-serif; font-size: 14px; letter-spacing: 0.3em; color: var(--color-primary); margin-bottom: 8px; }
+    era-placard h1, era-placard h2 { font-family: 'Archivo Black', sans-serif; font-weight: 400; margin: 0 0 8px; text-transform: uppercase; }
+    era-placard h1 { font-size: clamp(30px, 4.6vw, 54px); line-height: 1; }
+    era-placard h2 { font-size: clamp(24px, 3.4vw, 40px); line-height: 1.05; }
+    era-placard p { margin: 0; font-weight: 300; line-height: 1.6; font-size: 15px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.82em; background: rgba(29, 26, 23, 0.08); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="constructivism" data-background-intensity="0.65" data-background-seed="5" data-background-speed="0.5">
+    <era-placard>
+      <era-year>1923 &middot; VKhUTEMAS</era-year>
+      <h1>Beat the Whites with the Red Wedge</h1>
+      <p>A diagonal is an argument. <code>data-background="constructivism"</code></p>
+    </era-placard>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="psychedelia" data-background-intensity="0.7" data-background-seed="2" data-background-speed="0.6">
+    <era-placard data-side="right">
+      <era-year>1967 &middot; The Fillmore</era-year>
+      <h2>Can You Read It? Then It Works</h2>
+      <p>The bands vibrate on purpose; squint and it sings. <code>data-background="psychedelia"</code></p>
+    </era-placard>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="screenprint" data-background-intensity="0.6" data-background-seed="21" data-background-speed="0.5">
+    <era-placard>
+      <era-year>1964 &middot; The Factory</era-year>
+      <h2>Thirty Are Better Than One</h2>
+      <p>Off-register is the signature, not the mistake. <code>data-background="screenprint"</code></p>
+    </era-placard>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
