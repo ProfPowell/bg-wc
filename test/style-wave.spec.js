@@ -17,6 +17,7 @@ const PRESETS = [
   'terrazzo',
   'cyanotype',
   'screenprint',
+  'transit-diagram',
 ];
 
 for (const name of PRESETS) {

@@ -308,6 +308,11 @@ const REGISTRY = {
   trades: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./trades.js') },
   dashboard: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./dashboard.js') },
   vectormap: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./vectormap.js') },
+  'transit-diagram': {
+    renderer: 'canvas2d',
+    group: 'dataviz',
+    loader: () => import('./transit-diagram.js'),
+  },
   scatter: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./scatter.js') },
   waveform: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./waveform.js') },
   wordcloud: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./wordcloud.js') },
