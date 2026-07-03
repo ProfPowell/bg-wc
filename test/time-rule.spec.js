@@ -17,6 +17,7 @@ const PRESETS = [
   'art-nouveau',
   'constructivism',
   'brushstroke',
+  'celtic-knot',
 ];
 
 for (const name of PRESETS) {

@@ -124,6 +124,11 @@ const REGISTRY = {
   // Dot-art — Aboriginal / pointillist dotwork
   dotwork: { renderer: 'canvas2d', group: 'ornamental', loader: () => import('./dotwork.js') },
   tapestry: { renderer: 'canvas2d', group: 'ornamental', loader: () => import('./tapestry.js') },
+  'celtic-knot': {
+    renderer: 'canvas2d',
+    group: 'ornamental',
+    loader: () => import('./celtic-knot.js'),
+  },
 
   // Japanese — ink, pattern, season
   seigaiha: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./seigaiha.js') },
