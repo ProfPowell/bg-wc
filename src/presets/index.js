@@ -131,6 +131,7 @@ const REGISTRY = {
   },
   paisley: { renderer: 'canvas2d', group: 'ornamental', loader: () => import('./paisley.js') },
   azulejo: { renderer: 'canvas2d', group: 'ornamental', loader: () => import('./azulejo.js') },
+  mudcloth: { renderer: 'canvas2d', group: 'ornamental', loader: () => import('./mudcloth.js') },
 
   // Japanese — ink, pattern, season
   seigaiha: { renderer: 'canvas2d', group: 'japanese', loader: () => import('./seigaiha.js') },

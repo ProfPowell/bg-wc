@@ -20,6 +20,7 @@ const PRESETS = [
   'celtic-knot',
   'paisley',
   'azulejo',
+  'mudcloth',
 ];
 
 for (const name of PRESETS) {
