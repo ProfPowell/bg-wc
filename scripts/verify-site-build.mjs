@@ -38,9 +38,15 @@ function reachesDefine(entry) {
 }
 
 let fail = 0;
-for (const page of readdirSync(join(ROOT, 'demos'))) {
-  if (!page.endsWith('.html') || page === 'index.html') continue;
-  const html = readFileSync(join(ROOT, 'demos', page), 'utf8');
+const pages = [];
+for (const dir of ['demos', 'docs']) {
+  for (const f of readdirSync(join(ROOT, dir))) {
+    if (f.endsWith('.html')) pages.push(join(dir, f));
+  }
+}
+for (const page of pages) {
+  if (page === 'demos/index.html') continue; // hub renders demos in iframes
+  const html = readFileSync(join(ROOT, page), 'utf8');
   const needsElement = html.includes('data-background') || html.includes('<bg-wc');
   if (!needsElement) continue;
   const refs = [

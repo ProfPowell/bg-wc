@@ -188,4 +188,12 @@ test('faint overlay cards render on a dark backing on a light theme', async ({ p
   // Vivid texture presets keep the normal theme background.
   const dither = await bgOf('dither');
   expect(dither.dark, 'dither should not be dark-backed').toBe(false);
+
+  // oscilloscope's additive traces clamp invisibly over a light bg — its
+  // card needs the same dark backing (its fade targets the host bg token).
+  await showGroup(page, 'tech');
+  const scope = await bgOf('oscilloscope');
+  expect(scope.mounted).toBe(true);
+  expect(scope.dark, 'oscilloscope stage should be flagged dark').toBe(true);
+  expect(lumOf(scope.hostBg), 'oscilloscope host must render on a dark backing').toBeLessThan(80);
 });
