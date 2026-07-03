@@ -64,6 +64,7 @@ test('retro group gained metaballs (2026-07-01 gap wave)', () => {
 test('style-wave presets landed in their groups (2026-07-03)', () => {
   const STYLE_WAVE = {
     'art-nouveau': 'classic',
+    constructivism: 'classic',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(STYLE_WAVE)) {

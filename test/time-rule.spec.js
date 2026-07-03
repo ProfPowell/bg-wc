@@ -15,6 +15,7 @@ const PRESETS = [
   'fireflies',
   'zen-garden',
   'art-nouveau',
+  'constructivism',
 ];
 
 for (const name of PRESETS) {

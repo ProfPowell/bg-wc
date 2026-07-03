@@ -166,6 +166,11 @@ const REGISTRY = {
     group: 'classic',
     loader: () => import('./art-nouveau.js'),
   },
+  constructivism: {
+    renderer: 'canvas2d',
+    group: 'classic',
+    loader: () => import('./constructivism.js'),
+  },
   'stained-glass': {
     renderer: 'webgl',
     group: 'classic',
