@@ -17,12 +17,21 @@ for (const f of readdirSync(join(ROOT, 'assets'))) {
   if (f.endsWith('.js')) assets.set(f, readFileSync(join(ROOT, 'assets', f), 'utf8'));
 }
 const defines = new Set(
-  [...assets].filter(([, src]) => src.includes('customElements.define("bg-wc"') || src.includes("customElements.define('bg-wc'")).map(([f]) => f)
+  [...assets]
+    .filter(
+      ([, src]) =>
+        src.includes('customElements.define("bg-wc"') ||
+        src.includes("customElements.define('bg-wc'")
+    )
+    .map(([f]) => f)
 );
 
 const chunkImports = (src) =>
-  [...src.matchAll(/(?:import|from)\s*["']\.\/([\w.-]+\.js)["']|import\(["']\.\/([\w.-]+\.js)["']\)/g)]
-    .map((m) => m[1] || m[2]);
+  [
+    ...src.matchAll(
+      /(?:import|from)\s*["']\.\/([\w.-]+\.js)["']|import\(["']\.\/([\w.-]+\.js)["']\)/g
+    ),
+  ].map((m) => m[1] || m[2]);
 
 function reachesDefine(entry) {
   const seen = new Set();
@@ -51,13 +60,21 @@ for (const page of pages) {
   if (!needsElement) continue;
   const refs = [
     ...[...html.matchAll(/<script[^>]*src="[^"]*assets\/([\w.-]+\.js)"/g)].map((m) => m[1]),
-    ...[...html.matchAll(/<link[^>]*rel="modulepreload"[^>]*href="[^"]*assets\/([\w.-]+\.js)"/g)].map((m) => m[1]),
+    ...[
+      ...html.matchAll(/<link[^>]*rel="modulepreload"[^>]*href="[^"]*assets\/([\w.-]+\.js)"/g),
+    ].map((m) => m[1]),
   ];
   const ok = refs.some(reachesDefine);
   if (!ok) {
-    console.error(`FAIL ${page}: no script path reaches the bg-wc definition (refs: ${refs.join(', ') || 'none'})`);
+    console.error(
+      `FAIL ${page}: no script path reaches the bg-wc definition (refs: ${refs.join(', ') || 'none'})`
+    );
     fail = 1;
   }
 }
-console.log(fail ? 'built-site verification FAILED' : `built-site verification OK (${defines.size} defining chunk(s))`);
+console.log(
+  fail
+    ? 'built-site verification FAILED'
+    : `built-site verification OK (${defines.size} defining chunk(s))`
+);
 process.exit(fail);
