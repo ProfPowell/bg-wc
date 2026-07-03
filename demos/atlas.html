@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>An Atlas of Pattern &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* Five places, five pattern languages. Each stop is a cover section with
+       a luggage-tag plaque pinned to a seeded corner via data-at. */
+    :root {
+      --color-background: #f4efe4;  /* atlas paper */
+      --color-foreground: #26221b;
+      --color-primary: #315c45;     /* map green */
+      --color-accent: #b3502e;      /* route ochre */
+      --color-info: #2d5c86;        /* sea blue */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    atlas-tag {
+      display: block; position: absolute; max-width: 380px;
+      background: var(--color-background); border: 1.5px solid var(--color-foreground); border-radius: 6px;
+      padding: 18px 24px; box-shadow: 0 8px 26px rgba(38, 34, 27, 0.28);
+    }
+    atlas-tag::before { content: "◦"; position: absolute; top: 8px; right: 12px; color: var(--color-accent); }
+    atlas-tag[data-at="tl"] { top: clamp(60px, 9vh, 88px); left: clamp(24px, 5vw, 72px); }
+    atlas-tag[data-at="tr"] { top: clamp(60px, 9vh, 88px); right: clamp(24px, 5vw, 72px); }
+    atlas-tag[data-at="bl"] { bottom: clamp(24px, 6vh, 64px); left: clamp(24px, 5vw, 72px); }
+    atlas-tag[data-at="br"] { bottom: clamp(24px, 6vh, 64px); right: clamp(24px, 5vw, 72px); }
+    tag-place { display: block; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 6px; }
+    atlas-tag h1, atlas-tag h2 { font-family: Fraunces, Georgia, serif; font-weight: 600; margin: 0 0 6px; font-size: clamp(24px, 3vw, 38px); }
+    atlas-tag h1 { font-size: clamp(30px, 4.4vw, 52px); }
+    atlas-tag p { margin: 0; font-weight: 300; line-height: 1.6; font-size: 15px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.82em; background: rgba(38, 34, 27, 0.08); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="celtic-knot" data-background-intensity="0.6" data-background-seed="12" data-background-speed="0.5">
+    <atlas-tag data-at="tl">
+      <tag-place>Stop I &middot; Kells, Ireland</tag-place>
+      <h1>An Atlas of Pattern</h1>
+      <p>Strapwork with no beginning and no end &mdash; follow any ribbon home. <code>data-background="celtic-knot"</code></p>
+    </atlas-tag>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="paisley" data-background-intensity="0.6" data-background-seed="7" data-background-speed="0.5">
+    <atlas-tag data-at="br">
+      <tag-place>Stop II &middot; Kashmir</tag-place>
+      <h2>The Boteh</h2>
+      <p>A teardrop that has crossed more borders than any flag. <code>data-background="paisley"</code></p>
+    </atlas-tag>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="azulejo" data-background-intensity="0.6" data-background-seed="4" data-background-speed="0.5">
+    <atlas-tag data-at="tr">
+      <tag-place>Stop III &middot; Lisbon</tag-place>
+      <h2>Cobalt on White</h2>
+      <p>A whole city faced in quartered stars and petals. <code>data-background="azulejo"</code></p>
+    </atlas-tag>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="mudcloth" data-background-intensity="0.65" data-background-seed="18" data-background-speed="0.5">
+    <atlas-tag data-at="bl">
+      <tag-place>Stop IV &middot; Mali</tag-place>
+      <h2>Bogolanfini</h2>
+      <p>Fermented mud on cotton; every band a sentence, every symbol a word. <code>data-background="mudcloth"</code></p>
+    </atlas-tag>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="terrazzo" data-background-intensity="0.6" data-background-seed="25" data-background-speed="0.5">
+    <atlas-tag data-at="tr">
+      <tag-place>Stop V &middot; Venice</tag-place>
+      <h2>Pavimento</h2>
+      <p>Marble offcuts, set in lime, polished by four centuries of shoes. <code>data-background="terrazzo"</code></p>
+    </atlas-tag>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
