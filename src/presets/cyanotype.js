@@ -4,7 +4,8 @@
 // primary pulled hard toward Prussian blue — a cyanotype IS blue; the theme
 // still tints it (documented deviation, like fireflies' dusk treatment).
 // The exposure halo breathes with t (pure function). density = specimen
-// count, intensity = exposure strength.
+// count, intensity = exposure strength. Silhouettes are fg pulled toward
+// white — unexposed paper must read pale regardless of theme.
 
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
@@ -100,6 +101,7 @@ export function create({ c2d, getColors, pxScale }) {
     ensure(params);
     const c = getColors();
     const ground = mix(c.primary, PRUSSIAN, 0.72);
+    const print = mix(c.fg, [1, 1, 1], 0.85); // unexposed paper — reads white with a whisper of theme
     clearAndFill(c2d, w, h, [...ground, 1]);
     const s = Math.min(w, h);
     const breathe = 0.85 + 0.15 * Math.sin(t * 0.3);
@@ -115,7 +117,7 @@ export function create({ c2d, getColors, pxScale }) {
         [1.6 * px, 0.9],
       ]) {
         c2d.lineWidth = lw;
-        drawPlant(p, s, rgbaCss(c.fg, alpha));
+        drawPlant(p, s, rgbaCss(print, alpha));
       }
       c2d.restore();
     }
