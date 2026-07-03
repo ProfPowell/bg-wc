@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interchange &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@300;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* One viewport: the network map, with a legend board bottom-left. The
+       legend is a real list — lines of a metro ARE a list. */
+    :root {
+      --color-background: #f7f5ef;  /* map paper */
+      --color-foreground: #17171c;
+      --color-primary: #d02c2c;     /* line A */
+      --color-accent: #1d69c4;      /* line B */
+      --color-info: #14967d;        /* line C */
+      --color-success: #7a3fb0;     /* line D */
+      --color-warning: #e0871f;     /* line E */
+    }
+    html, body { margin: 0; background: var(--color-background); color: var(--color-foreground); overflow: hidden; }
+    body { font-family: Overpass, system-ui, sans-serif; height: 100vh; }
+    main { position: relative; height: 100%; }
+
+    map-legend {
+      display: block; position: absolute; left: clamp(20px, 4vw, 56px); bottom: clamp(20px, 5vh, 48px);
+      background: var(--color-background); border: 2px solid var(--color-foreground); border-radius: 8px;
+      padding: 16px 22px; box-shadow: 0 8px 30px rgba(23, 23, 28, 0.2);
+    }
+    map-legend h1 { font-weight: 900; font-size: clamp(22px, 2.6vw, 34px); margin: 0 0 8px; letter-spacing: -0.01em; }
+    map-legend p { margin: 0 0 10px; font-weight: 300; font-size: 14px; max-width: 320px; line-height: 1.55; }
+    map-legend ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+    map-legend li { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; padding-left: 26px; position: relative; }
+    map-legend li::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 18px; height: 6px; border-radius: 3px; background: var(--color-foreground); }
+    li[data-line="a"]::before { background: var(--color-primary); }
+    li[data-line="b"]::before { background: var(--color-accent); }
+    li[data-line="c"]::before { background: var(--color-info); }
+    li[data-line="d"]::before { background: var(--color-success); }
+    li[data-line="e"]::before { background: var(--color-warning); }
+    code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(23, 23, 28, 0.07); padding: 2px 7px; border-radius: 3px; }
+
+    body > nav { position: absolute; top: 24px; right: 32px; z-index: 10; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; }
+    body > nav a:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <main data-background="transit-diagram" data-background-intensity="0.7" data-background-seed="8" data-background-speed="0.8" data-background-density="0.7">
+    <map-legend>
+      <h1>Interchange</h1>
+      <p>Geography is a lie the map tells so you can read it. Lines run at 45&deg;, trains run on <code>t</code>. <code>data-background="transit-diagram"</code></p>
+      <ul>
+        <li data-line="a">A &middot; Riverside &rlarr; Terminus</li>
+        <li data-line="b">B &middot; Foundry Loop</li>
+        <li data-line="c">C &middot; University &rlarr; Docks</li>
+        <li data-line="d">D &middot; Orbital</li>
+        <li data-line="e">E &middot; Night Service</li>
+      </ul>
+    </map-legend>
+  </main>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
