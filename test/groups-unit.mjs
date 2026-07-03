@@ -17,10 +17,15 @@ test('japanese group contains the seven japanese presets', () => {
   ]);
 });
 
-test('print group contains the three print presets', () => {
+test('print group contains the four print presets', () => {
   const g = listGroups().find((x) => x.id === 'print');
   assert.ok(g, 'print group exists');
-  assert.deepEqual(g.presets.map((p) => p.name).sort(), ['linocut', 'plotter', 'risograph']);
+  assert.deepEqual(g.presets.map((p) => p.name).sort(), [
+    'cyanotype',
+    'linocut',
+    'plotter',
+    'risograph',
+  ]);
 });
 
 test('seigaiha moved out of geometric', () => {
@@ -72,6 +77,7 @@ test('style-wave presets landed in their groups (2026-07-03)', () => {
     azulejo: 'ornamental',
     mudcloth: 'ornamental',
     terrazzo: 'texture',
+    cyanotype: 'print',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(STYLE_WAVE)) {

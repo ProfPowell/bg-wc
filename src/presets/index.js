@@ -151,6 +151,7 @@ const REGISTRY = {
   risograph: { renderer: 'webgl', group: 'print', loader: () => import('./risograph.js') },
   plotter: { renderer: 'canvas2d', group: 'print', loader: () => import('./plotter.js') },
   linocut: { renderer: 'canvas2d', group: 'print', loader: () => import('./linocut.js') },
+  cyanotype: { renderer: 'canvas2d', group: 'print', loader: () => import('./cyanotype.js') },
 
   // Classic — design-history styles (Bauhaus, Morris, damask, …)
   alchemy: { renderer: 'canvas2d', group: 'classic', loader: () => import('./alchemy.js') },
