@@ -17,7 +17,7 @@ test('japanese group contains the seven japanese presets', () => {
   ]);
 });
 
-test('print group contains the four print presets', () => {
+test('print group contains the five print presets', () => {
   const g = listGroups().find((x) => x.id === 'print');
   assert.ok(g, 'print group exists');
   assert.deepEqual(g.presets.map((p) => p.name).sort(), [
@@ -25,6 +25,7 @@ test('print group contains the four print presets', () => {
     'linocut',
     'plotter',
     'risograph',
+    'screenprint',
   ]);
 });
 
@@ -78,6 +79,7 @@ test('style-wave presets landed in their groups (2026-07-03)', () => {
     mudcloth: 'ornamental',
     terrazzo: 'texture',
     cyanotype: 'print',
+    screenprint: 'print',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(STYLE_WAVE)) {

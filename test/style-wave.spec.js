@@ -16,6 +16,7 @@ const PRESETS = [
   'mudcloth',
   'terrazzo',
   'cyanotype',
+  'screenprint',
 ];
 
 for (const name of PRESETS) {

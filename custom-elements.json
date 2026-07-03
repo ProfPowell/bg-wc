@@ -3433,6 +3433,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/screenprint.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ c2d, getColors, pxScale }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/screenprint.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/seigaiha.js",
       "declarations": [
         {
