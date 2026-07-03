@@ -38,7 +38,9 @@
   "author": "ProfPowell",
   "sideEffects": [
     "dist/bg-wc.js",
-    "dist/data-background.js"
+    "dist/data-background.js",
+    "src/bg-wc.js",
+    "src/data-background.js"
   ],
   "scripts": {
     "dev": "vite --config vite.site.config.js",
@@ -56,7 +58,8 @@
     "format:check": "prettier --check \"src/**/*.js\" \"test/**/*.{js,mjs}\" \"docs/**/*.js\" \"demos/**/*.js\" \"scripts/**/*.mjs\"",
     "analyze": "cem analyze",
     "cem:check": "cem analyze && git diff --exit-code custom-elements.json",
-    "prepublishOnly": "npm run build && npm run analyze"
+    "prepublishOnly": "npm run build && npm run analyze",
+    "verify:site": "node scripts/verify-site-build.mjs"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.11.0",
