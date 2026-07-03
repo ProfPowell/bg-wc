@@ -39,6 +39,8 @@ export function create({ c2d, getColors, pxScale }) {
       let gy = 0;
       let dir = 2; // heading down-ish
       const pts = [[gx, gy]];
+      const own = new Set(); // tally each vertex once per route, else a line
+      // doubling back on a clamped border point rings a false interchange
       for (let s = 0; s < grid * 2; s++) {
         // Beck rule: turn at most 45 degrees at a time.
         const turn = rand() < 0.4 ? (rand() < 0.5 ? -1 : 1) : 0;
@@ -47,7 +49,10 @@ export function create({ c2d, getColors, pxScale }) {
         gx = Math.max(0, Math.min(grid, gx + DIRS[dir][0] * run));
         gy = Math.max(0, Math.min(grid, gy + DIRS[dir][1] * run));
         const key = `${gx},${gy}`;
-        visits.set(key, (visits.get(key) || 0) + 1);
+        if (!own.has(key)) {
+          own.add(key);
+          visits.set(key, (visits.get(key) || 0) + 1);
+        }
         pts.push([gx, gy]);
         if (gy >= grid) break;
       }

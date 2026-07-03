@@ -76,13 +76,18 @@ export function create({ c2d, getColors, pxScale }) {
     clearAndFill(c2d, w, h, c.bg);
     const inks = [c.primary, c.accent, c.info];
     const mis = 0.4 + params.intensity;
+    // gl-wc-0eq6: multiply can only darken, which sinks every pull toward
+    // black on a dark theme ground. Print with screen there instead — light
+    // inks stacking on black paper — so overlaps still compound either way.
+    const lum = 0.2126 * c.bg[0] + 0.7152 * c.bg[1] + 0.0722 * c.bg[2];
+    const blend = lum > 0.5 ? 'multiply' : 'screen';
 
     for (const m of motifs) {
       for (let layer = 0; layer < 3; layer++) {
         const drift = Math.sin(t * 0.25 + m.phase + layer) * 1.2 * px;
         c2d.save();
         c2d.translate(m.x + m.mis[layer][0] * mis * px + drift, m.y + m.mis[layer][1] * mis * px);
-        c2d.globalCompositeOperation = 'multiply';
+        c2d.globalCompositeOperation = blend;
         c2d.fillStyle = rgbaCss(inks[layer], 0.8);
         if (layer === 2) {
           // Halftone pull: clip to the motif and print a dot screen.
