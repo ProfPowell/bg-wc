@@ -31,6 +31,7 @@ const PRESETS = [
   'screenprint',
   'transit-diagram',
   'bluenote',
+  'starburst',
 ];
 
 for (const name of PRESETS) {

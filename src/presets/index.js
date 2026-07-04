@@ -330,6 +330,7 @@ const REGISTRY = {
   // ---- music (album art & music video, late 60s–80s) --------------------
   'liquid-light': { renderer: 'webgl', group: 'music', loader: () => import('./liquid-light.js') },
   bluenote: { renderer: 'canvas2d', group: 'music', loader: () => import('./bluenote.js') },
+  starburst: { renderer: 'canvas2d', group: 'music', loader: () => import('./starburst.js') },
 };
 
 // Human-readable group labels, in display order.
