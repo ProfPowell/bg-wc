@@ -30,6 +30,7 @@ const PRESETS = [
   'cyanotype',
   'screenprint',
   'transit-diagram',
+  'bluenote',
 ];
 
 for (const name of PRESETS) {

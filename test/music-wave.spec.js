@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 // visual project; the nine canvas2d presets are pinned pure-in-t by
 // time-rule.spec.js; the two shaders are pure u_time by construction.
 
-const PRESETS = ['liquid-light'];
+const PRESETS = ['liquid-light', 'bluenote'];
 
 for (const name of PRESETS) {
   test(`${name} renders with ink and no fallback`, async ({ page }) => {
