@@ -333,6 +333,7 @@ const REGISTRY = {
   starburst: { renderer: 'canvas2d', group: 'music', loader: () => import('./starburst.js') },
   vinyl: { renderer: 'canvas2d', group: 'music', loader: () => import('./vinyl.js') },
   prism: { renderer: 'canvas2d', group: 'music', loader: () => import('./prism.js') },
+  'laser-show': { renderer: 'canvas2d', group: 'music', loader: () => import('./laser-show.js') },
 };
 
 // Human-readable group labels, in display order.

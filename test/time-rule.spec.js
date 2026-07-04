@@ -34,6 +34,7 @@ const PRESETS = [
   'starburst',
   'vinyl',
   'prism',
+  'laser-show',
 ];
 
 for (const name of PRESETS) {
