@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Campsite &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* Night at the fire, then the sky above it. Warm-dark pinned palette. */
+    :root {
+      --color-background: #140d08;  /* firelit dark */
+      --color-foreground: #f2e3c8;  /* lamplight cream */
+      --color-primary: #b3502e;     /* ember red */
+      --color-accent: #f2a13b;      /* flame orange */
+      --color-info: #6b86a8;        /* night blue */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    camp-story {
+      display: block; position: absolute; left: 50%; transform: translateX(-50%);
+      max-width: 460px; text-align: center; padding: 20px 30px;
+      background: rgba(20, 13, 8, 0.72); border: 1px solid rgba(242, 227, 200, 0.25); border-radius: 10px;
+    }
+    camp-story[data-at="low"] { bottom: clamp(28px, 8vh, 80px); }
+    camp-story[data-at="high"] { top: clamp(48px, 10vh, 96px); }
+    story-mark { display: block; font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 8px; }
+    camp-story h1, camp-story h2 { font-family: 'Amatic SC', cursive; font-weight: 700; margin: 0 0 8px; letter-spacing: 0.04em; }
+    camp-story h1 { font-size: clamp(44px, 7vw, 84px); line-height: 0.95; }
+    camp-story h2 { font-size: clamp(36px, 5vw, 62px); }
+    camp-story p { margin: 0; font-weight: 300; line-height: 1.65; font-size: 15px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(242, 227, 200, 0.12); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="embers" data-background-intensity="0.7" data-background-seed="11" data-background-speed="0.8">
+    <camp-story data-at="low">
+      <story-mark>Last log on the fire</story-mark>
+      <h1>The Campsite</h1>
+      <p>Every story gets taller as the sparks go up. <code>data-background="embers"</code></p>
+    </camp-story>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="constellation" data-background-intensity="0.65" data-background-seed="3" data-background-speed="0.6">
+    <camp-story data-at="high">
+      <story-mark>Lie back &middot; look up</story-mark>
+      <h2>Where the Sparks End Up</h2>
+      <p>Somebody names a bear; nobody argues with the ringed one. <code>data-background="constellation"</code></p>
+    </camp-story>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
