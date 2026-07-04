@@ -117,6 +117,7 @@ test('music-wave presets landed in the music group (2026-07-04)', () => {
     prism: 'music',
     'laser-show': 'music',
     scanimate: 'music',
+    airbrush: 'music',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(MUSIC_WAVE)) {
