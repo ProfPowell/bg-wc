@@ -1002,6 +1002,26 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/chrome.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/chrome.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/circuit.js",
       "declarations": [
         {

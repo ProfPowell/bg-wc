@@ -346,6 +346,7 @@ const REGISTRY = {
     group: 'music',
     loader: () => import('./stage-lights.js'),
   },
+  chrome: { renderer: 'webgl', group: 'music', loader: () => import('./chrome.js') },
 };
 
 // Human-readable group labels, in display order.

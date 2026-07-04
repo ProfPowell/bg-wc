@@ -120,6 +120,7 @@ test('music-wave presets landed in the music group (2026-07-04)', () => {
     airbrush: 'music',
     'video-feedback': 'music',
     'stage-lights': 'music',
+    chrome: 'music',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(MUSIC_WAVE)) {
