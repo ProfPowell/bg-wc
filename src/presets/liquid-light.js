@@ -37,15 +37,24 @@ void main() {
   vec2 c3 = vec2(0.5 * aspect, 0.5) + 0.21 * vec2(sin(u_time * 0.23 + 4.2), cos(u_time * 0.09 + 3.3));
 
   float sat = 0.55 + 0.45 * u_intensity;
-  vec3 d1 = u_c1 * sat * dye(p, c1, r);
-  vec3 d2 = u_c2 * sat * dye(p, c2, r * 1.1);
-  vec3 d3 = u_c3 * sat * dye(p, c3, r * 0.9);
+  float a1 = dye(p, c1, r);
+  float a2 = dye(p, c2, r * 1.1);
+  float a3 = dye(p, c3, r * 0.9);
 
-  // Projected light: dyes screen over the ground, overlaps bloom to white.
+  // gl-wc-0eq6 lesson: screen can only lighten, so over a light ground the
+  // projection vanished. Pick the physics by ground luminance — projected
+  // light (screen) on dark rooms, dye-as-pigment (multiply) on light paper.
+  float lum = 0.2126 * u_bg.r + 0.7152 * u_bg.g + 0.0722 * u_bg.b;
   vec3 col = u_bg;
-  col = 1.0 - (1.0 - col) * (1.0 - d1);
-  col = 1.0 - (1.0 - col) * (1.0 - d2);
-  col = 1.0 - (1.0 - col) * (1.0 - d3);
+  if (lum < 0.5) {
+    col = 1.0 - (1.0 - col) * (1.0 - u_c1 * sat * a1);
+    col = 1.0 - (1.0 - col) * (1.0 - u_c2 * sat * a2);
+    col = 1.0 - (1.0 - col) * (1.0 - u_c3 * sat * a3);
+  } else {
+    col *= mix(vec3(1.0), u_c1, sat * a1);
+    col *= mix(vec3(1.0), u_c2, sat * a2);
+    col *= mix(vec3(1.0), u_c3, sat * a3);
+  }
 
   gl_FragColor = vec4(col, 1.0);
 }
