@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Video Age &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* The ident reel: feedback tunnel, the scanimate sweep, chrome logo
+       metal. Broadcast slates carry the copy. */
+    :root {
+      --color-background: #101018;  /* studio black */
+      --color-foreground: #e8ecf2;
+      --color-primary: #c94f7c;     /* broadcast magenta */
+      --color-accent: #e8c53a;      /* caption gold */
+      --color-info: #4aa8d8;        /* chroma blue */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    ident-slate {
+      display: block; position: absolute; max-width: 400px; padding: 18px 26px;
+      background: rgba(16, 16, 24, 0.8); border-top: 3px solid var(--color-accent);
+    }
+    ident-slate[data-at="bl"] { left: clamp(24px, 5vw, 72px); bottom: clamp(28px, 8vh, 76px); }
+    ident-slate[data-at="tr"] { right: clamp(24px, 5vw, 72px); top: clamp(56px, 10vh, 96px); }
+    slate-mark { display: block; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 8px; }
+    ident-slate h1, ident-slate h2 { font-family: Audiowide, sans-serif; font-weight: 400; margin: 0 0 8px; line-height: 1.05; }
+    ident-slate h1 { font-size: clamp(30px, 4.6vw, 54px); }
+    ident-slate h2 { font-size: clamp(22px, 3.4vw, 40px); }
+    ident-slate p { margin: 0; font-weight: 300; line-height: 1.65; font-size: 14px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(232, 236, 242, 0.12); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="video-feedback" data-background-intensity="0.65" data-background-seed="5" data-background-speed="0.7">
+    <ident-slate data-at="bl">
+      <slate-mark>Reel 1 &middot; camera on monitor</slate-mark>
+      <h1>Video Age</h1>
+      <p>Point it at itself and hold very still. <code>data-background="video-feedback"</code></p>
+    </ident-slate>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="scanimate" data-background-intensity="0.7" data-background-seed="11" data-background-speed="0.7">
+    <ident-slate data-at="tr">
+      <slate-mark>Reel 2 &middot; the analog computer</slate-mark>
+      <h2>Tonight, In Color</h2>
+      <p>One oscillator per glowing letter. <code>data-background="scanimate"</code></p>
+    </ident-slate>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="chrome" data-background-intensity="0.7" data-background-seed="8" data-background-speed="0.6">
+    <ident-slate data-at="bl">
+      <slate-mark>Reel 3 &middot; the station ident</slate-mark>
+      <h2>Broadcast Metal</h2>
+      <p>Airbrushed until it reflects a sunset that never happened. <code>data-background="chrome"</code></p>
+    </ident-slate>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
