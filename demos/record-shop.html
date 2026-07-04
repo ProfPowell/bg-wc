@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Record Shop &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* Crate digging: the sleeve everyone owns, then four finds. Each
+       section is a full-bleed sleeve; the credit card is the price tag. */
+    :root {
+      --color-background: #16121c;  /* shop after hours */
+      --color-foreground: #efe8db;
+      --color-primary: #7a4fd0;     /* purple wax */
+      --color-accent: #f0a638;      /* amber sleeve */
+      --color-info: #3fa7b8;        /* teal label */
+      --color-success: #58b06a;
+      --color-warning: #e0653a;
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    sleeve-credit {
+      display: block; position: absolute; max-width: 380px; padding: 16px 24px;
+      background: rgba(22, 18, 28, 0.82); border: 1px solid rgba(239, 232, 219, 0.3); border-radius: 6px;
+    }
+    sleeve-credit[data-at="bl"] { left: clamp(24px, 5vw, 72px); bottom: clamp(28px, 8vh, 76px); }
+    sleeve-credit[data-at="br"] { right: clamp(24px, 5vw, 72px); bottom: clamp(28px, 8vh, 76px); }
+    sleeve-credit[data-at="tl"] { left: clamp(24px, 5vw, 72px); top: clamp(56px, 10vh, 96px); }
+    credit-label { display: block; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 6px; }
+    sleeve-credit h1, sleeve-credit h2 { font-family: Righteous, sans-serif; font-weight: 400; margin: 0 0 6px; line-height: 1.02; }
+    sleeve-credit h1 { font-size: clamp(36px, 5.5vw, 64px); }
+    sleeve-credit h2 { font-size: clamp(26px, 3.8vw, 44px); }
+    sleeve-credit p { margin: 0; font-weight: 300; line-height: 1.6; font-size: 14px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(239, 232, 219, 0.12); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="prism" data-background-intensity="0.75" data-background-seed="7" data-background-speed="0.5">
+    <sleeve-credit data-at="bl">
+      <credit-label>Bin 1 &middot; the one everyone owns</credit-label>
+      <h1>Record Shop</h1>
+      <p>Side two, track five, lights off. <code>data-background="prism"</code></p>
+    </sleeve-credit>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="bluenote" data-background-intensity="0.65" data-background-seed="12" data-background-speed="0.5">
+    <sleeve-credit data-at="br">
+      <credit-label>Bin 2 &middot; hard bop, 1958</credit-label>
+      <h2>The Duotone Session</h2>
+      <p>The designer got equal billing and earned it. <code>data-background="bluenote"</code></p>
+    </sleeve-credit>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="starburst" data-background-intensity="0.7" data-background-seed="4" data-background-speed="0.6">
+    <sleeve-credit data-at="tl">
+      <credit-label>Bin 3 &middot; funk 45</credit-label>
+      <h2>Solar Riff</h2>
+      <p>The horn section hits and the sleeve does this. <code>data-background="starburst"</code></p>
+    </sleeve-credit>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="airbrush" data-background-intensity="0.7" data-background-seed="19" data-background-speed="0.5">
+    <sleeve-credit data-at="bl">
+      <credit-label>Bin 4 &middot; prog gatefold</credit-label>
+      <h2>Chronologies III</h2>
+      <p>Twenty-two minutes a side; worlds on the cover. <code>data-background="airbrush"</code></p>
+    </sleeve-credit>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="vinyl" data-background-intensity="0.6" data-background-seed="9" data-background-speed="0.8">
+    <sleeve-credit data-at="br">
+      <credit-label>The listening table</credit-label>
+      <h2>Drop the Needle</h2>
+      <p>Every find ends up here eventually. <code>data-background="vinyl"</code></p>
+    </sleeve-credit>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
