@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Tour &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* One night in three acts: doors, the planetarium set, the encore's
+       oil projection. The laminate pass rides every section. */
+    :root {
+      --color-background: #0d0a14;  /* house lights down */
+      --color-foreground: #ece5f2;
+      --color-primary: #d24a8c;     /* magenta wash */
+      --color-accent: #f2b23a;      /* amber spot */
+      --color-info: #45b8c9;        /* cyan beam */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    tour-pass {
+      display: block; position: absolute; left: 50%; transform: translateX(-50%);
+      max-width: 430px; text-align: center; padding: 18px 28px;
+      background: rgba(13, 10, 20, 0.78); border: 1px solid rgba(236, 229, 242, 0.28); border-radius: 10px;
+    }
+    tour-pass[data-at="low"] { bottom: clamp(28px, 8vh, 80px); }
+    tour-pass[data-at="high"] { top: clamp(52px, 10vh, 96px); }
+    pass-act { display: block; font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--color-info); margin-bottom: 8px; }
+    tour-pass h1, tour-pass h2 { font-family: Monoton, cursive; font-weight: 400; margin: 0 0 8px; letter-spacing: 0.06em; }
+    tour-pass h1 { font-size: clamp(30px, 5vw, 58px); line-height: 1.1; }
+    tour-pass h2 { font-size: clamp(22px, 3.4vw, 40px); }
+    tour-pass p { margin: 0; font-weight: 300; line-height: 1.65; font-size: 14px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(236, 229, 242, 0.12); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="stage-lights" data-background-intensity="0.75" data-background-seed="6" data-background-speed="0.8">
+    <tour-pass data-at="high">
+      <pass-act>Act I &middot; doors at eight</pass-act>
+      <h1>The Tour</h1>
+      <p>The rig warms up before the room does. <code>data-background="stage-lights"</code></p>
+    </tour-pass>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="laser-show" data-background-intensity="0.7" data-background-seed="14" data-background-speed="0.7">
+    <tour-pass data-at="low">
+      <pass-act>Act II &middot; the planetarium set</pass-act>
+      <h2>Lasers Over Side One</h2>
+      <p>Nobody claps between movements; everybody exhales. <code>data-background="laser-show"</code></p>
+    </tour-pass>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="liquid-light" data-background-intensity="0.75" data-background-seed="3" data-background-speed="0.6">
+    <tour-pass data-at="low">
+      <pass-act>Encore &middot; the oil wheel</pass-act>
+      <h2>Liquid Light</h2>
+      <p>Two slides, a clock face of dye, and a very steady hand. <code>data-background="liquid-light"</code></p>
+    </tour-pass>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
