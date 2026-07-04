@@ -9,6 +9,10 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
 
+// Strike cadence: denser storms strike more often. Shared by frame() and
+// staticFrame() so stills can never desync from playback.
+const periodOf = (density) => 3.2 - density * 2.2;
+
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
@@ -41,7 +45,7 @@ export function create({ c2d, getColors, pxScale }) {
   function frame(t, params) {
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
-    const period = 3.2 - params.density * 2.2; // 1.0s..3.2s between strikes
+    const period = periodOf(params.density); // 1.0s..3.2s between strikes
     const idx = Math.floor(t / period);
     const phase = (t - idx * period) / period;
 
@@ -53,7 +57,8 @@ export function create({ c2d, getColors, pxScale }) {
     c2d.fillStyle = cloud;
     c2d.fillRect(0, 0, w, h);
 
-    // The strike lives in the first ~15% of the cycle, double-flickered.
+    // The strike lives in the first ~15% of the cycle: an asymmetric flash
+    // with a dimmer tail.
     if (phase < 0.15) {
       const u = phase / 0.15;
       // Envelope shifted so u=0 is already mid-flash: a frozen t (speed=0,
@@ -91,7 +96,7 @@ export function create({ c2d, getColors, pxScale }) {
     frame,
     staticFrame(params) {
       // Freeze mid-strike so the still shows the bolt, not an empty sky.
-      frame(0.05 * (3.2 - params.density * 2.2), params);
+      frame(0.05 * periodOf(params.density), params);
     },
     dispose() {},
   };

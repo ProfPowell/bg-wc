@@ -78,7 +78,7 @@ export function create({ c2d, getColors, pxScale }) {
       const y = h * (p * 1.2 - 0.1);
       const x = L.x0 * w + Math.sin(t * L.swayW + L.phase) * L.sway + gust * p;
       const s = L.size * sizeMul * (0.5 + L.depth * 0.6);
-      const col = mix(pal[L.ci % pal.length], c.bg, (1 - L.depth) * 0.45);
+      const col = mix(pal[L.ci], c.bg, (1 - L.depth) * 0.45);
       c2d.save();
       c2d.translate(x, y);
       c2d.rotate(t * L.rotW + L.phase + Math.sin(t * L.swayW + L.phase) * 0.4);
