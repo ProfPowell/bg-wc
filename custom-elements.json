@@ -4045,7 +4045,7 @@
           "name": "create",
           "parameters": [
             {
-              "name": "{ c2d, getColors, _pxScale }"
+              "name": "{ c2d, getColors }"
             }
           ]
         }

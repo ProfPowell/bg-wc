@@ -15,7 +15,6 @@ uniform float u_intensity;
 uniform float u_density;
 uniform vec3 u_c1;
 uniform vec3 u_bg;
-uniform vec3 u_fg;
 
 void main() {
   float horizon = 0.55;
@@ -58,5 +57,4 @@ export const create = makeShaderPreset(FS, [
   'u_density',
   'u_c1',
   'u_bg',
-  'u_fg',
 ]);

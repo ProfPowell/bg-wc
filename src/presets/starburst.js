@@ -7,7 +7,7 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 
-export function create({ c2d, getColors, _pxScale }) {
+export function create({ c2d, getColors }) {
   let w = 1,
     h = 1;
   let rings = [];
