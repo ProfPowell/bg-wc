@@ -1747,6 +1747,26 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/fog.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/fog.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/gameboy.js",
       "declarations": [
         {

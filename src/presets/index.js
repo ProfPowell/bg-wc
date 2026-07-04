@@ -105,6 +105,7 @@ const REGISTRY = {
   lava: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./lava.js') },
   aurora: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./aurora.js') },
   lightning: { renderer: 'canvas2d', group: 'atmospheric', loader: () => import('./lightning.js') },
+  fog: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./fog.js') },
   caustics: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./caustics.js') },
   tunnel: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./tunnel.js') },
   marble: { renderer: 'webgl', group: 'atmospheric', loader: () => import('./marble.js') },
