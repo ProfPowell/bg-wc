@@ -286,6 +286,7 @@ const REGISTRY = {
   snow: { renderer: 'canvas2d', group: 'particles', loader: () => import('./snow.js') },
   rain: { renderer: 'canvas2d', group: 'particles', loader: () => import('./rain.js') },
   fireflies: { renderer: 'canvas2d', group: 'particles', loader: () => import('./fireflies.js') },
+  embers: { renderer: 'canvas2d', group: 'particles', loader: () => import('./embers.js') },
   confetti: { renderer: 'canvas2d', group: 'particles', loader: () => import('./confetti.js') },
   network: { renderer: 'canvas2d', group: 'particles', loader: () => import('./network.js') },
   particles: { renderer: 'canvas2d', group: 'particles', loader: () => import('./particles.js') },

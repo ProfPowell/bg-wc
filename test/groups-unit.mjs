@@ -87,3 +87,13 @@ test('style-wave presets landed in their groups (2026-07-03)', () => {
     assert.equal(byName.get(name), group, `${name} in ${group}`);
   }
 });
+
+test('phenomena-wave presets landed in their groups (2026-07-03)', () => {
+  const PHENOMENA_WAVE = {
+    embers: 'particles',
+  };
+  const byName = new Map(listPresets().map((p) => [p.name, p.group]));
+  for (const [name, group] of Object.entries(PHENOMENA_WAVE)) {
+    assert.equal(byName.get(name), group, `${name} in ${group}`);
+  }
+});

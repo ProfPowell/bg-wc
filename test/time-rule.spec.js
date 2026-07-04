@@ -13,6 +13,7 @@ const PRESETS = [
   'network',
   'rain',
   'fireflies',
+  'embers',
   'zen-garden',
   'art-nouveau',
   'constructivism',
