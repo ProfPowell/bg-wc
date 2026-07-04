@@ -332,6 +332,7 @@ const REGISTRY = {
   bluenote: { renderer: 'canvas2d', group: 'music', loader: () => import('./bluenote.js') },
   starburst: { renderer: 'canvas2d', group: 'music', loader: () => import('./starburst.js') },
   vinyl: { renderer: 'canvas2d', group: 'music', loader: () => import('./vinyl.js') },
+  prism: { renderer: 'canvas2d', group: 'music', loader: () => import('./prism.js') },
 };
 
 // Human-readable group labels, in display order.

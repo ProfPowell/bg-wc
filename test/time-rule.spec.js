@@ -33,6 +33,7 @@ const PRESETS = [
   'bluenote',
   'starburst',
   'vinyl',
+  'prism',
 ];
 
 for (const name of PRESETS) {
