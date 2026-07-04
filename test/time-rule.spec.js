@@ -32,6 +32,7 @@ const PRESETS = [
   'transit-diagram',
   'bluenote',
   'starburst',
+  'vinyl',
 ];
 
 for (const name of PRESETS) {

@@ -331,6 +331,7 @@ const REGISTRY = {
   'liquid-light': { renderer: 'webgl', group: 'music', loader: () => import('./liquid-light.js') },
   bluenote: { renderer: 'canvas2d', group: 'music', loader: () => import('./bluenote.js') },
   starburst: { renderer: 'canvas2d', group: 'music', loader: () => import('./starburst.js') },
+  vinyl: { renderer: 'canvas2d', group: 'music', loader: () => import('./vinyl.js') },
 };
 
 // Human-readable group labels, in display order.

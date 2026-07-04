@@ -113,6 +113,7 @@ test('music-wave presets landed in the music group (2026-07-04)', () => {
     'liquid-light': 'music',
     bluenote: 'music',
     starburst: 'music',
+    vinyl: 'music',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(MUSIC_WAVE)) {
