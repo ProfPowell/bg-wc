@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Lighthouse &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Serif:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+  <style>
+    /* A keeper's log through one squall: the strikes, then the bank that
+       always follows. Cold-dark pinned palette. */
+    :root {
+      --color-background: #0b1016;  /* squall dark */
+      --color-foreground: #dfe7ee;  /* signal white */
+      --color-primary: #4a6d8c;     /* sea slate */
+      --color-accent: #9fc2e0;      /* arc light */
+      --color-info: #7c93a8;        /* mist */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: 'IBM Plex Serif', Georgia, serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    keeper-log {
+      display: block; position: absolute; max-width: 420px; padding: 20px 26px;
+      background: rgba(11, 16, 22, 0.78); border-left: 3px solid var(--color-accent);
+    }
+    keeper-log[data-at="left"] { left: clamp(24px, 6vw, 90px); bottom: clamp(32px, 10vh, 96px); }
+    keeper-log[data-at="right"] { right: clamp(24px, 6vw, 90px); top: clamp(48px, 12vh, 110px); }
+    log-stamp { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 8px; }
+    keeper-log h1, keeper-log h2 { font-weight: 300; margin: 0 0 8px; font-size: clamp(28px, 4vw, 46px); line-height: 1.1; }
+    keeper-log p { margin: 0; font-weight: 300; font-style: italic; line-height: 1.65; font-size: 15px; }
+    code { font-family: 'IBM Plex Mono', monospace; font-style: normal; font-size: 0.8em; background: rgba(223, 231, 238, 0.1); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="lightning" data-background-intensity="0.75" data-background-seed="9" data-background-speed="0.9" data-background-density="0.6">
+    <keeper-log data-at="left">
+      <log-stamp>Keeper's log &middot; 02:14</log-stamp>
+      <h1>The Lighthouse</h1>
+      <p>Counting between the flash and the thunder. Stopped counting. <code>data-background="lightning"</code></p>
+    </keeper-log>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="fog" data-background-intensity="0.7" data-background-seed="5" data-background-speed="0.6" data-background-density="0.65">
+    <keeper-log data-at="right">
+      <log-stamp>Keeper's log &middot; 04:50</log-stamp>
+      <h2>Then the Bank Rolled In</h2>
+      <p>The beam turns; the fog keeps whatever it touches. <code>data-background="fog"</code></p>
+    </keeper-log>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
