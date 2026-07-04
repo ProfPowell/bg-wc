@@ -35,6 +35,7 @@ const PRESETS = [
   'vinyl',
   'prism',
   'laser-show',
+  'scanimate',
 ];
 
 for (const name of PRESETS) {
