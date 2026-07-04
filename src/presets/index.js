@@ -326,6 +326,9 @@ const REGISTRY = {
   scatter: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./scatter.js') },
   waveform: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./waveform.js') },
   wordcloud: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./wordcloud.js') },
+
+  // ---- music (album art & music video, late 60s–80s) --------------------
+  'liquid-light': { renderer: 'webgl', group: 'music', loader: () => import('./liquid-light.js') },
 };
 
 // Human-readable group labels, in display order.
@@ -351,6 +354,7 @@ const GROUP_LABELS = {
   dataviz: 'Dataviz',
   particles: 'Particles',
   dimensional: 'Dimensional / 3D',
+  music: 'Music',
 };
 
 export function listPresets() {

@@ -2483,6 +2483,26 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/liquid-light.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/liquid-light.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/mandala.js",
       "declarations": [
         {

@@ -102,3 +102,23 @@ test('phenomena-wave presets landed in their groups (2026-07-03)', () => {
     assert.equal(byName.get(name), group, `${name} in ${group}`);
   }
 });
+
+test('music-wave presets landed in the music group (2026-07-04)', () => {
+  // The group itself must be registered with a label, or listGroups()
+  // silently drops it and the gallery never shows the tab.
+  const music = listGroups().find((x) => x.id === 'music');
+  assert.ok(music, 'music group must exist in listGroups()');
+  assert.equal(music.label, 'Music');
+  const MUSIC_WAVE = {
+    'liquid-light': 'music',
+  };
+  const byName = new Map(listPresets().map((p) => [p.name, p.group]));
+  for (const [name, group] of Object.entries(MUSIC_WAVE)) {
+    assert.equal(byName.get(name), group, `${name} in ${group}`);
+  }
+  assert.equal(
+    music.presets.length,
+    Object.keys(MUSIC_WAVE).length,
+    'music group holds exactly the wave presets'
+  );
+});
