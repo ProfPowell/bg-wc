@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Field Notes &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* A naturalist's notebook: the pond dip, then the walk home through the
+       leaves. Paper pinned palette. */
+    :root {
+      --color-background: #f3efe3;  /* notebook paper */
+      --color-foreground: #2b3230;  /* field-pen ink */
+      --color-primary: #3e7d8c;     /* pond teal */
+      --color-accent: #c26b3f;      /* maple */
+      --color-warning: #d9a13b;     /* birch gold */
+      --color-info: #6a8f5f;        /* moss */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    note-entry {
+      display: block; position: absolute; max-width: 400px; padding: 18px 26px;
+      background: var(--color-background); border: 1.5px solid var(--color-foreground); border-radius: 4px;
+      box-shadow: 5px 5px 0 rgba(43, 50, 48, 0.18); transform: rotate(-0.8deg);
+    }
+    note-entry[data-at="tl"] { top: clamp(56px, 9vh, 88px); left: clamp(24px, 5vw, 72px); }
+    note-entry[data-at="br"] { bottom: clamp(28px, 7vh, 68px); right: clamp(24px, 5vw, 72px); transform: rotate(0.9deg); }
+    entry-date { display: block; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 6px; }
+    note-entry h1, note-entry h2 { font-family: Caveat, cursive; font-weight: 600; margin: 0 0 6px; line-height: 0.95; }
+    note-entry h1 { font-size: clamp(40px, 6vw, 68px); }
+    note-entry h2 { font-size: clamp(34px, 5vw, 56px); }
+    note-entry p { margin: 0; font-weight: 300; line-height: 1.6; font-size: 15px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.82em; background: rgba(43, 50, 48, 0.08); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="bubbles" data-background-intensity="0.65" data-background-seed="13" data-background-speed="0.7"
+           data-background-color-bg="#123742" data-background-color-fg="#e8f2f0">
+    <note-entry data-at="tl">
+      <entry-date>Entry 41 &middot; the pond dip</entry-date>
+      <h1>Field Notes</h1>
+      <p>Whatever breathes down there is having a better morning than us. <code>data-background="bubbles"</code></p>
+    </note-entry>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="leaves" data-background-intensity="0.7" data-background-seed="8" data-background-speed="0.6">
+    <note-entry data-at="br">
+      <entry-date>Entry 42 &middot; the walk home</entry-date>
+      <h2>Every Leaf Signed the Wind</h2>
+      <p>Collected nine; kept the crooked one. <code>data-background="leaves"</code></p>
+    </note-entry>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
