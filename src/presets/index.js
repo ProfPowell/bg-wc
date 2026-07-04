@@ -341,6 +341,11 @@ const REGISTRY = {
     group: 'music',
     loader: () => import('./video-feedback.js'),
   },
+  'stage-lights': {
+    renderer: 'canvas2d',
+    group: 'music',
+    loader: () => import('./stage-lights.js'),
+  },
 };
 
 // Human-readable group labels, in display order.

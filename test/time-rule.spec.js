@@ -38,6 +38,7 @@ const PRESETS = [
   'scanimate',
   'airbrush',
   'video-feedback',
+  'stage-lights',
 ];
 
 for (const name of PRESETS) {
