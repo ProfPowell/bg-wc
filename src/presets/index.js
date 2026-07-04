@@ -336,6 +336,11 @@ const REGISTRY = {
   'laser-show': { renderer: 'canvas2d', group: 'music', loader: () => import('./laser-show.js') },
   scanimate: { renderer: 'canvas2d', group: 'music', loader: () => import('./scanimate.js') },
   airbrush: { renderer: 'canvas2d', group: 'music', loader: () => import('./airbrush.js') },
+  'video-feedback': {
+    renderer: 'canvas2d',
+    group: 'music',
+    loader: () => import('./video-feedback.js'),
+  },
 };
 
 // Human-readable group labels, in display order.

@@ -37,6 +37,7 @@ const PRESETS = [
   'laser-show',
   'scanimate',
   'airbrush',
+  'video-feedback',
 ];
 
 for (const name of PRESETS) {
