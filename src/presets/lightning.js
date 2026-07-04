@@ -56,7 +56,11 @@ export function create({ c2d, getColors, pxScale }) {
     // The strike lives in the first ~15% of the cycle, double-flickered.
     if (phase < 0.15) {
       const u = phase / 0.15;
-      const flicker = Math.max(0, Math.sin(u * Math.PI)) * (u < 0.5 ? 1 : 0.55);
+      // Envelope shifted so u=0 is already mid-flash: a frozen t (speed=0,
+      // reduced-motion stills, visual baselines) shows the bolt, not an
+      // empty sky between strikes.
+      const env = Math.min(1, u + 0.35);
+      const flicker = Math.max(0, Math.sin(env * Math.PI)) * (u < 0.5 ? 1 : 0.55);
       const rand = mulberry32(((params.seed | 0 || 21) * 2654435761) ^ (idx * 40503));
       const bolt = makeBolt(rand);
       // Sky flash.
