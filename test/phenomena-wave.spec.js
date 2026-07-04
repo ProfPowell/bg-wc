@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 // visual project; frame-purity is pinned in time-rule.spec.js (all five
 // canvas2d presets are pure functions of t by design; fog is pure u_time).
 
-const PRESETS = ['embers', 'lightning', 'fog'];
+const PRESETS = ['embers', 'lightning', 'fog', 'constellation'];
 
 for (const name of PRESETS) {
   test(`${name} renders with ink and no fallback`, async ({ page }) => {

@@ -15,6 +15,7 @@ const PRESETS = [
   'fireflies',
   'embers',
   'lightning',
+  'constellation',
   'zen-garden',
   'art-nouveau',
   'constructivism',

@@ -285,6 +285,11 @@ const REGISTRY = {
 
   // Canvas2D particle systems
   stars: { renderer: 'canvas2d', group: 'particles', loader: () => import('./stars.js') },
+  constellation: {
+    renderer: 'canvas2d',
+    group: 'particles',
+    loader: () => import('./constellation.js'),
+  },
   snow: { renderer: 'canvas2d', group: 'particles', loader: () => import('./snow.js') },
   rain: { renderer: 'canvas2d', group: 'particles', loader: () => import('./rain.js') },
   fireflies: { renderer: 'canvas2d', group: 'particles', loader: () => import('./fireflies.js') },
