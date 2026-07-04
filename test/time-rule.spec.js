@@ -14,6 +14,7 @@ const PRESETS = [
   'rain',
   'fireflies',
   'embers',
+  'lightning',
   'zen-garden',
   'art-nouveau',
   'constructivism',
