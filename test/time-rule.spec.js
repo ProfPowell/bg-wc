@@ -16,6 +16,7 @@ const PRESETS = [
   'embers',
   'lightning',
   'constellation',
+  'bubbles',
   'zen-garden',
   'art-nouveau',
   'constructivism',

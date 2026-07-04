@@ -94,6 +94,7 @@ test('phenomena-wave presets landed in their groups (2026-07-03)', () => {
     lightning: 'atmospheric',
     fog: 'atmospheric',
     constellation: 'particles',
+    bubbles: 'particles',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(PHENOMENA_WAVE)) {
