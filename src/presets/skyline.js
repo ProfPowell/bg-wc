@@ -1,7 +1,8 @@
 // skyline — extruded city blocks in two depth rows over a ground plane, the
 // camera panning laterally on a long alternate loop (negative delay lands
 // mid-pan). Buildings are 5-face cuboids with window stripes; a seeded few
-// get an accent roof glow. ~24 blocks × 5 faces + ground ≈ 122 nodes.
+// get an accent roof glow. Up to 24 blocks × 6 nodes (wrapper + 4 sides +
+// roof) + ground ≈ 147 nodes at max density — inside the ~220 budget.
 
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss as rgb, rgbaCss as rgba } from '../renderer/tokens.js';
