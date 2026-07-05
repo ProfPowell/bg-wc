@@ -310,6 +310,7 @@ const REGISTRY = {
     loader: () => import('./fly-through.js'),
   },
   explode: { renderer: 'css3d', group: 'dimensional', loader: () => import('./explode.js') },
+  carousel: { renderer: 'css3d', group: 'dimensional', loader: () => import('./carousel.js') },
 
   // Animated charts — busy data backgrounds
   ledticker: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./ledticker.js') },
