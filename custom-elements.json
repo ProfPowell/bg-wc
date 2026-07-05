@@ -3963,6 +3963,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/skyline.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ css3d, getColors, getParams }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/skyline.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/slime-mold.js",
       "declarations": [
         {
