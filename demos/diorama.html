@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diorama &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* Model worlds under glass: four cases, four little universes, a brass
+       case label on each. Natural-history palette. */
+    :root {
+      --color-background: #f2ede2;  /* museum daylight */
+      --color-foreground: #2c2a24;
+      --color-primary: #4a7a6a;     /* case-felt green */
+      --color-accent: #c07840;      /* brass label */
+      --color-info: #5878a0;        /* model-sea blue */
+      --color-warning: #d0a43c;
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    case-label {
+      display: block; position: absolute; max-width: 400px; padding: 16px 24px;
+      background: var(--color-background); border: 1.5px solid var(--color-foreground);
+      box-shadow: 4px 4px 0 rgba(44, 42, 36, 0.2);
+    }
+    case-label[data-at="tl"] { top: clamp(56px, 9vh, 88px); left: clamp(24px, 5vw, 72px); }
+    case-label[data-at="br"] { bottom: clamp(26px, 7vh, 64px); right: clamp(24px, 5vw, 72px); }
+    label-cat { display: block; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 6px; }
+    case-label h1, case-label h2 { font-family: Fraunces, Georgia, serif; font-weight: 600; margin: 0 0 6px; line-height: 1.02; }
+    case-label h1 { font-size: clamp(32px, 5vw, 56px); }
+    case-label h2 { font-size: clamp(24px, 3.6vw, 40px); }
+    case-label p { margin: 0; font-weight: 300; line-height: 1.6; font-size: 14px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(44, 42, 36, 0.08); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="cube-wave" data-background-intensity="0.7" data-background-seed="6" data-background-speed="0.8">
+    <case-label data-at="tl">
+      <label-cat>Case I &middot; kinetic terrain</label-cat>
+      <h1>Diorama</h1>
+      <p>The ground does this when nobody watches. <code>data-background="cube-wave"</code></p>
+    </case-label>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="skyline" data-background-intensity="0.7" data-background-seed="10" data-background-speed="0.6">
+    <case-label data-at="br">
+      <label-cat>Case II &middot; scale 1:5000</label-cat>
+      <h2>Model City, Dusk</h2>
+      <p>Somebody left the lights on in accounting. <code>data-background="skyline"</code></p>
+    </case-label>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="chamber" data-background-intensity="0.75" data-background-seed="3" data-background-speed="0.6">
+    <case-label data-at="tl">
+      <label-cat>Case III &middot; interior, rotating</label-cat>
+      <h2>The Room That Turns</h2>
+      <p>Step in; the walls will come around to you. <code>data-background="chamber"</code></p>
+    </case-label>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="satellites" data-background-intensity="0.7" data-background-seed="9" data-background-speed="0.7">
+    <case-label data-at="br">
+      <label-cat>Case IV &middot; orrery, brass &amp; card</label-cat>
+      <h2>A Small Cosmos</h2>
+      <p>Three orbits, no collisions on record. <code>data-background="satellites"</code></p>
+    </case-label>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
