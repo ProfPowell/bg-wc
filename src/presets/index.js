@@ -311,6 +311,7 @@ const REGISTRY = {
   },
   explode: { renderer: 'css3d', group: 'dimensional', loader: () => import('./explode.js') },
   carousel: { renderer: 'css3d', group: 'dimensional', loader: () => import('./carousel.js') },
+  gyroscope: { renderer: 'css3d', group: 'dimensional', loader: () => import('./gyroscope.js') },
 
   // Animated charts — busy data backgrounds
   ledticker: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./ledticker.js') },

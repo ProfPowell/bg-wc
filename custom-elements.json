@@ -2077,6 +2077,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/gyroscope.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ css3d, getColors, getParams }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/gyroscope.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/halftone.js",
       "declarations": [
         {
