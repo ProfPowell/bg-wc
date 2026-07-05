@@ -2873,6 +2873,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/monolith.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ css3d, getColors, getParams }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/monolith.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/morris.js",
       "declarations": [
         {
