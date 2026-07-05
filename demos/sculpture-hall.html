@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sculpture Hall &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* A hall of kinetic sculpture: four rooms, four machines, one placard
+       each. Museum-dark palette so the pieces carry the light. */
+    :root {
+      --color-background: #121016;  /* gallery dusk */
+      --color-foreground: #eae6dd;
+      --color-primary: #8e6fd8;     /* amethyst */
+      --color-accent: #d8a25a;      /* brass */
+      --color-info: #5aa7c9;        /* verdigris */
+      --color-warning: #d8c85a;
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    pedestal-placard {
+      display: block; position: absolute; left: 50%; transform: translateX(-50%);
+      bottom: clamp(26px, 7vh, 64px); max-width: 420px; text-align: center;
+      padding: 16px 28px; background: rgba(18, 16, 22, 0.8);
+      border: 1px solid rgba(234, 230, 221, 0.28); border-top: 3px solid var(--color-accent);
+    }
+    placard-no { display: block; font-size: 11px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 6px; }
+    pedestal-placard h1, pedestal-placard h2 { font-family: Marcellus, Georgia, serif; font-weight: 400; margin: 0 0 6px; line-height: 1.05; }
+    pedestal-placard h1 { font-size: clamp(32px, 5vw, 56px); }
+    pedestal-placard h2 { font-size: clamp(24px, 3.6vw, 40px); }
+    pedestal-placard p { margin: 0; font-weight: 300; line-height: 1.6; font-size: 14px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.85em; background: rgba(234, 230, 221, 0.12); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="carousel" data-background-intensity="0.7" data-background-seed="5" data-background-speed="0.8">
+    <pedestal-placard>
+      <placard-no>No. 1 &middot; mixed media, motorized</placard-no>
+      <h1>Sculpture Hall</h1>
+      <p>&ldquo;Rolodex, Unbound&rdquo; &mdash; the artist declined to say which card is yours. <code>data-background="carousel"</code></p>
+    </pedestal-placard>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="gyroscope" data-background-intensity="0.7" data-background-seed="11" data-background-speed="0.7">
+    <pedestal-placard>
+      <placard-no>No. 2 &middot; steel, patience</placard-no>
+      <h2>Momentum, Conserved</h2>
+      <p>Every ring disagrees about which way is up. <code>data-background="gyroscope"</code></p>
+    </pedestal-placard>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="shards" data-background-intensity="0.75" data-background-seed="8" data-background-speed="0.6">
+    <pedestal-placard>
+      <placard-no>No. 3 &middot; glass, suspended</placard-no>
+      <h2>The Slow Shatter</h2>
+      <p>A window breaking over the course of a year. <code>data-background="shards"</code></p>
+    </pedestal-placard>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="monolith" data-background-intensity="0.65" data-background-seed="14" data-background-speed="0.5">
+    <pedestal-placard>
+      <placard-no>No. 4 &middot; basalt, attributed</placard-no>
+      <h2>Visitors</h2>
+      <p>They were here before the museum. The museum is diplomatic about it. <code>data-background="monolith"</code></p>
+    </pedestal-placard>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
