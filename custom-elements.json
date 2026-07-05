@@ -1322,6 +1322,31 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/cube-wave.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "create",
+          "parameters": [
+            {
+              "name": "{ css3d, getColors, getParams }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/cube-wave.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/cutouts.js",
       "declarations": [
         {
