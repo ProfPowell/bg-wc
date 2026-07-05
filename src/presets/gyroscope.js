@@ -11,14 +11,15 @@ const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !i
 const STYLE = `
   .stage { perspective: 40em; overflow: hidden; display: grid; place-items: center; }
   .rig { position: relative; transform-style: preserve-3d;
-    animation: gyDrift var(--gy-driftdur, 87s) linear -30s infinite; }
-  .ring { position: absolute; border-radius: 50%; border-style: solid;
+    animation: gyDrift var(--gy-driftdur, 87s) linear calc(var(--gy-driftdur, 87s) * -0.35) infinite; }
+  .ringTilt { position: absolute; transform-style: preserve-3d; }
+  .ring { position: absolute; inset: 0; border-radius: 50%; border-style: solid;
     transform-style: preserve-3d;
-    animation: gySpin var(--dur, 20s) linear var(--delay, -7s) infinite; }
+    animation: gySpin var(--dur, 20s) linear calc(var(--dur, 20s) * var(--dfrac, -0.35)) infinite; }
   .core { position: absolute; width: 3.4em; height: 3.4em; left: -1.7em; top: -1.7em;
     border-radius: 50%;
     background-image: radial-gradient(var(--gy-core), transparent 65%);
-    animation: gyPulse var(--gy-pulsedur, 9s) ease-in-out -4s infinite alternate; }
+    animation: gyPulse var(--gy-pulsedur, 9s) ease-in-out calc(var(--gy-pulsedur, 9s) * -0.45) infinite alternate; }
   .equator { position: absolute; border-radius: 50%;
     border: 1px solid var(--gy-eq); transform: rotateX(90deg); opacity: 0.5; }
   @keyframes gySpin { to { transform: rotate3d(var(--ax), var(--ay), var(--az), 360deg); } }
@@ -39,22 +40,32 @@ export function create({ css3d, getColors, getParams }) {
   core.className = 'core';
   rig.appendChild(core);
   for (let i = 0; i < n; i++) {
+    // Static oblique pose lives INLINE on a wrapper: screenshot harnesses
+    // cancel infinite animations to their initial state, so the resting
+    // composition must never depend on keyframe-applied transforms. The
+    // keyframe only spins the inner ring on top of the wrapper's tilt.
+    const tiltEl = document.createElement('div');
+    tiltEl.className = 'ringTilt';
+    const d = 9 + i * 4.5; // em diameter
+    tiltEl.style.width = `${d}em`;
+    tiltEl.style.height = `${d}em`;
+    tiltEl.style.left = `${-d / 2}em`;
+    tiltEl.style.top = `${-d / 2}em`;
+    const ax = (rand() * 2 - 1).toFixed(2);
+    const ay = (rand() * 2 - 1).toFixed(2);
+    const az = (rand() * 0.6).toFixed(2);
+    tiltEl.style.transform = `rotate3d(${ax}, ${ay}, ${az}, ${(30 + rand() * 55).toFixed(0)}deg)`;
     const ring = document.createElement('div');
     ring.className = 'ring';
-    const d = 9 + i * 4.5; // em diameter
-    ring.style.width = `${d}em`;
-    ring.style.height = `${d}em`;
-    ring.style.left = `${-d / 2}em`;
-    ring.style.top = `${-d / 2}em`;
     ring.style.borderWidth = '0.32em';
     ring.style.borderColor = `var(--gy-c${i % 3})`;
-    // A distinct, seeded spin axis per ring.
-    ring.style.setProperty('--ax', (rand() * 2 - 1).toFixed(2));
-    ring.style.setProperty('--ay', (rand() * 2 - 1).toFixed(2));
-    ring.style.setProperty('--az', (rand() * 0.6).toFixed(2));
+    ring.style.setProperty('--ax', ax);
+    ring.style.setProperty('--ay', ay);
+    ring.style.setProperty('--az', az);
     ring.style.setProperty('--dur', `calc(var(--gy-base, 20s) * ${(0.7 + i * 0.35).toFixed(2)})`);
-    ring.style.setProperty('--delay', `${(-3 - rand() * 9).toFixed(2)}s`);
-    rig.appendChild(ring);
+    ring.style.setProperty('--dfrac', (-0.12 - rand() * 0.6).toFixed(3));
+    tiltEl.appendChild(ring);
+    rig.appendChild(tiltEl);
   }
   const eq = document.createElement('div');
   eq.className = 'equator';

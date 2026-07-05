@@ -3,8 +3,8 @@
 // translateZ with a negative delay proportional to its distance from center,
 // so the wave radiates outward and a paused still catches it mid-swell. The
 // board breathes a few degrees so the composition never freezes visually.
-// Three visible faces per cube (top/left/right) keep the node budget at
-// 3n²+2 (≤ 194 at max density).
+// Each cube is a wrapper + bob + 3 faces (5 nodes), so the grid caps at
+// side 6 to stay inside the ~220 budget (5·36 + 2 = 182).
 
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss as rgb } from '../renderer/tokens.js';
@@ -18,17 +18,18 @@ const SIZE = 1.8; // em cube edge
 const STYLE = `
   .stage { perspective: 60em; overflow: hidden; display: grid; place-items: center; }
   .breathe { transform-style: preserve-3d;
-    animation: cwBreathe var(--cw-breathedur, 33s) ease-in-out -12s infinite alternate; }
+    animation: cwBreathe var(--cw-breathedur, 33s) ease-in-out calc(var(--cw-breathedur, 33s) * -0.36) infinite alternate; }
   .board { position: relative; transform-style: preserve-3d;
     transform: rotateX(58deg) rotateZ(45deg); }
-  .cube { position: absolute; transform-style: preserve-3d;
-    animation: cwBob var(--cw-dur, 4.5s) ease-in-out var(--delay, 0s) infinite alternate; }
+  .cube { position: absolute; transform-style: preserve-3d; }
+  .bob { position: absolute; transform-style: preserve-3d;
+    animation: cwBob var(--cw-dur, 4.5s) ease-in-out calc(var(--cw-dur, 4.5s) * var(--dfrac, -0.4)) infinite alternate; }
   .t, .l, .r { position: absolute; width: ${SIZE}em; height: ${SIZE}em; }
   .t { background: var(--cw-top); transform: translateZ(${SIZE}em); }
   .l { background: var(--cw-left); transform: rotateX(-90deg) translateZ(${-SIZE / 2}em) translateY(${SIZE / 2}em); }
   .r { background: var(--cw-right); transform: rotateY(90deg) translateZ(${SIZE / 2}em) translateX(${SIZE / 2}em); }
-  @keyframes cwBob { from { transform: translate3d(var(--x), var(--y), 0); }
-    to { transform: translate3d(var(--x), var(--y), var(--cw-amp, 1.6em)); } }
+  @keyframes cwBob { from { transform: translateZ(calc(var(--z0) * -1)); }
+    to { transform: translateZ(var(--cw-amp, 1.6em)); } }
   @keyframes cwBreathe { from { transform: rotateX(-4deg); } to { transform: rotateX(4deg); } }
   ${PAUSE_RULE}
 `;
@@ -37,7 +38,7 @@ export function create({ css3d, getColors, getParams }) {
   css3d.mountStyle(STYLE);
   const p = getParams();
   const rand = mulberry32(p.seed | 0 || 79);
-  const side = 5 + Math.round(p.density * 3); // 5..8 per side
+  const side = 4 + Math.round(p.density * 2); // 4..6 per side (5 nodes per cube)
 
   const breathe = document.createElement('div');
   breathe.className = 'breathe';
@@ -49,16 +50,23 @@ export function create({ css3d, getColors, getParams }) {
     for (let j = 0; j < side; j++) {
       const cube = document.createElement('div');
       cube.className = 'cube';
-      cube.style.setProperty('--x', `${((i - mid) * CELL).toFixed(2)}em`);
-      cube.style.setProperty('--y', `${((j - mid) * CELL).toFixed(2)}em`);
       // Wave radiates from center; tiny seeded jitter keeps rings organic.
       const dist = Math.hypot(i - mid, j - mid) + rand() * 0.15;
-      cube.style.setProperty('--delay', `calc(var(--cw-step, -0.35s) * ${dist.toFixed(2)} - 2s)`);
+      // Grid position AND the frozen mid-swell height live INLINE (screenshot
+      // harnesses cancel infinite animations); the keyframe bobs .bob around
+      // that resting height.
+      const z0 = (Math.sin(dist * 1.15) * 0.5 + 0.5) * 1.2;
+      cube.style.transform = `translate3d(${((i - mid) * CELL).toFixed(2)}em, ${((j - mid) * CELL).toFixed(2)}em, ${z0.toFixed(2)}em)`;
+      const bob = document.createElement('div');
+      bob.className = 'bob';
+      bob.style.setProperty('--dfrac', (-0.4 - dist * 0.078).toFixed(3));
+      bob.style.setProperty('--z0', `${z0.toFixed(2)}em`);
       for (const cls of ['t', 'l', 'r']) {
         const f = document.createElement('div');
         f.className = cls;
-        cube.appendChild(f);
+        bob.appendChild(f);
       }
+      cube.appendChild(bob);
       board.appendChild(cube);
     }
   }
@@ -72,7 +80,6 @@ export function create({ css3d, getColors, getParams }) {
     css3d.setVars({
       '--cw-dur': `${(4.5 / sp).toFixed(2)}s`,
       '--cw-breathedur': `${(33 / sp).toFixed(2)}s`,
-      '--cw-step': `${(-0.35 / sp).toFixed(3)}s`,
       '--cw-amp': `${(0.8 + params.intensity * 1.4).toFixed(2)}em`,
     });
     const key = rgb(c.primary) + rgb(c.bg);
