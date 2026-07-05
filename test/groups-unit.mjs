@@ -138,6 +138,7 @@ test('dimensional-wave presets landed in the dimensional group (2026-07-05)', ()
     carousel: 'dimensional',
     gyroscope: 'dimensional',
     monolith: 'dimensional',
+    shards: 'dimensional',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(DIMENSIONAL_WAVE)) {
