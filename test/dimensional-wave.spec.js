@@ -5,7 +5,16 @@ import { test, expect } from '@playwright/test';
 // rule so reduced-motion / paused stills freeze the keyframes (visual
 // baselines rely on it). Motion lives in CSS, so these are NOT in time-rule.
 
-const PRESETS = ['carousel', 'gyroscope', 'monolith', 'shards', 'cube-wave', 'skyline', 'chamber'];
+const PRESETS = [
+  'carousel',
+  'gyroscope',
+  'monolith',
+  'shards',
+  'cube-wave',
+  'skyline',
+  'chamber',
+  'satellites',
+];
 
 for (const name of PRESETS) {
   test(`${name} mounts a css3d scene with the pause rule`, async ({ page }) => {

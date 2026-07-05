@@ -317,6 +317,7 @@ const REGISTRY = {
   'cube-wave': { renderer: 'css3d', group: 'dimensional', loader: () => import('./cube-wave.js') },
   skyline: { renderer: 'css3d', group: 'dimensional', loader: () => import('./skyline.js') },
   chamber: { renderer: 'css3d', group: 'dimensional', loader: () => import('./chamber.js') },
+  satellites: { renderer: 'css3d', group: 'dimensional', loader: () => import('./satellites.js') },
 
   // Animated charts — busy data backgrounds
   ledticker: { renderer: 'canvas2d', group: 'dataviz', loader: () => import('./ledticker.js') },
