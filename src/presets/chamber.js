@@ -37,6 +37,13 @@ const STYLE = `
   ${PAUSE_RULE}
 `;
 
+// NOTE: the dimensional-wave smoke asserts >= 10 stage descendants; this
+// scene sits at exactly 10 counting the mounted <style> (room + 6 walls +
+// 2 glows + style). Removing a node or relocating the style breaks it.
+// The glows' wall-hugging positions live in their orbit keyframes on
+// purpose: when screenshot harnesses cancel animations they rest at room
+// center, which reads as the chamber's light source — a deliberate
+// exception to the inline-pose rule (the walls carry the composition).
 export function create({ css3d, getColors, getParams }) {
   css3d.mountStyle(STYLE);
   const p = getParams();

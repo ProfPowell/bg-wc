@@ -1,6 +1,7 @@
 // carousel — a rolodex of theme-gradient cards orbiting the camera. The ring
 // spins on a long loop and precesses (a slow tilt wobble) so the composition
-// never sits still; cards are double-sided with dimmer backfaces. Scene is
+// never sits still; card backfaces stay visible so the ring's far side
+// reads through. Scene is
 // built once from create-time params; reconcile only touches vars.
 
 import { mulberry32 } from '../util/pause.js';
