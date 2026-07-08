@@ -155,6 +155,7 @@ test('parrish-wave presets landed in their groups (2026-07-07)', () => {
     cumulus: 'atmospheric',
     terrace: 'art',
     'oil-sky': 'art',
+    moonrise: 'atmospheric',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(PARRISH_WAVE)) {

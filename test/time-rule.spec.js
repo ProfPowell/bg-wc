@@ -42,6 +42,7 @@ const PRESETS = [
   'cumulus',
   'terrace',
   'oil-sky',
+  'moonrise',
 ];
 
 for (const name of PRESETS) {
