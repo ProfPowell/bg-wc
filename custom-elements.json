@@ -2177,6 +2177,26 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/halcyon.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "create"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "create",
+          "declaration": {
+            "name": "create",
+            "module": "src/presets/halcyon.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/halftone.js",
       "declarations": [
         {

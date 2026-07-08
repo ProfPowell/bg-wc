@@ -64,6 +64,7 @@ const REGISTRY = {
     group: 'gradient',
     loader: () => import('./mesh-gradient.js'),
   },
+  halcyon: { renderer: 'webgl', group: 'gradient', loader: () => import('./halcyon.js') },
   waves: { renderer: 'webgl', group: 'gradient', loader: () => import('./waves.js') },
   plasma: { renderer: 'webgl', group: 'gradient', loader: () => import('./plasma.js') },
   rainbow: { renderer: 'webgl', group: 'gradient', loader: () => import('./rainbow.js') },

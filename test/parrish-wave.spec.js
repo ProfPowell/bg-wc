@@ -5,7 +5,16 @@ import { test, expect } from '@playwright/test';
 // visual project; the eleven canvas2d presets are pinned pure-in-t by
 // time-rule.spec.js; halcyon is pure u_time by construction.
 
-const PRESETS = ['cumulus', 'terrace', 'oil-sky', 'moonrise', 'lily-pond', 'meadow', 'tide'];
+const PRESETS = [
+  'cumulus',
+  'terrace',
+  'oil-sky',
+  'moonrise',
+  'lily-pond',
+  'meadow',
+  'tide',
+  'halcyon',
+];
 
 for (const name of PRESETS) {
   test(`${name} renders with ink and no fallback`, async ({ page }) => {
