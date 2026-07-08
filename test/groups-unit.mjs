@@ -163,6 +163,7 @@ test('parrish-wave presets landed in their groups (2026-07-07)', () => {
     'fan-deco': 'pop',
     'deco-spires': 'pop',
     peacock: 'pop',
+    gilded: 'ornamental',
   };
   const byName = new Map(listPresets().map((p) => [p.name, p.group]));
   for (const [name, group] of Object.entries(PARRISH_WAVE)) {

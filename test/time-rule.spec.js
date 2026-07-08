@@ -49,6 +49,7 @@ const PRESETS = [
   'fan-deco',
   'deco-spires',
   'peacock',
+  'gilded',
 ];
 
 for (const name of PRESETS) {
