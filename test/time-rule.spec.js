@@ -41,6 +41,7 @@ const PRESETS = [
   'stage-lights',
   'cumulus',
   'terrace',
+  'oil-sky',
 ];
 
 for (const name of PRESETS) {

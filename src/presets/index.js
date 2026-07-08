@@ -202,6 +202,7 @@ const REGISTRY = {
   watercolor: { renderer: 'webgl', group: 'art', loader: () => import('./watercolor.js') },
   brushstroke: { renderer: 'canvas2d', group: 'art', loader: () => import('./brushstroke.js') },
   terrace: { renderer: 'canvas2d', group: 'art', loader: () => import('./terrace.js') },
+  'oil-sky': { renderer: 'canvas2d', group: 'art', loader: () => import('./oil-sky.js') },
 
   // Kitsch — roadside / craft / nostalgia Americana
   crochet: { renderer: 'canvas2d', group: 'kitsch', loader: () => import('./crochet.js') },
