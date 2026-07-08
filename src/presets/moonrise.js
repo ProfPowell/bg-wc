@@ -64,7 +64,11 @@ export function create({ c2d, getColors, pxScale }) {
     sky.addColorStop(0, rgbCss(nightTop));
     sky.addColorStop(1, rgbCss(nightHor));
     c2d.fillStyle = sky;
-    c2d.fillRect(0, 0, w, horizon);
+    // Full-canvas opaque base: the sky/water boundary sits at a fractional
+    // y, and two partial fills meeting there let the seam row blend with the
+    // PREVIOUS frame (a frame-purity leak time-rule catches). Paint the sky
+    // over everything, then let the water's soft edge blend into fresh ink.
+    c2d.fillRect(0, 0, w, h);
     // The water below is the sky, darker.
     c2d.fillStyle = rgbCss(mix(nightHor, [0, 0, 0], 0.35));
     c2d.fillRect(0, horizon, w, h - horizon);
