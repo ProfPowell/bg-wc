@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Retreat &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* A quiet weekend in four entries: the pond, the meadow, the shore,
+       and the long exhale. Journal cards, soft daylight palette. */
+    :root {
+      --color-background: #eef0e9;  /* morning paper */
+      --color-foreground: #37403a;
+      --color-primary: #7d97b8;     /* soft sky */
+      --color-accent: #c9a86a;      /* dry grass gold */
+      --color-info: #7fa8a0;        /* pond glass */
+      --color-success: #7c9a72;     /* pad green */
+      --color-warning: #d2b48c;     /* sand */
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    journal-card {
+      display: block; position: absolute; max-width: 400px; padding: 18px 26px;
+      background: rgba(238, 240, 233, 0.88); border: 1px solid rgba(55, 64, 58, 0.35);
+      border-radius: 3px;
+    }
+    journal-card[data-at="tl"] { top: clamp(56px, 9vh, 88px); left: clamp(24px, 5vw, 72px); }
+    journal-card[data-at="br"] { bottom: clamp(26px, 7vh, 64px); right: clamp(24px, 5vw, 72px); }
+    entry-day { display: block; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 6px; }
+    journal-card h1, journal-card h2 { font-family: 'EB Garamond', Georgia, serif; font-weight: 400; margin: 0 0 6px; line-height: 1.05; }
+    journal-card h1 { font-size: clamp(32px, 5vw, 56px); }
+    journal-card h2 { font-size: clamp(24px, 3.6vw, 40px); }
+    journal-card p { margin: 0; font-weight: 300; line-height: 1.65; font-size: 15px; font-family: 'EB Garamond', Georgia, serif; font-style: italic; }
+    code { font-family: ui-monospace, monospace; font-size: 0.78em; font-style: normal; background: rgba(55, 64, 58, 0.08); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="lily-pond" data-background-intensity="0.65" data-background-seed="5" data-background-speed="0.5">
+    <journal-card data-at="tl">
+      <entry-day>Saturday &middot; early</entry-day>
+      <h1>The Retreat</h1>
+      <p>Sat by the pond until the pond stopped noticing me. <code>data-background="lily-pond"</code></p>
+    </journal-card>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="meadow" data-background-intensity="0.7" data-background-seed="11" data-background-speed="0.6">
+    <journal-card data-at="br">
+      <entry-day>Saturday &middot; before dinner</entry-day>
+      <h2>Through the Grass</h2>
+      <p>The whole field agreed on the direction of the wind. <code>data-background="meadow"</code></p>
+    </journal-card>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="tide" data-background-intensity="0.6" data-background-seed="8" data-background-speed="0.5">
+    <journal-card data-at="tl">
+      <entry-day>Sunday &middot; the shore</entry-day>
+      <h2>Between Waves</h2>
+      <p>Counted eleven; forgave all of them. <code>data-background="tide"</code></p>
+    </journal-card>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="halcyon" data-background-intensity="0.65" data-background-seed="2" data-background-speed="0.5">
+    <journal-card data-at="br">
+      <entry-day>Sunday &middot; the long exhale</entry-day>
+      <h2>Halcyon</h2>
+      <p>Nothing happened, at great length, beautifully. <code>data-background="halcyon"</code></p>
+    </journal-card>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
