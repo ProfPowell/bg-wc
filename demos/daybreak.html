@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daybreak &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* One day in four paintings: morning clouds, the golden-hour terrace,
+       a painted dusk, then moonrise. Gallery plates carry the captions. */
+    :root {
+      --color-background: #1a2340;  /* Parrish ultramarine, deep */
+      --color-foreground: #f2ead8;
+      --color-primary: #35509e;     /* parrish blue */
+      --color-accent: #e8b458;      /* gold light */
+      --color-info: #6a8fc0;
+      --color-success: #5d8a6e;
+      --color-warning: #d9a13b;
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    gallery-plate {
+      display: block; position: absolute; left: 50%; transform: translateX(-50%);
+      bottom: clamp(26px, 7vh, 60px); max-width: 430px; text-align: center;
+      padding: 14px 26px; background: rgba(26, 35, 64, 0.72);
+      border: 1px solid rgba(242, 234, 216, 0.35);
+    }
+    plate-no { display: block; font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 6px; }
+    gallery-plate h1, gallery-plate h2 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; margin: 0 0 6px; line-height: 1.05; }
+    gallery-plate h1 { font-size: clamp(34px, 5.2vw, 60px); }
+    gallery-plate h2 { font-size: clamp(26px, 3.8vw, 44px); }
+    gallery-plate p { margin: 0; font-weight: 300; line-height: 1.6; font-size: 14px; font-style: italic; font-family: 'Cormorant Garamond', Georgia, serif; }
+    code { font-family: ui-monospace, monospace; font-size: 0.8em; font-style: normal; background: rgba(242, 234, 216, 0.12); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="cumulus" data-background-intensity="0.7" data-background-seed="7" data-background-speed="0.6">
+    <gallery-plate>
+      <plate-no>I &middot; morning</plate-no>
+      <h1>Daybreak</h1>
+      <p>The clouds arrive before anyone is awake to deserve them. <code>data-background="cumulus"</code></p>
+    </gallery-plate>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="terrace" data-background-intensity="0.7" data-background-seed="3" data-background-speed="0.5">
+    <gallery-plate>
+      <plate-no>II &middot; golden hour</plate-no>
+      <h2>The Terrace</h2>
+      <p>Columns hold the light the way vases hold water. <code>data-background="terrace"</code></p>
+    </gallery-plate>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="oil-sky" data-background-intensity="0.65" data-background-seed="12" data-background-speed="0.5">
+    <gallery-plate>
+      <plate-no>III &middot; dusk, in oils</plate-no>
+      <h2>Wet Paint</h2>
+      <p>Every stroke still deciding what color evening is. <code>data-background="oil-sky"</code></p>
+    </gallery-plate>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="moonrise" data-background-intensity="0.7" data-background-seed="9" data-background-speed="0.5">
+    <gallery-plate>
+      <plate-no>IV &middot; night</plate-no>
+      <h2>Moonrise</h2>
+      <p>The lake keeps a second moon, in case. <code>data-background="moonrise"</code></p>
+    </gallery-plate>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
