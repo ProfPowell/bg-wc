@@ -40,6 +40,7 @@ const PRESETS = [
   'video-feedback',
   'stage-lights',
   'cumulus',
+  'terrace',
 ];
 
 for (const name of PRESETS) {
