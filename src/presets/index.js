@@ -120,6 +120,7 @@ const REGISTRY = {
   comic: { renderer: 'webgl', group: 'pop', loader: () => import('./comic.js') },
   deco: { renderer: 'webgl', group: 'pop', loader: () => import('./deco.js') },
   'fan-deco': { renderer: 'canvas2d', group: 'pop', loader: () => import('./fan-deco.js') },
+  'deco-spires': { renderer: 'canvas2d', group: 'pop', loader: () => import('./deco-spires.js') },
   atomic: { renderer: 'canvas2d', group: 'pop', loader: () => import('./atomic.js') },
   groove: { renderer: 'canvas2d', group: 'pop', loader: () => import('./groove.js') },
   psychedelia: { renderer: 'webgl', group: 'pop', loader: () => import('./psychedelia.js') },

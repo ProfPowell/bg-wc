@@ -15,6 +15,7 @@ const PRESETS = [
   'tide',
   'halcyon',
   'fan-deco',
+  'deco-spires',
 ];
 
 for (const name of PRESETS) {
