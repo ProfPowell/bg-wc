@@ -54,7 +54,7 @@ export function create({ c2d, getColors, pxScale }) {
     const rayA = 0.06 + params.intensity * 0.1;
     const cx = tallX * w;
     const cy = h * 0.42;
-    const rot = t * 0.008; // imperceptible wheel — nonzero at every t
+    const rot = t * 0.008; // imperceptible wheel (rays stay fully visible at t=0)
     for (let k = 0; k < 18; k++) {
       const a = rot + (k / 18) * Math.PI * 2;
       c2d.fillStyle = rgbaCss(gold, rayA * (k % 2 ? 1 : 0.55));

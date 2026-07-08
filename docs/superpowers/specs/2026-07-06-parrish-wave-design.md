@@ -51,7 +51,7 @@ but every derived tone must still move with the theme.
 | `peacock` | canvas2d | pop | Deco peacock: a fan of plume curves each ending in an eye (concentric ovals in accent/info/primary), gold ribs, on midnight-derived ground; plumes sway as one. |
 | `gilded` | canvas2d | ornamental | Klimt-adjacent gold-leaf field: seeded mosaic of spirals, concentric squares, and fleck clusters in layered gold tones (accent/warning toward white/bg), shimmering patch by patch. |
 
-Group tallies after: atmospheric 12, art 9, nature 8, gradient 9, pop 10,
+Group tallies after: atmospheric 12, art 9, nature 8, gradient 9, pop 9,
 ornamental 10.
 
 ## Demos (vocabulary idiom, all conventions apply)
