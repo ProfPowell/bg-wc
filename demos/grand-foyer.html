@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grand Foyer &mdash; bg-wc demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Karla:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    /* An evening in four rooms: the view, the ballroom, the lounge, the
+       bar. Engraved invitations, gold on midnight. */
+    :root {
+      --color-background: #14121c;  /* midnight lacquer */
+      --color-foreground: #ece5d3;
+      --color-primary: #2e3d6b;     /* deep deco blue */
+      --color-accent: #d4af5a;      /* gold leaf */
+      --color-info: #4e7d84;        /* verdigris */
+      --color-warning: #c9963f;
+    }
+    body { background: var(--color-background); color: var(--color-foreground); font-family: Karla, system-ui, sans-serif; }
+
+    body > nav { position: fixed; top: 20px; left: 28px; z-index: 20; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    body > nav a { color: var(--color-foreground); opacity: 0.65; text-decoration: none; }
+    body > nav a:hover { opacity: 1; }
+
+    section { position: relative; }
+
+    invitation-card {
+      display: block; position: absolute; left: 50%; transform: translateX(-50%);
+      bottom: clamp(28px, 8vh, 68px); max-width: 420px; text-align: center;
+      padding: 18px 30px; background: rgba(20, 18, 28, 0.78);
+      border: 1px solid var(--color-accent); outline: 1px solid rgba(212, 175, 90, 0.35);
+      outline-offset: 4px;
+    }
+    invite-line { display: block; font-size: 11px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 8px; }
+    invitation-card h1, invitation-card h2 { font-family: 'Poiret One', cursive; font-weight: 400; margin: 0 0 6px; letter-spacing: 0.08em; }
+    invitation-card h1 { font-size: clamp(34px, 5.4vw, 62px); }
+    invitation-card h2 { font-size: clamp(26px, 3.8vw, 46px); }
+    invitation-card p { margin: 0; font-weight: 300; line-height: 1.65; font-size: 14px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.82em; background: rgba(236, 229, 211, 0.12); padding: 2px 7px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <nav><a target="_top" href="./index.html">&larr; bg-wc demos</a></nav>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="deco-spires" data-background-intensity="0.7" data-background-seed="6" data-background-speed="0.5">
+    <invitation-card>
+      <invite-line>You are cordially invited</invite-line>
+      <h1>Grand Foyer</h1>
+      <p>Sixty-first floor. The city dresses for the occasion. <code>data-background="deco-spires"</code></p>
+    </invitation-card>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="fan-deco" data-background-intensity="0.65" data-background-seed="13" data-background-speed="0.5">
+    <invitation-card>
+      <invite-line>The ballroom</invite-line>
+      <h2>Under the Fans</h2>
+      <p>The orchestra tunes; the walls already dance. <code>data-background="fan-deco"</code></p>
+    </invitation-card>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="peacock" data-background-intensity="0.7" data-background-seed="4" data-background-speed="0.5">
+    <invitation-card>
+      <invite-line>The lounge</invite-line>
+      <h2>The Peacock Room</h2>
+      <p>Every eye in the plumage has seen worse behavior. <code>data-background="peacock"</code></p>
+    </invitation-card>
+  </section>
+
+  <section data-layout="cover" data-layout-min="100vh" data-layout-padding="none"
+           data-background="gilded" data-background-intensity="0.65" data-background-seed="17" data-background-speed="0.5">
+    <invitation-card>
+      <invite-line>The bar &middot; last pour at two</invite-line>
+      <h2>Gold Leaf</h2>
+      <p>The wall got the first coat; the evening gets the rest. <code>data-background="gilded"</code></p>
+    </invitation-card>
+  </section>
+
+  <script type="module">
+    import 'vanilla-breeze/css'; /* layers + layout attributes; no theme JS — the palette is pinned */
+    import '../src/data-background.js';
+  </script>
+</body>
+</html>
