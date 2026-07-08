@@ -149,3 +149,13 @@ test('dimensional-wave presets landed in the dimensional group (2026-07-05)', ()
     assert.equal(byName.get(name), group, `${name} in ${group}`);
   }
 });
+
+test('parrish-wave presets landed in their groups (2026-07-07)', () => {
+  const PARRISH_WAVE = {
+    cumulus: 'atmospheric',
+  };
+  const byName = new Map(listPresets().map((p) => [p.name, p.group]));
+  for (const [name, group] of Object.entries(PARRISH_WAVE)) {
+    assert.equal(byName.get(name), group, `${name} in ${group}`);
+  }
+});

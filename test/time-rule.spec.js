@@ -39,6 +39,7 @@ const PRESETS = [
   'airbrush',
   'video-feedback',
   'stage-lights',
+  'cumulus',
 ];
 
 for (const name of PRESETS) {
