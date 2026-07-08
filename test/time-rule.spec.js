@@ -43,6 +43,7 @@ const PRESETS = [
   'terrace',
   'oil-sky',
   'moonrise',
+  'lily-pond',
 ];
 
 for (const name of PRESETS) {

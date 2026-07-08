@@ -246,6 +246,7 @@ const REGISTRY = {
   // Nature — illustrative living scenes
   komorebi: { renderer: 'webgl', group: 'nature', loader: () => import('./komorebi.js') },
   leaves: { renderer: 'canvas2d', group: 'nature', loader: () => import('./leaves.js') },
+  'lily-pond': { renderer: 'canvas2d', group: 'nature', loader: () => import('./lily-pond.js') },
   migration: { renderer: 'canvas2d', group: 'nature', loader: () => import('./migration.js') },
   palms: { renderer: 'canvas2d', group: 'nature', loader: () => import('./palms.js') },
   reeds: { renderer: 'canvas2d', group: 'nature', loader: () => import('./reeds.js') },
