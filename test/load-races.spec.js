@@ -77,6 +77,60 @@ test('removing the preset mid-load keeps the element inert', async ({ page }) =>
   expect(r.still, 'the stale load must not start rendering').toBe(true);
 });
 
+// gl-wc-dzgh: a `ready` promise grabbed while a load is in flight must settle
+// when that load is superseded (preset change / removal / disconnect) — not
+// hang forever because #resetReady dropped its resolver.
+
+test('a ready promise pending when the preset changes still settles', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const settled = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    await el.ready;
+    el.setAttribute('preset', 'plasma'); // load in flight…
+    const pending = el.ready;
+    el.setAttribute('preset', 'aurora'); // …superseded before it lands
+    await el.ready;
+    return Promise.race([
+      pending.then(() => true),
+      new Promise((res) => setTimeout(() => res(false), 400)),
+    ]);
+  });
+  expect(settled, 'a superseded load must settle its pending ready promise').toBe(true);
+});
+
+test('a ready promise pending when the preset is removed still settles', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const settled = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    await el.ready;
+    el.setAttribute('preset', 'plasma'); // load in flight…
+    const pending = el.ready;
+    el.removeAttribute('preset'); // …null path invalidates it
+    await el.ready;
+    return Promise.race([
+      pending.then(() => true),
+      new Promise((res) => setTimeout(() => res(false), 400)),
+    ]);
+  });
+  expect(settled, 'preset removal must settle the pending ready promise').toBe(true);
+});
+
+test('a ready promise pending on disconnect still settles', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const settled = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    await el.ready;
+    el.setAttribute('preset', 'plasma'); // load in flight…
+    const pending = el.ready;
+    el.remove(); // …aborted by disconnect
+    return Promise.race([
+      pending.then(() => true),
+      new Promise((res) => setTimeout(() => res(false), 400)),
+    ]);
+  });
+  expect(settled, 'disconnect must settle the pending ready promise').toBe(true);
+});
+
 test('a failed preset switch stops the previous preset for good', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
   const r = await page.evaluate(async () => {

@@ -98,6 +98,26 @@ test('changing density rebuilds the css3d scene (node count changes)', async ({ 
   expect(counts.after).toBeGreaterThan(counts.before);
 });
 
+// gl-wc-gzrd: css3d scenes are seeded at create-time, so a seed change must
+// rebuild the scene (canvas presets re-derive from seed per frame and don't).
+test('changing seed rebuilds the css3d scene (shard layout changes)', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const r = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    el.setAttribute('seed', '1');
+    el.setAttribute('preset', 'shards');
+    await el.ready;
+    const layout = () =>
+      [...el.shadowRoot.querySelectorAll('.shard')].map((s) => s.style.transform).join(';');
+    const before = layout();
+    el.setAttribute('seed', '2');
+    await el.ready;
+    return { changed: layout() !== before, hadShards: before.length > 0 };
+  });
+  expect(r.hadShards).toBe(true);
+  expect(r.changed, 'a new seed must re-lay-out the css3d scene').toBe(true);
+});
+
 test('changing mode on a canvas preset does NOT re-init (mosaic unaffected)', async ({ page }) => {
   await page.goto('/test/new-presets-page.html');
   const ok = await page.evaluate(async () => {

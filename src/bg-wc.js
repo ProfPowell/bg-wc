@@ -15,6 +15,11 @@ const MAX_DT_S = 0.1;
 // Default devicePixelRatio ceiling — rendering above 2× rarely helps visibly but
 // costs 4×+ the fill, so cap unless the author opts higher.
 const DEFAULT_DPR_CAP = 2;
+// Hard bounds on any explicit pixel-ratio override (attribute or CSS var) —
+// same doctrine as #readParams: a stray stylesheet value must not allocate a
+// colossal backing store (high side) or a degenerate 1px one (low side).
+const DPR_MIN = 0.25;
+const DPR_MAX = 8;
 
 const STYLE = `
 :host {
@@ -168,6 +173,10 @@ class BgWc extends HTMLElement {
   }
 
   #resetReady() {
+    // Settle the outgoing promise first: a load superseded mid-flight must not
+    // orphan callers already awaiting `ready` (resolving twice is a no-op, so
+    // this is safe when the previous load completed normally).
+    this.#readyResolve?.();
     this.#ready = new Promise((res) => {
       this.#readyResolve = res;
     });
@@ -281,6 +290,9 @@ class BgWc extends HTMLElement {
     this.#cleanups.length = 0;
     this.#unbindPowerSave();
     this.#disposeInstance();
+    // A load aborted by disconnect must still settle `ready` — awaiters would
+    // otherwise hang. connectedCallback issues a fresh promise on reconnect.
+    this.#readyResolve();
   }
 
   attributeChangedCallback(name, oldV, newV) {
@@ -298,7 +310,7 @@ class BgWc extends HTMLElement {
       // it's forwarded via params (default 'cover') for presets to honor. We
       // re-resize so a preset that reads `fit` re-lays-out on change.
       this.#resize();
-    } else if (name === 'mode' || name === 'density') {
+    } else if (name === 'mode' || name === 'density' || name === 'seed') {
       // css3d builds its scene from these at create-time, so a change requires a
       // rebuild. Canvas presets read them per frame and need no re-init — pass
       // the current preset name as prevName so no spurious preset-changed fires.
@@ -310,7 +322,8 @@ class BgWc extends HTMLElement {
       else this.#bindPowerSave();
       this.#evalPlay();
     }
-    // intensity/speed/seed/palette/quality are read fresh each frame.
+    // intensity/speed/palette/quality are read fresh each frame (seed too, but
+    // only by canvas presets — css3d consumes it at create-time, handled above).
   }
 
   // --- Internals -------------------------------------------------------------
@@ -586,11 +599,12 @@ class BgWc extends HTMLElement {
     const css = getComputedStyle(this);
     const cssVar = parseFloat(css.getPropertyValue('--bg-wc-pixel-ratio'));
     const attr = parseFloat(this.getAttribute('pixel-ratio'));
-    return Number.isFinite(cssVar)
+    const dpr = Number.isFinite(cssVar)
       ? cssVar
       : Number.isFinite(attr)
         ? attr
         : Math.min(globalThis.devicePixelRatio || 1, DEFAULT_DPR_CAP);
+    return Math.min(DPR_MAX, Math.max(DPR_MIN, dpr));
   }
 
   #shouldPlay() {

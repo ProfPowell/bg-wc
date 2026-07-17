@@ -22,3 +22,26 @@ test('--bg-wc-speed is clamped like the speed attribute', async ({ page }) => {
   });
   expect(r, 'a negative CSS-var speed must clamp to 0 (frozen), not animate').toBe(true);
 });
+
+// gl-wc-7bzy: pixel-ratio (attribute and --bg-wc-pixel-ratio) must be clamped
+// like every other numeric param — a stray stylesheet value must not allocate
+// a colossal backing store (high side) or a degenerate 1px one (low side).
+test('pixel-ratio inputs are clamped to a sane range', async ({ page }) => {
+  await page.goto('/test/new-presets-page.html');
+  const r = await page.evaluate(async () => {
+    const el = document.getElementById('wc');
+    el.style.setProperty('--bg-wc-pixel-ratio', '50');
+    el.setAttribute('preset', 'plasma'); // fresh load applies the CSS var
+    await el.ready;
+    const canvas = el.shadowRoot.querySelector('canvas');
+    const highW = canvas.width;
+    el.style.removeProperty('--bg-wc-pixel-ratio');
+    el.setAttribute('pixel-ratio', '0'); // attribute change triggers #resize
+    const lowW = canvas.width;
+    return { highW, lowW, cssW: el.getBoundingClientRect().width };
+  });
+  expect(r.highW, 'an absurd CSS-var pixel-ratio must clamp down').toBeLessThanOrEqual(r.cssW * 8);
+  expect(r.lowW, 'a zero pixel-ratio attribute must clamp up').toBeGreaterThanOrEqual(
+    r.cssW * 0.25
+  );
+});
