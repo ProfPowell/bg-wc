@@ -1,1140 +1,2506 @@
 <!doctype html>
 <html lang="en" data-mode="dark">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>bg-wc &mdash; docs</title>
-  <meta name="description" content="API reference for the bg-wc web component: attributes, properties, methods, events, custom properties, presets, and the data-background behavior.">
-  <!-- Point vanilla-breeze at the site-root vb/ dir for its theme CSS and icon
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>bg-wc &mdash; docs</title>
+    <meta
+      name="description"
+      content="API reference for the bg-wc web component: attributes, properties, methods, events, custom properties, presets, and the data-background behavior."
+    />
+    <!-- Point vanilla-breeze at the site-root vb/ dir for its theme CSS and icon
        SVGs (served by vite.site.config.js). Must run before VB initializes. -->
-  <script>
-    (() => {
-      const vb = new URL('../vb', document.baseURI).href.replace(/\/$/, '');
-      window.__VB_THEME_BASE = vb;
-      document.documentElement.dataset.iconPath = vb + '/icons';
-    })();
-  </script>
-  <link rel="stylesheet" href="./site.css">
-</head>
-<body>
-  <header class="site" data-sticky data-layout="cluster" data-layout-justify="between" data-layout-gap="m">
-    <a href="./index.html"><brand-mark>&lt;bg-wc&gt;</brand-mark></a>
-    <nav class="horizontal pills" aria-label="Site">
-      <ul>
-        <li><a href="./index.html">Gallery</a></li>
-        <li><a href="./api.html" aria-current="page">Docs</a></li>
-        <li><a href="../demos/">Demos</a></li>
-        <li><a href="https://github.com/ProfPowell/bg-wc" target="_blank" rel="noopener">GitHub</a></li>
-      </ul>
-    </nav>
-    <theme-picker compact>
-      <button type="button" data-trigger class="ghost">
-        <icon-wc name="palette" size="sm"></icon-wc>
-        Theme
-      </button>
-    </theme-picker>
-  </header>
-
-  <main class="content">
-
-    <header class="page-head">
-      <h1>API Reference</h1>
-      <p class="muted">Complete documentation for the <code>&lt;bg-wc&gt;</code> web component.</p>
+    <script>
+      (() => {
+        const vb = new URL('../vb', document.baseURI).href.replace(/\/$/, '');
+        window.__VB_THEME_BASE = vb;
+        document.documentElement.dataset.iconPath = vb + '/icons';
+      })();
+    </script>
+    <link rel="stylesheet" href="./site.css" />
+  </head>
+  <body>
+    <header
+      class="site"
+      data-sticky
+      data-layout="cluster"
+      data-layout-justify="between"
+      data-layout-gap="m"
+    >
+      <a href="./index.html"><brand-mark>&lt;bg-wc&gt;</brand-mark></a>
+      <nav class="horizontal pills" aria-label="Site">
+        <ul>
+          <li><a href="./index.html">Gallery</a></li>
+          <li><a href="./api.html" aria-current="page">Docs</a></li>
+          <li><a href="../demos/">Demos</a></li>
+          <li>
+            <a href="https://github.com/ProfPowell/bg-wc" target="_blank" rel="noopener">GitHub</a>
+          </li>
+        </ul>
+      </nav>
+      <theme-picker compact>
+        <button type="button" data-trigger class="ghost">
+          <icon-wc name="palette" size="sm"></icon-wc>
+          Theme
+        </button>
+      </theme-picker>
     </header>
 
-    <!-- 1. Where to find it ----------------------------------- -->
-    <section id="install">
-      <h2>Install</h2>
-      <div class="grid-2">
-        <div>
-          <h3>npm</h3>
-          <code-block theme="dark" language="bash">npm install @profpowell/bg-wc</code-block>
-          <p class="muted">
-            Then import the element. The component self-registers as
-            <code>&lt;bg-wc&gt;</code> on import.
-          </p>
-          <code-block theme="dark" language="javascript">import '@profpowell/bg-wc';</code-block>
-        </div>
-        <div>
-          <h3>From source / CDN</h3>
-          <code-block theme="dark" language="html">&lt;script type="module"
-        src="https://unpkg.com/@profpowell/bg-wc"&gt;
-&lt;/script&gt;</code-block>
-          <p class="muted">
-            Or vendor the <code>src/</code> directory and reference it directly &mdash;
-            it ships as plain ES modules with no build step.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. Quick start ---------------------------------------- -->
-    <section id="quick-start">
-      <h2>Quick start</h2>
-      <p>
-        Drop the element on any page that defines the usual VB color tokens
-        (<code>--color-primary</code>, <code>--color-accent</code>, &hellip;).
-        The component reads them at frame time.
-      </p>
-      <code-block theme="dark" language="html">&lt;bg-wc preset="mesh-gradient" intensity="0.65"&gt;
-  &lt;h1&gt;Hero headline&lt;/h1&gt;
-  &lt;p&gt;Content sits above the rendered layer in the light DOM.&lt;/p&gt;
-  &lt;img slot="fallback" src="hero.webp" alt=""&gt;
-&lt;/bg-wc&gt;</code-block>
-      <p class="muted">
-        Nothing required beyond the <code>preset</code> attribute. The
-        <code>fallback</code> slot shows when <code>prefers-reduced-motion: reduce</code>
-        is active and the chosen preset has no <code>staticFrame()</code>.
-      </p>
-    </section>
-
-    <!-- 3. data-background behavior ----------------------------------- -->
-    <section id="data-background" data-background="aurora" data-background-intensity="0.7" data-background-speed="0.3">
-      <div class="boxed">
-        <h2>data-background behavior</h2>
-        <p>
-          For pages that don't want to introduce a new custom element into
-          their markup, import the optional <code>data-background</code> binder. It
-          scans for elements with a <code>data-background</code> attribute and
-          injects a <code>&lt;bg-wc&gt;</code> behind that element's content
-          via <code>z-index: -1</code> inside an isolated stacking context.
-          The namespace is distinct from VB's <code>data-effect</code>, so
-          the two can coexist on the same element.
+    <main class="content">
+      <header class="page-head">
+        <h1>API Reference</h1>
+        <p class="muted">
+          Complete documentation for the <code>&lt;bg-wc&gt;</code> web component.
         </p>
-        <code-block theme="dark" language="javascript">import '@profpowell/bg-wc/data-background';</code-block>
-        <code-block theme="dark" language="html">&lt;section
-  data-background="aurora"
-  data-background-intensity="0.7"
-  data-background-speed="0.3"
-  data-background-color-1="#4dffa1"&gt;
-  &lt;h1&gt;Northern lights, behind anything.&lt;/h1&gt;
-  &lt;p&gt;Existing children stay put; bg-wc slides in behind.&lt;/p&gt;
-&lt;/section&gt;</code-block>
-        <h3>Attribute mapping</h3>
+      </header>
+
+      <!-- 1. Where to find it ----------------------------------- -->
+      <section id="install">
+        <h2>Install</h2>
+        <div class="grid-2">
+          <div>
+            <h3>npm</h3>
+            <code-block theme="dark" language="bash">npm install @profpowell/bg-wc</code-block>
+            <p class="muted">
+              Then import the element. The component self-registers as
+              <code>&lt;bg-wc&gt;</code> on import.
+            </p>
+            <code-block theme="dark" language="javascript">import '@profpowell/bg-wc';</code-block>
+          </div>
+          <div>
+            <h3>From source / CDN</h3>
+            <code-block theme="dark" language="html"
+              >&lt;script type="module" src="https://unpkg.com/@profpowell/bg-wc"&gt;
+              &lt;/script&gt;</code-block
+            >
+            <p class="muted">
+              Or vendor the <code>src/</code> directory and reference it directly &mdash; it ships
+              as plain ES modules with no build step.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Quick start ---------------------------------------- -->
+      <section id="quick-start">
+        <h2>Quick start</h2>
         <p>
-          <code>data-background</code> is the preset name. Any other key starting with
-          <code>data-background-</code> maps to the corresponding bg-wc attribute &mdash; or, for
-          color overrides, the corresponding <code>--bg-wc-color-*</code> custom
-          property:
+          Drop the element on any page that defines the usual VB color tokens
+          (<code>--color-primary</code>, <code>--color-accent</code>, &hellip;). The component reads
+          them at frame time.
+        </p>
+        <code-block theme="dark" language="html"
+          >&lt;bg-wc preset="mesh-gradient" intensity="0.65"&gt; &lt;h1&gt;Hero headline&lt;/h1&gt;
+          &lt;p&gt;Content sits above the rendered layer in the light DOM.&lt;/p&gt; &lt;img
+          slot="fallback" src="hero.webp" alt=""&gt; &lt;/bg-wc&gt;</code-block
+        >
+        <p class="muted">
+          Nothing required beyond the <code>preset</code> attribute. The <code>fallback</code> slot
+          shows when <code>prefers-reduced-motion: reduce</code> is active and the chosen preset has
+          no <code>staticFrame()</code>.
+        </p>
+      </section>
+
+      <!-- 3. data-background behavior ----------------------------------- -->
+      <section
+        id="data-background"
+        data-background="aurora"
+        data-background-intensity="0.7"
+        data-background-speed="0.3"
+      >
+        <div class="boxed">
+          <h2>data-background behavior</h2>
+          <p>
+            For pages that don't want to introduce a new custom element into their markup, import
+            the optional <code>data-background</code> binder. It scans for elements with a
+            <code>data-background</code> attribute and injects a <code>&lt;bg-wc&gt;</code> behind
+            that element's content via <code>z-index: -1</code> inside an isolated stacking context.
+            The namespace is distinct from VB's <code>data-effect</code>, so the two can coexist on
+            the same element.
+          </p>
+          <code-block theme="dark" language="javascript"
+            >import '@profpowell/bg-wc/data-background';</code-block
+          >
+          <code-block theme="dark" language="html"
+            >&lt;section data-background="aurora" data-background-intensity="0.7"
+            data-background-speed="0.3" data-background-color-1="#4dffa1"&gt; &lt;h1&gt;Northern
+            lights, behind anything.&lt;/h1&gt; &lt;p&gt;Existing children stay put; bg-wc slides in
+            behind.&lt;/p&gt; &lt;/section&gt;</code-block
+          >
+          <h3>Attribute mapping</h3>
+          <p>
+            <code>data-background</code> is the preset name. Any other key starting with
+            <code>data-background-</code> maps to the corresponding bg-wc attribute &mdash; or, for
+            color overrides, the corresponding <code>--bg-wc-color-*</code> custom property:
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>data-background-*</th>
+                  <th>Maps to</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>data-background</code></td>
+                  <td>The <code>preset</code> attribute. Required.</td>
+                </tr>
+                <tr>
+                  <td><code>data-background-intensity</code></td>
+                  <td><code>intensity</code> attribute</td>
+                </tr>
+                <tr>
+                  <td><code>data-background-speed</code></td>
+                  <td><code>speed</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-density</code></td>
+                  <td><code>density</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-seed</code></td>
+                  <td><code>seed</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-palette</code></td>
+                  <td><code>palette</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-quality</code></td>
+                  <td><code>quality</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-fit</code></td>
+                  <td><code>fit</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-motion</code></td>
+                  <td><code>motion</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-paused</code></td>
+                  <td><code>paused</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-pixel-ratio</code></td>
+                  <td><code>pixel-ratio</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-color-1</code></td>
+                  <td><code>--bg-wc-color-1</code> CSS var</td>
+                </tr>
+                <tr>
+                  <td><code>data-background-color-2</code></td>
+                  <td><code>--bg-wc-color-2</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-color-3</code></td>
+                  <td><code>--bg-wc-color-3</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-color-bg</code></td>
+                  <td><code>--bg-wc-color-bg</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-color-fg</code></td>
+                  <td><code>--bg-wc-color-fg</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-skip</code></td>
+                  <td>Presence skips binding (escape hatch).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted">
+            New elements added to the page after first paint are auto-bound via a
+            <code>MutationObserver</code>. To bind manually after disabling that observer (or in an
+            SSR context), call <code>bindDataBackgrounds(root)</code> after import.
+          </p>
+        </div>
+      </section>
+
+      <!-- 4. Attributes ---------------------------------------- -->
+      <section id="attributes">
+        <h2>Attributes</h2>
+        <p>
+          All attributes are observed; changes after first render are applied without re-init for
+          cheap params, and trigger a renderer swap for
+          <code>preset</code>.
         </p>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>data-background-*</th><th>Maps to</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Type / values</th>
+                <th>Default</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr><td><code>data-background</code></td><td>The <code>preset</code> attribute. Required.</td></tr>
-              <tr><td><code>data-background-intensity</code></td><td><code>intensity</code> attribute</td></tr>
-              <tr><td><code>data-background-speed</code></td><td><code>speed</code></td></tr>
-              <tr><td><code>data-background-density</code></td><td><code>density</code></td></tr>
-              <tr><td><code>data-background-seed</code></td><td><code>seed</code></td></tr>
-              <tr><td><code>data-background-palette</code></td><td><code>palette</code></td></tr>
-              <tr><td><code>data-background-quality</code></td><td><code>quality</code></td></tr>
-              <tr><td><code>data-background-fit</code></td><td><code>fit</code></td></tr>
-              <tr><td><code>data-background-motion</code></td><td><code>motion</code></td></tr>
-              <tr><td><code>data-background-paused</code></td><td><code>paused</code></td></tr>
-              <tr><td><code>data-background-pixel-ratio</code></td><td><code>pixel-ratio</code></td></tr>
-              <tr><td><code>data-background-color-1</code></td><td><code>--bg-wc-color-1</code> CSS var</td></tr>
-              <tr><td><code>data-background-color-2</code></td><td><code>--bg-wc-color-2</code></td></tr>
-              <tr><td><code>data-background-color-3</code></td><td><code>--bg-wc-color-3</code></td></tr>
-              <tr><td><code>data-background-color-bg</code></td><td><code>--bg-wc-color-bg</code></td></tr>
-              <tr><td><code>data-background-color-fg</code></td><td><code>--bg-wc-color-fg</code></td></tr>
-              <tr><td><code>data-background-skip</code></td><td>Presence skips binding (escape hatch).</td></tr>
+              <tr>
+                <td><code>preset</code></td>
+                <td>preset name</td>
+                <td>&mdash;</td>
+                <td>Required. See the <a href="#presets">catalog</a>.</td>
+              </tr>
+              <tr>
+                <td><code>palette</code></td>
+                <td><code>"theme"</code> | <code>"rainbow"</code> | <code>"mono"</code></td>
+                <td><code>"theme"</code></td>
+                <td>Honored by <code>particles</code> most strongly.</td>
+              </tr>
+              <tr>
+                <td><code>intensity</code></td>
+                <td><code>0..1</code></td>
+                <td><code>0.5</code></td>
+                <td>Preset-specific "how dramatic" knob.</td>
+              </tr>
+              <tr>
+                <td><code>speed</code></td>
+                <td><code>0..5</code></td>
+                <td><code>1</code></td>
+                <td>Time multiplier. <code>0</code> freezes.</td>
+              </tr>
+              <tr>
+                <td><code>density</code></td>
+                <td><code>0..1</code></td>
+                <td><code>0.5</code></td>
+                <td>Particle count / shader detail.</td>
+              </tr>
+              <tr>
+                <td><code>seed</code></td>
+                <td>integer</td>
+                <td><code>0</code></td>
+                <td>Deterministic randomness. Useful for screenshots.</td>
+              </tr>
+              <tr>
+                <td><code>paused</code></td>
+                <td>boolean</td>
+                <td>unset</td>
+                <td>Pauses the RAF loop without unmounting.</td>
+              </tr>
+              <tr>
+                <td><code>pixel-ratio</code></td>
+                <td>number</td>
+                <td><code>min(devicePixelRatio, 2)</code></td>
+                <td>Lower it for cheaper rendering on big screens.</td>
+              </tr>
+              <tr>
+                <td><code>quality</code></td>
+                <td><code>"low"</code> | <code>"med"</code> | <code>"high"</code></td>
+                <td><code>"med"</code></td>
+                <td>Renderer-level hint.</td>
+              </tr>
+              <tr>
+                <td><code>fit</code></td>
+                <td><code>"cover"</code> | <code>"contain"</code> | <code>"stretch"</code></td>
+                <td><code>"cover"</code></td>
+                <td>How the surface sizes inside the host.</td>
+              </tr>
+              <tr>
+                <td><code>motion</code></td>
+                <td><code>"auto"</code> | <code>"reduce"</code> | <code>"force"</code></td>
+                <td><code>"auto"</code></td>
+                <td><code>auto</code> honors <code>prefers-reduced-motion</code>.</td>
+              </tr>
+              <tr>
+                <td><code>text</code></td>
+                <td>string</td>
+                <td>&mdash;</td>
+                <td>
+                  Payload for text presets (crawl / marquee / sinescroll / cascade / source /
+                  wordcloud). Lines split on <code>|</code>. <code>source</code> treats the value as
+                  literal code and splits on newlines instead. Read fresh each frame.
+                </td>
+              </tr>
+              <tr>
+                <td><code>mode</code></td>
+                <td>string</td>
+                <td>&mdash;</td>
+                <td>
+                  Preset-specific variant selector. <code>mosaic</code>: <code>isometric</code>,
+                  <code>flat</code>, <code>sparse</code>, <code>stacked</code>, <code>blocks</code>;
+                  <code>doodles</code>: family names; <code>fly-through</code>: space-delimited
+                  motion&times;profile&times;path&times;unit; <code>explode</code>:
+                  <code>radial</code> | <code>cube</code>. Changing it rebuilds css3d scenes.
+                  <code>girih</code>: <code>8fold</code>/<code>12fold</code>/<code>6fold</code>;
+                  <code>atomic</code>:
+                  <code>mixed</code
+                  >/<code>boomerangs</code>/<code>starbursts</code>/<code>harlequin</code>;
+                  <code>op-art</code>:
+                  <code>riley</code>/<code>cafewall</code>/<code>moire</code>/<code>drift</code>.
+                  <code>dotwork</code>:
+                  <code>rings</code
+                  >/<code>spiral</code>/<code>double</code>/<code>whorl</code>/<code>waterholes</code>;
+                  <code>stipple</code>: <code>field</code>/<code>contour</code>/<code>vortex</code>.
+                </td>
+              </tr>
+              <tr>
+                <td><code>use-theme</code></td>
+                <td>boolean</td>
+                <td>unset</td>
+                <td>
+                  Used by <code>system7</code>; presence enables theme-token coloring instead of
+                  hard black/white.
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
-        <p class="muted">
-          New elements added to the page after first paint are auto-bound via
-          a <code>MutationObserver</code>. To bind manually after disabling that
-          observer (or in an SSR context), call
-          <code>bindDataBackgrounds(root)</code> after import.
+      </section>
+
+      <!-- 5. Properties & methods ------------------------------- -->
+      <section id="js-surface">
+        <h2>Properties &amp; methods</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Member</th>
+                <th>Type</th>
+                <th>Behavior</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>.preset</code></td>
+                <td>string</td>
+                <td>Reflects the <code>preset</code> attribute.</td>
+              </tr>
+              <tr>
+                <td><code>.paused</code></td>
+                <td>boolean</td>
+                <td>Reflects the <code>paused</code> attribute.</td>
+              </tr>
+              <tr>
+                <td><code>.pause()</code></td>
+                <td><code>() =&gt; void</code></td>
+                <td>Pauses the render loop.</td>
+              </tr>
+              <tr>
+                <td><code>.resume()</code></td>
+                <td><code>() =&gt; void</code></td>
+                <td>Resumes the render loop.</td>
+              </tr>
+              <tr>
+                <td><code>.snapshot()</code></td>
+                <td><code>() =&gt; Promise&lt;Blob&gt;</code></td>
+                <td>Returns a PNG snapshot of the current frame.</td>
+              </tr>
+              <tr>
+                <td><code>.ready</code></td>
+                <td><code>Promise&lt;void&gt;</code></td>
+                <td>Resolves when the active preset's first frame has rendered.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <code-block theme="dark" language="javascript"
+          >const el = document.querySelector('bg-wc'); await el.ready; const blob = await
+          el.snapshot(); const url = URL.createObjectURL(blob); console.log('PNG ready:',
+          url);</code-block
+        >
+      </section>
+
+      <!-- 6. Events --------------------------------------------- -->
+      <section id="events">
+        <h2>Events</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Detail</th>
+                <th>When</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>bg-wc:ready</code></td>
+                <td><code>{ preset, renderer }</code></td>
+                <td>First frame rendered.</td>
+              </tr>
+              <tr>
+                <td><code>bg-wc:preset-changed</code></td>
+                <td><code>{ from, to }</code></td>
+                <td>After a successful preset swap.</td>
+              </tr>
+              <tr>
+                <td><code>bg-wc:error</code></td>
+                <td><code>{ phase, error }</code></td>
+                <td>
+                  Load, init, or runtime error (a preset throwing from <code>frame()</code> /
+                  <code>staticFrame()</code>). The element becomes inert: the instance is disposed,
+                  the fallback slot shows, and the event fires once. Nothing retries &mdash;
+                  pause/resume, visibility, and reduced-motion changes leave it inert. Recovery is a
+                  preset change (attribute or property), or a WebGL context restore.
+                  <code>ready</code> still settles.
+                </td>
+              </tr>
+              <tr>
+                <td><code>bg-wc:visibility</code></td>
+                <td><code>{ visible: boolean }</code></td>
+                <td>IntersectionObserver gate flipped.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <code-block theme="dark" language="javascript"
+          >el.addEventListener('bg-wc:ready', (e) =&gt; { console.log('preset:', e.detail.preset,
+          'renderer:', e.detail.renderer); });</code-block
+        >
+      </section>
+
+      <!-- 7. CSS custom properties ------------------------------ -->
+      <section id="custom-properties">
+        <h2>CSS custom properties</h2>
+        <p>
+          Tokens are read once per frame via <code>getComputedStyle()</code> &mdash; theme switches
+          reflect within one RAF tick without re-init.
         </p>
-      </div>
-    </section>
+        <h3>Tokens the component reads</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Used for</th>
+                <th>Fallback</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>--color-background</code></td>
+                <td>Canvas backdrop / clear color</td>
+                <td><code>transparent</code></td>
+              </tr>
+              <tr>
+                <td><code>--color-foreground</code></td>
+                <td>Default particle / line color</td>
+                <td><code>#1a1a1a</code></td>
+              </tr>
+              <tr>
+                <td><code>--color-primary</code></td>
+                <td>Primary tint in shaders</td>
+                <td><code>#3b82f6</code></td>
+              </tr>
+              <tr>
+                <td><code>--color-accent</code></td>
+                <td>Accent tint</td>
+                <td><code>#ec4899</code></td>
+              </tr>
+              <tr>
+                <td><code>--color-info</code></td>
+                <td>Tertiary tint (<code>mesh-gradient</code>, <code>aurora</code>, &hellip;)</td>
+                <td><code>#10b981</code></td>
+              </tr>
+              <tr>
+                <td><code>--color-success</code></td>
+                <td>Confetti palette</td>
+                <td><code>#22c55e</code></td>
+              </tr>
+              <tr>
+                <td><code>--color-warning</code></td>
+                <td>Confetti palette</td>
+                <td><code>#f59e0b</code></td>
+              </tr>
+              <tr>
+                <td><code>--color-error</code></td>
+                <td>Confetti palette</td>
+                <td><code>#ef4444</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Component-namespaced overrides</h3>
+        <p>
+          For when you want to feed a specific value without changing the global theme. Each one
+          wins over the corresponding semantic token for that instance:
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Override</th>
+                <th>Beats</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>--bg-wc-color-1</code></td>
+                <td><code>--color-primary</code></td>
+              </tr>
+              <tr>
+                <td><code>--bg-wc-color-2</code></td>
+                <td><code>--color-accent</code></td>
+              </tr>
+              <tr>
+                <td><code>--bg-wc-color-3</code></td>
+                <td><code>--color-info</code></td>
+              </tr>
+              <tr>
+                <td><code>--bg-wc-color-bg</code></td>
+                <td><code>--color-background</code></td>
+              </tr>
+              <tr>
+                <td><code>--bg-wc-color-fg</code></td>
+                <td><code>--color-foreground</code></td>
+              </tr>
+              <tr>
+                <td><code>--bg-wc-speed</code></td>
+                <td><code>speed</code> attribute</td>
+              </tr>
+              <tr>
+                <td><code>--bg-wc-density</code></td>
+                <td><code>density</code></td>
+              </tr>
+              <tr>
+                <td><code>--bg-wc-intensity</code></td>
+                <td><code>intensity</code></td>
+              </tr>
+              <tr>
+                <td><code>--bg-wc-pixel-ratio</code></td>
+                <td><code>pixel-ratio</code></td>
+              </tr>
+              <tr>
+                <td><code>--bg-wc-z-index</code></td>
+                <td>Internal canvas stacking</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Shadow parts</h3>
+        <p>The internal <code>&lt;canvas&gt;</code> is exposed as <code>part="canvas"</code>:</p>
+        <code-block theme="dark" language="css"
+          >bg-wc::part(canvas) { image-rendering: pixelated; /* useful for the retro look */ filter:
+          hue-rotate(20deg); }</code-block
+        >
+      </section>
 
-    <!-- 4. Attributes ---------------------------------------- -->
-    <section id="attributes">
-      <h2>Attributes</h2>
-      <p>
-        All attributes are observed; changes after first render are applied
-        without re-init for cheap params, and trigger a renderer swap for
-        <code>preset</code>.
-      </p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Attribute</th><th>Type / values</th><th>Default</th><th>Notes</th></tr></thead>
-          <tbody>
-            <tr><td><code>preset</code></td><td>preset name</td><td>&mdash;</td><td>Required. See the <a href="#presets">catalog</a>.</td></tr>
-            <tr><td><code>palette</code></td><td><code>"theme"</code> | <code>"rainbow"</code> | <code>"mono"</code></td><td><code>"theme"</code></td><td>Honored by <code>particles</code> most strongly.</td></tr>
-            <tr><td><code>intensity</code></td><td><code>0..1</code></td><td><code>0.5</code></td><td>Preset-specific "how dramatic" knob.</td></tr>
-            <tr><td><code>speed</code></td><td><code>0..5</code></td><td><code>1</code></td><td>Time multiplier. <code>0</code> freezes.</td></tr>
-            <tr><td><code>density</code></td><td><code>0..1</code></td><td><code>0.5</code></td><td>Particle count / shader detail.</td></tr>
-            <tr><td><code>seed</code></td><td>integer</td><td><code>0</code></td><td>Deterministic randomness. Useful for screenshots.</td></tr>
-            <tr><td><code>paused</code></td><td>boolean</td><td>unset</td><td>Pauses the RAF loop without unmounting.</td></tr>
-            <tr><td><code>pixel-ratio</code></td><td>number</td><td><code>min(devicePixelRatio, 2)</code></td><td>Lower it for cheaper rendering on big screens.</td></tr>
-            <tr><td><code>quality</code></td><td><code>"low"</code> | <code>"med"</code> | <code>"high"</code></td><td><code>"med"</code></td><td>Renderer-level hint.</td></tr>
-            <tr><td><code>fit</code></td><td><code>"cover"</code> | <code>"contain"</code> | <code>"stretch"</code></td><td><code>"cover"</code></td><td>How the surface sizes inside the host.</td></tr>
-            <tr><td><code>motion</code></td><td><code>"auto"</code> | <code>"reduce"</code> | <code>"force"</code></td><td><code>"auto"</code></td><td><code>auto</code> honors <code>prefers-reduced-motion</code>.</td></tr>
-            <tr><td><code>text</code></td><td>string</td><td>&mdash;</td><td>Payload for text presets (crawl / marquee / sinescroll / cascade / source / wordcloud). Lines split on <code>|</code>. <code>source</code> treats the value as literal code and splits on newlines instead. Read fresh each frame.</td></tr>
-            <tr><td><code>mode</code></td><td>string</td><td>&mdash;</td><td>Preset-specific variant selector. <code>mosaic</code>: <code>isometric</code>, <code>flat</code>, <code>sparse</code>, <code>stacked</code>, <code>blocks</code>; <code>doodles</code>: family names; <code>fly-through</code>: space-delimited motion&times;profile&times;path&times;unit; <code>explode</code>: <code>radial</code> | <code>cube</code>. Changing it rebuilds css3d scenes. <code>girih</code>: <code>8fold</code>/<code>12fold</code>/<code>6fold</code>; <code>atomic</code>: <code>mixed</code>/<code>boomerangs</code>/<code>starbursts</code>/<code>harlequin</code>; <code>op-art</code>: <code>riley</code>/<code>cafewall</code>/<code>moire</code>/<code>drift</code>. <code>dotwork</code>: <code>rings</code>/<code>spiral</code>/<code>double</code>/<code>whorl</code>/<code>waterholes</code>; <code>stipple</code>: <code>field</code>/<code>contour</code>/<code>vortex</code>.</td></tr>
-            <tr><td><code>use-theme</code></td><td>boolean</td><td>unset</td><td>Used by <code>system7</code>; presence enables theme-token coloring instead of hard black/white.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 5. Properties & methods ------------------------------- -->
-    <section id="js-surface">
-      <h2>Properties &amp; methods</h2>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Member</th><th>Type</th><th>Behavior</th></tr></thead>
-          <tbody>
-            <tr><td><code>.preset</code></td><td>string</td><td>Reflects the <code>preset</code> attribute.</td></tr>
-            <tr><td><code>.paused</code></td><td>boolean</td><td>Reflects the <code>paused</code> attribute.</td></tr>
-            <tr><td><code>.pause()</code></td><td><code>() =&gt; void</code></td><td>Pauses the render loop.</td></tr>
-            <tr><td><code>.resume()</code></td><td><code>() =&gt; void</code></td><td>Resumes the render loop.</td></tr>
-            <tr><td><code>.snapshot()</code></td><td><code>() =&gt; Promise&lt;Blob&gt;</code></td><td>Returns a PNG snapshot of the current frame.</td></tr>
-            <tr><td><code>.ready</code></td><td><code>Promise&lt;void&gt;</code></td><td>Resolves when the active preset's first frame has rendered.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <code-block theme="dark" language="javascript">const el = document.querySelector('bg-wc');
-await el.ready;
-const blob = await el.snapshot();
-const url = URL.createObjectURL(blob);
-console.log('PNG ready:', url);</code-block>
-    </section>
-
-    <!-- 6. Events --------------------------------------------- -->
-    <section id="events">
-      <h2>Events</h2>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Event</th><th>Detail</th><th>When</th></tr></thead>
-          <tbody>
-            <tr><td><code>bg-wc:ready</code></td><td><code>{ preset, renderer }</code></td><td>First frame rendered.</td></tr>
-            <tr><td><code>bg-wc:preset-changed</code></td><td><code>{ from, to }</code></td><td>After a successful preset swap.</td></tr>
-            <tr><td><code>bg-wc:error</code></td><td><code>{ phase, error }</code></td><td>Compile, load, or runtime error. Element transitions to the fallback slot.</td></tr>
-            <tr><td><code>bg-wc:visibility</code></td><td><code>{ visible: boolean }</code></td><td>IntersectionObserver gate flipped.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <code-block theme="dark" language="javascript">el.addEventListener('bg-wc:ready', (e) =&gt; {
-  console.log('preset:', e.detail.preset, 'renderer:', e.detail.renderer);
-});</code-block>
-    </section>
-
-    <!-- 7. CSS custom properties ------------------------------ -->
-    <section id="custom-properties">
-      <h2>CSS custom properties</h2>
-      <p>
-        Tokens are read once per frame via <code>getComputedStyle()</code> &mdash;
-        theme switches reflect within one RAF tick without re-init.
-      </p>
-      <h3>Tokens the component reads</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Token</th><th>Used for</th><th>Fallback</th></tr></thead>
-          <tbody>
-            <tr><td><code>--color-background</code></td><td>Canvas backdrop / clear color</td><td><code>transparent</code></td></tr>
-            <tr><td><code>--color-foreground</code></td><td>Default particle / line color</td><td><code>#1a1a1a</code></td></tr>
-            <tr><td><code>--color-primary</code></td><td>Primary tint in shaders</td><td><code>#3b82f6</code></td></tr>
-            <tr><td><code>--color-accent</code></td><td>Accent tint</td><td><code>#ec4899</code></td></tr>
-            <tr><td><code>--color-info</code></td><td>Tertiary tint (<code>mesh-gradient</code>, <code>aurora</code>, &hellip;)</td><td><code>#10b981</code></td></tr>
-            <tr><td><code>--color-success</code></td><td>Confetti palette</td><td><code>#22c55e</code></td></tr>
-            <tr><td><code>--color-warning</code></td><td>Confetti palette</td><td><code>#f59e0b</code></td></tr>
-            <tr><td><code>--color-error</code></td><td>Confetti palette</td><td><code>#ef4444</code></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Component-namespaced overrides</h3>
-      <p>
-        For when you want to feed a specific value without changing the global
-        theme. Each one wins over the corresponding semantic token for that
-        instance:
-      </p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Override</th><th>Beats</th></tr></thead>
-          <tbody>
-            <tr><td><code>--bg-wc-color-1</code></td><td><code>--color-primary</code></td></tr>
-            <tr><td><code>--bg-wc-color-2</code></td><td><code>--color-accent</code></td></tr>
-            <tr><td><code>--bg-wc-color-3</code></td><td><code>--color-info</code></td></tr>
-            <tr><td><code>--bg-wc-color-bg</code></td><td><code>--color-background</code></td></tr>
-            <tr><td><code>--bg-wc-color-fg</code></td><td><code>--color-foreground</code></td></tr>
-            <tr><td><code>--bg-wc-speed</code></td><td><code>speed</code> attribute</td></tr>
-            <tr><td><code>--bg-wc-density</code></td><td><code>density</code></td></tr>
-            <tr><td><code>--bg-wc-intensity</code></td><td><code>intensity</code></td></tr>
-            <tr><td><code>--bg-wc-pixel-ratio</code></td><td><code>pixel-ratio</code></td></tr>
-            <tr><td><code>--bg-wc-z-index</code></td><td>Internal canvas stacking</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Shadow parts</h3>
-      <p>
-        The internal <code>&lt;canvas&gt;</code> is exposed as <code>part="canvas"</code>:
-      </p>
-      <code-block theme="dark" language="css">bg-wc::part(canvas) {
-  image-rendering: pixelated;       /* useful for the retro look */
-  filter: hue-rotate(20deg);
-}</code-block>
-    </section>
-
-    <!-- 8. Preset catalog ------------------------------------- -->
-    <section id="presets">
-      <h2>Preset catalog</h2>
-      <p>
-        Each preset is its own dynamic import &mdash; loaded once on first use and
-        cached. The kernel ships only the element class, the RAF loop, the
-        renderer wrappers, and the token resolver.
-      </p>
-      <h3>WebGL shader presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>dither</code></td><td>Animated halftone between two colors</td><td>primary, accent</td></tr>
-            <tr><td><code>noise</code></td><td>Drifting fractal noise, two-color tint</td><td>foreground, background</td></tr>
-            <tr><td><code>mesh-gradient</code></td><td>Stripe-style soft blob hero</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>halcyon</code></td><td>Enormous soft color fields breathing into one another &mdash; the catalog's most restful entry</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>warp</code></td><td>Displacement-warped grid</td><td>primary, background</td></tr>
-            <tr><td><code>waves</code></td><td>Four sine-displaced color bands</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>lava</code></td><td>Metaball lava lamp</td><td>primary, accent, background</td></tr>
-            <tr><td><code>plasma</code></td><td>Demoscene plasma, sum of sines</td><td>primary, accent, info</td></tr>
-            <tr><td><code>aurora</code></td><td>Vertical curtain noise + baseline ribbon</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>tunnel</code></td><td>Infinite polar zoom with ring banding</td><td>primary, accent, background</td></tr>
-            <tr><td><code>caustics</code></td><td>Warped sin/cos fields for bright veins</td><td>primary, accent, background</td></tr>
-            <tr><td><code>glitch</code></td><td>RGB-shift datamosh with per-row displacement</td><td>primary, accent, background</td></tr>
-            <tr><td><code>rainbow</code></td><td>Flowing spectral hue sweep (owns its palette)</td><td>&mdash; (not theme-tinted)</td></tr>
-            <tr><td><code>halftone</code></td><td>Rotated dot-grid halftone over an animated tone</td><td>primary, background</td></tr>
-            <tr><td><code>kaleidoscope</code></td><td>Mirrored angular folds with a rotating pattern</td><td>primary, accent, info</td></tr>
-            <tr><td><code>vhs</code></td><td>80s analog video: wobble, chroma bleed, tracking noise</td><td>primary, accent, background</td></tr>
-            <tr><td><code>synthwave</code></td><td>Outrun neon perspective grid + banded sun</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>crt</code></td><td>CRT tube: barrel curve, scanlines, RGB phosphor mask</td><td>primary, accent, background</td></tr>
-            <tr><td><code>gameboy</code></td><td>4-tone handheld with ordered dither + pixelation</td><td>primary, background</td></tr>
-            <tr><td><code>copperbars</code></td><td>Amiga demoscene metallic copper bars</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>topology</code></td><td>Animated topographic contour lines</td><td>primary, accent, background</td></tr>
-            <tr><td><code>cells</code></td><td>Animated Voronoi cells with darkened borders</td><td>primary, accent, background</td></tr>
-            <tr><td><code>shine</code></td><td>Diagonal sheen sweep over a quiet gradient</td><td>primary, accent, background</td></tr>
-            <tr><td><code>conic</code></td><td>Rotating angular gradient (spotlight border / loader)</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>grain</code></td><td>Film-grain overlay; transparent, blend over content</td><td>&mdash; (monochrome speckle)</td></tr>
-            <tr><td><code>trench</code></td><td>Death Star trench run: square perspective corridor</td><td>primary, accent, background</td></tr>
-            <tr><td><code>marble</code></td><td>Domain-warped marble veins (mallsoft / luxe)</td><td>primary, accent, background</td></tr>
-            <tr><td><code>metaballs</code></td><td>Demoscene lava lamp &mdash; orbiting blobs merging at a soft iso surface, banded through three theme colors</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>benday</code></td><td>Pop-art Ben-Day dots over flat color blocks</td><td>primary, accent, info</td></tr>
-            <tr><td><code>comic</code></td><td>Pop-art radial action burst + shock rings</td><td>primary, accent, info</td></tr>
-            <tr><td><code>deco</code></td><td>Art-deco sunburst rays (Nagel / Gatsby)</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>psychedelia</code></td><td>Liquid 1960s poster warp &mdash; melting concentric bands cycling three colors at full saturation</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>bliss</code></td><td>Windows-XP hills, sky, drifting clouds</td><td>primary, info, background</td></tr>
-            <tr><td><code>moire</code></td><td>Two interfering ring fields drifting soft moir&eacute; bands (theme duotone)</td><td>primary, accent, background</td></tr>
-            <tr><td><code>paper-grain</code></td><td>Warm paper-fiber speckle, slow drift; blend over content</td><td>foreground (ink tint)</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Vector / arcade presets (Canvas2D)</h3>
-      <p>Glowing phosphor lines on a dark field &mdash; the Vectrex / arcade-vector look.</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>asteroids</code></td><td>Drifting, rotating wireframe rocks</td><td>primary, background</td></tr>
-            <tr><td><code>wireframe</code></td><td>Rotating wireframe globe + equatorial trench</td><td>primary, accent, background</td></tr>
-            <tr><td><code>spirograph</code></td><td>Animated hypotrochoid rosettes</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>incoming</code></td><td>Wireframe ships warping toward a turret crosshair</td><td>primary, accent, background</td></tr>
-            <tr><td><code>tempest</code></td><td>Tempest polygonal tube: spokes + receding rings</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>fireworks</code></td><td>Vector fireball bursts (Star Wars arcade)</td><td>primary, accent, info, semantic palette</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Text presets (Canvas2D)</h3>
-      <p>Type as the background. Set the copy with the <code>text</code> attribute; all but <code>bootlog</code> honor <code>palette="rainbow|theme|mono"</code>. Presets in other groups also read <code>text</code>: <code>source</code>, <code>wordcloud</code>, <code>ledticker</code>, <code>nixie</code>, <code>splitflap</code>, <code>neon-sign</code>, and <code>swarm</code> &mdash; see their group tables.</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>crawl</code></td><td>Star Wars-style perspective text crawl</td><td>primary, foreground, background</td></tr>
-            <tr><td><code>marquee</code></td><td>Scrolling vector ticker (outline type)</td><td>primary, accent, info, foreground</td></tr>
-            <tr><td><code>sinescroll</code></td><td>Demoscene sine-wave scroller</td><td>primary, accent, info, foreground</td></tr>
-            <tr><td><code>cascade</code></td><td>Letters drop &amp; bounce in, hold, loop</td><td>primary, accent, info, foreground</td></tr>
-            <tr><td><code>bootlog</code></td><td>Scrolling boot / kernel log with [ OK ] and rare [FAIL] markers</td><td>success, error, foreground, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Dataviz presets (Canvas2D)</h3>
-      <p>Animated chart backgrounds — pair with an opaque content panel on top.</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>ledticker</code></td><td>Dot-matrix LED marquee &mdash; scrolls <code>text</code> with a phosphor trail; a scrolling waveform without it</td><td>accent, warning, background</td></tr>
-            <tr><td><code>nixie</code></td><td>Row of Nixie tubes ticking like a counter &mdash; warm wire digits with ghost stack and glass glow (reads <code>text</code>)</td><td>accent, warning, foreground, background</td></tr>
-            <tr><td><code>splitflap</code></td><td>Solari split-flap board clattering through messages on staggered cell schedules (reads <code>text</code>)</td><td>warning, foreground, background</td></tr>
-            <tr><td><code>trades</code></td><td>Trading terminal: scrolling ticker columns + candles</td><td>primary, success, error, foreground</td></tr>
-            <tr><td><code>dashboard</code></td><td>Streaming area-line, bouncing bars, sweep gauge</td><td>primary, accent, info, foreground</td></tr>
-            <tr><td><code>vectormap</code></td><td>Node map with arcs + traveling packets</td><td>primary, accent, info, foreground</td></tr>
-            <tr><td><code>transit-diagram</code></td><td>Beck-style metro map &mdash; 45&deg; routes, station ticks, interchange rings, trains running the lines</td><td>primary, accent, info, success, warning, foreground, background</td></tr>
-            <tr><td><code>scatter</code></td><td>Drifting clusters of varied vector glyphs</td><td>primary, accent, info, foreground</td></tr>
-            <tr><td><code>waveform</code></td><td>Stacked waveform ridgelines (Joy-Division plot)</td><td>primary, accent, background</td></tr>
-            <tr><td><code>wordcloud</code></td><td>Drifting, breathing word cloud (reads <code>text</code>)</td><td>primary, accent, info</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Canvas2D particle presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>stars</code></td><td>Slow-drifting starfield (parallax at intensity &gt; 0.5)</td><td>foreground, background</td></tr>
-            <tr><td><code>snow</code></td><td>Falling flakes with horizontal drift</td><td>foreground, background</td></tr>
-            <tr><td><code>rain</code></td><td>Layered angled rainfall &mdash; depth-scaled streaks with splash ripples at the ground line</td><td>info, background</td></tr>
-            <tr><td><code>fireflies</code></td><td>Dusk glow-pulses wandering a gentle flow field; rare answering flies in accent</td><td>warning, accent, background</td></tr>
-            <tr><td><code>embers</code></td><td>Sparks rising off an unseen fire, cooling accent&rarr;primary as they climb over a warm bottom glow</td><td>primary, accent, background</td></tr>
-            <tr><td><code>constellation</code></td><td>Twinkling star field with charted figures &mdash; star chains, join lines, a ringed catalog star</td><td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>bubbles</code></td><td>Underwater column of wobbling rising bubbles under slow caustic light shafts</td><td>primary, foreground, background</td></tr>
-            <tr><td><code>confetti</code></td><td>Continuous drop in semantic palette</td><td>primary, accent, success, warning, error</td></tr>
-            <tr><td><code>network</code></td><td>Connected-dots mesh</td><td>primary, foreground</td></tr>
-            <tr><td><code>particles</code></td><td>Generic drift &mdash; honors <code>palette</code>.</td><td>per palette</td></tr>
-            <tr><td><code>pulse</code></td><td>Concentric rings from center</td><td>primary, accent, info</td></tr>
-            <tr><td><code>tetris</code></td><td>Ambient falling tetrominoes</td><td>primary, accent, info, success, warning, error</td></tr>
-            <tr><td><code>lanterns</code></td><td>Sky lanterns at dusk &mdash; warm flickering paper lights rising on swaying, depth-scaled paths</td><td>warning, accent, background</td></tr>
-            <tr><td><code>matrix</code></td><td>Falling digital rain with glyph trails</td><td>primary, foreground, background</td></tr>
-            <tr><td><code>mystify</code></td><td>Windows "Mystify" bouncing polyline screensaver</td><td>primary, accent, info, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Canvas2D pattern &amp; geometric presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>mosaic</code></td>
-                <td>Refined squares. <code>mode</code>: <code>isometric</code> (default),
-                    <code>flat</code>, <code>sparse</code>, <code>stacked</code>,
-                    <code>blocks</code>.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>ribbons</code></td>
+      <!-- 8. Preset catalog ------------------------------------- -->
+      <section id="presets">
+        <h2>Preset catalog</h2>
+        <p>
+          Each preset is its own dynamic import &mdash; loaded once on first use and cached. The
+          kernel ships only the element class, the RAF loop, the renderer wrappers, and the token
+          resolver.
+        </p>
+        <h3>WebGL shader presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>dither</code></td>
+                <td>Animated halftone between two colors</td>
+                <td>primary, accent</td>
+              </tr>
+              <tr>
+                <td><code>noise</code></td>
+                <td>Drifting fractal noise, two-color tint</td>
+                <td>foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>mesh-gradient</code></td>
+                <td>Stripe-style soft blob hero</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>halcyon</code></td>
+                <td>
+                  Enormous soft color fields breathing into one another &mdash; the catalog's most
+                  restful entry
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>warp</code></td>
+                <td>Displacement-warped grid</td>
+                <td>primary, background</td>
+              </tr>
+              <tr>
+                <td><code>waves</code></td>
+                <td>Four sine-displaced color bands</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>lava</code></td>
+                <td>Metaball lava lamp</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>plasma</code></td>
+                <td>Demoscene plasma, sum of sines</td>
+                <td>primary, accent, info</td>
+              </tr>
+              <tr>
+                <td><code>aurora</code></td>
+                <td>Vertical curtain noise + baseline ribbon</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>tunnel</code></td>
+                <td>Infinite polar zoom with ring banding</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>caustics</code></td>
+                <td>Warped sin/cos fields for bright veins</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>glitch</code></td>
+                <td>RGB-shift datamosh with per-row displacement</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>rainbow</code></td>
+                <td>Flowing spectral hue sweep (owns its palette)</td>
+                <td>&mdash; (not theme-tinted)</td>
+              </tr>
+              <tr>
+                <td><code>halftone</code></td>
+                <td>Rotated dot-grid halftone over an animated tone</td>
+                <td>primary, background</td>
+              </tr>
+              <tr>
+                <td><code>kaleidoscope</code></td>
+                <td>Mirrored angular folds with a rotating pattern</td>
+                <td>primary, accent, info</td>
+              </tr>
+              <tr>
+                <td><code>vhs</code></td>
+                <td>80s analog video: wobble, chroma bleed, tracking noise</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>synthwave</code></td>
+                <td>Outrun neon perspective grid + banded sun</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>crt</code></td>
+                <td>CRT tube: barrel curve, scanlines, RGB phosphor mask</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>gameboy</code></td>
+                <td>4-tone handheld with ordered dither + pixelation</td>
+                <td>primary, background</td>
+              </tr>
+              <tr>
+                <td><code>copperbars</code></td>
+                <td>Amiga demoscene metallic copper bars</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>topology</code></td>
+                <td>Animated topographic contour lines</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>cells</code></td>
+                <td>Animated Voronoi cells with darkened borders</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>shine</code></td>
+                <td>Diagonal sheen sweep over a quiet gradient</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>conic</code></td>
+                <td>Rotating angular gradient (spotlight border / loader)</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>grain</code></td>
+                <td>Film-grain overlay; transparent, blend over content</td>
+                <td>&mdash; (monochrome speckle)</td>
+              </tr>
+              <tr>
+                <td><code>trench</code></td>
+                <td>Death Star trench run: square perspective corridor</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>marble</code></td>
+                <td>Domain-warped marble veins (mallsoft / luxe)</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>metaballs</code></td>
+                <td>
+                  Demoscene lava lamp &mdash; orbiting blobs merging at a soft iso surface, banded
+                  through three theme colors
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>benday</code></td>
+                <td>Pop-art Ben-Day dots over flat color blocks</td>
+                <td>primary, accent, info</td>
+              </tr>
+              <tr>
+                <td><code>comic</code></td>
+                <td>Pop-art radial action burst + shock rings</td>
+                <td>primary, accent, info</td>
+              </tr>
+              <tr>
+                <td><code>deco</code></td>
+                <td>Art-deco sunburst rays (Nagel / Gatsby)</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>psychedelia</code></td>
+                <td>
+                  Liquid 1960s poster warp &mdash; melting concentric bands cycling three colors at
+                  full saturation
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>bliss</code></td>
+                <td>Windows-XP hills, sky, drifting clouds</td>
+                <td>primary, info, background</td>
+              </tr>
+              <tr>
+                <td><code>moire</code></td>
+                <td>
+                  Two interfering ring fields drifting soft moir&eacute; bands (theme duotone)
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>paper-grain</code></td>
+                <td>Warm paper-fiber speckle, slow drift; blend over content</td>
+                <td>foreground (ink tint)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Vector / arcade presets (Canvas2D)</h3>
+        <p>Glowing phosphor lines on a dark field &mdash; the Vectrex / arcade-vector look.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>asteroids</code></td>
+                <td>Drifting, rotating wireframe rocks</td>
+                <td>primary, background</td>
+              </tr>
+              <tr>
+                <td><code>wireframe</code></td>
+                <td>Rotating wireframe globe + equatorial trench</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>spirograph</code></td>
+                <td>Animated hypotrochoid rosettes</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>incoming</code></td>
+                <td>Wireframe ships warping toward a turret crosshair</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>tempest</code></td>
+                <td>Tempest polygonal tube: spokes + receding rings</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>fireworks</code></td>
+                <td>Vector fireball bursts (Star Wars arcade)</td>
+                <td>primary, accent, info, semantic palette</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Text presets (Canvas2D)</h3>
+        <p>
+          Type as the background. Set the copy with the <code>text</code> attribute; all but
+          <code>bootlog</code> honor <code>palette="rainbow|theme|mono"</code>. Presets in other
+          groups also read <code>text</code>: <code>source</code>, <code>wordcloud</code>,
+          <code>ledticker</code>, <code>nixie</code>, <code>splitflap</code>,
+          <code>neon-sign</code>, and <code>swarm</code> &mdash; see their group tables.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>crawl</code></td>
+                <td>Star Wars-style perspective text crawl</td>
+                <td>primary, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>marquee</code></td>
+                <td>Scrolling vector ticker (outline type)</td>
+                <td>primary, accent, info, foreground</td>
+              </tr>
+              <tr>
+                <td><code>sinescroll</code></td>
+                <td>Demoscene sine-wave scroller</td>
+                <td>primary, accent, info, foreground</td>
+              </tr>
+              <tr>
+                <td><code>cascade</code></td>
+                <td>Letters drop &amp; bounce in, hold, loop</td>
+                <td>primary, accent, info, foreground</td>
+              </tr>
+              <tr>
+                <td><code>bootlog</code></td>
+                <td>Scrolling boot / kernel log with [ OK ] and rare [FAIL] markers</td>
+                <td>success, error, foreground, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Dataviz presets (Canvas2D)</h3>
+        <p>Animated chart backgrounds — pair with an opaque content panel on top.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ledticker</code></td>
+                <td>
+                  Dot-matrix LED marquee &mdash; scrolls <code>text</code> with a phosphor trail; a
+                  scrolling waveform without it
+                </td>
+                <td>accent, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>nixie</code></td>
+                <td>
+                  Row of Nixie tubes ticking like a counter &mdash; warm wire digits with ghost
+                  stack and glass glow (reads <code>text</code>)
+                </td>
+                <td>accent, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>splitflap</code></td>
+                <td>
+                  Solari split-flap board clattering through messages on staggered cell schedules
+                  (reads <code>text</code>)
+                </td>
+                <td>warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>trades</code></td>
+                <td>Trading terminal: scrolling ticker columns + candles</td>
+                <td>primary, success, error, foreground</td>
+              </tr>
+              <tr>
+                <td><code>dashboard</code></td>
+                <td>Streaming area-line, bouncing bars, sweep gauge</td>
+                <td>primary, accent, info, foreground</td>
+              </tr>
+              <tr>
+                <td><code>vectormap</code></td>
+                <td>Node map with arcs + traveling packets</td>
+                <td>primary, accent, info, foreground</td>
+              </tr>
+              <tr>
+                <td><code>transit-diagram</code></td>
+                <td>
+                  Beck-style metro map &mdash; 45&deg; routes, station ticks, interchange rings,
+                  trains running the lines
+                </td>
+                <td>primary, accent, info, success, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>scatter</code></td>
+                <td>Drifting clusters of varied vector glyphs</td>
+                <td>primary, accent, info, foreground</td>
+              </tr>
+              <tr>
+                <td><code>waveform</code></td>
+                <td>Stacked waveform ridgelines (Joy-Division plot)</td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>wordcloud</code></td>
+                <td>Drifting, breathing word cloud (reads <code>text</code>)</td>
+                <td>primary, accent, info</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Canvas2D particle presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>stars</code></td>
+                <td>Slow-drifting starfield (parallax at intensity &gt; 0.5)</td>
+                <td>foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>snow</code></td>
+                <td>Falling flakes with horizontal drift</td>
+                <td>foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>rain</code></td>
+                <td>
+                  Layered angled rainfall &mdash; depth-scaled streaks with splash ripples at the
+                  ground line
+                </td>
+                <td>info, background</td>
+              </tr>
+              <tr>
+                <td><code>fireflies</code></td>
+                <td>
+                  Dusk glow-pulses wandering a gentle flow field; rare answering flies in accent
+                </td>
+                <td>warning, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>embers</code></td>
+                <td>
+                  Sparks rising off an unseen fire, cooling accent&rarr;primary as they climb over a
+                  warm bottom glow
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>constellation</code></td>
+                <td>
+                  Twinkling star field with charted figures &mdash; star chains, join lines, a
+                  ringed catalog star
+                </td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>bubbles</code></td>
+                <td>
+                  Underwater column of wobbling rising bubbles under slow caustic light shafts
+                </td>
+                <td>primary, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>confetti</code></td>
+                <td>Continuous drop in semantic palette</td>
+                <td>primary, accent, success, warning, error</td>
+              </tr>
+              <tr>
+                <td><code>network</code></td>
+                <td>Connected-dots mesh</td>
+                <td>primary, foreground</td>
+              </tr>
+              <tr>
+                <td><code>particles</code></td>
+                <td>Generic drift &mdash; honors <code>palette</code>.</td>
+                <td>per palette</td>
+              </tr>
+              <tr>
+                <td><code>pulse</code></td>
+                <td>Concentric rings from center</td>
+                <td>primary, accent, info</td>
+              </tr>
+              <tr>
+                <td><code>tetris</code></td>
+                <td>Ambient falling tetrominoes</td>
+                <td>primary, accent, info, success, warning, error</td>
+              </tr>
+              <tr>
+                <td><code>lanterns</code></td>
+                <td>
+                  Sky lanterns at dusk &mdash; warm flickering paper lights rising on swaying,
+                  depth-scaled paths
+                </td>
+                <td>warning, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>matrix</code></td>
+                <td>Falling digital rain with glyph trails</td>
+                <td>primary, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>mystify</code></td>
+                <td>Windows "Mystify" bouncing polyline screensaver</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Canvas2D pattern &amp; geometric presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>mosaic</code></td>
+                <td>
+                  Refined squares. <code>mode</code>: <code>isometric</code> (default),
+                  <code>flat</code>, <code>sparse</code>, <code>stacked</code>, <code>blocks</code>.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>ribbons</code></td>
                 <td>Bezier wave ribbons with crisp top-edge strokes.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>source</code></td>
-                <td>Faded HTML source listing. Set <code>text</code> attribute to override
-                    with custom source.</td>
-                <td>primary, foreground, background</td></tr>
-            <tr><td><code>system7</code></td>
-                <td>Drifting Mac windows on 50% stipple. Add <code>use-theme</code> to
-                    honor theme tokens; otherwise black-on-white.</td>
-                <td>primary, background (when <code>use-theme</code> set)</td></tr>
-            <tr><td><code>atomic</code></td>
-                <td>Mid-century atomic-age shapes &mdash; boomerangs, kidneys, starbursts.
-                    <code>mode</code>: <code>mixed</code> (default), <code>boomerangs</code>,
-                    <code>starbursts</code>, <code>harlequin</code>.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>stipple</code></td>
-                <td>Pointillist dot fields. <code>mode</code>: <code>field</code> (default
-                    graded stipple), <code>contour</code> (dots trace a flow field),
-                    <code>vortex</code> (swirling, respawning).</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>terrazzo</code></td><td>Seeded stone-chip speckle in softened theme tints under a polish sheen</td><td>primary, accent, info, foreground, background</td></tr>
-            <tr><td><code>flowlines</code></td>
-                <td>Thin streamlines fanning and converging through a slow-evolving
-                    flow field.</td>
-                <td>primary, background</td></tr>
-            <tr><td><code>supergraphics</code></td>
-                <td>Mural-scale curved bands &mdash; thick hard-edged stripes
-                    overlapping back-to-front (Sea Ranch supergraphics).</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>doodles</code></td>
-                <td>Hand-drawn marginalia sketching themselves in at the page edges,
-                    holding, then fading. <code>mode</code>: space/comma list of
-                    <code>planner</code>, <code>botanical</code>, <code>geometric</code>
-                    families (default all three).</td>
-                <td>foreground</td></tr>
-            <tr><td><code>scandi</code></td>
-                <td>Scandinavian grid of arc primitives and floral motifs in
-                    pastel-softened theme roles; tiles cross-fade slowly.</td>
-                <td>primary, accent, info, success, warning, background</td></tr>
-            <tr><td><code>truchet</code></td>
-                <td>Quarter-arc Truchet tiles flipped by a sweeping diagonal wavefront.
-                    <code>mode</code>: <code>arcs</code> (default), <code>diagonals</code>,
-                    <code>wedges</code>.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>delaunay</code></td>
-                <td>Seeded triangulated mesh rippling on small point orbits; flat
-                    theme-mixed facets.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>hilbert</code></td>
-                <td>Hilbert space-filling curve tracing itself &mdash; a bright head
-                    draws the trail, then the curve dissolves and redraws.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>groove</code></td>
-                <td>70s groovy stripe bundles snaking through rounded turns to a
-                    bullseye target; draw on, hold, retract.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>fan-deco</code></td><td>Ert&eacute; scalloped shell-fans with radiating gold ribs in a staggered repeat</td><td>primary, accent, background</td></tr>
-            <tr><td><code>deco-spires</code></td><td>Stepped-setback spires with lit window slits against wheeling gold rays</td><td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>peacock</code></td><td>A deco plume fan &mdash; gold ribs and barbs ending in concentric eyes, swaying as one</td><td>primary, accent, info, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Dimensional / CSS-3D presets</h3>
-      <p>
-        Built with DOM + CSS 3D transforms (the <code>css3d</code> renderer) rather
-        than a canvas, so they compose with theme tokens and pause cleanly. Motion
-        lives in CSS keyframes; <code>snapshot()</code> returns <code>null</code> for
-        these. Use <code>density</code> to scale scene complexity and <code>speed</code>
-        for tempo.
-      </p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>fly-through</code></td>
-                <td>A rotating tunnel of theme-colored segments. <code>mode</code> composes
-                    space-delimited axes: motion <code>orbit</code> (default, rotates the whole
-                    tunnel in view) | <code>fly</code> (camera flies through it); profile
-                    <code>ring</code> (default) | <code>corridor</code> | <code>hex</code> |
-                    <code>tube</code>; path <code>straight</code> | <code>helix</code> |
-                    <code>wave</code>; unit <code>cube</code> | <code>sphere</code> |
-                    <code>pyramid</code> | <code>card</code>. <code>palette="spectrum"</code> for a
-                    rainbow instead of theme colors.</td>
-                <td>primary, accent, info</td></tr>
-            <tr><td><code>carousel</code></td><td>A rolodex ring of theme-gradient cards orbiting the camera, precessing slowly</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>gyroscope</code></td><td>Nested wireframe rings spinning on seeded axes around a pulsing core</td><td>primary, accent, info, foreground</td></tr>
-            <tr><td><code>monolith</code></td><td>Dark slabs tumbling slowly over a floor grid, primary edge sheen</td><td>primary, foreground, background</td></tr>
-            <tr><td><code>shards</code></td><td>A rotating shell of translucent crystal fragments, each shimmering on its own cycle</td><td>primary, accent, info</td></tr>
-            <tr><td><code>cube-wave</code></td><td>An isometric board of real boxes bobbing in a wave radiating from center</td><td>primary, background</td></tr>
-            <tr><td><code>skyline</code></td><td>Extruded window-striped city blocks the camera pans past; a few accent-lit roofs</td><td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>chamber</code></td><td>Inside a slowly rotating room of gradient walls with a drifting warm glow</td><td>primary, accent, warning, foreground, background</td></tr>
-            <tr><td><code>satellites</code></td><td>A disc-built planet with three tilted orbits carrying themed cards</td><td>primary, accent, info, foreground, background</td></tr>
-            <tr><td><code>explode</code></td>
-                <td>A field of particles over a floor grid that bursts outward and
-                    reassembles. <code>mode</code>: <code>radial</code> (default scatter) |
-                    <code>cube</code> (axis-aligned burst). <code>seed</code> fixes the scatter.</td>
-                <td>primary, background, foreground</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Atmospheric presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>nebula</code></td>
-                <td>Deep-space gas &mdash; layered fbm clouds drifting at parallax rates
-                    over a bg&rarr;primary&rarr;accent ramp, pricked with star sparks
-                    and slow ignition flares.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>summit</code></td>
-                <td>Mountain dawn &mdash; parallax noise ridgelines stepping back into a
-                    slow sunrise, with drifting mist bands and occasional birds.</td>
-                <td>primary, accent, warning, background</td></tr>
-            <tr><td><code>lightning</code></td><td>Seeded storm strikes on a t-derived schedule &mdash; branched bolts, sky flash, restless cloud glow</td><td>accent, foreground, background</td></tr>
-            <tr><td><code>fog</code></td><td>Three parallax fbm banks drifting between bg and fg-tinted mist, thickening toward the horizon</td><td>foreground, background</td></tr>
-            <tr><td><code>cumulus</code></td><td>Stacked rim-lit clouds drifting across a Parrish ultramarine-to-gold sky</td><td>primary, accent</td></tr>
-            <tr><td><code>moonrise</code></td><td>A big low moon with halo, thin luminous cloud bands, a shimmering reflection column</td><td>primary, foreground</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Retro presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>equalizer</code></td>
-                <td>80s hi-fi graphic equalizer &mdash; LED segment columns thump to a
-                    synthesized spectrum with falling peak-hold caps. <code>mode</code>:
-                    <code>bars</code> (default), <code>mirror</code>, <code>dots</code>.</td>
-                <td>success, warning, error, foreground, background</td></tr>
-            <tr><td><code>vumeter</code></td>
-                <td>Analog VU meters &mdash; ballistic spring needles chase a synthesized
-                    signal past tick scales, a red zone, PEAK LEDs, and a sweeping glass
-                    glare.</td>
-                <td>warning, error, foreground, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Ornamental presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>girih</code></td>
-                <td>Islamic periodic star-polygon strapwork lattice. <code>mode</code>:
-                    <code>8fold</code> (default), <code>12fold</code>, <code>6fold</code>.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>mandala</code></td>
-                <td>Layered concentric, counter-rotating radial symmetry; petal motifs
-                    keyed to ring, colors cycling outward.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>op-art</code></td>
-                <td>Optical illusion with false motion. <code>mode</code>: <code>riley</code>
-                    (default), <code>cafewall</code>, <code>moire</code>, <code>drift</code>.</td>
-                <td>foreground, background</td></tr>
-            <tr><td><code>dotwork</code></td>
-                <td>Aboriginal/pointillist dot structures &mdash; concentric rosettes, spirals,
-                    whorls, songline waterholes. <code>mode</code>: <code>rings</code> (default),
-                    <code>spiral</code>, <code>double</code>, <code>whorl</code>,
-                    <code>waterholes</code>.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>tapestry</code></td>
-                <td>Dense dot-art composite &mdash; a stippled field packed with rosettes and
-                    whorls; a rich backdrop for layered content.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>celtic-knot</code></td><td>Interlaced strapwork plait with seeded turn-backs and a sliding glint</td><td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>paisley</code></td><td>Half-drop boteh block print, fill layer deliberately off-register</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>azulejo</code></td><td>Quadrant-symmetric glazed tiles with grout lines and a sweeping sheen</td><td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>mudcloth</code></td><td>Bogolanfini symbol bands, every stroke hand-jittered, slowly scrolling</td><td>foreground, background</td></tr>
-            <tr><td><code>gilded</code></td><td>Klimt-adjacent gold-leaf patchwork &mdash; spirals, squares, flecks shimmering patch by patch</td><td>primary, accent, warning, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Japanese presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>seigaiha</code></td>
-                <td>Overlapping scalloped wave-fan tiling &mdash; the classic blue-ocean
-                    pattern.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>sumi-e</code></td>
-                <td>Ink-wash blooms diffusing into paper &mdash; bokashi bleed and
-                    granulation on staggered grow/fade cycles.</td>
-                <td>foreground, primary, background</td></tr>
-            <tr><td><code>kintsugi</code></td>
-                <td>Gold crack veins growing, branching, and shimmering across a dark
-                    slab; the network reseeds each cycle.</td>
-                <td>warning, accent, background</td></tr>
-            <tr><td><code>ukiyo-e</code></td>
-                <td>Woodblock-print waves &mdash; flat-color parallax layers with outlined
-                    crests and curling foam claws under a bokashi sky.</td>
-                <td>primary, info, foreground, background</td></tr>
-            <tr><td><code>sakura</code></td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>source</code></td>
+                <td>
+                  Faded HTML source listing. Set <code>text</code> attribute to override with custom
+                  source.
+                </td>
+                <td>primary, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>system7</code></td>
+                <td>
+                  Drifting Mac windows on 50% stipple. Add <code>use-theme</code> to honor theme
+                  tokens; otherwise black-on-white.
+                </td>
+                <td>primary, background (when <code>use-theme</code> set)</td>
+              </tr>
+              <tr>
+                <td><code>atomic</code></td>
+                <td>
+                  Mid-century atomic-age shapes &mdash; boomerangs, kidneys, starbursts.
+                  <code>mode</code>: <code>mixed</code> (default), <code>boomerangs</code>,
+                  <code>starbursts</code>, <code>harlequin</code>.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>stipple</code></td>
+                <td>
+                  Pointillist dot fields. <code>mode</code>: <code>field</code> (default graded
+                  stipple), <code>contour</code> (dots trace a flow field),
+                  <code>vortex</code> (swirling, respawning).
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>terrazzo</code></td>
+                <td>Seeded stone-chip speckle in softened theme tints under a polish sheen</td>
+                <td>primary, accent, info, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>flowlines</code></td>
+                <td>Thin streamlines fanning and converging through a slow-evolving flow field.</td>
+                <td>primary, background</td>
+              </tr>
+              <tr>
+                <td><code>supergraphics</code></td>
+                <td>
+                  Mural-scale curved bands &mdash; thick hard-edged stripes overlapping
+                  back-to-front (Sea Ranch supergraphics).
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>doodles</code></td>
+                <td>
+                  Hand-drawn marginalia sketching themselves in at the page edges, holding, then
+                  fading. <code>mode</code>: space/comma list of <code>planner</code>,
+                  <code>botanical</code>, <code>geometric</code> families (default all three).
+                </td>
+                <td>foreground</td>
+              </tr>
+              <tr>
+                <td><code>scandi</code></td>
+                <td>
+                  Scandinavian grid of arc primitives and floral motifs in pastel-softened theme
+                  roles; tiles cross-fade slowly.
+                </td>
+                <td>primary, accent, info, success, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>truchet</code></td>
+                <td>
+                  Quarter-arc Truchet tiles flipped by a sweeping diagonal wavefront.
+                  <code>mode</code>: <code>arcs</code> (default), <code>diagonals</code>,
+                  <code>wedges</code>.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>delaunay</code></td>
+                <td>
+                  Seeded triangulated mesh rippling on small point orbits; flat theme-mixed facets.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>hilbert</code></td>
+                <td>
+                  Hilbert space-filling curve tracing itself &mdash; a bright head draws the trail,
+                  then the curve dissolves and redraws.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>groove</code></td>
+                <td>
+                  70s groovy stripe bundles snaking through rounded turns to a bullseye target; draw
+                  on, hold, retract.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>fan-deco</code></td>
+                <td>
+                  Ert&eacute; scalloped shell-fans with radiating gold ribs in a staggered repeat
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>deco-spires</code></td>
+                <td>Stepped-setback spires with lit window slits against wheeling gold rays</td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>peacock</code></td>
+                <td>
+                  A deco plume fan &mdash; gold ribs and barbs ending in concentric eyes, swaying as
+                  one
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Dimensional / CSS-3D presets</h3>
+        <p>
+          Built with DOM + CSS 3D transforms (the <code>css3d</code> renderer) rather than a canvas,
+          so they compose with theme tokens and pause cleanly. Motion lives in CSS keyframes;
+          <code>snapshot()</code> returns <code>null</code> for these. Use <code>density</code> to
+          scale scene complexity and <code>speed</code>
+          for tempo.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>fly-through</code></td>
+                <td>
+                  A rotating tunnel of theme-colored segments. <code>mode</code> composes
+                  space-delimited axes: motion <code>orbit</code> (default, rotates the whole tunnel
+                  in view) | <code>fly</code> (camera flies through it); profile
+                  <code>ring</code> (default) | <code>corridor</code> | <code>hex</code> |
+                  <code>tube</code>; path <code>straight</code> | <code>helix</code> |
+                  <code>wave</code>; unit <code>cube</code> | <code>sphere</code> |
+                  <code>pyramid</code> | <code>card</code>. <code>palette="spectrum"</code> for a
+                  rainbow instead of theme colors.
+                </td>
+                <td>primary, accent, info</td>
+              </tr>
+              <tr>
+                <td><code>carousel</code></td>
+                <td>
+                  A rolodex ring of theme-gradient cards orbiting the camera, precessing slowly
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>gyroscope</code></td>
+                <td>Nested wireframe rings spinning on seeded axes around a pulsing core</td>
+                <td>primary, accent, info, foreground</td>
+              </tr>
+              <tr>
+                <td><code>monolith</code></td>
+                <td>Dark slabs tumbling slowly over a floor grid, primary edge sheen</td>
+                <td>primary, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>shards</code></td>
+                <td>
+                  A rotating shell of translucent crystal fragments, each shimmering on its own
+                  cycle
+                </td>
+                <td>primary, accent, info</td>
+              </tr>
+              <tr>
+                <td><code>cube-wave</code></td>
+                <td>An isometric board of real boxes bobbing in a wave radiating from center</td>
+                <td>primary, background</td>
+              </tr>
+              <tr>
+                <td><code>skyline</code></td>
+                <td>
+                  Extruded window-striped city blocks the camera pans past; a few accent-lit roofs
+                </td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>chamber</code></td>
+                <td>Inside a slowly rotating room of gradient walls with a drifting warm glow</td>
+                <td>primary, accent, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>satellites</code></td>
+                <td>A disc-built planet with three tilted orbits carrying themed cards</td>
+                <td>primary, accent, info, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>explode</code></td>
+                <td>
+                  A field of particles over a floor grid that bursts outward and reassembles.
+                  <code>mode</code>: <code>radial</code> (default scatter) |
+                  <code>cube</code> (axis-aligned burst). <code>seed</code> fixes the scatter.
+                </td>
+                <td>primary, background, foreground</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Atmospheric presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>nebula</code></td>
+                <td>
+                  Deep-space gas &mdash; layered fbm clouds drifting at parallax rates over a
+                  bg&rarr;primary&rarr;accent ramp, pricked with star sparks and slow ignition
+                  flares.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>summit</code></td>
+                <td>
+                  Mountain dawn &mdash; parallax noise ridgelines stepping back into a slow sunrise,
+                  with drifting mist bands and occasional birds.
+                </td>
+                <td>primary, accent, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>lightning</code></td>
+                <td>
+                  Seeded storm strikes on a t-derived schedule &mdash; branched bolts, sky flash,
+                  restless cloud glow
+                </td>
+                <td>accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>fog</code></td>
+                <td>
+                  Three parallax fbm banks drifting between bg and fg-tinted mist, thickening toward
+                  the horizon
+                </td>
+                <td>foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>cumulus</code></td>
+                <td>Stacked rim-lit clouds drifting across a Parrish ultramarine-to-gold sky</td>
+                <td>primary, accent</td>
+              </tr>
+              <tr>
+                <td><code>moonrise</code></td>
+                <td>
+                  A big low moon with halo, thin luminous cloud bands, a shimmering reflection
+                  column
+                </td>
+                <td>primary, foreground</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Retro presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>equalizer</code></td>
+                <td>
+                  80s hi-fi graphic equalizer &mdash; LED segment columns thump to a synthesized
+                  spectrum with falling peak-hold caps. <code>mode</code>:
+                  <code>bars</code> (default), <code>mirror</code>, <code>dots</code>.
+                </td>
+                <td>success, warning, error, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>vumeter</code></td>
+                <td>
+                  Analog VU meters &mdash; ballistic spring needles chase a synthesized signal past
+                  tick scales, a red zone, PEAK LEDs, and a sweeping glass glare.
+                </td>
+                <td>warning, error, foreground, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Ornamental presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>girih</code></td>
+                <td>
+                  Islamic periodic star-polygon strapwork lattice. <code>mode</code>:
+                  <code>8fold</code> (default), <code>12fold</code>, <code>6fold</code>.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>mandala</code></td>
+                <td>
+                  Layered concentric, counter-rotating radial symmetry; petal motifs keyed to ring,
+                  colors cycling outward.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>op-art</code></td>
+                <td>
+                  Optical illusion with false motion. <code>mode</code>:
+                  <code>riley</code> (default), <code>cafewall</code>, <code>moire</code>,
+                  <code>drift</code>.
+                </td>
+                <td>foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>dotwork</code></td>
+                <td>
+                  Aboriginal/pointillist dot structures &mdash; concentric rosettes, spirals,
+                  whorls, songline waterholes. <code>mode</code>: <code>rings</code> (default),
+                  <code>spiral</code>, <code>double</code>, <code>whorl</code>,
+                  <code>waterholes</code>.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>tapestry</code></td>
+                <td>
+                  Dense dot-art composite &mdash; a stippled field packed with rosettes and whorls;
+                  a rich backdrop for layered content.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>celtic-knot</code></td>
+                <td>Interlaced strapwork plait with seeded turn-backs and a sliding glint</td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>paisley</code></td>
+                <td>Half-drop boteh block print, fill layer deliberately off-register</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>azulejo</code></td>
+                <td>Quadrant-symmetric glazed tiles with grout lines and a sweeping sheen</td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>mudcloth</code></td>
+                <td>Bogolanfini symbol bands, every stroke hand-jittered, slowly scrolling</td>
+                <td>foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>gilded</code></td>
+                <td>
+                  Klimt-adjacent gold-leaf patchwork &mdash; spirals, squares, flecks shimmering
+                  patch by patch
+                </td>
+                <td>primary, accent, warning, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Japanese presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>seigaiha</code></td>
+                <td>
+                  Overlapping scalloped wave-fan tiling &mdash; the classic blue-ocean pattern.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>sumi-e</code></td>
+                <td>
+                  Ink-wash blooms diffusing into paper &mdash; bokashi bleed and granulation on
+                  staggered grow/fade cycles.
+                </td>
+                <td>foreground, primary, background</td>
+              </tr>
+              <tr>
+                <td><code>kintsugi</code></td>
+                <td>
+                  Gold crack veins growing, branching, and shimmering across a dark slab; the
+                  network reseeds each cycle.
+                </td>
+                <td>warning, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>ukiyo-e</code></td>
+                <td>
+                  Woodblock-print waves &mdash; flat-color parallax layers with outlined crests and
+                  curling foam claws under a bokashi sky.
+                </td>
+                <td>primary, info, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>sakura</code></td>
                 <td>Cherry petals tumbling through three depth layers on gusting wind.</td>
-                <td>primary, background</td></tr>
-            <tr><td><code>origami</code></td>
-                <td>Sheets fold into figures via hand-authored crease scripts with
-                    pseudo-3D foreshortening &mdash; guides draw first, the form folds
-                    step by step, holds, then fades.</td>
-                <td>primary, accent, info, foreground, background</td></tr>
-            <tr><td><code>zen-garden</code></td><td>Raked karesansui sand &mdash; breathing rake field, stones, combed concentric furrows</td><td>foreground, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Print art presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>risograph</code></td>
-                <td>Two-ink riso overprint &mdash; misregistered blobs and bars multiplying
-                    into a third color, with heavy per-ink grain and dropouts.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>plotter</code></td>
-                <td>Pen-plotter art drawing itself &mdash; flow fields, hatched discs, and
-                    contour stacks revealed stroke by stroke with a visible pen head.</td>
-                <td>foreground, primary, background</td></tr>
-            <tr><td><code>linocut</code></td>
-                <td>Carved-block shapes with rough edges and gouge marks, rolling slowly
-                    like a print cylinder.</td>
-                <td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>cyanotype</code></td><td>Botanical sun prints &mdash; fern and seed-head silhouettes glowing on Prussian-tinted primary</td><td>primary, foreground</td></tr>
-            <tr><td><code>screenprint</code></td><td>Three off-register ink pulls per motif, multiplied where they overlap, one through a halftone screen</td><td>primary, accent, info, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Classic presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>alchemy</code></td>
-                <td>Engraved esoteric diagram &mdash; nested rings of invented sigils,
-                    inscribed polygons, and seeded chords etch on, each ring rotating
-                    at its own slow rate.</td>
-                <td>foreground, accent, background</td></tr>
-            <tr><td><code>bauhaus</code></td>
-                <td>Grid composition of primary geometric forms (circles, arcs,
-                    triangles, bars) at full saturation; cells slide into place and
-                    recompose on staggered cycles.</td>
-                <td>primary, accent, info, success, warning, error</td></tr>
-            <tr><td><code>cave</code></td>
-                <td>Parietal cave art &mdash; charcoal animal outlines and ochre
-                    handprint stencils emerge from a mottled rock wall under a
-                    drifting torchlight vignette.</td>
-                <td>foreground, warning, error, background</td></tr>
-            <tr><td><code>clockwork</code></td>
-                <td>Meshing brass gear train &mdash; ratio-locked gears with trapezoid
-                    teeth, phase-aligned at their contact points, plus a ticking
-                    escapement wheel.</td>
-                <td>warning, accent, background</td></tr>
-            <tr><td><code>damask</code></td>
-                <td>Procedural damask tile &mdash; mirrored flourish motif under a slow
-                    diagonal specular sheen.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>de-stijl</code></td>
-                <td>Mondrian composition from recursive seeded splits; rule lines
-                    periodically redraw, coloured cells cross-fade.</td>
-                <td>primary, accent, info, foreground, background</td></tr>
-            <tr><td><code>hieroglyph</code></td>
-                <td>Columns of invented glyph forms (eye, bird, wave, reed, sun&hellip;)
-                    chisel in top-to-bottom on a speckled sandstone field, with an
-                    inset shadow so they read as carved.</td>
-                <td>foreground, warning, background</td></tr>
-            <tr><td><code>illuminated</code></td>
-                <td>Manuscript page &mdash; a gilded initial capital swept by an animated
-                    sheen, vine marginalia growing down the margin, and rubricated
-                    line stubs on parchment.</td>
-                <td>primary, success, warning, error, foreground, background</td></tr>
-            <tr><td><code>meander</code></td>
-                <td>Greek-key fret rows scrolling in alternating directions with
-                    per-row parallax.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>morris</code></td>
-                <td>Morris-style wallpaper &mdash; mirrored acanthus/vine tiles that draw
-                    themselves on, then breathe; pastel-softened theme roles.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>art-nouveau</code></td><td>Whiplash-curve vines with leaves and buds inside a double frame; tendril tips sway</td><td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>constructivism</code></td><td>Lissitzky field &mdash; a dominant diagonal wedge and floating planes drifting on a rotated axis</td><td>primary, accent, info, foreground, background</td></tr>
-            <tr><td><code>stained-glass</code></td>
-                <td>Gothic window &mdash; seeded Voronoi panes between thick dark lead
-                    cames, each tinted by hashed theme roles, with a slow light bloom
-                    drifting behind the glass.</td>
-                <td>primary, accent, info, success, warning, background</td></tr>
-            <tr><td><code>swiss</code></td>
-                <td>International Typographic Style &mdash; a strict modular grid carries
-                    oversized numerals, thick rules, and flat colour planes sliding
-                    between seeded alignments, one element at a time.</td>
-                <td>primary, accent, error, foreground, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Art presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>colorfield</code></td>
-                <td>Colour-field abstraction &mdash; stacked soft-edged rectangles of
-                    colour with grain-roughened smoothstep edges, breathing glacially
-                    over a toned ground.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>cutouts</code></td>
-                <td>Paper-cut collage &mdash; organic silhouettes (fronds, leaves,
-                    rounded stars, seed forms) drift and layer like physically placed
-                    cut paper with a slight drop offset.</td>
-                <td>primary, accent, info, success, warning, error, background</td></tr>
-            <tr><td><code>drip</code></td>
-                <td>Action painting &mdash; flung-paint spline arcs and droplet spatter
-                    accumulate Pollock-style on a canvas weave; a slow whitewash veils
-                    and restarts when coverage saturates.</td>
-                <td>primary, accent, info, warning, error, foreground, background</td></tr>
-            <tr><td><code>graffiti</code></td>
-                <td>Spray writing &mdash; seeded tags build dab by dab with a dense core,
-                    wide overspray, and descending drip runs on a concrete wall, fading
-                    behind newer layers.</td>
-                <td>primary, accent, info, warning, error, foreground, background</td></tr>
-            <tr><td><code>mobile</code></td>
-                <td>Kinetic hanging sculpture &mdash; a seeded binary tree of wire arms
-                    and coloured paddles swinging as coupled damped pendulums, kept
-                    alive by gentle periodic impulses.</td>
-                <td>primary, accent, info, warning, error, foreground, background</td></tr>
-            <tr><td><code>watercolor</code></td>
-                <td>Wet-on-wet blooms &mdash; fbm-edged splats glaze multiplicatively
-                    with a darker granulated wet-edge band bleeding into paper grain;
-                    washes grow, hold, then fade.</td>
-                <td>primary, accent, info, success, warning, background</td></tr>
-            <tr><td><code>brushstroke</code></td><td>Impasto flow field &mdash; directional ribbon strokes with painted highlights swirling around seeded centers</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>terrace</code></td><td>Classical column and urn silhouettes framing a breathing luminous sky</td><td>primary, accent, foreground</td></tr>
-            <tr><td><code>oil-sky</code></td><td>A skyscape of visible oil dabs &mdash; warm horizon rising through banded brushwork to cool zenith</td><td>primary, accent</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Kitsch presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>crochet</code></td>
-                <td>Granny-square afghan &mdash; squares crochet themselves stitch by
-                    stitch, round by round, yarn colour rotating through theme roles in
-                    the classic scrap-yarn look.</td>
-                <td>primary, accent, info, success, warning, foreground, background</td></tr>
-            <tr><td><code>disco</code></td>
-                <td>Mirror-ball light &mdash; a perspective grid of parallelogram light
-                    cells sweeps a dark floor-and-wall space, tint-cycling through theme
-                    roles with occasional lens-flare pings.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>domino</code></td>
-                <td>Domino chains seen from above &mdash; a toppling wave travels seeded
-                    curved paths, tiles laying flat over their leading edges while the
-                    chain quietly re-stands behind the front.</td>
-                <td>primary, accent, info, foreground, background</td></tr>
-            <tr><td><code>neon-sign</code></td>
-                <td>Roadside neon &mdash; tube-outline shapes and a tube-script word
-                    (&ldquo;OPEN&rdquo;, or set <code>text</code>) with bulb-chase dots,
-                    per-segment flicker, and pre-rendered glow.</td>
-                <td>primary, accent, info, warning, background</td></tr>
-            <tr><td><code>pegboard</code></td>
-                <td>Backlit toy peg board &mdash; glowing translucent pegs fill in seeded
-                    pictures (star, heart, rocket, rainbow) peg by peg, hold lit, then
-                    clear for the next.</td>
-                <td>primary, accent, info, success, warning, background</td></tr>
-            <tr><td><code>quilt</code></td>
-                <td>Patchwork &mdash; classic quilt blocks (log cabin, flying geese,
-                    pinwheel, nine-patch) assemble patch by patch under a fabric-grain
-                    overlay, occasionally re-piecing themselves.</td>
-                <td>primary, accent, info, warning, error, foreground, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Science presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>phyllotaxis</code></td>
-                <td>Golden-angle spiral (Vogel model) &mdash; dots emitted from the
-                    centre age outward, colour cycling by ring band.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>boids</code></td>
-                <td>Reynolds flocking &mdash; tapered streaks steered by separation /
-                    alignment / cohesion, coloured by speed.</td>
-                <td>primary, foreground, background</td></tr>
-            <tr><td><code>helix</code></td>
-                <td>DNA-style double helix &mdash; depth-sorted strands and base-pair
-                    rungs scrolling along the axis.</td>
-                <td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>mycelium</code></td>
-                <td>Branching filament growth accumulating into a network; restarts
-                    with a fresh palette rotation when coverage saturates.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>reaction-diffusion</code></td>
-                <td>Gray-Scott reaction-diffusion; <code>density</code> selects a
-                    spots / stripes / coral / waves regime.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>chladni</code></td>
-                <td>Vibrating Chladni plate &mdash; sand gathers on nodal lines as the
-                    mode pair cross-fades.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>orbital</code></td>
-                <td>Planetary system &mdash; satellites ride seeded ellipses with true
-                    Keplerian speed variation, trailing faded orbit arcs; occasional
-                    Hohmann-style transfers animate between orbits.</td>
-                <td>primary, accent, info, success, warning, foreground, background</td></tr>
-            <tr><td><code>slime-mold</code></td>
-                <td>Physarum agents depositing and chasing a diffusing trail (needs
-                    renderable float textures; degrades to a frozen field).</td>
-                <td>primary, accent, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Tech presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>circuit</code></td>
-                <td>PCB traces routed on a 45&deg; grid with pads, vias, and IC
-                    footprints; bright signal pulses travel the traces.</td>
-                <td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>blueprint</code></td>
-                <td>Drafting on blue grid paper &mdash; outlines, centrelines, and
-                    dimension lines draw on, hold, then fade.</td>
-                <td>primary, info, foreground, background</td></tr>
-            <tr><td><code>radar</code></td>
-                <td>PPI radar scope &mdash; rotating sweep with phosphor persistence;
-                    seeded blips flare and fade.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>gyroid</code></td>
-                <td>Raymarched gyroid minimal surface slowly rotating through the
-                    lattice, lit with two theme colours against a bg fog.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>lidar</code></td>
-                <td>Terrain point cloud revealed by a scanning plane; points flare on
-                    the scan line and stay dimly lit behind it.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>oscilloscope</code></td>
-                <td>Lissajous / waveform traces with glowing phosphor-persistence
-                    trails.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>spectrum</code></td>
-                <td>Spectrum analyzer &mdash; a live FFT bar strip feeds a scrolling
-                    time-frequency waterfall below; magnitudes ramp through
-                    bg&rarr;primary&rarr;accent&rarr;warning.</td>
-                <td>primary, accent, warning, background</td></tr>
-            <tr><td><code>hologram</code></td>
-                <td>Projected wireframe &mdash; an icosahedron and a torus knot alternate
-                    rotating above a projector glow, drawn as scan-lined emissive lines
-                    with a chromatic ghost and occasional frame tears.</td>
-                <td>primary, accent, background</td></tr>
-            <tr><td><code>neon-city</code></td>
-                <td>Night skyline over wet asphalt &mdash; lit-window towers and
-                    saturated neon signs mirrored in a rain-slick, streak-blurred,
-                    ripple-perturbed street.</td>
-                <td>primary, accent, info, background</td></tr>
-            <tr><td><code>swarm</code></td>
-                <td>Drone light show &mdash; hundreds of glowing points fly formation
-                    transitions (scatter, ring, lattice, figures); lines of
-                    <code>text</code> rasterize into formations.</td>
-                <td>primary, accent, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Nature presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>komorebi</code></td>
-                <td>Dappled late-afternoon light through swaying trees &mdash; warm
-                    sunflecks drift and breathe over a layered foliage shadow, with
-                    long raking light shafts.</td>
-                <td>success, warning, accent, background</td></tr>
-            <tr><td><code>leaves</code></td><td>Autumn leaves in three shapes tumbling down swaying paths, leaning together under a slow gust</td><td>primary, accent, warning, background</td></tr>
-            <tr><td><code>migration</code></td>
-                <td>Birds migrating high in an autumn sky &mdash; undulating V-skeins at
-                    parallax altitudes, lead birds trading off, far skeins smaller and
-                    paler.</td>
-                <td>accent, info, warning, foreground, background</td></tr>
-            <tr><td><code>palms</code></td>
-                <td>Palm trees swaying against a tropical sky, distant palms hazier
-                    (parallax). <code>mode</code>: <code>silhouette</code> (default,
-                    sunset), <code>lit</code> (daytime).</td>
-                <td>primary, accent, info, success, warning, foreground, background</td></tr>
-            <tr><td><code>reeds</code></td>
-                <td>Cattails and tall grasses swaying as travelling wind gusts sweep
-                    across, in 2&ndash;3 depth layers with pastel-softened backs.</td>
-                <td>primary, info, success, warning, background</td></tr>
-            <tr><td><code>lily-pond</code></td><td>Monet water &mdash; vertical reflection smears, drifting pads, slow ripple rings</td><td>primary, accent, info, success, foreground, background</td></tr>
-            <tr><td><code>meadow</code></td><td>Dusk grassland in three swaying parallax layers, seed heads catching light</td><td>primary, accent, warning, foreground, background</td></tr>
-            <tr><td><code>tide</code></td><td>A breathing shoreline &mdash; translucent wave sheets advancing over sand with foam edges</td><td>info, warning, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Lounge presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>barkcloth</code></td>
-                <td>1950s tiki / Hawaiian barkcloth textile &mdash; stylized tropical
-                    motifs (monstera, hibiscus, fronds) on a brick-offset tile grid,
-                    drifting like fabric stirring in a breeze.</td>
-                <td>primary, accent, info, success, warning, foreground, background</td></tr>
-            <tr><td><code>breezeblock</code></td>
-                <td>Atomic-ranch decorative concrete screen &mdash; geometric apertures
-                    backlit by a raking diagonal light sweep, with a floating starburst.
-                    <code>mode</code>: <code>hourglass</code>, <code>circle</code>,
-                    <code>leaf</code>, <code>mixed</code>.</td>
-                <td>primary, accent, warning, foreground, background</td></tr>
-            <tr><td><code>lanai</code></td>
-                <td>Mid-century pool patio &mdash; a kidney pool with caustic ripples on
-                    a terrazzo deck, amoeba stepping stones, a starburst sun, and
-                    swaying palm-frond shadows.</td>
-                <td>primary, accent, info, warning, background</td></tr>
-            <tr><td><code>tiki</code></td>
-                <td>Torch-lit tiki bar at night &mdash; carved totem silhouettes flanked
-                    by flickering torches, hanging glass-float lamps, and a thatch eave
-                    over a deep tropical-night gradient.</td>
-                <td>primary, accent, info, warning, foreground, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3>Music presets</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Name</th><th>Visual</th><th>Tokens used</th></tr></thead>
-          <tbody>
-            <tr><td><code>liquid-light</code></td><td>Oil-projection dye blobs swirling on a warped field, blooming to white where they overlap</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>bluenote</code></td><td>Reid Miles jazz sleeve &mdash; duotone tone blocks, thick rules, oversized dot row; one block slides</td><td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>starburst</code></td><td>Funk ray burst &mdash; concentric counter-rotating spoke rings around a hot core</td><td>primary, accent, warning, background</td></tr>
-            <tr><td><code>vinyl</code></td><td>A spinning record &mdash; grooves and rotating label under a fixed light sheen</td><td>primary, accent, foreground, background</td></tr>
-            <tr><td><code>prism</code></td><td>A beam refracting through a prism into a six-band spectrum fan; the entry angle drifts</td><td>primary, accent, info, success, warning, foreground, background</td></tr>
-            <tr><td><code>laser-show</code></td><td>Laserium beam fans sweeping lissajous paths through haze</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>scanimate</code></td><td>Analog ident sweeps &mdash; glowing ribbon curves drawing themselves across the frame</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>airbrush</code></td><td>Prog-sleeve gatefold &mdash; soft gradient orbs, a horizon belt, and sweeping arcs adrift</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>video-feedback</code></td><td>Camera-at-monitor recursion &mdash; nested spinning frames tinted primary&rarr;accent&rarr;info</td><td>primary, accent, info, background</td></tr>
-            <tr><td><code>stage-lights</code></td><td>Par-can cones sweeping colored beams through haze over a stage edge</td><td>primary, accent, info, foreground, background</td></tr>
-            <tr><td><code>chrome</code></td><td>Airbrushed 80s logo metal &mdash; mirrored banded horizon with a traveling specular sweep</td><td>primary, background</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+                <td>primary, background</td>
+              </tr>
+              <tr>
+                <td><code>origami</code></td>
+                <td>
+                  Sheets fold into figures via hand-authored crease scripts with pseudo-3D
+                  foreshortening &mdash; guides draw first, the form folds step by step, holds, then
+                  fades.
+                </td>
+                <td>primary, accent, info, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>zen-garden</code></td>
+                <td>
+                  Raked karesansui sand &mdash; breathing rake field, stones, combed concentric
+                  furrows
+                </td>
+                <td>foreground, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Print art presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>risograph</code></td>
+                <td>
+                  Two-ink riso overprint &mdash; misregistered blobs and bars multiplying into a
+                  third color, with heavy per-ink grain and dropouts.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>plotter</code></td>
+                <td>
+                  Pen-plotter art drawing itself &mdash; flow fields, hatched discs, and contour
+                  stacks revealed stroke by stroke with a visible pen head.
+                </td>
+                <td>foreground, primary, background</td>
+              </tr>
+              <tr>
+                <td><code>linocut</code></td>
+                <td>
+                  Carved-block shapes with rough edges and gouge marks, rolling slowly like a print
+                  cylinder.
+                </td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>cyanotype</code></td>
+                <td>
+                  Botanical sun prints &mdash; fern and seed-head silhouettes glowing on
+                  Prussian-tinted primary
+                </td>
+                <td>primary, foreground</td>
+              </tr>
+              <tr>
+                <td><code>screenprint</code></td>
+                <td>
+                  Three off-register ink pulls per motif, multiplied where they overlap, one through
+                  a halftone screen
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Classic presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>alchemy</code></td>
+                <td>
+                  Engraved esoteric diagram &mdash; nested rings of invented sigils, inscribed
+                  polygons, and seeded chords etch on, each ring rotating at its own slow rate.
+                </td>
+                <td>foreground, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>bauhaus</code></td>
+                <td>
+                  Grid composition of primary geometric forms (circles, arcs, triangles, bars) at
+                  full saturation; cells slide into place and recompose on staggered cycles.
+                </td>
+                <td>primary, accent, info, success, warning, error</td>
+              </tr>
+              <tr>
+                <td><code>cave</code></td>
+                <td>
+                  Parietal cave art &mdash; charcoal animal outlines and ochre handprint stencils
+                  emerge from a mottled rock wall under a drifting torchlight vignette.
+                </td>
+                <td>foreground, warning, error, background</td>
+              </tr>
+              <tr>
+                <td><code>clockwork</code></td>
+                <td>
+                  Meshing brass gear train &mdash; ratio-locked gears with trapezoid teeth,
+                  phase-aligned at their contact points, plus a ticking escapement wheel.
+                </td>
+                <td>warning, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>damask</code></td>
+                <td>
+                  Procedural damask tile &mdash; mirrored flourish motif under a slow diagonal
+                  specular sheen.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>de-stijl</code></td>
+                <td>
+                  Mondrian composition from recursive seeded splits; rule lines periodically redraw,
+                  coloured cells cross-fade.
+                </td>
+                <td>primary, accent, info, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>hieroglyph</code></td>
+                <td>
+                  Columns of invented glyph forms (eye, bird, wave, reed, sun&hellip;) chisel in
+                  top-to-bottom on a speckled sandstone field, with an inset shadow so they read as
+                  carved.
+                </td>
+                <td>foreground, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>illuminated</code></td>
+                <td>
+                  Manuscript page &mdash; a gilded initial capital swept by an animated sheen, vine
+                  marginalia growing down the margin, and rubricated line stubs on parchment.
+                </td>
+                <td>primary, success, warning, error, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>meander</code></td>
+                <td>
+                  Greek-key fret rows scrolling in alternating directions with per-row parallax.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>morris</code></td>
+                <td>
+                  Morris-style wallpaper &mdash; mirrored acanthus/vine tiles that draw themselves
+                  on, then breathe; pastel-softened theme roles.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>art-nouveau</code></td>
+                <td>
+                  Whiplash-curve vines with leaves and buds inside a double frame; tendril tips sway
+                </td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>constructivism</code></td>
+                <td>
+                  Lissitzky field &mdash; a dominant diagonal wedge and floating planes drifting on
+                  a rotated axis
+                </td>
+                <td>primary, accent, info, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>stained-glass</code></td>
+                <td>
+                  Gothic window &mdash; seeded Voronoi panes between thick dark lead cames, each
+                  tinted by hashed theme roles, with a slow light bloom drifting behind the glass.
+                </td>
+                <td>primary, accent, info, success, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>swiss</code></td>
+                <td>
+                  International Typographic Style &mdash; a strict modular grid carries oversized
+                  numerals, thick rules, and flat colour planes sliding between seeded alignments,
+                  one element at a time.
+                </td>
+                <td>primary, accent, error, foreground, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Art presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>colorfield</code></td>
+                <td>
+                  Colour-field abstraction &mdash; stacked soft-edged rectangles of colour with
+                  grain-roughened smoothstep edges, breathing glacially over a toned ground.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>cutouts</code></td>
+                <td>
+                  Paper-cut collage &mdash; organic silhouettes (fronds, leaves, rounded stars, seed
+                  forms) drift and layer like physically placed cut paper with a slight drop offset.
+                </td>
+                <td>primary, accent, info, success, warning, error, background</td>
+              </tr>
+              <tr>
+                <td><code>drip</code></td>
+                <td>
+                  Action painting &mdash; flung-paint spline arcs and droplet spatter accumulate
+                  Pollock-style on a canvas weave; a slow whitewash veils and restarts when coverage
+                  saturates.
+                </td>
+                <td>primary, accent, info, warning, error, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>graffiti</code></td>
+                <td>
+                  Spray writing &mdash; seeded tags build dab by dab with a dense core, wide
+                  overspray, and descending drip runs on a concrete wall, fading behind newer
+                  layers.
+                </td>
+                <td>primary, accent, info, warning, error, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>mobile</code></td>
+                <td>
+                  Kinetic hanging sculpture &mdash; a seeded binary tree of wire arms and coloured
+                  paddles swinging as coupled damped pendulums, kept alive by gentle periodic
+                  impulses.
+                </td>
+                <td>primary, accent, info, warning, error, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>watercolor</code></td>
+                <td>
+                  Wet-on-wet blooms &mdash; fbm-edged splats glaze multiplicatively with a darker
+                  granulated wet-edge band bleeding into paper grain; washes grow, hold, then fade.
+                </td>
+                <td>primary, accent, info, success, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>brushstroke</code></td>
+                <td>
+                  Impasto flow field &mdash; directional ribbon strokes with painted highlights
+                  swirling around seeded centers
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>terrace</code></td>
+                <td>Classical column and urn silhouettes framing a breathing luminous sky</td>
+                <td>primary, accent, foreground</td>
+              </tr>
+              <tr>
+                <td><code>oil-sky</code></td>
+                <td>
+                  A skyscape of visible oil dabs &mdash; warm horizon rising through banded
+                  brushwork to cool zenith
+                </td>
+                <td>primary, accent</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Kitsch presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>crochet</code></td>
+                <td>
+                  Granny-square afghan &mdash; squares crochet themselves stitch by stitch, round by
+                  round, yarn colour rotating through theme roles in the classic scrap-yarn look.
+                </td>
+                <td>primary, accent, info, success, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>disco</code></td>
+                <td>
+                  Mirror-ball light &mdash; a perspective grid of parallelogram light cells sweeps a
+                  dark floor-and-wall space, tint-cycling through theme roles with occasional
+                  lens-flare pings.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>domino</code></td>
+                <td>
+                  Domino chains seen from above &mdash; a toppling wave travels seeded curved paths,
+                  tiles laying flat over their leading edges while the chain quietly re-stands
+                  behind the front.
+                </td>
+                <td>primary, accent, info, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>neon-sign</code></td>
+                <td>
+                  Roadside neon &mdash; tube-outline shapes and a tube-script word
+                  (&ldquo;OPEN&rdquo;, or set <code>text</code>) with bulb-chase dots, per-segment
+                  flicker, and pre-rendered glow.
+                </td>
+                <td>primary, accent, info, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>pegboard</code></td>
+                <td>
+                  Backlit toy peg board &mdash; glowing translucent pegs fill in seeded pictures
+                  (star, heart, rocket, rainbow) peg by peg, hold lit, then clear for the next.
+                </td>
+                <td>primary, accent, info, success, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>quilt</code></td>
+                <td>
+                  Patchwork &mdash; classic quilt blocks (log cabin, flying geese, pinwheel,
+                  nine-patch) assemble patch by patch under a fabric-grain overlay, occasionally
+                  re-piecing themselves.
+                </td>
+                <td>primary, accent, info, warning, error, foreground, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Science presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>phyllotaxis</code></td>
+                <td>
+                  Golden-angle spiral (Vogel model) &mdash; dots emitted from the centre age
+                  outward, colour cycling by ring band.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>boids</code></td>
+                <td>
+                  Reynolds flocking &mdash; tapered streaks steered by separation / alignment /
+                  cohesion, coloured by speed.
+                </td>
+                <td>primary, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>helix</code></td>
+                <td>
+                  DNA-style double helix &mdash; depth-sorted strands and base-pair rungs scrolling
+                  along the axis.
+                </td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>mycelium</code></td>
+                <td>
+                  Branching filament growth accumulating into a network; restarts with a fresh
+                  palette rotation when coverage saturates.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>reaction-diffusion</code></td>
+                <td>
+                  Gray-Scott reaction-diffusion; <code>density</code> selects a spots / stripes /
+                  coral / waves regime.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>chladni</code></td>
+                <td>
+                  Vibrating Chladni plate &mdash; sand gathers on nodal lines as the mode pair
+                  cross-fades.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>orbital</code></td>
+                <td>
+                  Planetary system &mdash; satellites ride seeded ellipses with true Keplerian speed
+                  variation, trailing faded orbit arcs; occasional Hohmann-style transfers animate
+                  between orbits.
+                </td>
+                <td>primary, accent, info, success, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>slime-mold</code></td>
+                <td>
+                  Physarum agents depositing and chasing a diffusing trail (needs renderable float
+                  textures; degrades to a frozen field).
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Tech presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>circuit</code></td>
+                <td>
+                  PCB traces routed on a 45&deg; grid with pads, vias, and IC footprints; bright
+                  signal pulses travel the traces.
+                </td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>blueprint</code></td>
+                <td>
+                  Drafting on blue grid paper &mdash; outlines, centrelines, and dimension lines
+                  draw on, hold, then fade.
+                </td>
+                <td>primary, info, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>radar</code></td>
+                <td>
+                  PPI radar scope &mdash; rotating sweep with phosphor persistence; seeded blips
+                  flare and fade.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>gyroid</code></td>
+                <td>
+                  Raymarched gyroid minimal surface slowly rotating through the lattice, lit with
+                  two theme colours against a bg fog.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>lidar</code></td>
+                <td>
+                  Terrain point cloud revealed by a scanning plane; points flare on the scan line
+                  and stay dimly lit behind it.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>oscilloscope</code></td>
+                <td>Lissajous / waveform traces with glowing phosphor-persistence trails.</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>spectrum</code></td>
+                <td>
+                  Spectrum analyzer &mdash; a live FFT bar strip feeds a scrolling time-frequency
+                  waterfall below; magnitudes ramp through bg&rarr;primary&rarr;accent&rarr;warning.
+                </td>
+                <td>primary, accent, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>hologram</code></td>
+                <td>
+                  Projected wireframe &mdash; an icosahedron and a torus knot alternate rotating
+                  above a projector glow, drawn as scan-lined emissive lines with a chromatic ghost
+                  and occasional frame tears.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>neon-city</code></td>
+                <td>
+                  Night skyline over wet asphalt &mdash; lit-window towers and saturated neon signs
+                  mirrored in a rain-slick, streak-blurred, ripple-perturbed street.
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>swarm</code></td>
+                <td>
+                  Drone light show &mdash; hundreds of glowing points fly formation transitions
+                  (scatter, ring, lattice, figures); lines of <code>text</code> rasterize into
+                  formations.
+                </td>
+                <td>primary, accent, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Nature presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>komorebi</code></td>
+                <td>
+                  Dappled late-afternoon light through swaying trees &mdash; warm sunflecks drift
+                  and breathe over a layered foliage shadow, with long raking light shafts.
+                </td>
+                <td>success, warning, accent, background</td>
+              </tr>
+              <tr>
+                <td><code>leaves</code></td>
+                <td>
+                  Autumn leaves in three shapes tumbling down swaying paths, leaning together under
+                  a slow gust
+                </td>
+                <td>primary, accent, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>migration</code></td>
+                <td>
+                  Birds migrating high in an autumn sky &mdash; undulating V-skeins at parallax
+                  altitudes, lead birds trading off, far skeins smaller and paler.
+                </td>
+                <td>accent, info, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>palms</code></td>
+                <td>
+                  Palm trees swaying against a tropical sky, distant palms hazier (parallax).
+                  <code>mode</code>: <code>silhouette</code> (default, sunset),
+                  <code>lit</code> (daytime).
+                </td>
+                <td>primary, accent, info, success, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>reeds</code></td>
+                <td>
+                  Cattails and tall grasses swaying as travelling wind gusts sweep across, in
+                  2&ndash;3 depth layers with pastel-softened backs.
+                </td>
+                <td>primary, info, success, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>lily-pond</code></td>
+                <td>
+                  Monet water &mdash; vertical reflection smears, drifting pads, slow ripple rings
+                </td>
+                <td>primary, accent, info, success, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>meadow</code></td>
+                <td>Dusk grassland in three swaying parallax layers, seed heads catching light</td>
+                <td>primary, accent, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>tide</code></td>
+                <td>
+                  A breathing shoreline &mdash; translucent wave sheets advancing over sand with
+                  foam edges
+                </td>
+                <td>info, warning, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Lounge presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>barkcloth</code></td>
+                <td>
+                  1950s tiki / Hawaiian barkcloth textile &mdash; stylized tropical motifs
+                  (monstera, hibiscus, fronds) on a brick-offset tile grid, drifting like fabric
+                  stirring in a breeze.
+                </td>
+                <td>primary, accent, info, success, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>breezeblock</code></td>
+                <td>
+                  Atomic-ranch decorative concrete screen &mdash; geometric apertures backlit by a
+                  raking diagonal light sweep, with a floating starburst. <code>mode</code>:
+                  <code>hourglass</code>, <code>circle</code>, <code>leaf</code>,
+                  <code>mixed</code>.
+                </td>
+                <td>primary, accent, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>lanai</code></td>
+                <td>
+                  Mid-century pool patio &mdash; a kidney pool with caustic ripples on a terrazzo
+                  deck, amoeba stepping stones, a starburst sun, and swaying palm-frond shadows.
+                </td>
+                <td>primary, accent, info, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>tiki</code></td>
+                <td>
+                  Torch-lit tiki bar at night &mdash; carved totem silhouettes flanked by flickering
+                  torches, hanging glass-float lamps, and a thatch eave over a deep tropical-night
+                  gradient.
+                </td>
+                <td>primary, accent, info, warning, foreground, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Music presets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visual</th>
+                <th>Tokens used</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>liquid-light</code></td>
+                <td>
+                  Oil-projection dye blobs swirling on a warped field, blooming to white where they
+                  overlap
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>bluenote</code></td>
+                <td>
+                  Reid Miles jazz sleeve &mdash; duotone tone blocks, thick rules, oversized dot
+                  row; one block slides
+                </td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>starburst</code></td>
+                <td>
+                  Funk ray burst &mdash; concentric counter-rotating spoke rings around a hot core
+                </td>
+                <td>primary, accent, warning, background</td>
+              </tr>
+              <tr>
+                <td><code>vinyl</code></td>
+                <td>
+                  A spinning record &mdash; grooves and rotating label under a fixed light sheen
+                </td>
+                <td>primary, accent, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>prism</code></td>
+                <td>
+                  A beam refracting through a prism into a six-band spectrum fan; the entry angle
+                  drifts
+                </td>
+                <td>primary, accent, info, success, warning, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>laser-show</code></td>
+                <td>Laserium beam fans sweeping lissajous paths through haze</td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>scanimate</code></td>
+                <td>
+                  Analog ident sweeps &mdash; glowing ribbon curves drawing themselves across the
+                  frame
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>airbrush</code></td>
+                <td>
+                  Prog-sleeve gatefold &mdash; soft gradient orbs, a horizon belt, and sweeping arcs
+                  adrift
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>video-feedback</code></td>
+                <td>
+                  Camera-at-monitor recursion &mdash; nested spinning frames tinted
+                  primary&rarr;accent&rarr;info
+                </td>
+                <td>primary, accent, info, background</td>
+              </tr>
+              <tr>
+                <td><code>stage-lights</code></td>
+                <td>Par-can cones sweeping colored beams through haze over a stage edge</td>
+                <td>primary, accent, info, foreground, background</td>
+              </tr>
+              <tr>
+                <td><code>chrome</code></td>
+                <td>
+                  Airbrushed 80s logo metal &mdash; mirrored banded horizon with a traveling
+                  specular sweep
+                </td>
+                <td>primary, background</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-    <!-- 9. Reduced motion ------------------------------------- -->
-    <section id="reduced-motion">
-      <h2>Reduced motion</h2>
-      <p>
-        <code>prefers-reduced-motion: reduce</code> triggers the same code
-        path as <code>motion="reduce"</code> on the element:
-      </p>
-      <ol class="ordered">
-        <li>If nothing is renderable (no preset loaded, a failed load, or a lost context) &rarr; show the <code>fallback</code> slot, regardless of motion settings.</li>
-        <li>Else if the preset is css3d &rarr; keep the paused scene visible; the slot never swaps in.</li>
-        <li>Else if the preset declares a <code>staticFrame()</code> method &rarr; render one still frame and halt the RAF loop. The static frame wins even when the <code>fallback</code> slot has content.</li>
-        <li>Else &rarr; hide the canvas and show the <code>fallback</code> slot.</li>
-      </ol>
-      <p>Every canvas preset ships <code>staticFrame()</code>; css3d presets show their paused scene instead.</p>
-    </section>
+      <!-- 9. Reduced motion ------------------------------------- -->
+      <section id="reduced-motion">
+        <h2>Reduced motion</h2>
+        <p>
+          <code>prefers-reduced-motion: reduce</code> triggers the same code path as
+          <code>motion="reduce"</code> on the element:
+        </p>
+        <ol class="ordered">
+          <li>
+            If nothing is renderable (no preset loaded, a failed load, or a lost context) &rarr;
+            show the <code>fallback</code> slot, regardless of motion settings.
+          </li>
+          <li>
+            Else if the preset is css3d &rarr; keep the paused scene visible; the slot never swaps
+            in.
+          </li>
+          <li>
+            Else if the preset declares a <code>staticFrame()</code> method &rarr; render one still
+            frame and halt the RAF loop. The static frame wins even when the
+            <code>fallback</code> slot has content.
+          </li>
+          <li>Else &rarr; hide the canvas and show the <code>fallback</code> slot.</li>
+        </ol>
+        <p>
+          Every canvas preset ships <code>staticFrame()</code>; css3d presets show their paused
+          scene instead.
+        </p>
+      </section>
 
-    <!-- 10. Performance --------------------------------------- -->
-    <section id="performance">
-      <h2>Performance</h2>
-      <ul class="checks">
-        <li>Default <code>pixel-ratio</code> clamps to <code>min(devicePixelRatio, 2)</code>. 5K monitors don't pay the full GPU bill by default.</li>
-        <li>Frame budget target: under 4&thinsp;ms / frame on an M1-class device at 1080p for any v1 preset.</li>
-        <li>Particle counts: preset-specific caps of ~500 (med), ~1500 (high), ~150 (low).</li>
-        <li>Each element runs its own RAF loop &mdash; auto-paused when off-screen, when the tab is hidden, when battery is below 20% and unplugged, and on <code>prefers-reduced-motion</code>.</li>
-        <li>Each preset is dynamically imported on first use, so a page that uses one preset doesn't ship the others.</li>
-      </ul>
+      <!-- 10. Performance --------------------------------------- -->
+      <section id="performance">
+        <h2>Performance</h2>
+        <ul class="checks">
+          <li>
+            Default <code>pixel-ratio</code> clamps to <code>min(devicePixelRatio, 2)</code>. 5K
+            monitors don't pay the full GPU bill by default.
+          </li>
+          <li>
+            Frame budget target: under 4&thinsp;ms / frame on an M1-class device at 1080p for any v1
+            preset.
+          </li>
+          <li>Particle counts: preset-specific caps of ~500 (med), ~1500 (high), ~150 (low).</li>
+          <li>
+            Each element runs its own RAF loop &mdash; auto-paused when off-screen, when the tab is
+            hidden, when battery is below 20% and unplugged, and on
+            <code>prefers-reduced-motion</code>.
+          </li>
+          <li>
+            Each preset is dynamically imported on first use, so a page that uses one preset doesn't
+            ship the others.
+          </li>
+        </ul>
 
-      <h3>Many instances on one page</h3>
-      <p>
-        Browsers cap simultaneous <strong>WebGL</strong> contexts (commonly ~16). Each
-        shader-preset <code>&lt;bg-wc&gt;</code> holds one context, so a page that mounts
-        more than that at once (a full catalog grid, a poster wall) will see the
-        browser drop the oldest contexts. Canvas2D presets are not affected.
-      </p>
-      <p>Two ways to stay under the cap:</p>
-      <ul class="checks">
-        <li><strong>Unmount what's not shown.</strong> Removing a <code>&lt;bg-wc&gt;</code> from the DOM frees its context immediately &mdash; <code>disconnectedCallback</code> calls <code>WEBGL_lose_context</code>. Group presets behind tabs and mount only the active group (see the <a href="./index.html">gallery</a>); switching tabs releases the old contexts before the new ones allocate.</li>
-        <li><strong>Group the catalog.</strong> The registry tags each preset with a <code>group</code>; <code>listGroups()</code> returns them as <code>{ id, label, presets }</code> so tooling can build a grouped UI without loading any preset modules.</li>
-      </ul>
-      <code-block theme="dark" language="javascript">import { listGroups } from '@profpowell/bg-wc/presets/index';
+        <h3>Many instances on one page</h3>
+        <p>
+          Browsers cap simultaneous <strong>WebGL</strong> contexts (commonly ~16). Each
+          shader-preset <code>&lt;bg-wc&gt;</code> holds one context, so a page that mounts more
+          than that at once (a full catalog grid, a poster wall) will see the browser drop the
+          oldest contexts. Canvas2D presets are not affected.
+        </p>
+        <p>Two ways to stay under the cap:</p>
+        <ul class="checks">
+          <li>
+            <strong>Unmount what's not shown.</strong> Removing a <code>&lt;bg-wc&gt;</code> from
+            the DOM frees its context immediately &mdash; <code>disconnectedCallback</code> calls
+            <code>WEBGL_lose_context</code>. Group presets behind tabs and mount only the active
+            group (see the <a href="./index.html">gallery</a>); switching tabs releases the old
+            contexts before the new ones allocate.
+          </li>
+          <li>
+            <strong>Group the catalog.</strong> The registry tags each preset with a
+            <code>group</code>; <code>listGroups()</code> returns them as
+            <code>{ id, label, presets }</code> so tooling can build a grouped UI without loading
+            any preset modules.
+          </li>
+        </ul>
+        <code-block theme="dark" language="javascript"
+          >import { listGroups } from '@profpowell/bg-wc/presets/index'; for (const { id, label,
+          presets } of listGroups()) { console.log(label, presets.map(p =&gt; p.name)); } //
+          Gradients
+          ['ribbons','flowlines','mesh-gradient','waves','plasma','rainbow','shine','conic'] //
+          Geometric
+          ['mosaic','supergraphics','warp','topology','cells','kaleidoscope','doodles','scandi', /*
+          … */] // Texture ['dither','halftone','grain','paper-grain','stipple'] // …</code-block
+        >
+      </section>
 
-for (const { id, label, presets } of listGroups()) {
-  console.log(label, presets.map(p =&gt; p.name));
-}
-// Gradients   ['ribbons','flowlines','mesh-gradient','waves','plasma','rainbow','shine','conic']
-// Geometric   ['mosaic','supergraphics','warp','topology','cells','kaleidoscope','doodles','scandi', /* … */]
-// Texture     ['dither','halftone','grain','paper-grain','stipple']
-// …</code-block>
-    </section>
+      <!-- 11. Recipes ------------------------------------------ -->
+      <section id="recipes">
+        <h2>Recipes</h2>
 
-    <!-- 11. Recipes ------------------------------------------ -->
-    <section id="recipes">
-      <h2>Recipes</h2>
+        <h3>Halftone overlay on flat shapes</h3>
+        <code-block theme="dark" language="html"
+          >&lt;div class="poster"&gt; &lt;svg class="shapes"&gt;...&lt;/svg&gt; &lt;bg-wc
+          preset="noise" intensity="0.7" style="position:absolute; inset:0; mix-blend-mode:multiply;
+          opacity:0.18; --bg-wc-color-fg:#000; --bg-wc-color-bg:#fff;"&gt; &lt;/bg-wc&gt;
+          &lt;/div&gt;</code-block
+        >
 
-      <h3>Halftone overlay on flat shapes</h3>
-      <code-block theme="dark" language="html">&lt;div class="poster"&gt;
-  &lt;svg class="shapes"&gt;...&lt;/svg&gt;
-  &lt;bg-wc preset="noise" intensity="0.7"
-         style="position:absolute; inset:0;
-                mix-blend-mode:multiply; opacity:0.18;
-                --bg-wc-color-fg:#000; --bg-wc-color-bg:#fff;"&gt;
-  &lt;/bg-wc&gt;
-&lt;/div&gt;</code-block>
+        <h3>Two layered presets (aurora behind stars)</h3>
+        <code-block theme="dark" language="html"
+          >&lt;div class="sky"&gt; &lt;bg-wc preset="aurora"&gt;&lt;/bg-wc&gt; &lt;bg-wc
+          preset="stars" style="--bg-wc-color-bg: transparent;"&gt;&lt;/bg-wc&gt;
+          &lt;/div&gt;</code-block
+        >
+        <p class="muted">
+          The top layer must declare a transparent background or its Canvas2D
+          <code>clearRect</code> + bg-fill will mask the layer below.
+        </p>
 
-      <h3>Two layered presets (aurora behind stars)</h3>
-      <code-block theme="dark" language="html">&lt;div class="sky"&gt;
-  &lt;bg-wc preset="aurora"&gt;&lt;/bg-wc&gt;
-  &lt;bg-wc preset="stars"
-         style="--bg-wc-color-bg: transparent;"&gt;&lt;/bg-wc&gt;
-&lt;/div&gt;</code-block>
-      <p class="muted">
-        The top layer must declare a transparent background or its
-        Canvas2D <code>clearRect</code> + bg-fill will mask the layer below.
-      </p>
+        <h3>Section background via data-background</h3>
+        <code-block theme="dark" language="html"
+          >&lt;section data-background="caustics" data-background-intensity="0.8"
+          data-background-density="0.45" data-background-speed="0.55"&gt; &lt;h1&gt;Six metres
+          down.&lt;/h1&gt; &lt;/section&gt;</code-block
+        >
 
-      <h3>Section background via data-background</h3>
-      <code-block theme="dark" language="html">&lt;section
-  data-background="caustics"
-  data-background-intensity="0.8"
-  data-background-density="0.45"
-  data-background-speed="0.55"&gt;
-  &lt;h1&gt;Six metres down.&lt;/h1&gt;
-&lt;/section&gt;</code-block>
+        <h3>Hot-swap presets at runtime</h3>
+        <code-block theme="dark" language="javascript"
+          >el.setAttribute('preset', 'plasma'); await el.ready; // resolves once the new preset's
+          first frame renders console.log(el.preset); // 'plasma'</code-block
+        >
 
-      <h3>Hot-swap presets at runtime</h3>
-      <code-block theme="dark" language="javascript">el.setAttribute('preset', 'plasma');
-await el.ready;          // resolves once the new preset's first frame renders
-console.log(el.preset);  // 'plasma'</code-block>
+        <h3>Snapshot to file</h3>
+        <code-block theme="dark" language="javascript"
+          >const blob = await el.snapshot(); const a = document.createElement('a'); a.href =
+          URL.createObjectURL(blob); a.download = `${el.preset}.png`; a.click();</code-block
+        >
 
-      <h3>Snapshot to file</h3>
-      <code-block theme="dark" language="javascript">const blob = await el.snapshot();
-const a = document.createElement('a');
-a.href = URL.createObjectURL(blob);
-a.download = `${el.preset}.png`;
-a.click();</code-block>
+        <h3>Conic spotlight border</h3>
+        <p>
+          Put a <code>conic</code> behind a panel inset by a hair; only the rim shows, so the border
+          sweeps with light. No <code>@property</code> shim required.
+        </p>
+        <code-block theme="dark" language="html"
+          >&lt;div class="glow-card"&gt; &lt;bg-wc preset="conic" speed="1.6"&gt;&lt;/bg-wc&gt;
+          &lt;div class="inner"&gt;Card content&lt;/div&gt; &lt;/div&gt; &lt;style&gt; .glow-card {
+          position: relative; border-radius: 18px; padding: 1.5px; overflow: hidden; isolation:
+          isolate; } .glow-card &gt; bg-wc { position: absolute; inset: -60%; z-index: 0; } /*
+          oversize so corners stay covered */ .glow-card .inner { position: relative; z-index: 1;
+          background: var(--surface); border-radius: 16.5px; padding: 28px; }
+          &lt;/style&gt;</code-block
+        >
 
-      <h3>Conic spotlight border</h3>
-      <p>Put a <code>conic</code> behind a panel inset by a hair; only the rim shows, so the border sweeps with light. No <code>@property</code> shim required.</p>
-      <code-block theme="dark" language="html">&lt;div class="glow-card"&gt;
-  &lt;bg-wc preset="conic" speed="1.6"&gt;&lt;/bg-wc&gt;
-  &lt;div class="inner"&gt;Card content&lt;/div&gt;
-&lt;/div&gt;
+        <h3>Scroll-linked background</h3>
+        <p>
+          The component re-reads <code>--bg-wc-intensity</code> / <code>--bg-wc-speed</code> (and
+          color tokens) every frame, so driving them from a scroll handler is all it takes.
+        </p>
+        <code-block theme="dark" language="javascript"
+          >const hero = document.querySelector('bg-wc'); addEventListener('scroll', () =&gt; { const
+          p = Math.min(1, scrollY / innerHeight); hero.style.setProperty('--bg-wc-intensity', (0.45
+          + p * 0.5).toFixed(3)); hero.style.filter = `hue-rotate(${Math.round(p * 80)}deg)`; }, {
+          passive: true });</code-block
+        >
 
-&lt;style&gt;
-.glow-card { position: relative; border-radius: 18px; padding: 1.5px; overflow: hidden; isolation: isolate; }
-.glow-card &gt; bg-wc { position: absolute; inset: -60%; z-index: 0; } /* oversize so corners stay covered */
-.glow-card .inner { position: relative; z-index: 1; background: var(--surface); border-radius: 16.5px; padding: 28px; }
-&lt;/style&gt;</code-block>
+        <h3>Whole-page film grain</h3>
+        <code-block theme="dark" language="html"
+          >&lt;bg-wc preset="grain" intensity="0.5" style="position:fixed; inset:0; z-index:100;
+          pointer-events:none; mix-blend-mode:soft-light; opacity:0.6;"&gt;
+          &lt;/bg-wc&gt;</code-block
+        >
+      </section>
 
-      <h3>Scroll-linked background</h3>
-      <p>The component re-reads <code>--bg-wc-intensity</code> / <code>--bg-wc-speed</code> (and color tokens) every frame, so driving them from a scroll handler is all it takes.</p>
-      <code-block theme="dark" language="javascript">const hero = document.querySelector('bg-wc');
-addEventListener('scroll', () =&gt; {
-  const p = Math.min(1, scrollY / innerHeight);
-  hero.style.setProperty('--bg-wc-intensity', (0.45 + p * 0.5).toFixed(3));
-  hero.style.filter = `hue-rotate(${Math.round(p * 80)}deg)`;
-}, { passive: true });</code-block>
+      <!-- 12. Browser support ----------------------------------- -->
+      <section id="support">
+        <h2>Browser support</h2>
+        <p>
+          Targets Chromium, Firefox, and Safari at current stable versions. Requires WebGL1
+          (universally available) for shader presets; Canvas2D presets work anywhere a custom
+          element is registered.
+        </p>
+        <p>Optional features and their graceful degradations:</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Fallback if unavailable</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>WebGL2</code></td>
+                <td>WebGL1 context attempted automatically.</td>
+              </tr>
+              <tr>
+                <td><code>OffscreenCanvas</code></td>
+                <td>Main-thread rendering. No behavioral change.</td>
+              </tr>
+              <tr>
+                <td><code>navigator.getBattery()</code></td>
+                <td>Battery-aware pause is skipped.</td>
+              </tr>
+              <tr>
+                <td><code>backdrop-filter</code></td>
+                <td>Glass effects in some demos lose blur; layout intact.</td>
+              </tr>
+              <tr>
+                <td><code>ElementInternals.states</code></td>
+                <td><code>:focus-within</code> child-focus state is skipped.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
 
-      <h3>Whole-page film grain</h3>
-      <code-block theme="dark" language="html">&lt;bg-wc preset="grain" intensity="0.5"
-       style="position:fixed; inset:0; z-index:100;
-              pointer-events:none; mix-blend-mode:soft-light; opacity:0.6;"&gt;
-&lt;/bg-wc&gt;</code-block>
-    </section>
-
-    <!-- 12. Browser support ----------------------------------- -->
-    <section id="support">
-      <h2>Browser support</h2>
-      <p>
-        Targets Chromium, Firefox, and Safari at current stable versions.
-        Requires WebGL1 (universally available) for shader presets;
-        Canvas2D presets work anywhere a custom element is registered.
-      </p>
-      <p>Optional features and their graceful degradations:</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Feature</th><th>Fallback if unavailable</th></tr></thead>
-          <tbody>
-            <tr><td><code>WebGL2</code></td><td>WebGL1 context attempted automatically.</td></tr>
-            <tr><td><code>OffscreenCanvas</code></td><td>Main-thread rendering. No behavioral change.</td></tr>
-            <tr><td><code>navigator.getBattery()</code></td><td>Battery-aware pause is skipped.</td></tr>
-            <tr><td><code>backdrop-filter</code></td><td>Glass effects in some demos lose blur; layout intact.</td></tr>
-            <tr><td><code>ElementInternals.states</code></td><td><code>:focus-within</code> child-focus state is skipped.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Canonical VB-ecosystem footer — see docs/superpowers/specs/2026-06-10-vb-site-footer-pattern-design.md -->
-  <footer class="minimal">
-    <a href="./index.html">
-      <brand-mark data-stack>
-        &lt;bg-wc&gt;
-        <em>Theme-aware animated backgrounds for any element</em>
-      </brand-mark>
-    </a>
-    <site-legal>
-      <span>&copy; 2026 Thomas A. Powell</span>
-      <span>MIT License</span>
-      <span>Part of the <a href="https://vanilla-breeze.com">Vanilla Breeze</a> ecosystem</span>
-    </site-legal>
-    <nav aria-label="Footer links">
-      <a href="https://github.com/ProfPowell/bg-wc">
-        <icon-wc name="github" size="sm"></icon-wc> GitHub
+    <!-- Canonical VB-ecosystem footer — see docs/superpowers/specs/2026-06-10-vb-site-footer-pattern-design.md -->
+    <footer class="minimal">
+      <a href="./index.html">
+        <brand-mark data-stack>
+          &lt;bg-wc&gt;
+          <em>Theme-aware animated backgrounds for any element</em>
+        </brand-mark>
       </a>
-    </nav>
-  </footer>
+      <site-legal>
+        <span>&copy; 2026 Thomas A. Powell</span>
+        <span>MIT License</span>
+        <span>Part of the <a href="https://vanilla-breeze.com">Vanilla Breeze</a> ecosystem</span>
+      </site-legal>
+      <nav aria-label="Footer links">
+        <a href="https://github.com/ProfPowell/bg-wc">
+          <icon-wc name="github" size="sm"></icon-wc> GitHub
+        </a>
+      </nav>
+    </footer>
 
-  <!-- Single docs entry module: registers vanilla-breeze + the code-block
+    <!-- Single docs entry module: registers vanilla-breeze + the code-block
        component (which renders the snippets above) and imports the data-background
        binder, which auto-binds the hero's mesh-gradient and the aurora
        section above. The code-block:not(:defined) CSS keeps snippets legible
        until the component registers. -->
-  <script type="module" src="./docs-entry.js"></script>
-</body>
+    <script type="module" src="./docs-entry.js"></script>
+  </body>
 </html>

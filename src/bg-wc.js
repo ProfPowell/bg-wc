@@ -385,7 +385,7 @@ class BgWc extends HTMLElement {
       loaded = await loadPreset(name);
     } catch (err) {
       if (token !== this.#loadingToken) return;
-      this.#failLoad('load', err);
+      this.#fail('load', err);
       return;
     }
     if (token !== this.#loadingToken) return;
@@ -407,7 +407,7 @@ class BgWc extends HTMLElement {
         if (!ctx) throw new Error(`${loaded.renderer} context unavailable`);
       }
     } catch (err) {
-      this.#failLoad('init', err);
+      this.#fail('init', err);
       return;
     }
     this.#canvas.replaceWith(layer);
@@ -429,7 +429,7 @@ class BgWc extends HTMLElement {
         pxScale: this.#computeDpr(),
       });
     } catch (err) {
-      this.#failLoad('init', err);
+      this.#fail('init', err);
       return;
     }
 
@@ -444,7 +444,8 @@ class BgWc extends HTMLElement {
     try {
       this.#instance.frame?.(0, this.#readParams());
     } catch (err) {
-      this.#emit('bg-wc:error', { phase: 'runtime', error: err });
+      this.#fail('runtime', err);
+      return;
     }
 
     this.#emit('bg-wc:ready', { preset: name, renderer: loaded.renderer });
@@ -455,12 +456,20 @@ class BgWc extends HTMLElement {
     this.#evalPlay();
   }
 
-  // Every #loadCurrentPreset failure must leave the element fully inert:
-  // rAF cancelled (a previous instance may still be looping — or, after
-  // #disposeInstance ran, #tick would spin empty forever), instance disposed
-  // so a later #updateFallbackVisibility can't resurface it, fallback shown,
-  // and `ready` settled so awaiters don't hang.
-  #failLoad(phase, err) {
+  // ERROR DOCTRINE (gl-wc-zy39): every failure — load, init, or a throw from
+  // frame()/staticFrame() at runtime — leaves the element fully INERT. There
+  // is no retry. A preset's frame is a deterministic function of (t, params),
+  // so a throw would recur on every resurrection and each resurrection would
+  // emit another bg-wc:error; the one transient failure that matters (WebGL
+  // context loss) has its own explicit restore path (#onCtxRestored).
+  //
+  // Inert means: rAF cancelled (a previous instance may still be looping — or,
+  // after #disposeInstance ran, #tick would spin empty forever), instance
+  // disposed so no later #updateFallbackVisibility / #evalPlay can resurface or
+  // restart it, fallback shown, exactly one bg-wc:error, and `ready` settled so
+  // awaiters don't hang. Recovery is a preset change (attribute or property),
+  // which builds a fresh instance. Documented in docs/api.html (Events).
+  #fail(phase, err) {
     cancelAnimationFrame(this.#rafId);
     this.#rafId = 0;
     this.#disposeInstance();
@@ -645,7 +654,7 @@ class BgWc extends HTMLElement {
         try {
           this.#instance.staticFrame(this.#readParams());
         } catch (err) {
-          this.#emit('bg-wc:error', { phase: 'runtime', error: err });
+          this.#fail('runtime', err);
         }
       }
     }
@@ -663,11 +672,9 @@ class BgWc extends HTMLElement {
     try {
       this.#instance?.frame?.(this.#timeS, params);
     } catch (err) {
-      // Stop the loop and do NOT reschedule — surface the failure instead of
-      // firing more frames on a broken instance.
-      this.#rafId = 0;
-      this.setAttribute('data-fallback', '');
-      this.#emit('bg-wc:error', { phase: 'runtime', error: err });
+      // Inert, not retried — see the doctrine on #fail. (#fail cancels the
+      // already-fired rAF id harmlessly and does not reschedule.)
+      this.#fail('runtime', err);
       return;
     }
     // Schedule the next frame only after this one succeeded, so an error path
