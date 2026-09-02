@@ -6,7 +6,7 @@
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss as rgb, rgbaCss as rgba } from '../renderer/tokens.js';
 
-const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
+import { PAUSE_RULE } from '../renderer/css3d.js';
 
 const STYLE = `
   .stage { perspective: 40em; overflow: hidden; display: grid; place-items: center; }

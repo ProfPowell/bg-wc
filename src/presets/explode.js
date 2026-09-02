@@ -3,7 +3,7 @@
 // periodically bursts outward and reassembles. Ported from the explode-cube
 // reference pen (docs/superpowers/plans/found-demos/explode-cube/explode-cube.css).
 
-const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
+import { PAUSE_RULE } from '../renderer/css3d.js';
 
 import { rgbCss as rgb } from '../renderer/tokens.js';
 
@@ -32,10 +32,11 @@ const STYLE = `
   .particle { position: absolute; transform: rotateX(90deg); transform-style: preserve-3d; }
   .particle::before { content: ''; position: absolute; inset: -1em;
     background-image: radial-gradient(var(--ex-color, #fff), transparent 60%);
-    /* --ex-delay phase-shifts the loop so a paused (reduced-motion) frame lands
+    /* --ex-dfrac phase-shifts the loop (as a fraction of the cycle, so it
+       survives speed rescaling) so a paused (reduced-motion) frame lands
        mid-burst rather than on the degenerate 0% (unexploded) frame. */
-    animation: explodeBurst var(--ex-cycle, 6s) cubic-bezier(0.25,0,0.65,1.25) var(--ex-delay, -5.4s) infinite,
-               explodeFade var(--ex-cycle, 6s) linear var(--ex-delay, -5.4s) infinite; }
+    animation: explodeBurst var(--ex-cycle, 6s) cubic-bezier(0.25,0,0.65,1.25) calc(var(--ex-cycle, 6s) * var(--ex-dfrac, -0.9)) infinite,
+               explodeFade var(--ex-cycle, 6s) linear calc(var(--ex-cycle, 6s) * var(--ex-dfrac, -0.9)) infinite; }
   @keyframes explodeRotate { to { transform: rotateY(360deg); } }
   @keyframes explodeBurst {
     0%, 40%, 100% { transform: translate(0, 0); animation-timing-function: cubic-bezier(0.25,-0.25,0,1); }

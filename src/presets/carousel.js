@@ -8,14 +8,14 @@ import { mulberry32 } from '../util/pause.js';
 import { rgbCss as rgb } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
 
-const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
+import { PAUSE_RULE } from '../renderer/css3d.js';
 
 const STYLE = `
   .stage { perspective: 36em; overflow: hidden; display: grid; place-items: center; }
   .tilt { transform-style: preserve-3d;
-    animation: caPrecess var(--ca-predur, 41s) ease-in-out -12s infinite alternate; }
+    animation: caPrecess var(--ca-predur, 41s) ease-in-out calc(var(--ca-predur, 41s) * -0.2927) infinite alternate; }
   .ring { position: relative; transform-style: preserve-3d;
-    animation: caSpin var(--ca-dur, 60s) linear -21s infinite; }
+    animation: caSpin var(--ca-dur, 60s) linear calc(var(--ca-dur, 60s) * -0.35) infinite; }
   .card { position: absolute; width: 6em; height: 9em; left: -3em; top: -4.5em;
     border-radius: 0.4em; opacity: var(--ca-op, 0.92);
     background-image: linear-gradient(160deg, var(--a), var(--b)); }

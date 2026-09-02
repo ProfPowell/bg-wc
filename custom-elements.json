@@ -5423,11 +5423,24 @@
       "path": "src/renderer/css3d.js",
       "declarations": [
         {
+          "kind": "variable",
+          "name": "PAUSE_RULE",
+          "default": "`.stage[data-playing=\"0\"] * { animation-play-state: paused !important; }`"
+        },
+        {
           "kind": "function",
           "name": "createCSS3DContext"
         }
       ],
       "exports": [
+        {
+          "kind": "js",
+          "name": "PAUSE_RULE",
+          "declaration": {
+            "name": "PAUSE_RULE",
+            "module": "src/renderer/css3d.js"
+          }
+        },
         {
           "kind": "js",
           "name": "createCSS3DContext",

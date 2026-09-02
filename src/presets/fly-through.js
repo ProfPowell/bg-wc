@@ -6,7 +6,7 @@
 // Defaults reproduce the reference pen
 // (docs/superpowers/plans/found-demos/fly-through/fly.css).
 
-const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
+import { PAUSE_RULE } from '../renderer/css3d.js';
 
 const PROFILES = ['ring', 'corridor', 'hex', 'tube'];
 const PATHS = ['straight', 'helix', 'wave'];
@@ -309,7 +309,7 @@ function styleFor() {
     .stage .scene { position: relative; transform-style: preserve-3d;
       animation-name: var(--fly-anim, scene);
       animation-duration: var(--fly-dur, 48s);
-      animation-delay: var(--fly-delay, 0s);
+      animation-delay: calc(var(--fly-dur, 48s) * var(--fly-dfrac, 0));
       animation-iteration-count: infinite;
       animation-timing-function: linear; }
     .ring { position: absolute; transform-style: preserve-3d; }
@@ -363,8 +363,9 @@ export function create({ host, css3d, getColors, getParams }) {
       css3d.setVars({
         '--fly-dur': `${dur.toFixed(2)}s`,
         // Only fly needs a starting offset (skip the degenerate first frame);
-        // any orbit angle is already a full view.
-        '--fly-delay': motion === 'fly' ? `${(-0.75 * dur).toFixed(2)}s` : '0s',
+        // any orbit angle is already a full view. A fraction of --fly-dur, so
+        // the phase holds when speed rescales the duration.
+        '--fly-dfrac': motion === 'fly' ? '-0.75' : '0',
       });
     }
     const spectrum = params.palette === 'spectrum';

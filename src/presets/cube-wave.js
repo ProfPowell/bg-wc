@@ -10,7 +10,7 @@ import { mulberry32 } from '../util/pause.js';
 import { rgbCss as rgb } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
 
-const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
+import { PAUSE_RULE } from '../renderer/css3d.js';
 
 const CELL = 2.4; // em pitch
 const SIZE = 1.8; // em cube edge

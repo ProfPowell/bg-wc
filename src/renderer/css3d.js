@@ -6,6 +6,11 @@
 // docs/superpowers/specs/2026-06-02-css3d-renderer-dimensional-presets-design.md
 // (approach C).
 
+// The shared pause rule every css3d preset appends to its stylesheet: the
+// component flips `data-playing` (see setPlaying) and this freezes all CSS
+// motion in place. One definition here, imported by presets — never copied.
+export const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
+
 export function createCSS3DContext() {
   const stage = document.createElement('div');
   stage.className = 'stage';

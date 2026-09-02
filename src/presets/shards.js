@@ -6,16 +6,16 @@
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss as rgb } from '../renderer/tokens.js';
 
-const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
+import { PAUSE_RULE } from '../renderer/css3d.js';
 
 const STYLE = `
   .stage { perspective: 38em; overflow: hidden; display: grid; place-items: center; }
   .cloud { position: relative; transform-style: preserve-3d;
-    animation: shTurn var(--sh-dur, 75s) linear -26s infinite; }
+    animation: shTurn var(--sh-dur, 75s) linear calc(var(--sh-dur, 75s) * -0.3467) infinite; }
   .shard { position: absolute; width: 5em; height: 5em; left: -2.5em; top: -2.5em;
     background-image: linear-gradient(var(--ang, 30deg), var(--col), transparent 75%);
     clip-path: polygon(var(--clip));
-    animation: shShimmer var(--sh-shimdur, 11s) ease-in-out var(--delay, -4s) infinite alternate; }
+    animation: shShimmer var(--sh-shimdur, 11s) ease-in-out calc(var(--sh-shimdur, 11s) * var(--dfrac, -0.3636)) infinite alternate; }
   @keyframes shTurn { to { transform: rotateY(360deg) rotateX(14deg); } }
   @keyframes shShimmer {
     from { opacity: var(--sh-oplo, 0.25); }
@@ -47,7 +47,7 @@ export function create({ css3d, getColors, getParams }) {
     s.style.setProperty('--clip', pts);
     s.style.setProperty('--ang', `${(rand() * 360).toFixed(0)}deg`);
     s.style.setProperty('--col', `var(--sh-c${i % 3})`);
-    s.style.setProperty('--delay', `${(-rand() * 11).toFixed(2)}s`);
+    s.style.setProperty('--dfrac', (-rand()).toFixed(4)); // phase, fraction of --sh-shimdur
     cloud.appendChild(s);
   }
   css3d.stage.appendChild(cloud);

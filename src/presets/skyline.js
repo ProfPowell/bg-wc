@@ -8,13 +8,13 @@ import { mulberry32 } from '../util/pause.js';
 import { rgbCss as rgb, rgbaCss as rgba } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
 
-const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
+import { PAUSE_RULE } from '../renderer/css3d.js';
 
 const STYLE = `
   .stage { perspective: 30em; overflow: hidden; display: grid; place-items: center; }
   .world { position: relative; transform-style: preserve-3d;
     transform: rotateX(12deg);
-    animation: skPan var(--sk-dur, 45s) ease-in-out -16s infinite alternate; }
+    animation: skPan var(--sk-dur, 45s) ease-in-out calc(var(--sk-dur, 45s) * -0.3556) infinite alternate; }
   .ground { position: absolute; inset: -34em; transform: rotateX(-90deg) translateZ(6em);
     background-image:
       radial-gradient(transparent, var(--sk-bg) 30em),

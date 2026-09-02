@@ -239,9 +239,12 @@ test('explode under reduced motion freezes a mid-burst (non-degenerate) pose', a
     return {
       fallback: el.hasAttribute('data-fallback'),
       playing: stage.getAttribute('data-playing'),
-      // The injected style declares a negative --ex-delay default so the frozen
-      // frame is mid-burst; confirm the rule is present in the stylesheet.
-      hasDelay: stage.querySelector('style').textContent.includes('--ex-delay'),
+      // A negative phase offset (--ex-dfrac × cycle) lands the frozen frame
+      // mid-burst; confirm the particle actually resolves to a negative delay.
+      hasDelay:
+        parseFloat(
+          getComputedStyle(el.shadowRoot.querySelector('.particle'), '::before').animationDelay
+        ) < 0,
       particles: el.shadowRoot.querySelectorAll('.particle').length,
     };
   });

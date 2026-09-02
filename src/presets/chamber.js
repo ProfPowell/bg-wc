@@ -8,14 +8,14 @@ import { mulberry32 } from '../util/pause.js';
 import { rgbCss as rgb, rgbaCss as rgba } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
 
-const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
+import { PAUSE_RULE } from '../renderer/css3d.js';
 
 const HALF = 21; // em half-room
 
 const STYLE = `
   .stage { perspective: 18em; overflow: hidden; display: grid; place-items: center; }
   .room { position: relative; transform-style: preserve-3d;
-    animation: chTurn var(--ch-dur, 140s) linear -47s infinite; }
+    animation: chTurn var(--ch-dur, 140s) linear calc(var(--ch-dur, 140s) * -0.3357) infinite; }
   .wall { position: absolute; width: ${HALF * 2}em; height: ${HALF * 2}em;
     left: ${-HALF}em; top: ${-HALF}em;
     backface-visibility: hidden;
@@ -26,9 +26,9 @@ const STYLE = `
   .glow { position: absolute; width: 12em; height: 12em; left: -6em; top: -6em;
     border-radius: 50%;
     background-image: radial-gradient(var(--ch-glow), transparent 70%);
-    animation: chOrbit var(--ch-glowdur, 61s) linear -20s infinite; }
+    animation: chOrbit var(--ch-glowdur, 61s) linear calc(var(--ch-glowdur, 61s) * -0.3279) infinite; }
   .glow[data-dim] { opacity: 0.5;
-    animation: chOrbitDim var(--ch-glowdur, 61s) linear -20s infinite; }
+    animation: chOrbitDim var(--ch-glowdur, 61s) linear calc(var(--ch-glowdur, 61s) * -0.3279) infinite; }
   @keyframes chTurn { to { transform: rotateY(360deg); } }
   @keyframes chOrbit { from { transform: rotateY(0deg) translateZ(${HALF - 2}em); }
     to { transform: rotateY(-360deg) translateZ(${HALF - 2}em); } }

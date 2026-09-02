@@ -7,18 +7,18 @@ import { mulberry32 } from '../util/pause.js';
 import { rgbCss as rgb, rgbaCss as rgba } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
 
-const PAUSE_RULE = `.stage[data-playing="0"] * { animation-play-state: paused !important; }`;
+import { PAUSE_RULE } from '../renderer/css3d.js';
 
 const STYLE = `
   .stage { perspective: 40em; overflow: hidden; display: grid; place-items: center; }
   .system { position: relative; transform-style: preserve-3d;
-    animation: saPrecess var(--sa-predur, 120s) linear -40s infinite; }
+    animation: saPrecess var(--sa-predur, 120s) linear calc(var(--sa-predur, 120s) * -0.3333) infinite; }
   .disc { position: absolute; border-radius: 50%; background: var(--sa-planet);
     transform-style: preserve-3d; opacity: 0.55; }
   .orbit { position: absolute; transform-style: preserve-3d; }
   .track { position: absolute; border-radius: 50%; border: 1px solid var(--sa-track); }
   .spin { position: absolute; transform-style: preserve-3d;
-    animation: saSpin var(--dur, 24s) linear var(--delay, -9s) infinite; }
+    animation: saSpin var(--dur, 24s) linear calc(var(--dur, 24s) * var(--dfrac, -0.375)) infinite; }
   .sat { position: absolute; width: 1.6em; height: 2.3em; left: -0.8em; top: -1.15em;
     border-radius: 0.2em; background: var(--col);
     opacity: var(--sa-op, 0.95); }
@@ -66,8 +66,11 @@ export function create({ css3d, getColors, getParams }) {
     orbit.appendChild(track);
     const spin = document.createElement('div');
     spin.className = 'spin';
-    spin.style.setProperty('--dur', `calc(var(--sa-base, 24s) * ${(0.7 + o * 0.5).toFixed(2)})`);
-    spin.style.setProperty('--delay', `${(-rand() * 20).toFixed(1)}s`);
+    const k = 0.7 + o * 0.5;
+    spin.style.setProperty('--dur', `calc(var(--sa-base, 24s) * ${k.toFixed(2)})`);
+    // Phase as a fraction of this ring's period (was a fixed 0..-20s at the
+    // 24s base period) so it stays put when `speed` rescales --sa-base.
+    spin.style.setProperty('--dfrac', ((-rand() * 20) / (24 * k)).toFixed(4));
     const nSats = 2 + Math.round(p.density * 2); // 2..4 per orbit
     for (let s = 0; s < nSats; s++) {
       const sat = document.createElement('div');
