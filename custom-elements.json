@@ -432,6 +432,35 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/presets/_pool.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "seededPool",
+          "parameters": [
+            {
+              "name": "build"
+            },
+            {
+              "name": "keyOf",
+              "default": "defaultKey"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "seededPool",
+          "declaration": {
+            "name": "seededPool",
+            "module": "src/presets/_pool.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/presets/airbrush.js",
       "declarations": [
         {

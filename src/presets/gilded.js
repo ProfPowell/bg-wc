@@ -7,43 +7,40 @@
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let patches = [];
-  let lastKey = '';
 
-  function rebuild(params) {
-    const rand = mulberry32(params.seed | 0 || 151);
-    const s = Math.min(w, h);
-    const cell = Math.max(44, s * (0.24 - params.density * 0.1));
-    patches = [];
-    for (let y = 0; y < h + cell; y += cell) {
-      for (let x = 0; x < w + cell; x += cell) {
-        patches.push({
-          x: x + (rand() - 0.5) * cell * 0.2,
-          y: y + (rand() - 0.5) * cell * 0.2,
-          size: cell * (0.7 + rand() * 0.5),
-          kind: (rand() * 3) | 0, // spiral / squares / flecks
-          tone: (rand() * 3) | 0,
-          w2: 0.15 + rand() * 0.35,
-          phase: rand() * Math.PI * 2,
-          turns: 2.2 + rand() * 1.6,
-        });
+  const ensure = seededPool(
+    (params) => {
+      const rand = mulberry32(params.seed | 0 || 151);
+      const s = Math.min(w, h);
+      const cell = Math.max(44, s * (0.24 - params.density * 0.1));
+      const patches = [];
+      for (let y = 0; y < h + cell; y += cell) {
+        for (let x = 0; x < w + cell; x += cell) {
+          patches.push({
+            x: x + (rand() - 0.5) * cell * 0.2,
+            y: y + (rand() - 0.5) * cell * 0.2,
+            size: cell * (0.7 + rand() * 0.5),
+            kind: (rand() * 3) | 0, // spiral / squares / flecks
+            tone: (rand() * 3) | 0,
+            w2: 0.15 + rand() * 0.35,
+            phase: rand() * Math.PI * 2,
+            turns: 2.2 + rand() * 1.6,
+          });
+        }
       }
-    }
-    lastKey = `${params.seed}|${params.density}|${w}x${h}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}|${w}x${h}`;
-    if (!patches.length || key !== lastKey) rebuild(params);
-  }
+      return patches;
+    },
+    (params) => `${params.seed}|${params.density}|${w}x${h}`
+  );
 
   function frame(t, params) {
-    ensure(params);
+    const patches = ensure(params);
     const c = getColors();
 
     const ground = mix(c.primary, c.bg, 0.7);
@@ -109,14 +106,11 @@ export function create({ c2d, getColors, pxScale }) {
     resize(nw, nh) {
       w = nw;
       h = nh;
-      patches = [];
     },
     frame,
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      patches = [];
-    },
+    dispose() {},
   };
 }

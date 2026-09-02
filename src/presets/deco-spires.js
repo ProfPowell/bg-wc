@@ -6,19 +6,18 @@
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let spires = [];
-  let tallX = 0.5;
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 139);
     const n = 5 + Math.round(params.density * 4); // 5..9 spires
-    spires = [];
+    const spires = [];
+    let tallX = 0.5;
     let tallest = 0;
     for (let i = 0; i < n; i++) {
       const x = (i + 0.5) / n + (rand() - 0.5) * 0.05;
@@ -33,16 +32,11 @@ export function create({ c2d, getColors, pxScale }) {
         tallX = x;
       }
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!spires.length || key !== lastKey) rebuild(params);
-  }
+    return { spires, tallX };
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const { spires, tallX } = ensure(params);
     const c = getColors();
     const s = Math.min(w, h);
 
@@ -115,8 +109,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      spires = [];
-    },
+    dispose() {},
   };
 }

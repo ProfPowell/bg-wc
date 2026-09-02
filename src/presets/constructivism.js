@@ -5,6 +5,7 @@
 // planes, over a warm paper bg.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 
@@ -14,13 +15,11 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let planes = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 4);
     const n = 6 + Math.round(params.density * 8); // 6..14 planes
-    planes = [];
+    const planes = [];
     for (let i = 0; i < n; i++) {
       planes.push({
         u: rand() * 1.4 - 0.2, // position along the axis
@@ -34,16 +33,11 @@ export function create({ c2d, getColors, pxScale }) {
         phase: rand() * Math.PI * 2,
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!planes.length || key !== lastKey) rebuild(params);
-  }
+    return planes;
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const planes = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const s = Math.min(w, h);
@@ -123,8 +117,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      planes = [];
-    },
+    dispose() {},
   };
 }

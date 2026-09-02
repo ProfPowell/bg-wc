@@ -8,6 +8,7 @@
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 const NIGHT = [0.05, 0.08, 0.2];
 
@@ -15,14 +16,11 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let bands = [];
-  let stars = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 109);
     const n = 2 + Math.round(params.density * 2); // 2..4 bands
-    bands = [];
+    const bands = [];
     for (let i = 0; i < n; i++) {
       bands.push({
         y: 0.22 + rand() * 0.34,
@@ -32,7 +30,7 @@ export function create({ c2d, getColors, pxScale }) {
         span: 0.35 + rand() * 0.4,
       });
     }
-    stars = [];
+    const stars = [];
     for (let i = 0; i < 40; i++) {
       stars.push({
         x: rand(),
@@ -41,16 +39,11 @@ export function create({ c2d, getColors, pxScale }) {
         phase: rand() * Math.PI * 2,
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!bands.length || key !== lastKey) rebuild(params);
-  }
+    return { bands, stars };
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const { bands, stars } = ensure(params);
     const c = getColors();
     const s = Math.min(w, h);
     const horizon = h * 0.72;
@@ -133,9 +126,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      bands = [];
-      stars = [];
-    },
+    dispose() {},
   };
 }

@@ -4,18 +4,16 @@
 // density = spoke count, intensity = ray reach.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 
 export function create({ c2d, getColors }) {
   let w = 1,
     h = 1;
-  let rings = [];
-  let lastKey = '';
-
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 33);
-    rings = [];
+    const rings = [];
     const nr = 3;
     for (let i = 0; i < nr; i++) {
       rings.push({
@@ -26,16 +24,11 @@ export function create({ c2d, getColors }) {
         dir: i % 2 ? -1 : 1,
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!rings.length || key !== lastKey) rebuild(params);
-  }
+    return rings;
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const rings = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const cx = w * 0.5;
@@ -90,8 +83,6 @@ export function create({ c2d, getColors }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      rings = [];
-    },
+    dispose() {},
   };
 }

@@ -10,6 +10,7 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 const CAPS = { low: 25, med: 60, high: 120 };
 
@@ -17,36 +18,32 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let flies = [];
-  let lastKey = '';
   let lastT = 0;
 
-  function rebuild(params) {
-    const cap = CAPS[params.quality] || CAPS.med;
-    const n = Math.floor(8 + cap * params.density);
-    const rand = mulberry32(params.seed | 0 || 9);
-    flies = new Array(n);
-    for (let i = 0; i < n; i++) {
-      flies[i] = {
-        x: rand(),
-        y: rand(),
-        drift: rand() * Math.PI * 2,
-        freq: 0.35 + rand() * 0.5, // pulse cycles per second
-        phase: rand() * Math.PI * 2,
-        r: (1.2 + rand() * 1.4) * px,
-        accent: rand() < 0.18, // the rare answering fly
-      };
-    }
-    lastKey = `${params.seed}|${params.density}|${params.quality}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}|${params.quality}`;
-    if (!flies.length || key !== lastKey) rebuild(params);
-  }
+  const ensure = seededPool(
+    (params) => {
+      const cap = CAPS[params.quality] || CAPS.med;
+      const n = Math.floor(8 + cap * params.density);
+      const rand = mulberry32(params.seed | 0 || 9);
+      const flies = new Array(n);
+      for (let i = 0; i < n; i++) {
+        flies[i] = {
+          x: rand(),
+          y: rand(),
+          drift: rand() * Math.PI * 2,
+          freq: 0.35 + rand() * 0.5, // pulse cycles per second
+          phase: rand() * Math.PI * 2,
+          r: (1.2 + rand() * 1.4) * px,
+          accent: rand() < 0.18, // the rare answering fly
+        };
+      }
+      return flies;
+    },
+    (params) => `${params.seed}|${params.density}|${params.quality}`
+  );
 
   function frame(t, params) {
-    ensure(params);
+    const flies = ensure(params);
     const c = getColors();
     const bg = c.bg && c.bg[3] > 0.01 ? c.bg : [0.08, 0.07, 0.14];
     clearAndFill(c2d, w, h, [...mix(bg, [0, 0, 0], 0.6), 1]);
@@ -92,8 +89,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      flies = [];
-    },
+    dispose() {},
   };
 }

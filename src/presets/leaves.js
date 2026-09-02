@@ -7,18 +7,17 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let leaves = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 29);
     const n = Math.floor(18 + params.density * 60);
-    leaves = [];
+    const leaves = [];
     for (let i = 0; i < n; i++) {
       leaves.push({
         x0: rand(),
@@ -34,13 +33,8 @@ export function create({ c2d, getColors, pxScale }) {
         depth: 0.15 + rand() * 0.85, // far leaves smaller + fainter
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!leaves.length || key !== lastKey) rebuild(params);
-  }
+    return leaves;
+  });
 
   function leafPath(kind, s) {
     c2d.beginPath();
@@ -66,7 +60,7 @@ export function create({ c2d, getColors, pxScale }) {
   }
 
   function frame(t, params) {
-    ensure(params);
+    const leaves = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const pal = [c.primary, c.accent, c.warning];
@@ -105,8 +99,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      leaves = [];
-    },
+    dispose() {},
   };
 }

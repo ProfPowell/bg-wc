@@ -6,6 +6,7 @@
 // function of t). density = tile fineness, intensity = motif ink weight.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
@@ -14,32 +15,28 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let tiles = [];
-  let lastKey = '';
 
-  function rebuild(params) {
-    const rand = mulberry32(params.seed | 0 || 9);
-    const s = Math.min(w, h);
-    const size = Math.max(48, s * (0.3 - params.density * 0.16));
-    tiles = [];
-    for (let iy = 0; iy * size < h + size; iy++) {
-      for (let ix = 0; ix * size < w + size; ix++) {
-        tiles.push({
-          x: ix * size,
-          y: iy * size,
-          size,
-          kind: (rand() * 3) | 0, // petal / star / corner-arc family
-          accent: rand() < 0.14,
-        });
+  const ensure = seededPool(
+    (params) => {
+      const rand = mulberry32(params.seed | 0 || 9);
+      const s = Math.min(w, h);
+      const size = Math.max(48, s * (0.3 - params.density * 0.16));
+      const tiles = [];
+      for (let iy = 0; iy * size < h + size; iy++) {
+        for (let ix = 0; ix * size < w + size; ix++) {
+          tiles.push({
+            x: ix * size,
+            y: iy * size,
+            size,
+            kind: (rand() * 3) | 0, // petal / star / corner-arc family
+            accent: rand() < 0.14,
+          });
+        }
       }
-    }
-    lastKey = `${params.seed}|${params.density}|${w}x${h}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}|${w}x${h}`;
-    if (!tiles.length || key !== lastKey) rebuild(params);
-  }
+      return tiles;
+    },
+    (params) => `${params.seed}|${params.density}|${w}x${h}`
+  );
 
   // One motif quarter drawn in the unit quadrant (0..1); the caller mirrors it.
   function quarter(kind, q, lw) {
@@ -74,7 +71,7 @@ export function create({ c2d, getColors, pxScale }) {
   }
 
   function frame(t, params) {
-    ensure(params);
+    const tiles = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const ground = rgbCss(mix(c.bg, c.fg, 0.04)); // barely-off tile white
@@ -121,14 +118,11 @@ export function create({ c2d, getColors, pxScale }) {
     resize(nw, nh) {
       w = nw;
       h = nh;
-      tiles = [];
     },
     frame,
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      tiles = [];
-    },
+    dispose() {},
   };
 }

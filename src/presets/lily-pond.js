@@ -6,19 +6,16 @@
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let smears = [];
-  let clusters = [];
-  let ripples = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 113);
-    smears = [];
+    const smears = [];
     for (let i = 0; i < 26; i++) {
       smears.push({
         x: rand(),
@@ -29,7 +26,7 @@ export function create({ c2d, getColors, pxScale }) {
       });
     }
     const n = 5 + Math.round(params.density * 4); // 5..9 clusters
-    clusters = [];
+    const clusters = [];
     for (let i = 0; i < n; i++) {
       const pads = [];
       const np = 2 + ((rand() * 3) | 0);
@@ -43,20 +40,15 @@ export function create({ c2d, getColors, pxScale }) {
       }
       clusters.push({ x: rand(), y: 0.15 + rand() * 0.75, pads, drift: rand() * Math.PI * 2 });
     }
-    ripples = [];
+    const ripples = [];
     for (let i = 0; i < 3; i++) {
       ripples.push({ x: rand(), y: 0.2 + rand() * 0.6, v: 0.05 + rand() * 0.04, phase: rand() });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!smears.length || key !== lastKey) rebuild(params);
-  }
+    return { smears, clusters, ripples };
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const { smears, clusters, ripples } = ensure(params);
     const c = getColors();
     const s = Math.min(w, h);
 
@@ -127,10 +119,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      smears = [];
-      clusters = [];
-      ripples = [];
-    },
+    dispose() {},
   };
 }

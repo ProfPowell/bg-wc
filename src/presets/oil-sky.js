@@ -9,6 +9,7 @@
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 const COOL = [0.12, 0.2, 0.42];
 const WARM = [1, 0.78, 0.5];
@@ -18,13 +19,11 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let strokes = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 107);
     const per = Math.floor(26 + params.density * 40); // strokes per band
-    strokes = [];
+    const strokes = [];
     for (let b = 0; b < BANDS; b++) {
       for (let k = 0; k < per; k++) {
         strokes.push({
@@ -40,16 +39,11 @@ export function create({ c2d, getColors, pxScale }) {
         });
       }
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!strokes.length || key !== lastKey) rebuild(params);
-  }
+    return strokes;
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const strokes = ensure(params);
     const c = getColors();
 
     // Underpainting: the smooth ramp the dabs sit on.
@@ -91,8 +85,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      strokes = [];
-    },
+    dispose() {},
   };
 }

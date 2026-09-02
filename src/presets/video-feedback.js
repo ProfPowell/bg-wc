@@ -7,6 +7,7 @@
 // intensity = zoom/rotate step.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
@@ -15,23 +16,18 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let jitter = [];
-  let lastKey = '';
-
-  function rebuild(params) {
-    const rand = mulberry32(params.seed | 0 || 59);
-    jitter = [];
-    for (let i = 0; i < 24; i++) jitter.push((rand() - 0.5) * 0.02);
-    lastKey = `${params.seed}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}`;
-    if (!jitter.length || key !== lastKey) rebuild(params);
-  }
+  const ensure = seededPool(
+    (params) => {
+      const rand = mulberry32(params.seed | 0 || 59);
+      const jitter = [];
+      for (let i = 0; i < 24; i++) jitter.push((rand() - 0.5) * 0.02);
+      return jitter;
+    },
+    (params) => `${params.seed}`
+  );
 
   function frame(t, params) {
-    ensure(params);
+    const jitter = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const layers = 8 + Math.round(params.density * 8); // 8..16 echoes
@@ -73,8 +69,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      jitter = [];
-    },
+    dispose() {},
   };
 }

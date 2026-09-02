@@ -9,6 +9,7 @@
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 const COOL = [0.08, 0.18, 0.45]; // ultramarine anchor
 const WARM = [1, 0.82, 0.55]; // gold anchor
@@ -17,13 +18,11 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let masses = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 101);
     const n = 3 + Math.round(params.density * 2); // 3..5 masses
-    masses = [];
+    const masses = [];
     for (let i = 0; i < n; i++) {
       const puffs = [];
       const nb = 6 + ((rand() * 6) | 0);
@@ -45,16 +44,11 @@ export function create({ c2d, getColors, pxScale }) {
         phase: rand() * Math.PI * 2,
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!masses.length || key !== lastKey) rebuild(params);
-  }
+    return masses;
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const masses = ensure(params);
     const c = getColors();
     const s = Math.min(w, h);
 
@@ -105,8 +99,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      masses = [];
-    },
+    dispose() {},
   };
 }

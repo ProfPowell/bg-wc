@@ -5,6 +5,7 @@
 // intensity = tint strength.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
@@ -12,14 +13,11 @@ import { mix } from './_dots.js';
 export function create({ c2d, getColors }) {
   let w = 1,
     h = 1;
-  let orbs = [];
-  let arcs = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 53);
     const no = 2 + Math.round(params.density * 3); // 2..5 orbs
-    orbs = [];
+    const orbs = [];
     for (let i = 0; i < no; i++) {
       orbs.push({
         x: 0.15 + rand() * 0.7,
@@ -30,7 +28,7 @@ export function create({ c2d, getColors }) {
         phase: rand() * Math.PI * 2,
       });
     }
-    arcs = [];
+    const arcs = [];
     for (let i = 0; i < 2 + ((rand() * 2) | 0); i++) {
       arcs.push({
         cx: 0.2 + rand() * 0.6,
@@ -43,16 +41,11 @@ export function create({ c2d, getColors }) {
         phase: rand() * Math.PI * 2,
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!orbs.length || key !== lastKey) rebuild(params);
-  }
+    return { orbs, arcs };
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const { orbs, arcs } = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const s = Math.min(w, h);
@@ -110,9 +103,6 @@ export function create({ c2d, getColors }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      orbs = [];
-      arcs = [];
-    },
+    dispose() {},
   };
 }

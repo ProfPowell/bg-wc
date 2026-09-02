@@ -7,6 +7,7 @@
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 const DUSK = [1, 0.72, 0.45];
 const LAYERS = 3;
@@ -15,12 +16,10 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let layers = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 127);
-    layers = [];
+    const layers = [];
     for (let l = 0; l < LAYERS; l++) {
       const blades = [];
       const n = Math.floor(30 + params.density * 50);
@@ -36,16 +35,11 @@ export function create({ c2d, getColors, pxScale }) {
       }
       layers.push({ baseY: 0.78 + l * 0.09, blades });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!layers.length || key !== lastKey) rebuild(params);
-  }
+    return layers;
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const layers = ensure(params);
     const c = getColors();
     const s = Math.min(w, h);
 
@@ -99,8 +93,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      layers = [];
-    },
+    dispose() {},
   };
 }

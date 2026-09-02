@@ -8,43 +8,40 @@
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
+import { seededPool } from './_pool.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let motifs = [];
-  let lastKey = '';
 
-  function rebuild(params) {
-    const rand = mulberry32(params.seed | 0 || 13);
-    const s = Math.min(w, h);
-    const cell = Math.max(90, s * (0.5 - params.density * 0.24));
-    motifs = [];
-    for (let iy = 0; iy * cell < h + cell; iy++) {
-      for (let ix = 0; ix * cell < w + cell; ix++) {
-        motifs.push({
-          x: ix * cell + cell / 2,
-          y: iy * cell + cell / 2,
-          r: cell * (0.26 + rand() * 0.1),
-          kind: (rand() * 3) | 0,
-          rot: rand() * Math.PI,
-          mis: [
-            [(rand() - 0.5) * 10, (rand() - 0.5) * 10],
-            [(rand() - 0.5) * 10, (rand() - 0.5) * 10],
-            [(rand() - 0.5) * 10, (rand() - 0.5) * 10],
-          ],
-          phase: rand() * Math.PI * 2,
-        });
+  const ensure = seededPool(
+    (params) => {
+      const rand = mulberry32(params.seed | 0 || 13);
+      const s = Math.min(w, h);
+      const cell = Math.max(90, s * (0.5 - params.density * 0.24));
+      const motifs = [];
+      for (let iy = 0; iy * cell < h + cell; iy++) {
+        for (let ix = 0; ix * cell < w + cell; ix++) {
+          motifs.push({
+            x: ix * cell + cell / 2,
+            y: iy * cell + cell / 2,
+            r: cell * (0.26 + rand() * 0.1),
+            kind: (rand() * 3) | 0,
+            rot: rand() * Math.PI,
+            mis: [
+              [(rand() - 0.5) * 10, (rand() - 0.5) * 10],
+              [(rand() - 0.5) * 10, (rand() - 0.5) * 10],
+              [(rand() - 0.5) * 10, (rand() - 0.5) * 10],
+            ],
+            phase: rand() * Math.PI * 2,
+          });
+        }
       }
-    }
-    lastKey = `${params.seed}|${params.density}|${w}x${h}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}|${w}x${h}`;
-    if (!motifs.length || key !== lastKey) rebuild(params);
-  }
+      return motifs;
+    },
+    (params) => `${params.seed}|${params.density}|${w}x${h}`
+  );
 
   function motifPath(kind, r, rot) {
     c2d.beginPath();
@@ -71,7 +68,7 @@ export function create({ c2d, getColors, pxScale }) {
   }
 
   function frame(t, params) {
-    ensure(params);
+    const motifs = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const inks = [c.primary, c.accent, c.info];
@@ -116,14 +113,11 @@ export function create({ c2d, getColors, pxScale }) {
     resize(nw, nh) {
       w = nw;
       h = nh;
-      motifs = [];
     },
     frame,
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      motifs = [];
-    },
+    dispose() {},
   };
 }

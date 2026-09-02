@@ -2,6 +2,7 @@
 // closed polylines on a dark field, wrapping at the edges. Vector group.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss as rgb, rgbaCss } from '../renderer/tokens.js';
 
@@ -9,15 +10,12 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1; // scale device-pixel line widths so they aren't thin on hi-DPI
   let w = 1,
     h = 1;
-  let rocks = [];
-  let rand = mulberry32(1);
-  let lastKey = '';
   let lastT = 0;
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const n = Math.floor(5 + params.density * 16);
-    rand = mulberry32(params.seed || 1);
-    rocks = new Array(n);
+    const rand = mulberry32(params.seed || 1);
+    const rocks = new Array(n);
     for (let i = 0; i < n; i++) {
       const verts = 8 + ((rand() * 5) | 0);
       const base = 0.03 + rand() * 0.06; // radius as fraction of min(w,h)
@@ -37,16 +35,11 @@ export function create({ c2d, getColors, pxScale }) {
         shape,
       };
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!rocks.length || key !== lastKey) rebuild(params);
-  }
+    return rocks;
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const rocks = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
 
@@ -101,8 +94,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      rocks = [];
-    },
+    dispose() {},
   };
 }

@@ -8,19 +8,17 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let cans = [];
-  let motes = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 61);
     const n = 3 + Math.round(params.density * 2); // 3..5 cans
-    cans = [];
+    const cans = [];
     for (let i = 0; i < n; i++) {
       cans.push({
         x: (i + 0.5) / n + (rand() - 0.5) * 0.06,
@@ -30,7 +28,7 @@ export function create({ c2d, getColors, pxScale }) {
         ci: (rand() * 3) | 0,
       });
     }
-    motes = [];
+    const motes = [];
     for (let i = 0; i < 60; i++) {
       motes.push({
         x: rand(),
@@ -40,16 +38,11 @@ export function create({ c2d, getColors, pxScale }) {
         phase: rand() * Math.PI * 2,
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!cans.length || key !== lastKey) rebuild(params);
-  }
+    return { cans, motes };
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const { cans, motes } = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const pal = [c.primary, c.accent, c.info];
@@ -117,9 +110,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      cans = [];
-      motes = [];
-    },
+    dispose() {},
   };
 }

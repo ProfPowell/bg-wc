@@ -5,6 +5,7 @@
 // density = stroke count, intensity = stroke length/weight.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
@@ -13,13 +14,10 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let strokes = [];
-  let swirls = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 6);
-    swirls = [];
+    const swirls = [];
     for (let i = 0; i < 3; i++) {
       swirls.push({
         x: rand(),
@@ -29,7 +27,7 @@ export function create({ c2d, getColors, pxScale }) {
       });
     }
     const n = Math.floor(300 + params.density * 900);
-    strokes = [];
+    const strokes = [];
     for (let i = 0; i < n; i++) {
       strokes.push({
         x: rand(),
@@ -39,16 +37,11 @@ export function create({ c2d, getColors, pxScale }) {
         len: 0.7 + rand() * 0.6,
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!strokes.length || key !== lastKey) rebuild(params);
-  }
+    return { strokes, swirls };
+  });
 
   // Angular field: gentle horizontal drift plus circular flow near each swirl.
-  function fieldAngle(x, y, t) {
+  function fieldAngle(swirls, x, y, t) {
     let a = Math.sin(y * 4.2) * 0.6 + Math.sin(t * 0.15) * 0.15;
     for (const s of swirls) {
       const dx = x - s.x;
@@ -61,7 +54,7 @@ export function create({ c2d, getColors, pxScale }) {
   }
 
   function frame(t, params) {
-    ensure(params);
+    const { strokes, swirls } = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const pal = [c.primary, c.accent, c.info];
@@ -69,7 +62,7 @@ export function create({ c2d, getColors, pxScale }) {
     c2d.lineCap = 'round';
 
     for (const st of strokes) {
-      const a = fieldAngle(st.x, st.y, t) + 0.1 * Math.sin(t * 0.5 + st.jitter);
+      const a = fieldAngle(swirls, st.x, st.y, t) + 0.1 * Math.sin(t * 0.5 + st.jitter);
       const col = pal[st.ci % pal.length];
       const x = st.x * w;
       const y = st.y * h;
@@ -101,9 +94,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      strokes = [];
-      swirls = [];
-    },
+    dispose() {},
   };
 }

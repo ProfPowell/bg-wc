@@ -5,6 +5,7 @@
 // frame is a stable still. primary = vine, accent = blooms, fg = frame.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 
@@ -12,13 +13,11 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let vines = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 2);
     const n = 3 + Math.round(params.density * 4); // 3..7 spines
-    vines = [];
+    const vines = [];
     for (let i = 0; i < n; i++) {
       // Anchor on a frame edge; the spine is a chain of alternating S-curves.
       const edge = (rand() * 4) | 0;
@@ -40,16 +39,11 @@ export function create({ c2d, getColors, pxScale }) {
       }
       vines.push({ start, heading, segs, phase: rand() * Math.PI * 2, ci: (rand() * 3) | 0 });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!vines.length || key !== lastKey) rebuild(params);
-  }
+    return vines;
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const vines = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const s = Math.min(w, h);
@@ -137,8 +131,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      vines = [];
-    },
+    dispose() {},
   };
 }

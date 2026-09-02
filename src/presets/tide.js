@@ -6,6 +6,7 @@
 // intensity = sheet opacity.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
 
@@ -15,13 +16,10 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let sheets = [];
-  let lastKey = '';
-
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 131);
     const n = 2 + Math.round(params.density); // 2..3 sheets
-    sheets = [];
+    const sheets = [];
     for (let i = 0; i < n; i++) {
       sheets.push({
         base: 0.4 + i * 0.14, // resting edge (fraction of h)
@@ -32,13 +30,8 @@ export function create({ c2d, getColors, pxScale }) {
         fphase: rand() * Math.PI * 2,
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!sheets.length || key !== lastKey) rebuild(params);
-  }
+    return sheets;
+  });
 
   function edgeY(sheet, x, t) {
     return (
@@ -49,7 +42,7 @@ export function create({ c2d, getColors, pxScale }) {
   }
 
   function frame(t, params) {
-    ensure(params);
+    const sheets = ensure(params);
     const c = getColors();
 
     // Sand ground with a wet band near the sea.
@@ -107,8 +100,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      sheets = [];
-    },
+    dispose() {},
   };
 }

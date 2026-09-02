@@ -6,6 +6,7 @@
 // density = column count, intensity = glow strength.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
 
@@ -16,30 +17,21 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let cols = [];
-  let urnX = 0.7;
-  let lastKey = '';
-
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 103);
     const n = 2 + Math.round(params.density); // 2..3 columns
-    cols = [];
+    const cols = [];
     for (let i = 0; i < n; i++) {
       // Columns hug the frame edges, leaving the sky open.
       const side = i % 2 === 0 ? 0.06 + rand() * 0.1 : 0.84 + rand() * 0.1;
       cols.push({ x: side, cw: 0.055 + rand() * 0.02 });
     }
-    urnX = 0.3 + rand() * 0.4;
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!cols.length || key !== lastKey) rebuild(params);
-  }
+    const urnX = 0.3 + rand() * 0.4;
+    return { cols, urnX };
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const { cols, urnX } = ensure(params);
     const c = getColors();
     const s = Math.min(w, h);
 
@@ -105,8 +97,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      cols = [];
-    },
+    dispose() {},
   };
 }

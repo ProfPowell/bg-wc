@@ -5,6 +5,7 @@
 // density = element count, intensity = duotone depth.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
@@ -13,15 +14,11 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let blocks = [];
-  let rules = [];
-  let dots = null;
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 31);
     const nb = 2 + Math.round(params.density * 2); // 2..4 tone blocks
-    blocks = [];
+    const blocks = [];
     for (let i = 0; i < nb; i++) {
       blocks.push({
         x: rand() * 0.6,
@@ -33,7 +30,7 @@ export function create({ c2d, getColors, pxScale }) {
       });
     }
     const nr = 2 + Math.round(params.density * 3); // 2..5 rules
-    rules = [];
+    const rules = [];
     for (let i = 0; i < nr; i++) {
       rules.push({
         horiz: rand() < 0.6,
@@ -43,23 +40,18 @@ export function create({ c2d, getColors, pxScale }) {
         lw: (3 + rand() * 6) * px,
       });
     }
-    dots = {
+    const dots = {
       y: 0.68 + rand() * 0.22,
       x0: 0.06 + rand() * 0.2,
       n: 3 + ((rand() * 4) | 0),
       r: 0.025 + rand() * 0.02,
       gap: 0.07 + rand() * 0.04,
     };
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!blocks.length || key !== lastKey) rebuild(params);
-  }
+    return { blocks, rules, dots };
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const { blocks, rules, dots } = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const s = Math.min(w, h);
@@ -93,10 +85,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      blocks = [];
-      rules = [];
-      dots = null;
-    },
+    dispose() {},
   };
 }

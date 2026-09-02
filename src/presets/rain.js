@@ -7,6 +7,7 @@
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
+import { seededPool } from './_pool.js';
 
 const CAPS = { low: 120, med: 320, high: 700 };
 
@@ -14,35 +15,30 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let drops = [];
-  let ripples = [];
-  let lastKey = '';
   let lastT = 0;
 
-  function rebuild(params) {
-    const cap = CAPS[params.quality] || CAPS.med;
-    const n = Math.floor(30 + cap * params.density);
-    const rand = mulberry32(params.seed | 0 || 5);
-    drops = new Array(n);
-    for (let i = 0; i < n; i++) {
-      drops[i] = {
-        x: rand(),
-        y: rand(),
-        depth: rand(), // 0 far .. 1 near
-        ground: 0.8 + rand() * 0.17, // normalized landing line near the bottom
-      };
-    }
-    ripples = [];
-    lastKey = `${params.seed}|${params.density}|${params.quality}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}|${params.quality}`;
-    if (!drops.length || key !== lastKey) rebuild(params);
-  }
+  const ensure = seededPool(
+    (params) => {
+      const cap = CAPS[params.quality] || CAPS.med;
+      const n = Math.floor(30 + cap * params.density);
+      const rand = mulberry32(params.seed | 0 || 5);
+      const drops = new Array(n);
+      for (let i = 0; i < n; i++) {
+        drops[i] = {
+          x: rand(),
+          y: rand(),
+          depth: rand(), // 0 far .. 1 near
+          ground: 0.8 + rand() * 0.17, // normalized landing line near the bottom
+        };
+      }
+      const ripples = [];
+      return { drops, ripples };
+    },
+    (params) => `${params.seed}|${params.density}|${params.quality}`
+  );
 
   function frame(t, params) {
-    ensure(params);
+    const { drops, ripples } = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
 
@@ -101,9 +97,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      drops = [];
-      ripples = [];
-    },
+    dispose() {},
   };
 }

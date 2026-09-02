@@ -4,6 +4,7 @@
 // density = chip count, intensity = tint strength.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
@@ -12,13 +13,10 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let chips = [];
-  let lastKey = '';
-
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 3);
     const n = Math.floor(90 + params.density * 260);
-    chips = [];
+    const chips = [];
     for (let i = 0; i < n; i++) {
       const sides = 3 + ((rand() * 4) | 0);
       const base = i < n * 0.25 ? 0.02 + rand() * 0.025 : 0.004 + rand() * 0.01; // big flakes + fines
@@ -32,16 +30,11 @@ export function create({ c2d, getColors, pxScale }) {
       }
       chips.push({ x: rand(), y: rand(), rot: rand() * Math.PI, verts, ci: (rand() * 4) | 0 });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!chips.length || key !== lastKey) rebuild(params);
-  }
+    return chips;
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const chips = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const s = Math.min(w, h);
@@ -87,8 +80,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      chips = [];
-    },
+    dispose() {},
   };
 }

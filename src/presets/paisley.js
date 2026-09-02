@@ -8,39 +8,36 @@
 import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
+import { seededPool } from './_pool.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let stamps = [];
-  let lastKey = '';
 
-  function rebuild(params) {
-    const rand = mulberry32(params.seed | 0 || 5);
-    const s = Math.min(w, h);
-    const cell = Math.max(60, s * (0.34 - params.density * 0.16));
-    stamps = [];
-    for (let iy = -1; iy * cell * 0.9 < h + cell; iy++) {
-      for (let ix = -1; ix * cell < w + cell; ix++) {
-        stamps.push({
-          x: ix * cell + (iy % 2 ? cell / 2 : 0), // half-drop
-          y: iy * cell * 0.9,
-          size: cell * (0.32 + rand() * 0.08),
-          rot: -0.5 + rand() * 0.35,
-          misX: (rand() - 0.5) * 4,
-          misY: (rand() - 0.5) * 4,
-          phase: rand() * Math.PI * 2,
-        });
+  const ensure = seededPool(
+    (params) => {
+      const rand = mulberry32(params.seed | 0 || 5);
+      const s = Math.min(w, h);
+      const cell = Math.max(60, s * (0.34 - params.density * 0.16));
+      const stamps = [];
+      for (let iy = -1; iy * cell * 0.9 < h + cell; iy++) {
+        for (let ix = -1; ix * cell < w + cell; ix++) {
+          stamps.push({
+            x: ix * cell + (iy % 2 ? cell / 2 : 0), // half-drop
+            y: iy * cell * 0.9,
+            size: cell * (0.32 + rand() * 0.08),
+            rot: -0.5 + rand() * 0.35,
+            misX: (rand() - 0.5) * 4,
+            misY: (rand() - 0.5) * 4,
+            phase: rand() * Math.PI * 2,
+          });
+        }
       }
-    }
-    lastKey = `${params.seed}|${params.density}|${w}x${h}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}|${w}x${h}`;
-    if (!stamps.length || key !== lastKey) rebuild(params);
-  }
+      return stamps;
+    },
+    (params) => `${params.seed}|${params.density}|${w}x${h}`
+  );
 
   // The boteh path: a teardrop whose tip curls over. Drawn in unit space,
   // scaled by size; callers set transform first.
@@ -54,7 +51,7 @@ export function create({ c2d, getColors, pxScale }) {
   }
 
   function frame(t, params) {
-    ensure(params);
+    const stamps = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const ink = rgbCss(c.primary);
@@ -103,14 +100,11 @@ export function create({ c2d, getColors, pxScale }) {
     resize(nw, nh) {
       w = nw;
       h = nh;
-      stamps = [];
     },
     frame,
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      stamps = [];
-    },
+    dispose() {},
   };
 }

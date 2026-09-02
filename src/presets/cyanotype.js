@@ -11,6 +11,7 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 const PRUSSIAN = [0.05, 0.15, 0.35];
 
@@ -18,13 +19,11 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let plants = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 11);
     const n = 2 + Math.round(params.density * 5); // 2..7 specimens
-    plants = [];
+    const plants = [];
     for (let i = 0; i < n; i++) {
       plants.push({
         x: 0.12 + rand() * 0.76,
@@ -35,13 +34,8 @@ export function create({ c2d, getColors, pxScale }) {
         leaflets: 7 + ((rand() * 6) | 0),
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!plants.length || key !== lastKey) rebuild(params);
-  }
+    return plants;
+  });
 
   function drawPlant(p, s, whiteCss) {
     const L = p.len * s;
@@ -97,7 +91,7 @@ export function create({ c2d, getColors, pxScale }) {
   }
 
   function frame(t, params) {
-    ensure(params);
+    const plants = ensure(params);
     const c = getColors();
     const ground = mix(c.primary, PRUSSIAN, 0.72);
     const print = mix(c.fg, [1, 1, 1], 0.85); // unexposed paper — reads white with a whisper of theme
@@ -151,8 +145,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      plants = [];
-    },
+    dispose() {},
   };
 }

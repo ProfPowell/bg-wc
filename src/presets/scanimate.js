@@ -9,6 +9,7 @@ import { mulberry32 } from '../util/pause.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
+import { seededPool } from './_pool.js';
 
 const CYCLE = 1.6; // sweep cycle length in normalized x (>1 leaves a gap)
 const SEG = 24; // polyline segments per ribbon
@@ -17,13 +18,11 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let ribbons = [];
-  let lastKey = '';
 
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 47);
     const n = 3 + Math.round(params.density * 2); // 3..5 ribbons
-    ribbons = [];
+    const ribbons = [];
     for (let i = 0; i < n; i++) {
       ribbons.push({
         yc: 0.2 + (i + 0.5) * (0.6 / n),
@@ -39,16 +38,11 @@ export function create({ c2d, getColors, pxScale }) {
         ci: (rand() * 3) | 0,
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!ribbons.length || key !== lastKey) rebuild(params);
-  }
+    return ribbons;
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const ribbons = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const pal = [c.primary, c.accent, c.info];
@@ -104,8 +98,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      ribbons = [];
-    },
+    dispose() {},
   };
 }

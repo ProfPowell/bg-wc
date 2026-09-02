@@ -5,6 +5,7 @@
 // intensity = sheen strength.
 
 import { mulberry32 } from '../util/pause.js';
+import { seededPool } from './_pool.js';
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { rgbCss, rgbaCss } from '../renderer/tokens.js';
 import { mix } from './_dots.js';
@@ -13,20 +14,16 @@ export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
   let w = 1,
     h = 1;
-  let bands = [];
-  let scratches = [];
-  let lastKey = '';
-
-  function rebuild(params) {
+  const ensure = seededPool((params) => {
     const rand = mulberry32(params.seed | 0 || 37);
-    bands = [];
+    const bands = [];
     let r = 0.34; // label edge, in disc-radius units
     while (r < 1) {
       const step = (0.02 + rand() * 0.05) * (1.3 - params.density * 0.6);
       bands.push({ r0: r, r1: Math.min(1, r + step), tight: rand() < 0.5 });
       r += step + 0.012;
     }
-    scratches = [];
+    const scratches = [];
     for (let i = 0; i < 26; i++) {
       scratches.push({
         a: rand() * Math.PI * 2,
@@ -34,16 +31,11 @@ export function create({ c2d, getColors, pxScale }) {
         len: 0.02 + rand() * 0.05,
       });
     }
-    lastKey = `${params.seed}|${params.density}`;
-  }
-
-  function ensure(params) {
-    const key = `${params.seed}|${params.density}`;
-    if (!bands.length || key !== lastKey) rebuild(params);
-  }
+    return { bands, scratches };
+  });
 
   function frame(t, params) {
-    ensure(params);
+    const { bands, scratches } = ensure(params);
     const c = getColors();
     clearAndFill(c2d, w, h, c.bg);
     const cx = w * 0.5;
@@ -125,9 +117,6 @@ export function create({ c2d, getColors, pxScale }) {
     staticFrame(params) {
       frame(0, params);
     },
-    dispose() {
-      bands = [];
-      scratches = [];
-    },
+    dispose() {},
   };
 }
