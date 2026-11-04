@@ -113,7 +113,8 @@
           <p>
             For pages that don't want to introduce a new custom element into their markup, import
             the optional <code>data-background</code> binder. It scans for elements with a
-            <code>data-background</code> attribute and injects a <code>&lt;bg-wc&gt;</code> behind
+            <code>data-background</code> attribute &mdash; or its short twin <code>data-bg</code>;
+            both spellings are first-class &mdash; and injects a <code>&lt;bg-wc&gt;</code> behind
             that element's content via <code>z-index: -1</code> inside an isolated stacking context.
             The namespace is distinct from VB's <code>data-effect</code>, so the two can coexist on
             the same element.
@@ -131,7 +132,11 @@
           <p>
             <code>data-background</code> is the preset name. Any other key starting with
             <code>data-background-</code> maps to the corresponding bg-wc attribute &mdash; or, for
-            color overrides, the corresponding <code>--bg-wc-color-*</code> custom property:
+            color overrides, the corresponding <code>--bg-wc-color-*</code> custom property. The
+            same mapping applies to <code>data-bg</code> / <code>data-bg-*</code> (<code
+              >data-bg-skip</code
+            >
+            opts out):
           </p>
           <div class="table-wrap">
             <table>

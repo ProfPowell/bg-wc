@@ -102,3 +102,59 @@ test('binder defaults yield to unlayered author rules (positioned hosts)', async
   expect(r.hostRect).toEqual([40, 30, 120, 80]);
   expect(r.layerFills, 'injected layer must still fill the host').toBe(true);
 });
+
+// data-bg is a first-class twin of data-background (not an alias that warns):
+// same scan, same params mapping, same -skip, same lifecycle tracking.
+
+test('data-bg binds on the initial scan and maps data-bg-* params', async ({ page }) => {
+  await page.goto('/test/data-background-page.html');
+  const r = await page.evaluate(() => {
+    const w = document.querySelector('#short > bg-wc[data-bg-element]');
+    return w
+      ? {
+          preset: w.getAttribute('preset'),
+          intensity: w.getAttribute('intensity'),
+          color1: w.style.getPropertyValue('--bg-wc-color-1'),
+        }
+      : null;
+  });
+  expect(r).toEqual({ preset: 'dither', intensity: '0.4', color1: 'rgb(4, 5, 6)' });
+});
+
+test('data-bg-skip opts an element out', async ({ page }) => {
+  await page.goto('/test/data-background-page.html');
+  const bound = await page.evaluate(() => !!document.querySelector('#short-skip > bg-wc'));
+  expect(bound).toBe(false);
+});
+
+test('data-bg is tracked through its lifecycle: late bind, re-point, unbind', async ({ page }) => {
+  await page.goto('/test/data-background-page.html');
+  const r = await page.evaluate(async () => {
+    const tick = () => new Promise((res) => setTimeout(res, 0));
+    const el = document.getElementById('plain');
+    const w = () => el.querySelector(':scope > bg-wc[data-bg-element]');
+    el.setAttribute('data-bg', 'dither');
+    await tick();
+    const bound = !!w();
+    el.setAttribute('data-bg', 'conic');
+    await tick();
+    const repointed = w()?.getAttribute('preset');
+    el.removeAttribute('data-bg');
+    await tick();
+    const gone = !w();
+    return { bound, repointed, gone };
+  });
+  expect(r).toEqual({ bound: true, repointed: 'conic', gone: true });
+});
+
+test('the binder stylesheet positions data-bg hosts like data-background hosts', async ({
+  page,
+}) => {
+  await page.goto('/test/data-background-page.html');
+  const r = await page.evaluate(() => {
+    const host = document.getElementById('short');
+    const w = host.querySelector(':scope > bg-wc[data-bg-element]');
+    return { host: getComputedStyle(host).position, layer: w && getComputedStyle(w).position };
+  });
+  expect(r).toEqual({ host: 'relative', layer: 'absolute' });
+});

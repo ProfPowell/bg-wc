@@ -17,7 +17,7 @@ Vanilla Breeze by default.
 <bg-wc preset="mesh-gradient" intensity="0.65">
   <h1>Hero headline</h1>
   <p>This content sits above the rendered layer.</p>
-  <img slot="fallback" src="hero-static.webp" alt="">
+  <img slot="fallback" src="hero-static.webp" alt="" />
 </bg-wc>
 ```
 
@@ -40,33 +40,33 @@ Geometric, Texture, Atmospheric, Retro, Vector, Pop art, Ornamental,
 Japanese, Print art, Classic, Art, Kitsch, Science, Tech, Nature, Lounge,
 and more). Each adapts to whatever theme tokens you set.
 
-| Name             | Renderer | Notes                                                   |
-| ---------------- | -------- | ------------------------------------------------------- |
-| `mesh-gradient`  | WebGL    | Soft blobs in primary / accent / info colors.           |
-| `aurora`         | WebGL    | Drifting aurora bands; the canonical "ambient" preset.  |
-| `mosaic`         | Canvas2D | Squares; five modes via `mode` attribute (see below).   |
-| `groove`         | Canvas2D | 70s looping rainbow-stripe routes that draw on and spiral.|
-| `scandi`         | Canvas2D | Scandinavian geometric grid of arcs + floral motifs.    |
-| `seigaiha`       | Canvas2D | Japanese overlapping-circle "wave" (fish-scale) pattern.|
-| `sumi-e`         | WebGL    | Ink-wash blooms bleeding into paper, bokashi edges.     |
-| `kintsugi`       | Canvas2D | Gold crack veins growing across a dark slab.            |
-| `risograph`      | WebGL    | Two-ink riso overprint with misregistration and grain.  |
-| `supergraphics`  | Canvas2D | Mural-scale curved bands (Sea Ranch / Stauffacher).     |
-| `bauhaus`        | Canvas2D | Bauhaus poster forms recomposing on staggered cycles.   |
-| `equalizer`      | Canvas2D | 80s graphic-EQ LED bars with peak-hold; bars/mirror/dots.|
-| `tiki`           | Canvas2D | Torch-lit tiki bar — flickering totems at night.        |
-| `komorebi`       | WebGL    | Dappled afternoon sunlight drifting through leaves.     |
-| `palms`          | Canvas2D | Palms swaying at sunset; silhouette / lit modes.        |
-| `reaction-diffusion` | WebGL | Gray-Scott patterns (spots / stripes / coral) on FBOs. |
-| `slime-mold`     | WebGL    | Physarum agents weaving chemical-trail networks.        |
-| `gyroid`         | WebGL    | Raymarched gyroid minimal surface, rim/key lit.         |
-| `stained-glass`  | WebGL    | Voronoi panes + lead cames with a drifting light bloom. |
-| `swarm`          | Canvas2D | Drone-show formations; pass `text` to spell words.      |
-| `watercolor`     | WebGL    | Wet-on-wet blooms with granulated edge pigment.         |
-| `clockwork`      | Canvas2D | Ratio-locked gear train with a ticking escapement.      |
-| `source`         | Canvas2D | Faded HTML source listing; pass `text` to override.     |
-| `matrix`         | Canvas2D | Falling digital rain in theme greens.                   |
-| `confetti`       | Canvas2D | Continuous drop using the full semantic palette.        |
+| Name                 | Renderer | Notes                                                      |
+| -------------------- | -------- | ---------------------------------------------------------- |
+| `mesh-gradient`      | WebGL    | Soft blobs in primary / accent / info colors.              |
+| `aurora`             | WebGL    | Drifting aurora bands; the canonical "ambient" preset.     |
+| `mosaic`             | Canvas2D | Squares; five modes via `mode` attribute (see below).      |
+| `groove`             | Canvas2D | 70s looping rainbow-stripe routes that draw on and spiral. |
+| `scandi`             | Canvas2D | Scandinavian geometric grid of arcs + floral motifs.       |
+| `seigaiha`           | Canvas2D | Japanese overlapping-circle "wave" (fish-scale) pattern.   |
+| `sumi-e`             | WebGL    | Ink-wash blooms bleeding into paper, bokashi edges.        |
+| `kintsugi`           | Canvas2D | Gold crack veins growing across a dark slab.               |
+| `risograph`          | WebGL    | Two-ink riso overprint with misregistration and grain.     |
+| `supergraphics`      | Canvas2D | Mural-scale curved bands (Sea Ranch / Stauffacher).        |
+| `bauhaus`            | Canvas2D | Bauhaus poster forms recomposing on staggered cycles.      |
+| `equalizer`          | Canvas2D | 80s graphic-EQ LED bars with peak-hold; bars/mirror/dots.  |
+| `tiki`               | Canvas2D | Torch-lit tiki bar — flickering totems at night.           |
+| `komorebi`           | WebGL    | Dappled afternoon sunlight drifting through leaves.        |
+| `palms`              | Canvas2D | Palms swaying at sunset; silhouette / lit modes.           |
+| `reaction-diffusion` | WebGL    | Gray-Scott patterns (spots / stripes / coral) on FBOs.     |
+| `slime-mold`         | WebGL    | Physarum agents weaving chemical-trail networks.           |
+| `gyroid`             | WebGL    | Raymarched gyroid minimal surface, rim/key lit.            |
+| `stained-glass`      | WebGL    | Voronoi panes + lead cames with a drifting light bloom.    |
+| `swarm`              | Canvas2D | Drone-show formations; pass `text` to spell words.         |
+| `watercolor`         | WebGL    | Wet-on-wet blooms with granulated edge pigment.            |
+| `clockwork`          | Canvas2D | Ratio-locked gear train with a ticking escapement.         |
+| `source`             | Canvas2D | Faded HTML source listing; pass `text` to override.        |
+| `matrix`             | Canvas2D | Falling digital rain in theme greens.                      |
+| `confetti`           | Canvas2D | Continuous drop using the full semantic palette.           |
 
 [**Full preset catalog →**](https://profpowell.github.io/bg-wc/docs/api.html#presets)
 
@@ -106,7 +106,8 @@ import '@profpowell/bg-wc/data-background';
   data-background="mosaic"
   data-background-mode="blocks"
   data-background-density="0.55"
-  data-background-intensity="0.7">
+  data-background-intensity="0.7"
+>
   <h1>Squares, behind anything.</h1>
   <p>Zero custom elements in the markup.</p>
 </section>
@@ -116,15 +117,19 @@ No `<bg-wc>` tag. No wrapper divs. The binder installs a tiny
 stylesheet that positions the injected canvas behind the host's
 content via `z-index: -1` inside an isolated stacking context.
 
+`data-bg` is an equivalent short spelling: `data-bg="mosaic"`,
+`data-bg-intensity="0.7"`, `data-bg-skip`. Both are first-class;
+use whichever reads better, one spelling per element.
+
 ## CSS custom properties
 
 Override tokens per instance without touching the global theme:
 
 ```css
 bg-wc {
-  --bg-wc-color-1: hotpink;    /* beats --color-primary */
-  --bg-wc-color-bg: #0a0a0a;   /* beats --color-background */
-  --bg-wc-intensity: 0.8;      /* beats the intensity attribute */
+  --bg-wc-color-1: hotpink; /* beats --color-primary */
+  --bg-wc-color-bg: #0a0a0a; /* beats --color-background */
+  --bg-wc-intensity: 0.8; /* beats the intensity attribute */
   --bg-wc-speed: 0.5;
 }
 ```
@@ -139,14 +144,14 @@ npm run dev   # serves the gallery + demos
 ## Migrating from gl-wc
 
 The package was previously `@profpowell/gl-wc`. The legacy aliases have
-been **removed** — if you're upgrading, rename:
+been **removed** — if you're upgrading, rename (`data-bg` is unchanged and
+still works, alongside `data-background`):
 
-| Old (gl-wc)                       | New (bg-wc)                                 |
-| --------------------------------- | ------------------------------------------- |
-| `<gl-wc>` element                 | `<bg-wc>`                                    |
-| `data-bg` / `data-bg-*` attrs     | `data-background` / `data-background-*`      |
-| `--gl-wc-*` CSS variables         | `--bg-wc-*`                                  |
-| `gl-wc:*` event listeners         | `bg-wc:*`                                    |
+| Old (gl-wc)               | New (bg-wc) |
+| ------------------------- | ----------- |
+| `<gl-wc>` element         | `<bg-wc>`   |
+| `--gl-wc-*` CSS variables | `--bg-wc-*` |
+| `gl-wc:*` event listeners | `bg-wc:*`   |
 
 ## License
 

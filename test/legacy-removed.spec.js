@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-// Regression guard for gl-wc-elz: the deprecated gl-wc / data-bg aliases are
-// removed. Only the canonical surface (bg-wc, data-background, --bg-wc-*,
-// bg-wc:*) works.
+// Regression guard for gl-wc-elz: the deprecated gl-wc aliases are removed.
+// Only the canonical surface (bg-wc, --bg-wc-*, bg-wc:*) works. The binder
+// accepts BOTH data-background and data-bg as first-class spellings.
 
 test('<gl-wc> is not registered and does not upgrade; <bg-wc> still does', async ({ page }) => {
   await page.goto('/test/legacy-page.html');
@@ -38,17 +38,17 @@ test('gl-wc:* events no longer fire; bg-wc:* still do', async ({ page }) => {
   expect(seen.gl, 'gl-wc:ready twin should be gone').toBe(false);
 });
 
-test('data-bg is not bound; data-background still injects a <bg-wc>', async ({ page }) => {
+test('both data-bg and data-background inject a <bg-wc>', async ({ page }) => {
   await page.goto('/test/legacy-page.html');
   await page.waitForFunction(
     () => !!document.getElementById('binder-canonical')?.querySelector('bg-wc')
   );
   // The initial scan handles every annotated element in one synchronous pass,
-  // so once the canonical element is bound the legacy decision is final.
+  // so once one element is bound the other's state is final.
   const r = await page.evaluate(() => ({
-    legacyBound: !!document.getElementById('binder-legacy')?.querySelector('bg-wc'),
+    shortBound: !!document.getElementById('binder-legacy')?.querySelector('bg-wc'),
     canonicalBound: !!document.getElementById('binder-canonical')?.querySelector('bg-wc'),
   }));
-  expect(r.legacyBound, 'data-bg should no longer bind').toBe(false);
+  expect(r.shortBound, 'data-bg is a first-class spelling').toBe(true);
   expect(r.canonicalBound).toBe(true);
 });
