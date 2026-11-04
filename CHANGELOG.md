@@ -4,15 +4,27 @@ All notable changes to `@profpowell/bg-wc` are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow
 [Semantic Versioning](https://semver.org/) (pre-1.0, so a minor bump may break).
 
-## [0.5.0] — 2026-09-03
+## [0.5.1] — 2026-11-04
+
+### Added
+
+- **`data-bg` is a first-class twin of `data-background`.** `data-bg="mosaic"`,
+  `data-bg-intensity`, `data-bg-color-1`, and `data-bg-skip` work exactly like
+  the long spelling, with the same parameter mapping, positioning, and
+  lifecycle tracking. One spelling per element; `data-background` wins if
+  both are present. It was a deprecated alias in 0.4.0 and absent in 0.5.0;
+  it is now a permanent part of the surface.
+
+## [0.5.0] — 2026-11-03
 
 ### Breaking
 
 - **The legacy `gl-wc` surface is gone.** Only the canonical names remain:
-  the `<bg-wc>` element, the `data-background` / `data-bg` binder attributes,
-  `--bg-wc-*` custom properties, and `bg-wc:*` events. `<gl-wc>`, `--gl-wc-*`,
-  and `gl-wc:*` no longer work (they warned as deprecated in 0.4.0). The
-  module's named export is `{ BgWc }`.
+  the `<bg-wc>` element, the `data-background` binder attribute, `--bg-wc-*`
+  custom properties, and `bg-wc:*` events. `<gl-wc>`, `data-bg`,
+  `data-bg-skip`, `--gl-wc-*`, and `gl-wc:*` no longer work (they warned as
+  deprecated in 0.4.0; `data-bg` returns as a first-class spelling in 0.5.1).
+  The module's named export is `{ BgWc }`.
 
 ### Added
 
@@ -47,10 +59,6 @@ All notable changes to `@profpowell/bg-wc` are recorded here. The format follows
   - `geometric`: delaunay, hilbert, moire, truchet
   - `retro`: equalizer, metaballs, vumeter
   - `texture`: stipple, terrazzo; `gradient`: halcyon; `text`: bootlog
-- **`data-bg` is a first-class twin of `data-background`.** `data-bg="mosaic"`,
-  `data-bg-intensity`, `data-bg-color-1`, and `data-bg-skip` work exactly like
-  the long spelling, with the same lifecycle tracking. It was a deprecated
-  alias in 0.4.0; it is now a permanent part of the surface.
 - **`data-background` is now live for the element's whole lifecycle.** Late
   annotation binds, changing the value re-points the preset, and removing the
   attribute (or adding `data-background-skip`) unbinds and removes the
@@ -106,5 +114,6 @@ First release under the `@profpowell/bg-wc` name (renamed from
 `@profpowell/gl-wc`). Legacy `gl-wc` aliases still worked with a one-time
 deprecation warning.
 
+[0.5.1]: https://github.com/ProfPowell/bg-wc/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/ProfPowell/bg-wc/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/ProfPowell/bg-wc/releases/tag/v0.4.0
