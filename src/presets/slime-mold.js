@@ -3,9 +3,17 @@
 // strongest, deposit, and move (wrapping toroidally). The trail diffuses and
 // decays. Built on the shared ping-pong helper (one for agents, one for the
 // trail) plus a vertex-texture-fetch point pass that deposits agents back into
-// the trail. `density` = agent count, `intensity` = display contrast. Needs a
-// renderable float format (WebGL2 + EXT_color_buffer_float); degrades to a
-// frozen field otherwise. Per-frame state → excluded from the visual baseline.
+// the trail. `density` = agent count, `intensity` = display contrast.
+//
+// WebGL1 (gl-wc-5cbv): the trail texture wraps (REPEAT), so its size is a
+// power of two at every quality — WebGL1 samples a wrapping NPOT texture as
+// black. The agent heading is stored normalised (ang / 2π, in 0..1) so no
+// format clamps it. Agent positions need sub-texel precision, so the agent
+// field REQUIRES a float-renderable target: the shared helper finds one on
+// WebGL2 (EXT_color_buffer_float) or WebGL1 (OES_texture_half_float /
+// OES_texture_float); if none exists create() throws and the host shows its
+// fallback slot rather than a frozen, mis-steered field.
+// Per-frame state → excluded from the visual baseline.
 
 import {
   QUAD_VS,
@@ -24,6 +32,8 @@ precision mediump float;
 #endif
 `;
 
+// Agent texel: (x, y, heading / 2π, 1). The heading is kept in 0..1 so it
+// survives any texture format unclamped.
 const SEED_FS = `${PREC}
 varying vec2 v_uv;
 uniform float u_seed;
@@ -31,7 +41,7 @@ float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7)) + u_seed) * 4375
 void main(){
   float x = hash(v_uv * 1.7);
   float y = hash(v_uv * 2.3 + 5.1);
-  float a = hash(v_uv * 0.7 + 1.3) * 6.2831853;
+  float a = hash(v_uv * 0.7 + 1.3);
   gl_FragColor = vec4(x, y, a, 1.0);
 }`;
 
@@ -40,6 +50,7 @@ varying vec2 v_uv;
 uniform sampler2D u_agents;
 uniform sampler2D u_trail;
 uniform float u_time, u_sensorDist, u_sensorAngle, u_rotAngle, u_step;
+const float TAU = 6.2831853;
 float sense(vec2 pos, float ang){
   vec2 d = vec2(cos(ang), sin(ang)) * u_sensorDist;
   return texture2D(u_trail, fract(pos + d)).x;
@@ -47,7 +58,7 @@ float sense(vec2 pos, float ang){
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7)) + u_time) * 43758.5453); }
 void main(){
   vec4 s = texture2D(u_agents, v_uv);
-  vec2 pos = s.xy; float ang = s.z;
+  vec2 pos = s.xy; float ang = s.z * TAU;
   float f = sense(pos, ang);
   float l = sense(pos, ang + u_sensorAngle);
   float r = sense(pos, ang - u_sensorAngle);
@@ -56,7 +67,7 @@ void main(){
   else if (r > l) ang -= u_rotAngle;
   else ang += (hash(v_uv) - 0.5) * u_rotAngle * 2.0;
   pos = fract(pos + vec2(cos(ang), sin(ang)) * u_step);
-  gl_FragColor = vec4(pos, ang, 1.0);
+  gl_FragColor = vec4(pos, fract(ang / TAU), 1.0);
 }`;
 
 const DEPOSIT_VS = `
@@ -98,7 +109,8 @@ void main(){
   gl_FragColor = vec4(col, 1.0);
 }`;
 
-const TRAIL = { low: 192, med: 256, high: 384 };
+// Power-of-two at every quality: the trail wraps, and WebGL1 only wraps POT.
+const TRAIL = { low: 128, med: 256, high: 512 };
 
 export function create({ gl, getColors }) {
   const seedProg = createProgram(gl, QUAD_VS, SEED_FS);
@@ -130,8 +142,11 @@ export function create({ gl, getColors }) {
 
   function ensure(params) {
     const q = params.quality || 'med';
-    const a = Math.round(96 + (params.density ?? 0.5) * 72); // agents per side
     const tt = TRAIL[q] || TRAIL.med;
+    // Agents per side scale with the trail so agents-per-texel (and so the
+    // deposit rate per texel) is the same at every quality: a 128² trail
+    // under the 'med' agent count saturates to a flat field within a second.
+    const a = Math.round((96 + (params.density ?? 0.5) * 72) * (tt / 256));
     const k = `${params.seed | 0}|${a}|${tt}`;
     if (key === k && agents) return;
     if (agents) agents.dispose();
@@ -141,6 +156,11 @@ export function create({ gl, getColors }) {
     TT = tt;
     agentCount = A * A;
     agents = createPingPong(gl, A, A, { filter: gl.NEAREST });
+    if (!agents.float) {
+      agents.dispose();
+      agents = null;
+      throw new Error('slime-mold needs a float-renderable framebuffer (none available)');
+    }
     trail = createPingPong(gl, TT, TT, { filter: gl.LINEAR, wrap: gl.REPEAT });
     // Agent-id point buffer (texel centres).
     const ids = new Float32Array(agentCount * 2);

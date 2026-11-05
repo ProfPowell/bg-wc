@@ -71,34 +71,81 @@ export function bindQuad(gl, buf, loc) {
 
 // -----------------------------------------------------------------------------
 // Ping-pong framebuffers — shared by stateful simulation presets (reaction-
-// diffusion, slime-mold, oscilloscope persistence). Two textures + their FBOs;
-// each step reads `src()` and renders into `bindDst()`, then `swap()`. Prefers a
-// renderable half-float format on WebGL2 (EXT_color_buffer_float) for headroom,
-// and degrades to RGBA8 (UNSIGNED_BYTE) so it still runs on WebGL1 / hosts
-// without float-renderable framebuffers. Textures start empty — seed the field
-// with a render pass (uploading half-float pixel data is awkward; rendering is
-// not). `dispose()` deletes both textures and both framebuffers.
+// diffusion, slime-mold, spectrum). Two textures + their FBOs; each step reads
+// `src()` and renders into `bindDst()`, then `swap()`. Textures start empty —
+// seed the field with a render pass (uploading half-float pixel data is
+// awkward; rendering is not). `dispose()` deletes both textures and both FBOs.
+//
+// Format ladder (gl-wc-5cbv) — the first candidate whose framebuffer reports
+// FRAMEBUFFER_COMPLETE wins, so `float` is only ever true for a target that
+// really renders:
+//   1. WebGL2 + EXT_color_buffer_float          → RGBA16F / HALF_FLOAT
+//   2. WebGL1 + OES_texture_half_float           → RGBA / HALF_FLOAT_OES
+//   3. WebGL1 + OES_texture_float                → RGBA / FLOAT
+//   4. RGBA / UNSIGNED_BYTE                      (float: false)
+// A LINEAR filter on a float target needs the matching *_linear extension;
+// without it the target is created with NEAREST rather than left incomplete.
+// If even the byte target is incomplete the helper THROWS: the caller's
+// create() then fails and the host shows its fallback, instead of a preset
+// quietly rendering into a framebuffer that drops every draw.
+//
+// WebGL1 caveat: a texture that wraps (REPEAT / MIRRORED_REPEAT) must be
+// power-of-two or sampling returns black. The helper refuses that
+// combination up front (throws) so the misuse is loud, not blank.
 export function createPingPong(gl, width, height, opts = {}) {
   const isGL2 =
     typeof WebGL2RenderingContext !== 'undefined' && gl instanceof WebGL2RenderingContext;
   const wantFloat = opts.float !== false;
   const wrap = opts.wrap || gl.CLAMP_TO_EDGE;
-  const filter = opts.filter || gl.NEAREST;
+  const wantFilter = opts.filter || gl.NEAREST;
 
-  // Pick the best renderable format available.
-  let internalFormat = gl.RGBA;
-  let type = gl.UNSIGNED_BYTE;
-  let float = false;
-  if (wantFloat && isGL2 && gl.getExtension('EXT_color_buffer_float')) {
-    internalFormat = gl.RGBA16F;
-    type = gl.HALF_FLOAT;
-    float = true;
+  const pot = (n) => n > 0 && (n & (n - 1)) === 0;
+  if (!isGL2 && wrap !== gl.CLAMP_TO_EDGE && !(pot(width) && pot(height))) {
+    throw new Error(
+      `bg-wc: WebGL1 needs power-of-two dimensions for a wrapping texture (got ${width}x${height})`
+    );
   }
 
-  function makeTex() {
+  // Candidate formats, best first. `linearExt` names the extension a LINEAR
+  // filter needs on that format (null: always filterable).
+  const candidates = [];
+  if (wantFloat) {
+    if (isGL2 && gl.getExtension('EXT_color_buffer_float')) {
+      candidates.push({ internal: gl.RGBA16F, type: gl.HALF_FLOAT, float: true, linearExt: null });
+    }
+    if (!isGL2) {
+      const half = gl.getExtension('OES_texture_half_float');
+      if (half) {
+        // Optional on some drivers; the status check below is what decides.
+        gl.getExtension('EXT_color_buffer_half_float');
+        candidates.push({
+          internal: gl.RGBA,
+          type: half.HALF_FLOAT_OES,
+          float: true,
+          linearExt: 'OES_texture_half_float_linear',
+        });
+      }
+      if (gl.getExtension('OES_texture_float')) {
+        gl.getExtension('WEBGL_color_buffer_float');
+        candidates.push({
+          internal: gl.RGBA,
+          type: gl.FLOAT,
+          float: true,
+          linearExt: 'OES_texture_float_linear',
+        });
+      }
+    }
+  }
+  candidates.push({ internal: gl.RGBA, type: gl.UNSIGNED_BYTE, float: false, linearExt: null });
+
+  let textures = [];
+  let fbos = [];
+  let float = false;
+
+  function makeTex(c, filter) {
     const tex = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, tex);
-    gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, width, height, 0, gl.RGBA, type, null);
+    gl.texImage2D(gl.TEXTURE_2D, 0, c.internal, width, height, 0, gl.RGBA, c.type, null);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap);
@@ -111,21 +158,35 @@ export function createPingPong(gl, width, height, opts = {}) {
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
     return fbo;
   }
-
-  let textures = [makeTex(), makeTex()];
-  let fbos = [makeFbo(textures[0]), makeFbo(textures[1])];
-
-  // If a float framebuffer came back incomplete, fall back to byte and rebuild.
-  if (float && gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+  function release() {
     for (const t of textures) gl.deleteTexture(t);
     for (const f of fbos) gl.deleteFramebuffer(f);
-    internalFormat = gl.RGBA;
-    type = gl.UNSIGNED_BYTE;
-    float = false;
-    textures = [makeTex(), makeTex()];
+    textures = [];
+    fbos = [];
+  }
+
+  let complete = false;
+  for (const c of candidates) {
+    const filter =
+      wantFilter === gl.LINEAR && c.linearExt && !gl.getExtension(c.linearExt)
+        ? gl.NEAREST
+        : wantFilter;
+    textures = [makeTex(c, filter), makeTex(c, filter)];
     fbos = [makeFbo(textures[0]), makeFbo(textures[1])];
+    complete =
+      gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE &&
+      (gl.bindFramebuffer(gl.FRAMEBUFFER, fbos[0]),
+      gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE);
+    if (complete) {
+      float = c.float;
+      break;
+    }
+    release();
   }
   gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  if (!complete) {
+    throw new Error(`bg-wc: no renderable framebuffer format for a ${width}x${height} target`);
+  }
 
   let cur = 0;
   return {
@@ -143,11 +204,6 @@ export function createPingPong(gl, width, height, opts = {}) {
     swap() {
       cur ^= 1;
     },
-    dispose() {
-      for (const t of textures) gl.deleteTexture(t);
-      for (const f of fbos) gl.deleteFramebuffer(f);
-      textures = [];
-      fbos = [];
-    },
+    dispose: release,
   };
 }
