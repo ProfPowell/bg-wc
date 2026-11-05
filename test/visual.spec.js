@@ -9,11 +9,12 @@ import { listPresets } from '../src/presets/index.js';
 
 const PRESETS = listPresets().map((p) => p.name);
 
-// Presets that advance internal state per frame() call (not from the frozen `t`),
-// so they never settle to a stable still. They still get the load/fallback check,
-// just not a pixel baseline. reaction-diffusion steps its Gray-Scott sim every
-// frame regardless of `t`; the phase-3/4 sims (flocking, accumulation buffers,
-// growth) likewise advance per frame, so none settle to a stable still.
+// Presets whose picture is accumulated simulation state (ping-pong fields,
+// persistence buffers, growth, flocking). Since gl-wc-beh4 they step from
+// elapsed `t` (src/presets/_clock.js), so at the frozen t=0 used here they are
+// deterministic — but their t=0 state is the seed field or an empty buffer,
+// not a representative picture. They still get the load/fallback check, just
+// not a pixel baseline.
 const NO_SNAPSHOT = new Set([
   'reaction-diffusion',
   'boids',

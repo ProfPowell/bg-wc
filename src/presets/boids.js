@@ -1,13 +1,15 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
 import { rgbaCss as rgb } from '../renderer/tokens.js';
+import { fixedStep } from './_clock.js';
 
 // boids — classic Reynolds flocking. 150–400 agents (by `density`) steered by
 // separation / alignment / cohesion, with neighbour lookups accelerated by a
 // spatial hash grid. Each boid is drawn as a tapered streak from its tail to its
 // head, coloured fg→primary by speed. Edges wrap. `intensity` = streak length /
-// trail emphasis. State advances from dt (derived from the speed-scaled `t`), so
-// motion already honours `speed`.
+// trail emphasis. The flock integrates in fixed 1/60 s steps counted from the
+// speed-scaled `t` (see _clock.js), so motion honours `speed`, is identical at
+// any refresh rate, and a repeated t leaves the flock untouched.
 
 function mix(a, b, t) {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
@@ -17,7 +19,7 @@ export function create({ c2d, getColors }) {
   let w = 0;
   let h = 0;
   let boids = null;
-  let lastT = 0;
+  const clock = fixedStep(60);
   let key = '';
 
   function init(params) {
@@ -37,7 +39,6 @@ export function create({ c2d, getColors }) {
         vy: Math.sin(a) * speed,
       });
     }
-    lastT = 0;
   }
 
   function step(dt) {
@@ -142,10 +143,8 @@ export function create({ c2d, getColors }) {
 
   function frame(t, params) {
     init(params);
-    let dt = t - lastT;
-    lastT = t;
-    if (!(dt > 0) || dt > 0.1) dt = 0.016; // clamp on first frame / long gaps
-    step(dt);
+    const n = clock.advance(t);
+    for (let i = 0; i < n; i++) step(1 / clock.hz);
     draw(params);
   }
 

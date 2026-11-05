@@ -1,9 +1,12 @@
-// matrix — falling digital rain. Each column drops a stream of glyphs; a
-// translucent bg fill each frame leaves fading trails, and the leading
-// glyph is drawn bright. The 90s hacker aesthetic. Canvas2D.
+// matrix — falling digital rain. Each column drops a stream of glyphs; an
+// alpha erase per tick leaves fading trails, and the leading glyph is drawn
+// bright. Ticks are fixed 1/60 s steps counted from the speed-scaled `t` (see
+// _clock.js), so the rain falls at the same rate at any refresh rate and a
+// repeated t draws nothing new. The 90s hacker aesthetic. Canvas2D.
 
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss } from '../renderer/tokens.js';
+import { fixedStep } from './_clock.js';
 
 const GLYPHS = 'アイウエオカキクケコサシスセソタチツテトナニヌ0123456789:.=*+-<>';
 
@@ -17,7 +20,7 @@ export function create({ c2d, getColors, pxScale }) {
   let rand = mulberry32(1);
   let lastSeed = null;
   let lastDensity = null;
-  let lastT = 0;
+  const clock = fixedStep(60);
 
   function rebuild(params) {
     lastDensity = params.density;
@@ -44,7 +47,12 @@ export function create({ c2d, getColors, pxScale }) {
   function frame(t, params) {
     ensure(params);
     const c = getColors();
+    const n = clock.advance(t);
+    for (let i = 0; i < n; i++) tick(c);
+  }
 
+  // One 1/60 s tick: fade the trails, draw every column's glyphs, advance.
+  function tick(c) {
     // Trailing fade: erase alpha instead of compositing a translucent bg
     // fill. The old fill stalled on 8-bit rounding at a color that is NOT
     // the bg (measured rgb(9,9,9) vs bg rgb(5,11,6)), permanently burning
@@ -57,9 +65,6 @@ export function create({ c2d, getColors, pxScale }) {
     c2d.fillRect(0, 0, w, h);
     c2d.globalCompositeOperation = 'source-over';
 
-    const dt = Math.max(0, Math.min(0.1, t - lastT));
-    lastT = t;
-
     const head = c.fg || [0.8, 1, 0.8, 1];
     const trail = c.primary;
     const headStyle = `rgb(${Math.min(255, head[0] * 255 + 80) | 0},${Math.min(255, head[1] * 255 + 80) | 0},${Math.min(255, head[2] * 255 + 80) | 0})`;
@@ -68,8 +73,8 @@ export function create({ c2d, getColors, pxScale }) {
     c2d.font = `${fontSize}px ui-monospace, monospace`;
     c2d.textBaseline = 'top';
 
-    // Advance roughly fontSize per step; host already speed-scales dt.
-    const step = 14 * dt; // rows per frame
+    // 14 rows per second of speed-scaled t, applied per 1/60 s tick.
+    const step = 14 / clock.hz; // rows per tick
     for (let i = 0; i < cols; i++) {
       const x = i * fontSize;
       const yRow = drops[i];

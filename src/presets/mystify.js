@@ -1,9 +1,12 @@
 // mystify — the Windows "Mystify" screensaver. Two polygons whose vertices
-// bounce around the viewport leave fading trails as they morph. Translucent
-// bg fill each frame makes the wake. Retro group.
+// bounce around the viewport leave fading trails as they morph. An alpha erase
+// per step makes the wake. Steps are fixed 1/60 s ticks counted from the
+// speed-scaled `t` (see _clock.js), so the wake and the motion are a function
+// of elapsed time, not of how often frame() is called. Retro group.
 
 import { mulberry32 } from '../util/pause.js';
 import { rgbCss } from '../renderer/tokens.js';
+import { fixedStep } from './_clock.js';
 
 export function create({ c2d, getColors, pxScale }) {
   const px = pxScale || 1;
@@ -12,7 +15,7 @@ export function create({ c2d, getColors, pxScale }) {
   let shapes = [];
   let rand = mulberry32(1);
   let lastSeed = null;
-  let lastT = 0;
+  const clock = fixedStep(60);
 
   function makeShape(palIdx) {
     const n = 4;
@@ -43,7 +46,12 @@ export function create({ c2d, getColors, pxScale }) {
   function frame(t, params) {
     ensure(params);
     const c = getColors();
+    const n = clock.advance(t);
+    for (let i = 0; i < n; i++) tick(clock.time - (n - 1 - i) / clock.hz, c);
+  }
 
+  // One 1/60 s tick: fade the wake, move the vertices, stroke the polygons.
+  function tick(t, c) {
     // Trailing wake: erase alpha instead of compositing a translucent bg
     // fill — the fill stalls on 8-bit rounding at a color that is NOT the
     // bg, burning ghost polylines into the canvas (gl-wc-4vy; same class
@@ -54,9 +62,7 @@ export function create({ c2d, getColors, pxScale }) {
     c2d.fillRect(0, 0, w, h);
     c2d.globalCompositeOperation = 'source-over';
 
-    const dt = Math.max(0, Math.min(0.1, t - lastT));
-    lastT = t;
-    const sp = dt;
+    const sp = 1 / clock.hz;
 
     const palette = [c.primary, c.accent, c.info];
     c2d.lineWidth = 2 * px;

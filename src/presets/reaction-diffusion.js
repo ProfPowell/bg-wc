@@ -1,6 +1,7 @@
 // reaction-diffusion — Gray-Scott on ping-pong framebuffers. The U/V field is
-// seeded from mulberry32 noise blobs, advanced by N sim steps per frame (scaled
-// by `quality`), and shown through a bg→primary→accent ramp. `density` selects a
+// seeded from mulberry32 noise blobs, advanced by N sim steps per 1/60 s of
+// speed-scaled `t` (N scaled by `quality`; stepping via _clock.js so the sim is
+// a function of elapsed time), and shown through a bg→primary→accent ramp. `density` selects a
 // curated feed/kill regime (spots / stripes / coral / waves) so every value
 // looks good; `intensity` ramps display contrast. The sim runs at a capped grid
 // resolution (LINEAR-upsampled) for steady perf on any canvas size. dispose()
@@ -14,6 +15,7 @@ import {
   createPingPong,
 } from '../renderer/webgl.js';
 import { mulberry32 } from '../util/pause.js';
+import { fixedStep } from './_clock.js';
 
 const PRECISION = `
 #ifdef GL_FRAGMENT_PRECISION_HIGH
@@ -116,6 +118,9 @@ export function create({ gl, getColors }) {
   let simW = 1;
   let simH = 1;
   let key = '';
+  // Each clock tick runs STEPS[quality] sim steps; capped at 3 ticks per
+  // frame — the sim is GPU-heavy, so a stall catches up at most 48 steps.
+  const clock = fixedStep(60, 3);
 
   function ensureBuffers(params) {
     const q = params.quality || 'med';
@@ -194,7 +199,7 @@ export function create({ gl, getColors }) {
     frame(t, params) {
       ensureBuffers(params);
       const [F, K] = regimeFor(params.density ?? 0.5);
-      const steps = STEPS[params.quality] || STEPS.med;
+      const steps = (STEPS[params.quality] || STEPS.med) * clock.advance(t);
       for (let i = 0; i < steps; i++) step(F, K);
       display(params);
     },

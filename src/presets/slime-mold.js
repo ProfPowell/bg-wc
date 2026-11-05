@@ -14,6 +14,7 @@ import {
   bindQuad,
   createPingPong,
 } from '../renderer/webgl.js';
+import { fixedStep } from './_clock.js';
 
 const PREC = `
 #ifdef GL_FRAGMENT_PRECISION_HIGH
@@ -123,6 +124,9 @@ export function create({ gl, getColors }) {
   let TT = 0;
   let agentCount = 0;
   let key = '';
+  // One sim step per 1/60 s of speed-scaled `t` (see _clock.js), capped at 3
+  // per frame: the agent + trail passes are GPU-heavy.
+  const clock = fixedStep(60, 3);
 
   function ensure(params) {
     const q = params.quality || 'med';
@@ -244,7 +248,8 @@ export function create({ gl, getColors }) {
     },
     frame(t, params) {
       ensure(params);
-      stepSim(t);
+      const n = clock.advance(t);
+      for (let i = 0; i < n; i++) stepSim(clock.time - (n - 1 - i) / clock.hz);
       display(params);
     },
     staticFrame(params) {

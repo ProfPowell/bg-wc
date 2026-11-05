@@ -2,8 +2,10 @@
 // with phosphor persistence: each frame the buffer fades toward bg and fresh
 // bright traces are added on top (additive blend), giving glowing trails. The
 // trace geometry is a single parametric buffer animated entirely in the vertex
-// shader. `density` = trace count, `intensity` = glow brightness. The persistence
-// buffer is per-frame state, so this is excluded from the visual still baseline.
+// shader. `density` = trace count, `intensity` = glow brightness. The fade +
+// trace pass runs once per 1/60 s of speed-scaled `t` (see _clock.js), so the
+// persistence is a function of elapsed time; the buffer is still per-frame
+// state, so this is excluded from the visual still baseline.
 //
 // 8-bit fade-stall note (gl-wc-4vy): like any RGBA8 accumulate-and-fade, the
 // blend toward u_bg stalls a few LSB shy of it. Measured: the whole face
@@ -14,6 +16,7 @@
 
 import { QUAD_VS, createProgram, fullscreenQuad, bindQuad } from '../renderer/webgl.js';
 import { mulberry32 } from '../util/pause.js';
+import { fixedStep } from './_clock.js';
 
 const SAMPLES = 256;
 
@@ -78,6 +81,7 @@ export function create({ gl, getColors }) {
   let tex = null;
   let fbo = null;
   let needClear = true;
+  const clock = fixedStep(60);
 
   function ensureTarget() {
     if (tex) return;
@@ -95,9 +99,20 @@ export function create({ gl, getColors }) {
     needClear = true;
   }
 
-  function draw(t, params) {
-    ensureTarget();
-    const c = getColors();
+  // Clear a freshly (re)created persistence buffer to bg once.
+  function clearTarget(c) {
+    if (!needClear) return;
+    const bg = c.bg || [0.02, 0.03, 0.04];
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.viewport(0, 0, w, h);
+    gl.clearColor(bg[0], bg[1], bg[2], 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    needClear = false;
+  }
+
+  // One 1/60 s tick of persistence: fade toward bg, add fresh traces at sim
+  // time `t`. Mutates the accumulation buffer only — never the screen.
+  function advance(t, params, c) {
     const bg = c.bg || [0.02, 0.03, 0.04];
     const roles = [c.accent, c.primary, c.info, c.success].filter(Boolean);
     const intensity = params.intensity ?? 0.5;
@@ -107,11 +122,6 @@ export function create({ gl, getColors }) {
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
     gl.viewport(0, 0, w, h);
-    if (needClear) {
-      gl.clearColor(bg[0], bg[1], bg[2], 1);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      needClear = false;
-    }
 
     // Fade the persistence toward bg.
     gl.enable(gl.BLEND);
@@ -142,8 +152,11 @@ export function create({ gl, getColors }) {
       gl.drawArrays(gl.LINE_STRIP, 0, SAMPLES);
     }
     gl.disable(gl.BLEND);
+  }
 
-    // Show the accumulation on screen.
+  // Show the accumulation on screen (pure: reads the buffer, draws nothing
+  // into it).
+  function show() {
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, w, h);
     gl.useProgram(showProg);
@@ -166,11 +179,20 @@ export function create({ gl, getColors }) {
       }
     },
     frame(t, params) {
-      draw(t, params);
+      ensureTarget();
+      const c = getColors();
+      clearTarget(c);
+      const n = clock.advance(t);
+      for (let i = 0; i < n; i++) advance(clock.time - (n - 1 - i) / clock.hz, params, c);
+      show();
     },
     staticFrame(params) {
-      // Build up a few frames of persistence for a non-empty still.
-      for (let i = 0; i < 12; i++) draw(i * 0.1, params);
+      // Build up a few ticks of persistence for a non-empty still.
+      ensureTarget();
+      const c = getColors();
+      clearTarget(c);
+      for (let i = 0; i < 12; i++) advance(i * 0.1, params, c);
+      show();
     },
     dispose() {
       try {

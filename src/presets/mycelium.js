@@ -1,14 +1,17 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
 import { rgbaCss as rgb } from '../renderer/tokens.js';
+import { fixedStep } from './_clock.js';
 
 // mycelium — branching filament growth. Walker tips curve under seeded noise,
 // split into new branches, and thin with depth; each step is painted onto an
 // offscreen canvas that is NEVER cleared, so the network accumulates, and the
 // offscreen is composited over the background every frame. When coverage
 // saturates the growth restarts with a fresh palette rotation. `density` =
-// branching rate / tip count, `intensity` = filament brightness. State advances
-// per frame (dt-driven), so it is excluded from the visual still baseline.
+// branching rate / tip count, `intensity` = filament brightness. Growth runs
+// in fixed steps (90 per second of speed-scaled `t`, see _clock.js), so the
+// network is a function of elapsed time; it is still excluded from the visual
+// still baseline because its frozen-time state is the empty canvas.
 
 function mix(a, b, t) {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
@@ -23,7 +26,7 @@ export function create({ c2d, getColors }) {
   let steps = 0;
   let cap = 1;
   let gen = 0;
-  let lastT = 0;
+  const clock = fixedStep(90, 6);
   let rng = mulberry32(1);
 
   function reseed(params) {
@@ -106,12 +109,9 @@ export function create({ c2d, getColors }) {
   function frame(t, params) {
     ensureOff();
     if (tips.length === 0 && steps === 0) reseed(params);
-    let dt = t - lastT;
-    lastT = t;
-    // Run a few growth steps per frame (more at higher speed via dt).
-    const iters = Math.max(1, Math.min(6, Math.round((dt > 0 && dt < 0.2 ? dt : 0.016) * 90)));
+    const n = clock.advance(t);
     const c = getColors();
-    for (let i = 0; i < iters; i++) grow(params, c);
+    for (let i = 0; i < n; i++) grow(params, c);
     clearAndFill(c2d, w, h, c.bg);
     c2d.drawImage(off, 0, 0);
   }

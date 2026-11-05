@@ -1,12 +1,14 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
 import { rgbaCss as rgb } from '../renderer/tokens.js';
+import { fixedStep } from './_clock.js';
 
 // radar — a PPI scope. A sweep arm rotates from `t`, leaving a trailing phosphor
-// wedge on an offscreen persistence layer that decays each frame; range rings
-// and a crosshair sit under it, and seeded blips flare bright when the arm
-// crosses them, then fade until the next pass. `density` = blip count,
-// `intensity` = phosphor brightness. The persistence layer carries per-frame
+// wedge on an offscreen persistence layer that decays once per 1/60 s tick of
+// speed-scaled `t` (see _clock.js); range rings and a crosshair sit under it,
+// and seeded blips flare bright when the arm crosses them, then fade until the
+// next pass. `density` = blip count, `intensity` = phosphor brightness. The
+// persistence layer is a function of elapsed time, but it is still per-frame
 // state, so this is excluded from the visual still baseline.
 
 export function create({ c2d, getColors }) {
@@ -17,6 +19,7 @@ export function create({ c2d, getColors }) {
   let blips = null;
   let key = '';
   let lastA = 0;
+  const clock = fixedStep(60);
 
   function ensureGlow() {
     if (glow && glow.width === w && glow.height === h) return;
@@ -39,18 +42,16 @@ export function create({ c2d, getColors }) {
     }
   }
 
-  function frame(t, params) {
-    ensureGlow();
-    build(params);
-    const c = getColors();
+  // One 1/60 s tick of the phosphor layer at sim time `st`: decay, paint the
+  // sweep edge, flare and fade the blips. Mutates the persistence layer only.
+  function tick(st, params, c) {
     const cx = w / 2;
     const cy = h / 2;
     const R = Math.min(w, h) * 0.46;
     const accent = c.accent || [0.3, 1, 0.5];
-    const prim = c.primary || [0.2, 0.8, 0.4];
     const intensity = params.intensity ?? 0.5;
 
-    const ang = (t * 0.9) % (Math.PI * 2);
+    const ang = (st * 0.9) % (Math.PI * 2);
 
     // Decay the phosphor layer toward transparent.
     gctx.globalCompositeOperation = 'destination-out';
@@ -68,7 +69,7 @@ export function create({ c2d, getColors }) {
 
     // Flare blips as the arm crosses them; record decay.
     const crossed = (a) => {
-      // True if the sweep passed angle `a` between lastA and ang this frame.
+      // True if the sweep passed angle `a` between lastA and ang this tick.
       let d = a - lastA;
       while (d < 0) d += Math.PI * 2;
       let s = ang - lastA;
@@ -88,8 +89,15 @@ export function create({ c2d, getColors }) {
       }
     }
     lastA = ang;
+  }
 
-    // Compose: bg, range rings + crosshair, then the phosphor layer on top.
+  // Compose: bg, range rings + crosshair, then the phosphor layer on top.
+  // Pure — reads the persistence layer, never writes it.
+  function compose(c) {
+    const cx = w / 2;
+    const cy = h / 2;
+    const R = Math.min(w, h) * 0.46;
+    const prim = c.primary || [0.2, 0.8, 0.4];
     clearAndFill(c2d, w, h, c.bg);
     c2d.strokeStyle = rgb(prim, 0.35);
     c2d.lineWidth = 1;
@@ -107,6 +115,15 @@ export function create({ c2d, getColors }) {
     c2d.drawImage(glow, 0, 0);
   }
 
+  function frame(t, params) {
+    ensureGlow();
+    build(params);
+    const c = getColors();
+    const n = clock.advance(t);
+    for (let i = 0; i < n; i++) tick(clock.time - (n - 1 - i) / clock.hz, params, c);
+    compose(c);
+  }
+
   return {
     resize(nw, nh) {
       w = nw;
@@ -117,7 +134,16 @@ export function create({ c2d, getColors }) {
     },
     frame,
     staticFrame(params) {
-      frame(0, params);
+      // A settled still: a fresh phosphor layer with ~2.5 s of sweep so the
+      // wedge and a few lit blips are visible, independent of the live clock.
+      ensureGlow();
+      build(params);
+      gctx.clearRect(0, 0, w, h);
+      lastA = 0;
+      const c = getColors();
+      for (let i = 1; i <= 150; i++) tick(i / clock.hz, params, c);
+      clock.reset();
+      compose(c);
     },
     dispose() {
       glow = null;

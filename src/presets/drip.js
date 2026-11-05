@@ -1,15 +1,17 @@
 import { clearAndFill } from '../renderer/canvas2d.js';
 import { mulberry32 } from '../util/pause.js';
 import { rgbaCss as rgb } from '../renderer/tokens.js';
+import { fixedStep } from './_clock.js';
 
 // drip — action painting. Flung-paint arcs (smooth seeded splines stroked with
 // speed-varying width) land on an offscreen canvas that is never cleared,
 // each throw finished with droplet spatter; successive throws alternate theme
 // roles, layering like an accumulating Pollock. A cached canvas-weave texture
 // sits underneath. When coverage saturates, a slow whitewash veils the canvas
-// and the painting starts over. Throws animate on incrementally (per-frame
-// state), so this preset is load-only in the visual baseline; `staticFrame`
-// lays down a finished composition in one go. `density` = throw rate,
+// and the painting starts over. Throws animate on in fixed 1/60 s steps
+// counted from the speed-scaled `t` (see _clock.js); the accumulated paint is
+// per-frame state, so this preset is load-only in the visual baseline;
+// `staticFrame` lays down a finished composition in one go. `density` = throw rate,
 // `intensity` = paint opacity/width.
 
 const THROW_SEC = 0.7; // seconds for one throw to land
@@ -24,7 +26,7 @@ export function create({ c2d, getColors }) {
   let rng = mulberry32(1);
   let throwN = 0; // throws completed (drives palette + saturation)
   let cur = null; // active throw { pts, cum, total, col, width, done }
-  let lastT = 0;
+  const clock = fixedStep(60);
   let nextAt = 0;
   let washing = 0; // >0 while whitewashing (counts down seconds)
   let seeded = false;
@@ -52,7 +54,7 @@ export function create({ c2d, getColors }) {
     rng = mulberry32(params.seed | 0 || 1);
     throwN = 0;
     cur = null;
-    lastT = 0;
+    clock.reset();
     nextAt = 0.2;
     washing = 0;
     seeded = true;
@@ -186,12 +188,9 @@ export function create({ c2d, getColors }) {
 
   function frame(t, params) {
     ensureLayers(params);
-    let dt = t - lastT;
-    lastT = t;
-    if (!(dt >= 0)) dt = 0;
-    dt = Math.min(dt, 0.1);
+    const n = clock.advance(t);
     const c = getColors();
-    step(dt, c, params);
+    for (let i = 0; i < n; i++) step(1 / clock.hz, c, params);
     composite(c);
   }
 

@@ -1,7 +1,8 @@
 // spectrum — an instrument spectrum analyzer. A live FFT bar strip across the
 // top feeds a scrolling time-frequency spectrogram (waterfall) below: each step
-// the waterfall texture shifts down one row and a fresh magnitude row is written
-// at the top, so history streams downward. The "signal" is a deterministic
+// (STEPS[quality] rows per 1/60 s of speed-scaled `t`, via _clock.js) the
+// waterfall texture shifts down one row and a fresh magnitude row is written
+// at the top, so history streams downward as a function of elapsed time. The "signal" is a deterministic
 // function of frequency and `t` (a few drifting formant peaks + broadband
 // shimmer) — no audio, no Math.random. Magnitude maps through a
 // bg→primary→accent→warning ramp. `density` = frequency bins, `intensity` =
@@ -15,6 +16,7 @@ import {
   bindQuad,
   createPingPong,
 } from '../renderer/webgl.js';
+import { fixedStep } from './_clock.js';
 
 const PREC = `
 #ifdef GL_FRAGMENT_PRECISION_HIGH
@@ -106,6 +108,7 @@ export function create({ gl, getColors }) {
   let sh = 1;
   let key = '';
   let seeded = false;
+  const clock = fixedStep(60);
 
   function ensure(params) {
     const q = params.quality || 'med';
@@ -184,8 +187,14 @@ export function create({ gl, getColors }) {
     frame(t, params) {
       ensure(params);
       if (!seeded) warm(params);
-      const steps = STEPS[params.quality] || STEPS.med;
-      for (let i = 0; i < steps; i++) scroll(t, params);
+      const rows = STEPS[params.quality] || STEPS.med;
+      const n = clock.advance(t);
+      for (let i = 0; i < n; i++) {
+        // Rows written at the tick's own sim time, so the waterfall history
+        // is identical regardless of how the ticks were batched into frames.
+        const st = clock.time - (n - 1 - i) / clock.hz;
+        for (let r = 0; r < rows; r++) scroll(st, params);
+      }
       display(t, params);
     },
     staticFrame(params) {
