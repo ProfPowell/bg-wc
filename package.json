@@ -12,7 +12,10 @@
   "exports": {
     ".": "./dist/bg-wc.js",
     "./data-background": "./dist/data-background.js",
-    "./presets/*": "./dist/presets/*.js"
+    "./presets/*": "./dist/presets/*.js",
+    "./presets/_*": null,
+    "./presets/index": null,
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
@@ -58,7 +61,7 @@
     "format:check": "prettier --check \"src/**/*.js\" \"test/**/*.{js,mjs}\" \"docs/**/*.js\" \"demos/**/*.js\" \"scripts/**/*.mjs\"",
     "analyze": "cem analyze",
     "cem:check": "cem analyze && git diff --exit-code custom-elements.json",
-    "prepublishOnly": "npm run build && npm run analyze",
+    "prepack": "npm run build && npm run analyze",
     "verify:site": "node scripts/verify-site-build.mjs"
   },
   "devDependencies": {

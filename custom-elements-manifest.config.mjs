@@ -76,6 +76,46 @@ function declareApi() {
   };
 }
 
+// The package ships dist/ only (package.json "files"); the analyzer reads src/.
+// dist/ mirrors src/ file-for-file (vite preserveModules, preserveModulesRoot
+// 'src'), so rewriting the path prefix yields paths that resolve in the
+// installed tarball (gl-wc-fvam). scripts/pack-smoke.mjs verifies every path.
+function isInternal(path) {
+  return (
+    path.startsWith('src/renderer/') ||
+    path.startsWith('src/util/') ||
+    /\/_[^/]*\.js$/.test(path) || // `_`-prefixed shared preset helpers
+    path === 'src/presets/index.js' // the registry; listPresets is re-exported from bg-wc.js
+  );
+}
+
+const toDist = (p) => (typeof p === 'string' && p.startsWith('src/') ? 'dist/' + p.slice(4) : p);
+
+// Rewrite every `module` reference (declarations, exports, superclass, mixins…)
+// anywhere in the manifest, not only module.path.
+function rewriteModuleRefs(node) {
+  if (Array.isArray(node)) {
+    node.forEach(rewriteModuleRefs);
+  } else if (node && typeof node === 'object') {
+    if ('module' in node) node.module = toDist(node.module);
+    for (const v of Object.values(node)) rewriteModuleRefs(v);
+  }
+}
+
+function publishedPaths() {
+  return {
+    name: 'published-paths',
+    packageLinkPhase({ customElementsManifest }) {
+      const mods = customElementsManifest.modules || [];
+      customElementsManifest.modules = mods.filter((m) => !isInternal(m.path));
+      for (const m of customElementsManifest.modules) {
+        m.path = toDist(m.path);
+        rewriteModuleRefs(m);
+      }
+    },
+  };
+}
+
 // Module order in the analyzer's output follows filesystem read order, which
 // differs between OSes (macOS vs CI's Linux) — making `cem:check` flake. Sort
 // modules by path so the manifest is byte-identical everywhere.
@@ -93,5 +133,5 @@ export default {
   exclude: ['src/**/*.test.js'],
   outdir: '.',
   litelement: false,
-  plugins: [stripMembers(), declareApi(), sortModules()],
+  plugins: [stripMembers(), declareApi(), publishedPaths(), sortModules()],
 };

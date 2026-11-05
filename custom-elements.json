@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/bg-wc.js",
+      "path": "dist/bg-wc.js",
       "declarations": [
         {
           "kind": "class",
@@ -136,7 +136,7 @@
           "name": "bg-wc",
           "declaration": {
             "name": "BgWc",
-            "module": "src/bg-wc.js"
+            "module": "dist/bg-wc.js"
           }
         },
         {
@@ -144,7 +144,7 @@
           "name": "BgWc",
           "declaration": {
             "name": "BgWc",
-            "module": "src/bg-wc.js"
+            "module": "dist/bg-wc.js"
           }
         },
         {
@@ -152,7 +152,7 @@
           "name": "listPresets",
           "declaration": {
             "name": "listPresets",
-            "module": "src/bg-wc.js"
+            "module": "dist/bg-wc.js"
           }
         },
         {
@@ -160,14 +160,14 @@
           "name": "default",
           "declaration": {
             "name": "BgWc",
-            "module": "src/bg-wc.js"
+            "module": "dist/bg-wc.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/data-background.js",
+      "path": "dist/data-background.js",
       "declarations": [
         {
           "kind": "function",
@@ -190,7 +190,7 @@
           "name": "bindDataBackgrounds",
           "declaration": {
             "name": "bindDataBackgrounds",
-            "module": "src/data-background.js"
+            "module": "dist/data-background.js"
           }
         },
         {
@@ -198,270 +198,14 @@
           "name": "stopWatching",
           "declaration": {
             "name": "stopWatching",
-            "module": "src/data-background.js"
+            "module": "dist/data-background.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/_dots.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "mix",
-          "parameters": [
-            {
-              "name": "a"
-            },
-            {
-              "name": "b"
-            },
-            {
-              "name": "t"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "buildDotPalette",
-          "parameters": [
-            {
-              "name": "c"
-            },
-            {
-              "name": "intensity"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "dotCircle",
-          "parameters": [
-            {
-              "name": "c2d"
-            },
-            {
-              "name": "x"
-            },
-            {
-              "name": "y"
-            },
-            {
-              "name": "r"
-            },
-            {
-              "name": "css"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "concentricRings",
-          "parameters": [
-            {
-              "name": "c2d"
-            },
-            {
-              "name": "cx"
-            },
-            {
-              "name": "cy"
-            },
-            {
-              "name": "opts"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "phyllotaxis",
-          "parameters": [
-            {
-              "name": "c2d"
-            },
-            {
-              "name": "cx"
-            },
-            {
-              "name": "cy"
-            },
-            {
-              "name": "opts"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "doubleSpiral",
-          "parameters": [
-            {
-              "name": "c2d"
-            },
-            {
-              "name": "cx"
-            },
-            {
-              "name": "cy"
-            },
-            {
-              "name": "opts"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "whorl",
-          "parameters": [
-            {
-              "name": "c2d"
-            },
-            {
-              "name": "cx"
-            },
-            {
-              "name": "cy"
-            },
-            {
-              "name": "opts"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "makeFieldCanvas",
-          "parameters": [
-            {
-              "name": "{ count, dotR }"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "stippleField",
-          "parameters": [
-            {
-              "name": "c2d"
-            },
-            {
-              "name": "w"
-            },
-            {
-              "name": "h"
-            },
-            {
-              "name": "opts"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "mix",
-          "declaration": {
-            "name": "mix",
-            "module": "src/presets/_dots.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "buildDotPalette",
-          "declaration": {
-            "name": "buildDotPalette",
-            "module": "src/presets/_dots.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "dotCircle",
-          "declaration": {
-            "name": "dotCircle",
-            "module": "src/presets/_dots.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "concentricRings",
-          "declaration": {
-            "name": "concentricRings",
-            "module": "src/presets/_dots.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "phyllotaxis",
-          "declaration": {
-            "name": "phyllotaxis",
-            "module": "src/presets/_dots.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "doubleSpiral",
-          "declaration": {
-            "name": "doubleSpiral",
-            "module": "src/presets/_dots.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "whorl",
-          "declaration": {
-            "name": "whorl",
-            "module": "src/presets/_dots.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "makeFieldCanvas",
-          "declaration": {
-            "name": "makeFieldCanvas",
-            "module": "src/presets/_dots.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "stippleField",
-          "declaration": {
-            "name": "stippleField",
-            "module": "src/presets/_dots.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/presets/_pool.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "seededPool",
-          "parameters": [
-            {
-              "name": "build"
-            },
-            {
-              "name": "keyOf",
-              "default": "defaultKey"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "seededPool",
-          "declaration": {
-            "name": "seededPool",
-            "module": "src/presets/_pool.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/presets/airbrush.js",
+      "path": "dist/presets/airbrush.js",
       "declarations": [
         {
           "kind": "function",
@@ -479,14 +223,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/airbrush.js"
+            "module": "dist/presets/airbrush.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/alchemy.js",
+      "path": "dist/presets/alchemy.js",
       "declarations": [
         {
           "kind": "function",
@@ -504,14 +248,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/alchemy.js"
+            "module": "dist/presets/alchemy.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/art-nouveau.js",
+      "path": "dist/presets/art-nouveau.js",
       "declarations": [
         {
           "kind": "function",
@@ -529,14 +273,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/art-nouveau.js"
+            "module": "dist/presets/art-nouveau.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/asteroids.js",
+      "path": "dist/presets/asteroids.js",
       "declarations": [
         {
           "kind": "function",
@@ -554,14 +298,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/asteroids.js"
+            "module": "dist/presets/asteroids.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/atomic.js",
+      "path": "dist/presets/atomic.js",
       "declarations": [
         {
           "kind": "function",
@@ -579,14 +323,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/atomic.js"
+            "module": "dist/presets/atomic.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/aurora.js",
+      "path": "dist/presets/aurora.js",
       "declarations": [
         {
           "kind": "variable",
@@ -599,14 +343,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/aurora.js"
+            "module": "dist/presets/aurora.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/azulejo.js",
+      "path": "dist/presets/azulejo.js",
       "declarations": [
         {
           "kind": "function",
@@ -624,14 +368,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/azulejo.js"
+            "module": "dist/presets/azulejo.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/barkcloth.js",
+      "path": "dist/presets/barkcloth.js",
       "declarations": [
         {
           "kind": "function",
@@ -649,14 +393,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/barkcloth.js"
+            "module": "dist/presets/barkcloth.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/bauhaus.js",
+      "path": "dist/presets/bauhaus.js",
       "declarations": [
         {
           "kind": "function",
@@ -674,14 +418,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/bauhaus.js"
+            "module": "dist/presets/bauhaus.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/benday.js",
+      "path": "dist/presets/benday.js",
       "declarations": [
         {
           "kind": "variable",
@@ -694,14 +438,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/benday.js"
+            "module": "dist/presets/benday.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/bliss.js",
+      "path": "dist/presets/bliss.js",
       "declarations": [
         {
           "kind": "variable",
@@ -714,14 +458,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/bliss.js"
+            "module": "dist/presets/bliss.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/bluenote.js",
+      "path": "dist/presets/bluenote.js",
       "declarations": [
         {
           "kind": "function",
@@ -739,14 +483,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/bluenote.js"
+            "module": "dist/presets/bluenote.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/blueprint.js",
+      "path": "dist/presets/blueprint.js",
       "declarations": [
         {
           "kind": "function",
@@ -764,14 +508,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/blueprint.js"
+            "module": "dist/presets/blueprint.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/boids.js",
+      "path": "dist/presets/boids.js",
       "declarations": [
         {
           "kind": "function",
@@ -789,14 +533,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/boids.js"
+            "module": "dist/presets/boids.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/bootlog.js",
+      "path": "dist/presets/bootlog.js",
       "declarations": [
         {
           "kind": "function",
@@ -814,14 +558,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/bootlog.js"
+            "module": "dist/presets/bootlog.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/breezeblock.js",
+      "path": "dist/presets/breezeblock.js",
       "declarations": [
         {
           "kind": "function",
@@ -839,14 +583,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/breezeblock.js"
+            "module": "dist/presets/breezeblock.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/brushstroke.js",
+      "path": "dist/presets/brushstroke.js",
       "declarations": [
         {
           "kind": "function",
@@ -864,14 +608,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/brushstroke.js"
+            "module": "dist/presets/brushstroke.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/bubbles.js",
+      "path": "dist/presets/bubbles.js",
       "declarations": [
         {
           "kind": "function",
@@ -889,14 +633,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/bubbles.js"
+            "module": "dist/presets/bubbles.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/carousel.js",
+      "path": "dist/presets/carousel.js",
       "declarations": [
         {
           "kind": "function",
@@ -914,14 +658,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/carousel.js"
+            "module": "dist/presets/carousel.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/cascade.js",
+      "path": "dist/presets/cascade.js",
       "declarations": [
         {
           "kind": "function",
@@ -939,14 +683,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/cascade.js"
+            "module": "dist/presets/cascade.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/caustics.js",
+      "path": "dist/presets/caustics.js",
       "declarations": [
         {
           "kind": "variable",
@@ -959,14 +703,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/caustics.js"
+            "module": "dist/presets/caustics.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/cave.js",
+      "path": "dist/presets/cave.js",
       "declarations": [
         {
           "kind": "function",
@@ -984,14 +728,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/cave.js"
+            "module": "dist/presets/cave.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/cells.js",
+      "path": "dist/presets/cells.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1004,14 +748,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/cells.js"
+            "module": "dist/presets/cells.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/celtic-knot.js",
+      "path": "dist/presets/celtic-knot.js",
       "declarations": [
         {
           "kind": "function",
@@ -1029,14 +773,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/celtic-knot.js"
+            "module": "dist/presets/celtic-knot.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/chamber.js",
+      "path": "dist/presets/chamber.js",
       "declarations": [
         {
           "kind": "function",
@@ -1054,14 +798,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/chamber.js"
+            "module": "dist/presets/chamber.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/chladni.js",
+      "path": "dist/presets/chladni.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1074,14 +818,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/chladni.js"
+            "module": "dist/presets/chladni.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/chrome.js",
+      "path": "dist/presets/chrome.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1094,14 +838,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/chrome.js"
+            "module": "dist/presets/chrome.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/circuit.js",
+      "path": "dist/presets/circuit.js",
       "declarations": [
         {
           "kind": "function",
@@ -1119,14 +863,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/circuit.js"
+            "module": "dist/presets/circuit.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/clockwork.js",
+      "path": "dist/presets/clockwork.js",
       "declarations": [
         {
           "kind": "function",
@@ -1144,14 +888,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/clockwork.js"
+            "module": "dist/presets/clockwork.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/colorfield.js",
+      "path": "dist/presets/colorfield.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1164,14 +908,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/colorfield.js"
+            "module": "dist/presets/colorfield.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/comic.js",
+      "path": "dist/presets/comic.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1184,14 +928,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/comic.js"
+            "module": "dist/presets/comic.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/confetti.js",
+      "path": "dist/presets/confetti.js",
       "declarations": [
         {
           "kind": "function",
@@ -1209,14 +953,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/confetti.js"
+            "module": "dist/presets/confetti.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/conic.js",
+      "path": "dist/presets/conic.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1229,14 +973,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/conic.js"
+            "module": "dist/presets/conic.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/constellation.js",
+      "path": "dist/presets/constellation.js",
       "declarations": [
         {
           "kind": "function",
@@ -1254,14 +998,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/constellation.js"
+            "module": "dist/presets/constellation.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/constructivism.js",
+      "path": "dist/presets/constructivism.js",
       "declarations": [
         {
           "kind": "function",
@@ -1279,14 +1023,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/constructivism.js"
+            "module": "dist/presets/constructivism.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/copperbars.js",
+      "path": "dist/presets/copperbars.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1299,14 +1043,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/copperbars.js"
+            "module": "dist/presets/copperbars.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/crawl.js",
+      "path": "dist/presets/crawl.js",
       "declarations": [
         {
           "kind": "function",
@@ -1324,14 +1068,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/crawl.js"
+            "module": "dist/presets/crawl.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/crochet.js",
+      "path": "dist/presets/crochet.js",
       "declarations": [
         {
           "kind": "function",
@@ -1349,14 +1093,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/crochet.js"
+            "module": "dist/presets/crochet.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/crt.js",
+      "path": "dist/presets/crt.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1369,14 +1113,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/crt.js"
+            "module": "dist/presets/crt.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/cube-wave.js",
+      "path": "dist/presets/cube-wave.js",
       "declarations": [
         {
           "kind": "function",
@@ -1394,14 +1138,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/cube-wave.js"
+            "module": "dist/presets/cube-wave.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/cumulus.js",
+      "path": "dist/presets/cumulus.js",
       "declarations": [
         {
           "kind": "function",
@@ -1419,14 +1163,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/cumulus.js"
+            "module": "dist/presets/cumulus.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/cutouts.js",
+      "path": "dist/presets/cutouts.js",
       "declarations": [
         {
           "kind": "function",
@@ -1444,14 +1188,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/cutouts.js"
+            "module": "dist/presets/cutouts.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/cyanotype.js",
+      "path": "dist/presets/cyanotype.js",
       "declarations": [
         {
           "kind": "function",
@@ -1469,14 +1213,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/cyanotype.js"
+            "module": "dist/presets/cyanotype.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/damask.js",
+      "path": "dist/presets/damask.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1489,14 +1233,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/damask.js"
+            "module": "dist/presets/damask.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/dashboard.js",
+      "path": "dist/presets/dashboard.js",
       "declarations": [
         {
           "kind": "function",
@@ -1514,14 +1258,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/dashboard.js"
+            "module": "dist/presets/dashboard.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/de-stijl.js",
+      "path": "dist/presets/de-stijl.js",
       "declarations": [
         {
           "kind": "function",
@@ -1539,14 +1283,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/de-stijl.js"
+            "module": "dist/presets/de-stijl.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/deco-spires.js",
+      "path": "dist/presets/deco-spires.js",
       "declarations": [
         {
           "kind": "function",
@@ -1564,14 +1308,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/deco-spires.js"
+            "module": "dist/presets/deco-spires.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/deco.js",
+      "path": "dist/presets/deco.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1584,14 +1328,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/deco.js"
+            "module": "dist/presets/deco.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/delaunay.js",
+      "path": "dist/presets/delaunay.js",
       "declarations": [
         {
           "kind": "function",
@@ -1609,14 +1353,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/delaunay.js"
+            "module": "dist/presets/delaunay.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/disco.js",
+      "path": "dist/presets/disco.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1629,14 +1373,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/disco.js"
+            "module": "dist/presets/disco.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/dither.js",
+      "path": "dist/presets/dither.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1649,14 +1393,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/dither.js"
+            "module": "dist/presets/dither.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/domino.js",
+      "path": "dist/presets/domino.js",
       "declarations": [
         {
           "kind": "function",
@@ -1674,14 +1418,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/domino.js"
+            "module": "dist/presets/domino.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/doodles.js",
+      "path": "dist/presets/doodles.js",
       "declarations": [
         {
           "kind": "function",
@@ -1761,7 +1505,7 @@
           "name": "parseMode",
           "declaration": {
             "name": "parseMode",
-            "module": "src/presets/doodles.js"
+            "module": "dist/presets/doodles.js"
           }
         },
         {
@@ -1769,7 +1513,7 @@
           "name": "poolFor",
           "declaration": {
             "name": "poolFor",
-            "module": "src/presets/doodles.js"
+            "module": "dist/presets/doodles.js"
           }
         },
         {
@@ -1777,7 +1521,7 @@
           "name": "FAMILIES",
           "declaration": {
             "name": "FAMILIES",
-            "module": "src/presets/doodles.js"
+            "module": "dist/presets/doodles.js"
           }
         },
         {
@@ -1785,14 +1529,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/doodles.js"
+            "module": "dist/presets/doodles.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/dotwork.js",
+      "path": "dist/presets/dotwork.js",
       "declarations": [
         {
           "kind": "function",
@@ -1814,14 +1558,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/dotwork.js"
+            "module": "dist/presets/dotwork.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/drip.js",
+      "path": "dist/presets/drip.js",
       "declarations": [
         {
           "kind": "function",
@@ -1839,14 +1583,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/drip.js"
+            "module": "dist/presets/drip.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/embers.js",
+      "path": "dist/presets/embers.js",
       "declarations": [
         {
           "kind": "function",
@@ -1864,14 +1608,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/embers.js"
+            "module": "dist/presets/embers.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/equalizer.js",
+      "path": "dist/presets/equalizer.js",
       "declarations": [
         {
           "kind": "function",
@@ -1889,14 +1633,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/equalizer.js"
+            "module": "dist/presets/equalizer.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/explode.js",
+      "path": "dist/presets/explode.js",
       "declarations": [
         {
           "kind": "function",
@@ -1914,14 +1658,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/explode.js"
+            "module": "dist/presets/explode.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/fan-deco.js",
+      "path": "dist/presets/fan-deco.js",
       "declarations": [
         {
           "kind": "function",
@@ -1939,14 +1683,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/fan-deco.js"
+            "module": "dist/presets/fan-deco.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/fireflies.js",
+      "path": "dist/presets/fireflies.js",
       "declarations": [
         {
           "kind": "function",
@@ -1964,14 +1708,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/fireflies.js"
+            "module": "dist/presets/fireflies.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/fireworks.js",
+      "path": "dist/presets/fireworks.js",
       "declarations": [
         {
           "kind": "function",
@@ -1989,14 +1733,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/fireworks.js"
+            "module": "dist/presets/fireworks.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/flowlines.js",
+      "path": "dist/presets/flowlines.js",
       "declarations": [
         {
           "kind": "function",
@@ -2014,14 +1758,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/flowlines.js"
+            "module": "dist/presets/flowlines.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/fly-through.js",
+      "path": "dist/presets/fly-through.js",
       "declarations": [
         {
           "kind": "function",
@@ -2039,14 +1783,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/fly-through.js"
+            "module": "dist/presets/fly-through.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/fog.js",
+      "path": "dist/presets/fog.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2059,14 +1803,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/fog.js"
+            "module": "dist/presets/fog.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/gameboy.js",
+      "path": "dist/presets/gameboy.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2079,14 +1823,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/gameboy.js"
+            "module": "dist/presets/gameboy.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/gilded.js",
+      "path": "dist/presets/gilded.js",
       "declarations": [
         {
           "kind": "function",
@@ -2104,14 +1848,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/gilded.js"
+            "module": "dist/presets/gilded.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/girih.js",
+      "path": "dist/presets/girih.js",
       "declarations": [
         {
           "kind": "function",
@@ -2129,14 +1873,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/girih.js"
+            "module": "dist/presets/girih.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/glitch.js",
+      "path": "dist/presets/glitch.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2149,14 +1893,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/glitch.js"
+            "module": "dist/presets/glitch.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/graffiti.js",
+      "path": "dist/presets/graffiti.js",
       "declarations": [
         {
           "kind": "function",
@@ -2174,14 +1918,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/graffiti.js"
+            "module": "dist/presets/graffiti.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/grain.js",
+      "path": "dist/presets/grain.js",
       "declarations": [
         {
           "kind": "function",
@@ -2199,14 +1943,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/grain.js"
+            "module": "dist/presets/grain.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/groove.js",
+      "path": "dist/presets/groove.js",
       "declarations": [
         {
           "kind": "function",
@@ -2224,14 +1968,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/groove.js"
+            "module": "dist/presets/groove.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/gyroid.js",
+      "path": "dist/presets/gyroid.js",
       "declarations": [
         {
           "kind": "function",
@@ -2249,14 +1993,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/gyroid.js"
+            "module": "dist/presets/gyroid.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/gyroscope.js",
+      "path": "dist/presets/gyroscope.js",
       "declarations": [
         {
           "kind": "function",
@@ -2274,14 +2018,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/gyroscope.js"
+            "module": "dist/presets/gyroscope.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/halcyon.js",
+      "path": "dist/presets/halcyon.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2294,14 +2038,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/halcyon.js"
+            "module": "dist/presets/halcyon.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/halftone.js",
+      "path": "dist/presets/halftone.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2314,14 +2058,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/halftone.js"
+            "module": "dist/presets/halftone.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/helix.js",
+      "path": "dist/presets/helix.js",
       "declarations": [
         {
           "kind": "function",
@@ -2339,14 +2083,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/helix.js"
+            "module": "dist/presets/helix.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/hieroglyph.js",
+      "path": "dist/presets/hieroglyph.js",
       "declarations": [
         {
           "kind": "function",
@@ -2364,14 +2108,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/hieroglyph.js"
+            "module": "dist/presets/hieroglyph.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/hilbert.js",
+      "path": "dist/presets/hilbert.js",
       "declarations": [
         {
           "kind": "function",
@@ -2389,14 +2133,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/hilbert.js"
+            "module": "dist/presets/hilbert.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/hologram.js",
+      "path": "dist/presets/hologram.js",
       "declarations": [
         {
           "kind": "function",
@@ -2414,14 +2158,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/hologram.js"
+            "module": "dist/presets/hologram.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/illuminated.js",
+      "path": "dist/presets/illuminated.js",
       "declarations": [
         {
           "kind": "function",
@@ -2439,14 +2183,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/illuminated.js"
+            "module": "dist/presets/illuminated.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/incoming.js",
+      "path": "dist/presets/incoming.js",
       "declarations": [
         {
           "kind": "function",
@@ -2464,80 +2208,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/incoming.js"
+            "module": "dist/presets/incoming.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/index.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "listPresets"
-        },
-        {
-          "kind": "function",
-          "name": "listGroups"
-        },
-        {
-          "kind": "function",
-          "name": "getPresetMeta",
-          "parameters": [
-            {
-              "name": "name"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "loadPreset",
-          "parameters": [
-            {
-              "name": "name"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "listPresets",
-          "declaration": {
-            "name": "listPresets",
-            "module": "src/presets/index.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "listGroups",
-          "declaration": {
-            "name": "listGroups",
-            "module": "src/presets/index.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "getPresetMeta",
-          "declaration": {
-            "name": "getPresetMeta",
-            "module": "src/presets/index.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "loadPreset",
-          "declaration": {
-            "name": "loadPreset",
-            "module": "src/presets/index.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/presets/kaleidoscope.js",
+      "path": "dist/presets/kaleidoscope.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2550,14 +2228,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/kaleidoscope.js"
+            "module": "dist/presets/kaleidoscope.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/kintsugi.js",
+      "path": "dist/presets/kintsugi.js",
       "declarations": [
         {
           "kind": "function",
@@ -2575,14 +2253,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/kintsugi.js"
+            "module": "dist/presets/kintsugi.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/komorebi.js",
+      "path": "dist/presets/komorebi.js",
       "declarations": [
         {
           "kind": "function",
@@ -2600,14 +2278,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/komorebi.js"
+            "module": "dist/presets/komorebi.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/lanai.js",
+      "path": "dist/presets/lanai.js",
       "declarations": [
         {
           "kind": "function",
@@ -2625,14 +2303,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/lanai.js"
+            "module": "dist/presets/lanai.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/lanterns.js",
+      "path": "dist/presets/lanterns.js",
       "declarations": [
         {
           "kind": "function",
@@ -2650,14 +2328,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/lanterns.js"
+            "module": "dist/presets/lanterns.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/laser-show.js",
+      "path": "dist/presets/laser-show.js",
       "declarations": [
         {
           "kind": "function",
@@ -2675,14 +2353,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/laser-show.js"
+            "module": "dist/presets/laser-show.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/lava.js",
+      "path": "dist/presets/lava.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2695,14 +2373,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/lava.js"
+            "module": "dist/presets/lava.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/leaves.js",
+      "path": "dist/presets/leaves.js",
       "declarations": [
         {
           "kind": "function",
@@ -2720,14 +2398,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/leaves.js"
+            "module": "dist/presets/leaves.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/ledticker.js",
+      "path": "dist/presets/ledticker.js",
       "declarations": [
         {
           "kind": "function",
@@ -2745,14 +2423,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/ledticker.js"
+            "module": "dist/presets/ledticker.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/lidar.js",
+      "path": "dist/presets/lidar.js",
       "declarations": [
         {
           "kind": "function",
@@ -2770,14 +2448,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/lidar.js"
+            "module": "dist/presets/lidar.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/lightning.js",
+      "path": "dist/presets/lightning.js",
       "declarations": [
         {
           "kind": "function",
@@ -2795,14 +2473,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/lightning.js"
+            "module": "dist/presets/lightning.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/lily-pond.js",
+      "path": "dist/presets/lily-pond.js",
       "declarations": [
         {
           "kind": "function",
@@ -2820,14 +2498,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/lily-pond.js"
+            "module": "dist/presets/lily-pond.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/linocut.js",
+      "path": "dist/presets/linocut.js",
       "declarations": [
         {
           "kind": "function",
@@ -2845,14 +2523,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/linocut.js"
+            "module": "dist/presets/linocut.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/liquid-light.js",
+      "path": "dist/presets/liquid-light.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2865,14 +2543,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/liquid-light.js"
+            "module": "dist/presets/liquid-light.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/mandala.js",
+      "path": "dist/presets/mandala.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2885,14 +2563,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/mandala.js"
+            "module": "dist/presets/mandala.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/marble.js",
+      "path": "dist/presets/marble.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2905,14 +2583,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/marble.js"
+            "module": "dist/presets/marble.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/marquee.js",
+      "path": "dist/presets/marquee.js",
       "declarations": [
         {
           "kind": "function",
@@ -2930,14 +2608,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/marquee.js"
+            "module": "dist/presets/marquee.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/matrix.js",
+      "path": "dist/presets/matrix.js",
       "declarations": [
         {
           "kind": "function",
@@ -2955,14 +2633,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/matrix.js"
+            "module": "dist/presets/matrix.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/meadow.js",
+      "path": "dist/presets/meadow.js",
       "declarations": [
         {
           "kind": "function",
@@ -2980,14 +2658,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/meadow.js"
+            "module": "dist/presets/meadow.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/meander.js",
+      "path": "dist/presets/meander.js",
       "declarations": [
         {
           "kind": "function",
@@ -3005,14 +2683,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/meander.js"
+            "module": "dist/presets/meander.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/mesh-gradient.js",
+      "path": "dist/presets/mesh-gradient.js",
       "declarations": [
         {
           "kind": "variable",
@@ -3025,14 +2703,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/mesh-gradient.js"
+            "module": "dist/presets/mesh-gradient.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/metaballs.js",
+      "path": "dist/presets/metaballs.js",
       "declarations": [
         {
           "kind": "variable",
@@ -3045,14 +2723,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/metaballs.js"
+            "module": "dist/presets/metaballs.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/migration.js",
+      "path": "dist/presets/migration.js",
       "declarations": [
         {
           "kind": "function",
@@ -3070,14 +2748,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/migration.js"
+            "module": "dist/presets/migration.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/mobile.js",
+      "path": "dist/presets/mobile.js",
       "declarations": [
         {
           "kind": "function",
@@ -3095,14 +2773,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/mobile.js"
+            "module": "dist/presets/mobile.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/moire.js",
+      "path": "dist/presets/moire.js",
       "declarations": [
         {
           "kind": "variable",
@@ -3115,14 +2793,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/moire.js"
+            "module": "dist/presets/moire.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/monolith.js",
+      "path": "dist/presets/monolith.js",
       "declarations": [
         {
           "kind": "function",
@@ -3140,14 +2818,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/monolith.js"
+            "module": "dist/presets/monolith.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/moonrise.js",
+      "path": "dist/presets/moonrise.js",
       "declarations": [
         {
           "kind": "function",
@@ -3165,14 +2843,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/moonrise.js"
+            "module": "dist/presets/moonrise.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/morris.js",
+      "path": "dist/presets/morris.js",
       "declarations": [
         {
           "kind": "function",
@@ -3190,14 +2868,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/morris.js"
+            "module": "dist/presets/morris.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/mosaic.js",
+      "path": "dist/presets/mosaic.js",
       "declarations": [
         {
           "kind": "function",
@@ -3215,14 +2893,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/mosaic.js"
+            "module": "dist/presets/mosaic.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/mudcloth.js",
+      "path": "dist/presets/mudcloth.js",
       "declarations": [
         {
           "kind": "function",
@@ -3240,14 +2918,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/mudcloth.js"
+            "module": "dist/presets/mudcloth.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/mycelium.js",
+      "path": "dist/presets/mycelium.js",
       "declarations": [
         {
           "kind": "function",
@@ -3265,14 +2943,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/mycelium.js"
+            "module": "dist/presets/mycelium.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/mystify.js",
+      "path": "dist/presets/mystify.js",
       "declarations": [
         {
           "kind": "function",
@@ -3290,14 +2968,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/mystify.js"
+            "module": "dist/presets/mystify.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/nebula.js",
+      "path": "dist/presets/nebula.js",
       "declarations": [
         {
           "kind": "variable",
@@ -3310,14 +2988,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/nebula.js"
+            "module": "dist/presets/nebula.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/neon-city.js",
+      "path": "dist/presets/neon-city.js",
       "declarations": [
         {
           "kind": "variable",
@@ -3330,14 +3008,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/neon-city.js"
+            "module": "dist/presets/neon-city.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/neon-sign.js",
+      "path": "dist/presets/neon-sign.js",
       "declarations": [
         {
           "kind": "function",
@@ -3355,14 +3033,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/neon-sign.js"
+            "module": "dist/presets/neon-sign.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/network.js",
+      "path": "dist/presets/network.js",
       "declarations": [
         {
           "kind": "function",
@@ -3380,14 +3058,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/network.js"
+            "module": "dist/presets/network.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/nixie.js",
+      "path": "dist/presets/nixie.js",
       "declarations": [
         {
           "kind": "function",
@@ -3405,14 +3083,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/nixie.js"
+            "module": "dist/presets/nixie.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/noise.js",
+      "path": "dist/presets/noise.js",
       "declarations": [
         {
           "kind": "variable",
@@ -3425,14 +3103,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/noise.js"
+            "module": "dist/presets/noise.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/oil-sky.js",
+      "path": "dist/presets/oil-sky.js",
       "declarations": [
         {
           "kind": "function",
@@ -3450,14 +3128,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/oil-sky.js"
+            "module": "dist/presets/oil-sky.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/op-art.js",
+      "path": "dist/presets/op-art.js",
       "declarations": [
         {
           "kind": "function",
@@ -3475,14 +3153,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/op-art.js"
+            "module": "dist/presets/op-art.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/orbital.js",
+      "path": "dist/presets/orbital.js",
       "declarations": [
         {
           "kind": "function",
@@ -3500,14 +3178,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/orbital.js"
+            "module": "dist/presets/orbital.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/origami.js",
+      "path": "dist/presets/origami.js",
       "declarations": [
         {
           "kind": "function",
@@ -3525,14 +3203,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/origami.js"
+            "module": "dist/presets/origami.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/oscilloscope.js",
+      "path": "dist/presets/oscilloscope.js",
       "declarations": [
         {
           "kind": "function",
@@ -3550,14 +3228,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/oscilloscope.js"
+            "module": "dist/presets/oscilloscope.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/paisley.js",
+      "path": "dist/presets/paisley.js",
       "declarations": [
         {
           "kind": "function",
@@ -3575,14 +3253,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/paisley.js"
+            "module": "dist/presets/paisley.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/palms.js",
+      "path": "dist/presets/palms.js",
       "declarations": [
         {
           "kind": "function",
@@ -3600,14 +3278,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/palms.js"
+            "module": "dist/presets/palms.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/paper-grain.js",
+      "path": "dist/presets/paper-grain.js",
       "declarations": [
         {
           "kind": "function",
@@ -3625,14 +3303,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/paper-grain.js"
+            "module": "dist/presets/paper-grain.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/particles.js",
+      "path": "dist/presets/particles.js",
       "declarations": [
         {
           "kind": "function",
@@ -3650,14 +3328,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/particles.js"
+            "module": "dist/presets/particles.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/peacock.js",
+      "path": "dist/presets/peacock.js",
       "declarations": [
         {
           "kind": "function",
@@ -3675,14 +3353,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/peacock.js"
+            "module": "dist/presets/peacock.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/pegboard.js",
+      "path": "dist/presets/pegboard.js",
       "declarations": [
         {
           "kind": "function",
@@ -3700,14 +3378,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/pegboard.js"
+            "module": "dist/presets/pegboard.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/phyllotaxis.js",
+      "path": "dist/presets/phyllotaxis.js",
       "declarations": [
         {
           "kind": "function",
@@ -3725,14 +3403,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/phyllotaxis.js"
+            "module": "dist/presets/phyllotaxis.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/plasma.js",
+      "path": "dist/presets/plasma.js",
       "declarations": [
         {
           "kind": "variable",
@@ -3745,14 +3423,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/plasma.js"
+            "module": "dist/presets/plasma.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/plotter.js",
+      "path": "dist/presets/plotter.js",
       "declarations": [
         {
           "kind": "function",
@@ -3770,14 +3448,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/plotter.js"
+            "module": "dist/presets/plotter.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/prism.js",
+      "path": "dist/presets/prism.js",
       "declarations": [
         {
           "kind": "function",
@@ -3795,14 +3473,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/prism.js"
+            "module": "dist/presets/prism.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/psychedelia.js",
+      "path": "dist/presets/psychedelia.js",
       "declarations": [
         {
           "kind": "variable",
@@ -3815,14 +3493,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/psychedelia.js"
+            "module": "dist/presets/psychedelia.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/pulse.js",
+      "path": "dist/presets/pulse.js",
       "declarations": [
         {
           "kind": "function",
@@ -3840,14 +3518,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/pulse.js"
+            "module": "dist/presets/pulse.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/quilt.js",
+      "path": "dist/presets/quilt.js",
       "declarations": [
         {
           "kind": "function",
@@ -3865,14 +3543,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/quilt.js"
+            "module": "dist/presets/quilt.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/radar.js",
+      "path": "dist/presets/radar.js",
       "declarations": [
         {
           "kind": "function",
@@ -3890,14 +3568,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/radar.js"
+            "module": "dist/presets/radar.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/rain.js",
+      "path": "dist/presets/rain.js",
       "declarations": [
         {
           "kind": "function",
@@ -3915,14 +3593,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/rain.js"
+            "module": "dist/presets/rain.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/rainbow.js",
+      "path": "dist/presets/rainbow.js",
       "declarations": [
         {
           "kind": "variable",
@@ -3935,14 +3613,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/rainbow.js"
+            "module": "dist/presets/rainbow.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/reaction-diffusion.js",
+      "path": "dist/presets/reaction-diffusion.js",
       "declarations": [
         {
           "kind": "function",
@@ -3960,14 +3638,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/reaction-diffusion.js"
+            "module": "dist/presets/reaction-diffusion.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/reeds.js",
+      "path": "dist/presets/reeds.js",
       "declarations": [
         {
           "kind": "function",
@@ -3985,14 +3663,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/reeds.js"
+            "module": "dist/presets/reeds.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/ribbons.js",
+      "path": "dist/presets/ribbons.js",
       "declarations": [
         {
           "kind": "function",
@@ -4010,14 +3688,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/ribbons.js"
+            "module": "dist/presets/ribbons.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/risograph.js",
+      "path": "dist/presets/risograph.js",
       "declarations": [
         {
           "kind": "function",
@@ -4035,14 +3713,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/risograph.js"
+            "module": "dist/presets/risograph.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/sakura.js",
+      "path": "dist/presets/sakura.js",
       "declarations": [
         {
           "kind": "function",
@@ -4060,14 +3738,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/sakura.js"
+            "module": "dist/presets/sakura.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/satellites.js",
+      "path": "dist/presets/satellites.js",
       "declarations": [
         {
           "kind": "function",
@@ -4085,14 +3763,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/satellites.js"
+            "module": "dist/presets/satellites.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/scandi.js",
+      "path": "dist/presets/scandi.js",
       "declarations": [
         {
           "kind": "function",
@@ -4110,14 +3788,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/scandi.js"
+            "module": "dist/presets/scandi.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/scanimate.js",
+      "path": "dist/presets/scanimate.js",
       "declarations": [
         {
           "kind": "function",
@@ -4135,14 +3813,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/scanimate.js"
+            "module": "dist/presets/scanimate.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/scatter.js",
+      "path": "dist/presets/scatter.js",
       "declarations": [
         {
           "kind": "function",
@@ -4160,14 +3838,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/scatter.js"
+            "module": "dist/presets/scatter.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/screenprint.js",
+      "path": "dist/presets/screenprint.js",
       "declarations": [
         {
           "kind": "function",
@@ -4185,14 +3863,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/screenprint.js"
+            "module": "dist/presets/screenprint.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/seigaiha.js",
+      "path": "dist/presets/seigaiha.js",
       "declarations": [
         {
           "kind": "function",
@@ -4210,14 +3888,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/seigaiha.js"
+            "module": "dist/presets/seigaiha.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/shards.js",
+      "path": "dist/presets/shards.js",
       "declarations": [
         {
           "kind": "function",
@@ -4235,14 +3913,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/shards.js"
+            "module": "dist/presets/shards.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/shine.js",
+      "path": "dist/presets/shine.js",
       "declarations": [
         {
           "kind": "variable",
@@ -4255,14 +3933,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/shine.js"
+            "module": "dist/presets/shine.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/sinescroll.js",
+      "path": "dist/presets/sinescroll.js",
       "declarations": [
         {
           "kind": "function",
@@ -4280,14 +3958,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/sinescroll.js"
+            "module": "dist/presets/sinescroll.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/skyline.js",
+      "path": "dist/presets/skyline.js",
       "declarations": [
         {
           "kind": "function",
@@ -4305,14 +3983,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/skyline.js"
+            "module": "dist/presets/skyline.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/slime-mold.js",
+      "path": "dist/presets/slime-mold.js",
       "declarations": [
         {
           "kind": "function",
@@ -4330,14 +4008,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/slime-mold.js"
+            "module": "dist/presets/slime-mold.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/snow.js",
+      "path": "dist/presets/snow.js",
       "declarations": [
         {
           "kind": "function",
@@ -4355,14 +4033,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/snow.js"
+            "module": "dist/presets/snow.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/source.js",
+      "path": "dist/presets/source.js",
       "declarations": [
         {
           "kind": "function",
@@ -4380,14 +4058,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/source.js"
+            "module": "dist/presets/source.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/spectrum.js",
+      "path": "dist/presets/spectrum.js",
       "declarations": [
         {
           "kind": "function",
@@ -4405,14 +4083,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/spectrum.js"
+            "module": "dist/presets/spectrum.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/spirograph.js",
+      "path": "dist/presets/spirograph.js",
       "declarations": [
         {
           "kind": "function",
@@ -4430,14 +4108,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/spirograph.js"
+            "module": "dist/presets/spirograph.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/splitflap.js",
+      "path": "dist/presets/splitflap.js",
       "declarations": [
         {
           "kind": "function",
@@ -4455,14 +4133,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/splitflap.js"
+            "module": "dist/presets/splitflap.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/stage-lights.js",
+      "path": "dist/presets/stage-lights.js",
       "declarations": [
         {
           "kind": "function",
@@ -4480,14 +4158,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/stage-lights.js"
+            "module": "dist/presets/stage-lights.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/stained-glass.js",
+      "path": "dist/presets/stained-glass.js",
       "declarations": [
         {
           "kind": "function",
@@ -4505,14 +4183,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/stained-glass.js"
+            "module": "dist/presets/stained-glass.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/starburst.js",
+      "path": "dist/presets/starburst.js",
       "declarations": [
         {
           "kind": "function",
@@ -4530,14 +4208,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/starburst.js"
+            "module": "dist/presets/starburst.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/stars.js",
+      "path": "dist/presets/stars.js",
       "declarations": [
         {
           "kind": "function",
@@ -4555,14 +4233,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/stars.js"
+            "module": "dist/presets/stars.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/stipple.js",
+      "path": "dist/presets/stipple.js",
       "declarations": [
         {
           "kind": "function",
@@ -4580,14 +4258,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/stipple.js"
+            "module": "dist/presets/stipple.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/sumi-e.js",
+      "path": "dist/presets/sumi-e.js",
       "declarations": [
         {
           "kind": "function",
@@ -4605,14 +4283,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/sumi-e.js"
+            "module": "dist/presets/sumi-e.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/summit.js",
+      "path": "dist/presets/summit.js",
       "declarations": [
         {
           "kind": "function",
@@ -4630,14 +4308,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/summit.js"
+            "module": "dist/presets/summit.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/supergraphics.js",
+      "path": "dist/presets/supergraphics.js",
       "declarations": [
         {
           "kind": "function",
@@ -4655,14 +4333,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/supergraphics.js"
+            "module": "dist/presets/supergraphics.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/swarm.js",
+      "path": "dist/presets/swarm.js",
       "declarations": [
         {
           "kind": "function",
@@ -4680,14 +4358,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/swarm.js"
+            "module": "dist/presets/swarm.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/swiss.js",
+      "path": "dist/presets/swiss.js",
       "declarations": [
         {
           "kind": "function",
@@ -4705,14 +4383,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/swiss.js"
+            "module": "dist/presets/swiss.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/synthwave.js",
+      "path": "dist/presets/synthwave.js",
       "declarations": [
         {
           "kind": "variable",
@@ -4725,14 +4403,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/synthwave.js"
+            "module": "dist/presets/synthwave.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/system7.js",
+      "path": "dist/presets/system7.js",
       "declarations": [
         {
           "kind": "function",
@@ -4750,14 +4428,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/system7.js"
+            "module": "dist/presets/system7.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/tapestry.js",
+      "path": "dist/presets/tapestry.js",
       "declarations": [
         {
           "kind": "function",
@@ -4775,14 +4453,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/tapestry.js"
+            "module": "dist/presets/tapestry.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/tempest.js",
+      "path": "dist/presets/tempest.js",
       "declarations": [
         {
           "kind": "variable",
@@ -4795,14 +4473,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/tempest.js"
+            "module": "dist/presets/tempest.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/terrace.js",
+      "path": "dist/presets/terrace.js",
       "declarations": [
         {
           "kind": "function",
@@ -4820,14 +4498,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/terrace.js"
+            "module": "dist/presets/terrace.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/terrazzo.js",
+      "path": "dist/presets/terrazzo.js",
       "declarations": [
         {
           "kind": "function",
@@ -4845,14 +4523,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/terrazzo.js"
+            "module": "dist/presets/terrazzo.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/tetris.js",
+      "path": "dist/presets/tetris.js",
       "declarations": [
         {
           "kind": "function",
@@ -4870,14 +4548,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/tetris.js"
+            "module": "dist/presets/tetris.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/tide.js",
+      "path": "dist/presets/tide.js",
       "declarations": [
         {
           "kind": "function",
@@ -4895,14 +4573,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/tide.js"
+            "module": "dist/presets/tide.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/tiki.js",
+      "path": "dist/presets/tiki.js",
       "declarations": [
         {
           "kind": "function",
@@ -4920,14 +4598,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/tiki.js"
+            "module": "dist/presets/tiki.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/topology.js",
+      "path": "dist/presets/topology.js",
       "declarations": [
         {
           "kind": "variable",
@@ -4940,14 +4618,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/topology.js"
+            "module": "dist/presets/topology.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/trades.js",
+      "path": "dist/presets/trades.js",
       "declarations": [
         {
           "kind": "function",
@@ -4965,14 +4643,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/trades.js"
+            "module": "dist/presets/trades.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/transit-diagram.js",
+      "path": "dist/presets/transit-diagram.js",
       "declarations": [
         {
           "kind": "function",
@@ -4990,14 +4668,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/transit-diagram.js"
+            "module": "dist/presets/transit-diagram.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/trench.js",
+      "path": "dist/presets/trench.js",
       "declarations": [
         {
           "kind": "variable",
@@ -5010,14 +4688,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/trench.js"
+            "module": "dist/presets/trench.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/truchet.js",
+      "path": "dist/presets/truchet.js",
       "declarations": [
         {
           "kind": "function",
@@ -5035,14 +4713,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/truchet.js"
+            "module": "dist/presets/truchet.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/tunnel.js",
+      "path": "dist/presets/tunnel.js",
       "declarations": [
         {
           "kind": "variable",
@@ -5055,14 +4733,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/tunnel.js"
+            "module": "dist/presets/tunnel.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/ukiyo-e.js",
+      "path": "dist/presets/ukiyo-e.js",
       "declarations": [
         {
           "kind": "function",
@@ -5080,14 +4758,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/ukiyo-e.js"
+            "module": "dist/presets/ukiyo-e.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/vectormap.js",
+      "path": "dist/presets/vectormap.js",
       "declarations": [
         {
           "kind": "function",
@@ -5105,14 +4783,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/vectormap.js"
+            "module": "dist/presets/vectormap.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/vhs.js",
+      "path": "dist/presets/vhs.js",
       "declarations": [
         {
           "kind": "variable",
@@ -5125,14 +4803,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/vhs.js"
+            "module": "dist/presets/vhs.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/video-feedback.js",
+      "path": "dist/presets/video-feedback.js",
       "declarations": [
         {
           "kind": "function",
@@ -5150,14 +4828,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/video-feedback.js"
+            "module": "dist/presets/video-feedback.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/vinyl.js",
+      "path": "dist/presets/vinyl.js",
       "declarations": [
         {
           "kind": "function",
@@ -5175,14 +4853,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/vinyl.js"
+            "module": "dist/presets/vinyl.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/vumeter.js",
+      "path": "dist/presets/vumeter.js",
       "declarations": [
         {
           "kind": "function",
@@ -5200,14 +4878,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/vumeter.js"
+            "module": "dist/presets/vumeter.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/warp.js",
+      "path": "dist/presets/warp.js",
       "declarations": [
         {
           "kind": "variable",
@@ -5220,14 +4898,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/warp.js"
+            "module": "dist/presets/warp.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/watercolor.js",
+      "path": "dist/presets/watercolor.js",
       "declarations": [
         {
           "kind": "function",
@@ -5245,14 +4923,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/watercolor.js"
+            "module": "dist/presets/watercolor.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/waveform.js",
+      "path": "dist/presets/waveform.js",
       "declarations": [
         {
           "kind": "function",
@@ -5270,14 +4948,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/waveform.js"
+            "module": "dist/presets/waveform.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/waves.js",
+      "path": "dist/presets/waves.js",
       "declarations": [
         {
           "kind": "variable",
@@ -5290,14 +4968,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/waves.js"
+            "module": "dist/presets/waves.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/wireframe.js",
+      "path": "dist/presets/wireframe.js",
       "declarations": [
         {
           "kind": "function",
@@ -5315,14 +4993,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/wireframe.js"
+            "module": "dist/presets/wireframe.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/wordcloud.js",
+      "path": "dist/presets/wordcloud.js",
       "declarations": [
         {
           "kind": "function",
@@ -5340,14 +5018,14 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/wordcloud.js"
+            "module": "dist/presets/wordcloud.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/presets/zen-garden.js",
+      "path": "dist/presets/zen-garden.js",
       "declarations": [
         {
           "kind": "function",
@@ -5365,545 +5043,7 @@
           "name": "create",
           "declaration": {
             "name": "create",
-            "module": "src/presets/zen-garden.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/renderer/canvas2d.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "createC2DContext",
-          "parameters": [
-            {
-              "name": "canvas"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "resizeCanvas",
-          "parameters": [
-            {
-              "name": "canvas"
-            },
-            {
-              "name": "w"
-            },
-            {
-              "name": "h"
-            },
-            {
-              "name": "dpr"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "clearAndFill",
-          "parameters": [
-            {
-              "name": "c2d"
-            },
-            {
-              "name": "w"
-            },
-            {
-              "name": "h"
-            },
-            {
-              "name": "bg"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "createC2DContext",
-          "declaration": {
-            "name": "createC2DContext",
-            "module": "src/renderer/canvas2d.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "resizeCanvas",
-          "declaration": {
-            "name": "resizeCanvas",
-            "module": "src/renderer/canvas2d.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "clearAndFill",
-          "declaration": {
-            "name": "clearAndFill",
-            "module": "src/renderer/canvas2d.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/renderer/css3d.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "PAUSE_RULE",
-          "default": "`.stage[data-playing=\"0\"] * { animation-play-state: paused !important; }`"
-        },
-        {
-          "kind": "function",
-          "name": "createCSS3DContext"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PAUSE_RULE",
-          "declaration": {
-            "name": "PAUSE_RULE",
-            "module": "src/renderer/css3d.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "createCSS3DContext",
-          "declaration": {
-            "name": "createCSS3DContext",
-            "module": "src/renderer/css3d.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/renderer/shader-preset.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "makeShaderPreset",
-          "parameters": [
-            {
-              "name": "FS"
-            },
-            {
-              "name": "uniformNames"
-            }
-          ]
-        },
-        {
-          "kind": "variable",
-          "name": "w",
-          "type": {
-            "text": "number"
-          },
-          "default": "1"
-        },
-        {
-          "kind": "variable",
-          "name": "c"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "makeShaderPreset",
-          "declaration": {
-            "name": "makeShaderPreset",
-            "module": "src/renderer/shader-preset.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/renderer/tokens.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "rgbCss",
-          "parameters": [
-            {
-              "name": "c"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "rgbaCss",
-          "parameters": [
-            {
-              "name": "c"
-            },
-            {
-              "name": "a",
-              "default": "1"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "parseColor",
-          "parameters": [
-            {
-              "name": "str"
-            },
-            {
-              "name": "scheme"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "readTokenString",
-          "parameters": [
-            {
-              "name": "host"
-            },
-            {
-              "name": "token"
-            },
-            {
-              "name": "override"
-            },
-            {
-              "name": "cs",
-              "default": "getComputedStyle(host)"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "resolveTokens",
-          "parameters": [
-            {
-              "name": "host"
-            },
-            {
-              "name": "mapping"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "cssToRgba",
-          "parameters": [
-            {
-              "name": "str"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "rgbCss",
-          "declaration": {
-            "name": "rgbCss",
-            "module": "src/renderer/tokens.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "rgbaCss",
-          "declaration": {
-            "name": "rgbaCss",
-            "module": "src/renderer/tokens.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "parseColor",
-          "declaration": {
-            "name": "parseColor",
-            "module": "src/renderer/tokens.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "readTokenString",
-          "declaration": {
-            "name": "readTokenString",
-            "module": "src/renderer/tokens.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "resolveTokens",
-          "declaration": {
-            "name": "resolveTokens",
-            "module": "src/renderer/tokens.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "cssToRgba",
-          "declaration": {
-            "name": "cssToRgba",
-            "module": "src/renderer/tokens.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/renderer/webgl.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "createGLContext",
-          "parameters": [
-            {
-              "name": "canvas"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "compileShader",
-          "parameters": [
-            {
-              "name": "gl"
-            },
-            {
-              "name": "type"
-            },
-            {
-              "name": "src"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "createProgram",
-          "parameters": [
-            {
-              "name": "gl"
-            },
-            {
-              "name": "vsSrc"
-            },
-            {
-              "name": "fsSrc"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "fullscreenQuad",
-          "parameters": [
-            {
-              "name": "gl"
-            }
-          ]
-        },
-        {
-          "kind": "variable",
-          "name": "QUAD_VS",
-          "default": "` attribute vec2 a_pos; varying vec2 v_uv; void main() { v_uv = a_pos * 0.5 + 0.5; gl_Position = vec4(a_pos, 0.0, 1.0); }`"
-        },
-        {
-          "kind": "function",
-          "name": "bindQuad",
-          "parameters": [
-            {
-              "name": "gl"
-            },
-            {
-              "name": "buf"
-            },
-            {
-              "name": "loc"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "createPingPong",
-          "parameters": [
-            {
-              "name": "gl"
-            },
-            {
-              "name": "width"
-            },
-            {
-              "name": "height"
-            },
-            {
-              "name": "opts",
-              "default": "{}"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "createGLContext",
-          "declaration": {
-            "name": "createGLContext",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "compileShader",
-          "declaration": {
-            "name": "compileShader",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "createProgram",
-          "declaration": {
-            "name": "createProgram",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "fullscreenQuad",
-          "declaration": {
-            "name": "fullscreenQuad",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "QUAD_VS",
-          "declaration": {
-            "name": "QUAD_VS",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "bindQuad",
-          "declaration": {
-            "name": "bindQuad",
-            "module": "src/renderer/webgl.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "createPingPong",
-          "declaration": {
-            "name": "createPingPong",
-            "module": "src/renderer/webgl.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/util/observe.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "observeVisibility",
-          "parameters": [
-            {
-              "name": "host"
-            },
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "observeReducedMotion",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "observeTabVisibility",
-          "parameters": [
-            {
-              "name": "cb"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "observeVisibility",
-          "declaration": {
-            "name": "observeVisibility",
-            "module": "src/util/observe.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "observeReducedMotion",
-          "declaration": {
-            "name": "observeReducedMotion",
-            "module": "src/util/observe.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "observeTabVisibility",
-          "declaration": {
-            "name": "observeTabVisibility",
-            "module": "src/util/observe.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/util/pause.js",
-      "declarations": [
-        {
-          "kind": "function",
-          "name": "observeBatteryPowerSave",
-          "parameters": [
-            {
-              "name": "cb"
-            },
-            {
-              "name": "signal"
-            }
-          ]
-        },
-        {
-          "kind": "function",
-          "name": "mulberry32",
-          "parameters": [
-            {
-              "name": "seed"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "observeBatteryPowerSave",
-          "declaration": {
-            "name": "observeBatteryPowerSave",
-            "module": "src/util/pause.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "mulberry32",
-          "declaration": {
-            "name": "mulberry32",
-            "module": "src/util/pause.js"
+            "module": "dist/presets/zen-garden.js"
           }
         }
       ]
