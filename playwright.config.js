@@ -21,10 +21,22 @@ export default defineConfig({
     baseURL: 'http://localhost:5174',
     trace: 'on-first-retry',
   },
-  webServer: {
-    command: 'npx vite --config vite.site.config.js --port 5174',
-    url: 'http://localhost:5174/test/tokens-page.html',
-    reuseExistingServer: !process.env.CI,
-    timeout: 30000,
-  },
+  webServer: [
+    {
+      command: 'npx vite --config vite.site.config.js --port 5174',
+      url: 'http://localhost:5174/test/tokens-page.html',
+      reuseExistingServer: !process.env.CI,
+      timeout: 30000,
+    },
+    // The PRODUCTION site for test/built-site.spec.js (gl-wc-kkgm): rebuild
+    // dist-site, then serve it statically — no dev middleware, so a missing
+    // emitted asset is a real 404 exactly as on GitHub Pages.
+    {
+      command:
+        'npm run build:site && npx vite preview --config vite.site.config.js --port 5175 --strictPort',
+      url: 'http://localhost:5175/index.html',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120000,
+    },
+  ],
 });

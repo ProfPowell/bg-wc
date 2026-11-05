@@ -29,12 +29,9 @@ const demoPages = existsSync('demos')
 // an explicit allow-list — there is no publicDir — so internal-only trees like
 // docs/superpowers/ (specs, plans, reference pens) and docs/border-idea/ stay in
 // the repo but never ship to the public site. Keep it that way.
-const input = Object.fromEntries(
-  ['index.html', 'docs/index.html', 'docs/api.html', ...demoPages].map((f) => [
-    f.replace(/[/.]/g, '_'),
-    f,
-  ])
-);
+// Exported so test/built-site.spec.js walks exactly the pages that ship.
+export const sitePages = () => ['index.html', 'docs/index.html', 'docs/api.html', ...demoPages];
+const input = Object.fromEntries(sitePages().map((f) => [f.replace(/[/.]/g, '_'), f]));
 
 // vanilla-breeze lazily imports its optional Pagefind search bundle from the
 // absolute runtime path /pagefind/pagefind.js. That bundle only exists when a
@@ -66,10 +63,26 @@ const pagefindStub = {
 //   • <icon-wc> (incl. theme-picker's mode icons) → `${base}/icons/lucide/<name>.svg`
 const VB_DIR = 'node_modules/vanilla-breeze/dist/cdn';
 // The lucide pack is 1900+ files (~7.5MB); emit only the icons the UI uses.
+// This list covers icons vanilla-breeze's OWN JS renders (theme-picker's mode /
+// contrast / density controls) — they are invisible to the markup scan below.
+// Icons the site's HTML references (<icon-wc name="…">) are discovered from the
+// built pages themselves, so adding one to a page can't silently 404 in
+// production the way the GitHub footer icon once did (gl-wc-kkgm).
 const VB_BUILD_ICONS = [
   'palette', 'sun', 'moon', 'monitor', 'contrast', 'sliders',
   'type', 'check', 'chevron-down', 'chevron-up', 'x', 'circle',
 ];
+// Every <icon-wc name="…"> in the shipped pages, keyed by icon → first page.
+function iconsInMarkup(pages) {
+  const found = new Map();
+  for (const page of pages) {
+    const html = readFileSync(page, 'utf8');
+    for (const m of html.matchAll(/<icon-wc\b[^>]*\bname="([\w-]+)"/g)) {
+      if (!found.has(m[1])) found.set(m[1], page);
+    }
+  }
+  return found;
+}
 const vbAssets = {
   name: 'bg-wc:vb-assets',
   configureServer(server) {
@@ -92,22 +105,30 @@ const vbAssets = {
     });
   },
   generateBundle() {
+    // A required asset that cannot be emitted FAILS the build (this.error) —
+    // dev middleware serves the whole pack from node_modules, so a silent skip
+    // here would only surface as a 404 on GitHub Pages.
     const themes = join(VB_DIR, 'themes');
-    if (existsSync(themes)) {
-      for (const f of readdirSync(themes)) {
-        if (f.endsWith('.css')) {
-          this.emitFile({ type: 'asset', fileName: `vb/themes/${f}`, source: readFileSync(join(themes, f)) });
-        }
+    if (!existsSync(themes)) this.error(`bg-wc:vb-assets: ${themes} missing — is vanilla-breeze installed?`);
+    for (const f of readdirSync(themes)) {
+      if (f.endsWith('.css')) {
+        this.emitFile({ type: 'asset', fileName: `vb/themes/${f}`, source: readFileSync(join(themes, f)) });
       }
     }
     const lucide = join(VB_DIR, 'icons', 'lucide');
-    if (existsSync(lucide)) {
-      for (const name of VB_BUILD_ICONS) {
-        const file = join(lucide, `${name}.svg`);
-        if (existsSync(file)) {
-          this.emitFile({ type: 'asset', fileName: `vb/icons/lucide/${name}.svg`, source: readFileSync(file) });
-        }
+    const required = new Map(VB_BUILD_ICONS.map((n) => [n, 'VB_BUILD_ICONS (vite.site.config.js)']));
+    for (const [name, page] of iconsInMarkup(sitePages())) {
+      if (!required.has(name)) required.set(name, page);
+    }
+    for (const [name, where] of required) {
+      const file = join(lucide, `${name}.svg`);
+      if (!existsSync(file)) {
+        this.error(
+          `bg-wc:vb-assets: icon "${name}" (referenced by ${where}) has no ${file} — ` +
+            'the built site would 404 on it'
+        );
       }
+      this.emitFile({ type: 'asset', fileName: `vb/icons/lucide/${name}.svg`, source: readFileSync(file) });
     }
   },
 };
@@ -115,6 +136,10 @@ const vbAssets = {
 export default defineConfig({
   root: '.',
   base: './',
+  // Multi-page site: no SPA fallback, so a missing file is a real 404 in both
+  // `vite` (dev) and `vite preview` (dist-site) instead of a 200 serving
+  // index.html — test/built-site.spec.js relies on that to catch missing assets.
+  appType: 'mpa',
   customLogger: quietLogger,
   plugins: [pagefindStub, vbAssets],
   build: {
