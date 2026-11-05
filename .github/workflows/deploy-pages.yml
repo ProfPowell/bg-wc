@@ -3,6 +3,15 @@ name: Deploy site to GitHub Pages
 # Deploys only after the CI workflow succeeds on main (workflow_run), so a red
 # build can never reach GitHub Pages. workflow_dispatch stays as the manual
 # escape hatch.
+#
+# Contract (gl-wc-mnyv, pinned by test/workflow-contract.mjs):
+#   * The build checks out workflow_run.head_sha — the exact revision CI
+#     approved — never the branch tip, so a newer failing commit cannot ride a
+#     previous green run onto Pages.
+#   * The build job holds only contents: read and never persists the token;
+#     pages/id-token writes are granted to the deploy job alone.
+#   * The build stamps its SHA into dist-site/version.json and the deploy job
+#     reads it back from the live site and fails on a mismatch.
 on:
   workflow_run:
     workflows: [CI]
@@ -10,22 +19,32 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+permissions: {}
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  # The revision to deploy: the triggering CI head for workflow_run, the
+  # dispatched ref's commit for workflow_dispatch.
+  DEPLOY_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+
 jobs:
   build:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - name: Checkout
+      - name: Checkout the CI-approved revision
         uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@v5
@@ -38,6 +57,19 @@ jobs:
 
       - name: Build site
         run: npm run build:site
+
+      - name: Stamp the built revision
+        run: |
+          built="$(git rev-parse HEAD)"
+          if [ "$built" != "$DEPLOY_SHA" ]; then
+            echo "::error::checked out $built but expected $DEPLOY_SHA"
+            exit 1
+          fi
+          printf '{"sha":"%s","ref":"%s","builtAt":"%s"}\n' \
+            "$built" "${{ github.event.workflow_run.head_branch || github.ref_name }}" \
+            "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > dist-site/version.json
+          cat dist-site/version.json
+          echo "Built \`$built\` for Pages" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -52,6 +84,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -59,3 +94,22 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify the live site serves the deployed revision
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          EXPECTED: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          url="${PAGE_URL%/}/version.json"
+          for i in $(seq 1 12); do
+            live="$(curl -fsSL -H 'Cache-Control: no-cache' "$url?t=$(date +%s)" | sed -n 's/.*"sha":"\([0-9a-f]*\)".*/\1/p' || true)"
+            if [ "$live" = "$EXPECTED" ]; then
+              echo "Live site serves $live"
+              echo "Deployed \`$live\` → $PAGE_URL" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "attempt $i: live=$live expected=$EXPECTED — waiting for propagation"
+            sleep 10
+          done
+          echo "::error::live site reports '$live', expected $EXPECTED"
+          exit 1
