@@ -98,6 +98,7 @@ class BgWc extends HTMLElement {
       'motion',
       'mode',
       'power-save',
+      'text',
     ];
   }
 
@@ -211,15 +212,22 @@ class BgWc extends HTMLElement {
     this.paused = false;
   }
 
+  // SNAPSHOT CONTRACT (gl-wc-bfsy), documented in docs/api.html (Methods):
+  //   - Resolves a PNG Blob for a live canvas renderer. The current time is
+  //     re-rendered first (WebGL's drawing buffer is not preserved across
+  //     tasks), which is OBSERVATIONAL: a preset's frame is a pure function of
+  //     (t, params) and stateful presets step only when t advances
+  //     (gl-wc-beh4), so repeated snapshots never move the picture.
+  //   - Resolves null when there is nothing to capture: css3d (renders to DOM,
+  //     no pixel buffer), no preset, preset removed, failed load, disconnected,
+  //     or a lost WebGL context.
+  //   - Rejects if the re-render throws; the element has already gone inert
+  //     through #fail (one bg-wc:error, fallback up) by then — never stale
+  //     pixels dressed up as success.
   async snapshot() {
-    // css3d renders to DOM, not a canvas — there is no pixel buffer to read.
-    if (this.#rendererKind === 'css3d') return null;
-    // Re-render one frame at current time, then read pixels.
-    if (this.#instance) {
-      try {
-        this.#instance.frame?.(this.#timeS, this.#readParams());
-      } catch {}
-    }
+    if (!this.#instance || this.#ctxLost || this.#rendererKind === 'css3d') return null;
+    const err = this.#renderStill();
+    if (err) throw err;
     return new Promise((res) => this.#canvas.toBlob((b) => res(b), 'image/png'));
   }
 
@@ -300,7 +308,9 @@ class BgWc extends HTMLElement {
     if (!this.isConnected) return;
     if (name === 'preset') {
       this.#loadCurrentPreset(oldV);
-    } else if (name === 'paused') {
+    } else if (name === 'paused' || name === 'speed') {
+      // speed="0" halts the loop like paused does (gl-wc-6efd); any other
+      // value (re)starts it. The still on screen stays valid: t is frozen.
       this.#evalPlay();
     } else if (name === 'motion') {
       this.#updateFallbackVisibility();
@@ -315,15 +325,19 @@ class BgWc extends HTMLElement {
       // rebuild. Canvas presets read them per frame and need no re-init — pass
       // the current preset name as prevName so no spurious preset-changed fires.
       if (this.#rendererKind === 'css3d') this.#loadCurrentPreset(this.preset);
+      else if (name !== 'mode') this.#refreshIfIdle();
     } else if (name === 'power-save') {
       // Runtime-toggleable: 'off' stops watching the battery (and clears the
       // power-save brake); any other value (re)starts the observer.
       if (newV === 'off') this.#unbindPowerSave();
       else this.#bindPowerSave();
       this.#evalPlay();
+    } else {
+      // intensity / palette / quality / text are read fresh each frame. With
+      // the loop stopped (paused, reduced motion, speed 0) nothing would read
+      // them, so re-render the still once (gl-wc-6efd).
+      this.#refreshIfIdle();
     }
-    // intensity/speed/palette/quality are read fresh each frame (seed too, but
-    // only by canvas presets — css3d consumes it at create-time, handled above).
   }
 
   // --- Internals -------------------------------------------------------------
@@ -433,8 +447,10 @@ class BgWc extends HTMLElement {
       return;
     }
 
-    // Size canvas + propagate dimensions to the instance now that it exists.
-    this.#resize();
+    // Size canvas + propagate dimensions to the instance now that it exists
+    // (no still yet — the first frame below paints it).
+    this.#resize(false);
+    if (!this.#instance) return; // resize() threw → already failed inert
 
     this.#timeS = 0;
     this.#lastTickMs = 0;
@@ -456,9 +472,10 @@ class BgWc extends HTMLElement {
     this.#evalPlay();
   }
 
-  // ERROR DOCTRINE (gl-wc-zy39): every failure — load, init, or a throw from
-  // frame()/staticFrame() at runtime — leaves the element fully INERT. There
-  // is no retry. A preset's frame is a deterministic function of (t, params),
+  // ERROR DOCTRINE (gl-wc-zy39, gl-wc-bfsy): every failure — load, init, or a
+  // throw from any preset entry point at runtime (frame(), staticFrame(),
+  // resize(), css3d setPlaying(), the snapshot re-render) — leaves the element
+  // fully INERT. There is no retry, and no silent catch anywhere else. A preset's frame is a deterministic function of (t, params),
   // so a throw would recur on every resurrection and each resurrection would
   // emit another bg-wc:error; the one transient failure that matters (WebGL
   // context loss) has its own explicit restore path (#onCtxRestored).
@@ -581,23 +598,58 @@ class BgWc extends HTMLElement {
     }
   }
 
-  #resize() {
+  // Size the layer and tell the instance. Resizing a canvas clears its backing
+  // store, so when the loop is not running (paused, reduced motion, speed 0)
+  // nothing would repaint it — `redraw` renders one still afterwards
+  // (gl-wc-6efd). The load path passes false: its first frame paints.
+  #resize(redraw = true) {
     const rect = this.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
-    if (this.#rendererKind === 'css3d') {
-      try {
+    try {
+      if (this.#rendererKind === 'css3d') {
         this.#instance?.resize?.(rect.width, rect.height);
-      } catch {}
+      } else {
+        const dpr = this.#computeDpr();
+        const [W, H] = resizeCanvas(this.#canvas, rect.width, rect.height, dpr);
+        if (this.#rendererKind === 'webgl' && this.#ctx) {
+          this.#ctx.viewport(0, 0, W, H);
+        }
+        this.#instance?.resize?.(W, H);
+      }
+    } catch (err) {
+      this.#fail('runtime', err);
       return;
     }
-    const dpr = this.#computeDpr();
-    const [W, H] = resizeCanvas(this.#canvas, rect.width, rect.height, dpr);
-    if (this.#rendererKind === 'webgl' && this.#ctx) {
-      this.#ctx.viewport(0, 0, W, H);
-    }
+    if (redraw) this.#refreshIfIdle();
+  }
+
+  // Re-render the still when no loop is running to do it. No-op while playing
+  // (the next tick reads the new params/size anyway) or when there is nothing
+  // to render.
+  #refreshIfIdle() {
+    if (this.#rafId) return;
+    this.#renderStill();
+  }
+
+  // Paint ONE still of the current state: the reduced-motion staticFrame when
+  // that is what's on screen, otherwise the frame at the frozen current time.
+  // Observational — t does not advance, so (since gl-wc-beh4) no preset state
+  // moves. A throw goes through #fail and is returned so a caller that must
+  // surface it (snapshot) can; everyone else just stops.
+  #renderStill() {
+    if (!this.#instance || this.#ctxLost) return null;
     try {
-      this.#instance?.resize?.(W, H);
-    } catch {}
+      const params = this.#readParams();
+      if (this.#reducedMotionActive() && this.#instance.staticFrame) {
+        this.#instance.staticFrame(params);
+      } else {
+        this.#instance.frame?.(this.#timeS, params);
+      }
+    } catch (err) {
+      this.#fail('runtime', err);
+      return err;
+    }
+    return null;
   }
 
   // The device-pixel ratio the canvas is sized at: explicit override
@@ -616,10 +668,20 @@ class BgWc extends HTMLElement {
     return Math.min(DPR_MAX, Math.max(DPR_MIN, dpr));
   }
 
+  // speed="0" (the attribute; a negative value clamps to 0 too) means "hold
+  // still": no rAF work, css3d animations paused. Only the attribute gates
+  // this — a --bg-wc-speed CSS var cannot be observed, so a var-driven 0
+  // keeps the (cheap, t-frozen) loop alive rather than risk never restarting.
+  #speedAttrZero() {
+    const v = parseFloat(this.getAttribute('speed'));
+    return Number.isFinite(v) && v <= 0;
+  }
+
   #shouldPlay() {
     if (!this.#instance) return false;
     if (this.#ctxLost) return false;
     if (this.paused) return false;
+    if (this.#speedAttrZero()) return false;
     if (!this.#visible) return false;
     if (!this.#docVisible) return false;
     if (this.#powerSave) return false;
@@ -634,7 +696,10 @@ class BgWc extends HTMLElement {
       // playing, but only to reconcile params/colors (cheap), never per-node.
       try {
         this.#instance?.setPlaying?.(play);
-      } catch {}
+      } catch (err) {
+        this.#fail('runtime', err);
+        return;
+      }
     }
     if (play) {
       if (!this.#rafId) {

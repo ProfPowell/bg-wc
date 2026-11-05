@@ -419,8 +419,15 @@
               </tr>
               <tr>
                 <td><code>.snapshot()</code></td>
-                <td><code>() =&gt; Promise&lt;Blob&gt;</code></td>
-                <td>Returns a PNG snapshot of the current frame.</td>
+                <td><code>() =&gt; Promise&lt;Blob | null&gt;</code></td>
+                <td>
+                  A PNG of the current frame for a live canvas preset. Observational: it re-renders
+                  the frozen current time, which never advances a preset's state, so repeated
+                  snapshots are identical while paused. Resolves <code>null</code> when there is
+                  nothing to capture (css3d, no preset, preset removed, failed load, disconnected,
+                  lost context). Rejects if the re-render throws &mdash; the element has already
+                  gone inert with one <code>bg-wc:error</code> by then.
+                </td>
               </tr>
               <tr>
                 <td><code>.ready</code></td>
@@ -464,8 +471,10 @@
                 <td><code>bg-wc:error</code></td>
                 <td><code>{ phase, error }</code></td>
                 <td>
-                  Load, init, or runtime error (a preset throwing from <code>frame()</code> /
-                  <code>staticFrame()</code>). The element becomes inert: the instance is disposed,
+                  Load, init, or runtime error (a preset throwing from <code>frame()</code>,
+                  <code>staticFrame()</code>, <code>resize()</code>, css3d
+                  <code>setPlaying()</code>, or the <code>snapshot()</code> re-render). The element
+                  becomes inert: the instance is disposed,
                   the fallback slot shows, and the event fires once. Nothing retries &mdash;
                   pause/resume, visibility, and reduced-motion changes leave it inert. Recovery is a
                   preset change (attribute or property), or a WebGL context restore.
@@ -2326,6 +2335,21 @@
         <p>
           Every canvas preset ships <code>staticFrame()</code>; css3d presets show their paused
           scene instead.
+        </p>
+        <h3>Stills stay correct</h3>
+        <p>
+          Whenever the loop is stopped &mdash; <code>paused</code>, reduced motion, or
+          <code>speed="0"</code> &mdash; the element still keeps its picture right: a resize redraws
+          one still instead of leaving the cleared canvas, and changing <code>intensity</code>,
+          <code>palette</code>, <code>quality</code>, <code>density</code>, <code>seed</code>, or
+          <code>text</code> re-renders it (the reduced-motion <code>staticFrame()</code> when that
+          is what's on screen). <code>speed="0"</code> schedules no animation frames at all and
+          pauses css3d animations; setting a non-zero speed resumes without a time jump. Only the
+          attribute gates this &mdash; a <code>--bg-wc-speed: 0</code> CSS var freezes time but
+          leaves the (cheap) loop running, because a stylesheet change cannot be observed to
+          restart it. Stateful presets (reaction-diffusion, boids, radar, &hellip;) step from
+          elapsed time, so a frozen <code>t</code> freezes the simulation too &mdash; refresh rate
+          and repeated renders never change what you see.
         </p>
       </section>
 

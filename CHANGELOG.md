@@ -4,6 +4,58 @@ All notable changes to `@profpowell/bg-wc` are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow
 [Semantic Versioning](https://semver.org/) (pre-1.0, so a minor bump may break).
 
+## [Unreleased]
+
+### Fixed
+
+- **Stateful presets step from elapsed time** (reaction-diffusion, slime-mold,
+  spectrum, boids, mycelium, radar, oscilloscope, drip, matrix, mystify). They
+  advanced once per `frame()` call, so refresh rate and `quality` changed the
+  simulation speed, `speed="0"` kept animating, and every repeated `t`
+  (snapshot, reduced-motion still) mutated the picture. A shared fixed-step
+  clock (`src/presets/_clock.js`) now derives a bounded whole number of steps
+  from the absolute elapsed `t`; 60 Hz and 120 Hz converge pixel-for-pixel.
+- **`snapshot()` is observational and has defined semantics.** It resolves
+  `null` when there is nothing to capture (css3d, no preset, removed, failed,
+  disconnected, lost context) instead of throwing a `TypeError`, and rejects
+  (after the element goes inert with one `bg-wc:error`) if the re-render
+  throws, instead of swallowing the error and returning stale pixels.
+- **One error boundary.** Throws from a preset's `resize()`, from css3d
+  `setPlaying()`, and from the snapshot re-render now flow through the same
+  inert-on-failure path as `frame()`; no silent catches remain.
+- **Stills stay correct while stopped.** A resize while paused / under reduced
+  motion / at `speed="0"` redraws a still instead of leaving the cleared
+  canvas; `intensity`, `palette`, `quality`, `density`, `seed`, and `text`
+  changes re-render the still; `speed="0"` schedules no animation frames and
+  pauses css3d animations; resuming is reliable. `text` is now an observed
+  attribute.
+- **slime-mold on WebGL1.** Trail textures are power-of-two at every quality
+  (WebGL1 samples a wrapping NPOT texture as black), the agent heading is
+  stored normalised so no format clamps it, the agent count scales with the
+  trail (a 128² trail saturated to a flat field), and the shared ping-pong
+  helper now walks a format ladder (WebGL2 half-float → WebGL1
+  `OES_texture_half_float` → `OES_texture_float` → bytes), validating each
+  framebuffer and throwing (→ fallback slot) if none renders.
+- **`data-background` binder hardening.** Only an explicit allowlist of params
+  is forwarded to the injected element (`BINDER_PARAM_ATTRS`); anything else
+  (`data-background-onclick`, `-style`, `-class`, …) is dropped with a
+  one-time console warning. Param attributes now reconcile live, the injected
+  element is re-injected if a framework re-render removes it, and
+  `stopWatching()` cancels the queued DOMContentLoaded startup.
+- **Published manifest and package surface.** `custom-elements.json` paths
+  point at the shipped `dist/` files and omit internal modules;
+  `@profpowell/bg-wc/presets/_*` and `/presets/index` are blocked in
+  `exports`; `prepack` builds and analyzes so `npm pack` works from a clean
+  checkout; the pack smoke test verifies every manifest path in the tarball.
+- **Site assets.** The production build now emits every `<icon-wc>` icon the
+  pages reference (the GitHub icon was missing) and fails on a missing one; a
+  browser test serves the built site and checks every page for 4xx, page
+  errors, unrendered icons, and element registration.
+- **Pages deploy.** The deployment builds the exact CI-approved commit
+  (`workflow_run.head_sha`), holds Pages/OIDC write permissions only in the
+  deploy job, never persists the token, and verifies the live site reports
+  the deployed SHA.
+
 ## [0.5.1] — 2026-11-04
 
 ### Added

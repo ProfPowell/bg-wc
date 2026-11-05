@@ -111,6 +111,9 @@
             },
             {
               "name": "power-save"
+            },
+            {
+              "name": "text"
             }
           ],
           "superclass": {
@@ -170,6 +173,10 @@
       "path": "dist/data-background.js",
       "declarations": [
         {
+          "kind": "variable",
+          "name": "BINDER_PARAM_ATTRS"
+        },
+        {
           "kind": "function",
           "name": "bindDataBackgrounds",
           "parameters": [
@@ -185,6 +192,14 @@
         }
       ],
       "exports": [
+        {
+          "kind": "js",
+          "name": "BINDER_PARAM_ATTRS",
+          "declaration": {
+            "name": "BINDER_PARAM_ATTRS",
+            "module": "dist/data-background.js"
+          }
+        },
         {
           "kind": "js",
           "name": "bindDataBackgrounds",
