@@ -130,13 +130,14 @@
           >
           <h3>Attribute mapping</h3>
           <p>
-            <code>data-background</code> is the preset name. Any other key starting with
-            <code>data-background-</code> maps to the corresponding bg-wc attribute &mdash; or, for
-            color overrides, the corresponding <code>--bg-wc-color-*</code> custom property. The
-            same mapping applies to <code>data-bg</code> / <code>data-bg-*</code> (<code
-              >data-bg-skip</code
-            >
-            opts out):
+            <code>data-background</code> is the preset name. The <em>supported</em> keys below map
+            to the corresponding bg-wc attribute &mdash; or, for color overrides, the corresponding
+            <code>--bg-wc-color-*</code> custom property. The list is an explicit allowlist: any
+            other <code>data-background-*</code> key is dropped with a one-time console warning, so
+            the binder never forwards <code>on*</code> handlers, <code>style</code>,
+            <code>class</code>, or arbitrary attributes from (possibly user-supplied, sanitized)
+            markup onto the injected element. The same mapping applies to <code>data-bg</code> /
+            <code>data-bg-*</code> (<code>data-bg-skip</code> opts out):
           </p>
           <div class="table-wrap">
             <table>
@@ -192,6 +193,18 @@
                   <td><code>pixel-ratio</code></td>
                 </tr>
                 <tr>
+                  <td><code>data-background-mode</code></td>
+                  <td><code>mode</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-power-save</code></td>
+                  <td><code>power-save</code></td>
+                </tr>
+                <tr>
+                  <td><code>data-background-text</code></td>
+                  <td><code>text</code></td>
+                </tr>
+                <tr>
                   <td><code>data-background-color-1</code></td>
                   <td><code>--bg-wc-color-1</code> CSS var</td>
                 </tr>
@@ -218,10 +231,24 @@
               </tbody>
             </table>
           </div>
+          <h3>Lifecycle</h3>
+          <p>
+            The binding is live, driven by a <code>MutationObserver</code> with an explicit
+            attribute filter. New annotated elements are bound as they appear; changing
+            <code>data-background</code> re-points the preset; changing, adding, or removing a
+            supported <code>data-background-*</code> param updates the injected element
+            (<code>el.dataset.backgroundIntensity = 0.9</code> counts &mdash; a dataset edit is an
+            attribute edit); removing the attribute, or adding <code>-skip</code>, unbinds. If a
+            framework re-render removes or replaces the injected <code>&lt;bg-wc&gt;</code> while
+            the host is still annotated, the binder re-injects it, so ownership and the DOM never
+            drift apart.
+          </p>
           <p class="muted">
-            New elements added to the page after first paint are auto-bound via a
-            <code>MutationObserver</code>. To bind manually after disabling that observer (or in an
-            SSR context), call <code>bindDataBackgrounds(root)</code> after import.
+            <code>stopWatching()</code> disconnects the observer and, when called before
+            <code>DOMContentLoaded</code>, also cancels the initial scan, so nothing binds on its
+            own afterwards. <code>bindDataBackgrounds(root)</code> is then the explicit path (also
+            for SSR); it is idempotent and adopts an injected element that is already present.
+            <code>BINDER_PARAM_ATTRS</code> exports the allowlist.
           </p>
         </div>
       </section>

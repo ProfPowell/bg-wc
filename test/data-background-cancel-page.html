@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>data-background stopWatching harness</title>
+  <style>
+    section { width: 200px; height: 150px; }
+  </style>
+</head>
+<body>
+  <section id="host" data-background="dither"></section>
+  <!-- The spec forces document.readyState to "loading" (init script) so the
+       binder takes its queued-DOMContentLoaded startup path; with ?keep the
+       startup is left alone (control), otherwise stopWatching() cancels it. -->
+  <script type="module">
+    import { stopWatching, bindDataBackgrounds } from '../src/data-background.js';
+    if (!location.search.includes('keep')) stopWatching();
+    window.__binder = { bindDataBackgrounds };
+  </script>
+</body>
+</html>

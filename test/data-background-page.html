@@ -20,6 +20,14 @@
   <section id="short" data-bg="dither" data-bg-intensity="0.4" data-bg-color-1="rgb(4, 5, 6)"></section>
   <section id="short-skip" data-bg="dither" data-bg-skip></section>
   <section id="plain"></section>
+  <!-- Injection fixtures (gl-wc-ff9s): only allowlisted params may be forwarded. -->
+  <section id="inject" data-background="dither" data-background-intensity="0.3"
+           data-background-onclick="window.__pwned = 1" data-background-style="color: red"
+           data-background-class="pwned" data-background-srcdoc="x" data-background-id="pwned"
+           data-background-bogus="1"></section>
+  <section id="inject-short" data-bg="dither" data-bg-intensity="0.2"
+           data-bg-onclick="window.__pwned = 1" data-bg-style="color: red"
+           data-bg-class="pwned" data-bg-srcdoc="x"></section>
   <script type="module" src="../src/data-background.js"></script>
 </body>
 </html>

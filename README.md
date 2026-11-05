@@ -93,9 +93,14 @@ from theme tokens instead of hard black-on-white). The text presets —
 
 For pages that prefer not to introduce a new element tag, import the
 optional binder. It scans for `data-background` attributes and injects
-a `<bg-wc>` behind each host element automatically. The binder is
-fully open — any `data-background-X` becomes attribute `X` on the
-injected canvas, including preset-specific attrs like `mode`.
+a `<bg-wc>` behind each host element automatically. A supported
+`data-background-X` becomes attribute `X` on the injected element
+(`intensity`, `speed`, `density`, `seed`, `palette`, `quality`, `fit`,
+`motion`, `mode`, `paused`, `pixel-ratio`, `power-save`, `text`), and
+`data-background-color-{1,2,3,bg,fg}` become `--bg-wc-color-*` custom
+properties. Anything else is dropped with a one-time console warning —
+the binder never forwards `on*` handlers, `style`, `class`, or other
+arbitrary attributes, so sanitized user markup cannot smuggle them in.
 
 ```js
 import '@profpowell/bg-wc/data-background';
@@ -120,6 +125,16 @@ content via `z-index: -1` inside an isolated stacking context.
 `data-bg` is an equivalent short spelling: `data-bg="mosaic"`,
 `data-bg-intensity="0.7"`, `data-bg-skip`. Both are first-class;
 use whichever reads better, one spelling per element.
+
+The binding is live: changing `data-background` re-points the preset,
+changing, adding, or removing a `data-background-*` param updates the
+injected element (`el.dataset.backgroundIntensity = 0.9` counts — it is
+an attribute edit), and removing the attribute or adding
+`data-background-skip` unbinds. If a framework re-render drops the
+injected `<bg-wc>` while the host is still annotated, the binder
+re-injects it. `stopWatching()` disconnects the observer — and, if
+called before `DOMContentLoaded`, cancels the initial scan too — after
+which `bindDataBackgrounds(root)` is the explicit, idempotent way to bind.
 
 ## CSS custom properties
 
